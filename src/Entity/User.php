@@ -1,0 +1,491 @@
+<?php
+
+namespace App\Entity;
+
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Interfaces\CreatedEntityInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Controller\ResetPasswordAction;
+
+/**
+ * @ApiResource(
+ *     collectionOperations={
+ *          "post"={
+ *               "access_control"="is_granted('ROLE_ADMIN')"
+ *          },
+ *          "get"={
+ *               "access_control"="is_granted('ROLE_ADMIN')"
+ *          }
+ *
+ *     },
+ *     itemOperations={
+ *          "put"={
+ *               "access_control"="is_granted('ROLE_ADMIN')"
+ *          },
+ *         "get"={
+ *               "access_control"="is_granted('ROLE_ADMIN')"
+ *          },
+ *          "put-reset-password"={
+ *               "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object === user",
+ *               "method"="PUT",
+ *               "path"="/users/{id}/reset-password",
+ *               "controller"=ResetPasswordAction::class,
+ *               "denormalization_context"={
+ *                  "groups"={"put-reset-password"}
+ *              }
+ *
+ *           }
+ *     },
+ *     normalizationContext={
+ *      "groups"={"get"}
+ *     }
+ * )
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"Admin" = "User","Acheteur" = "Acheteur","Fournisseur"="Fournisseur","Commercial"="Commercial","ZoneCommercial"="ZoneCommercial"})
+ * @UniqueEntity("email")
+ * @UniqueEntity("username")
+ */
+class User implements UserInterface,CreatedEntityInterface
+{
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_ZONE = 'ROLE_ZONE';
+    const ROLE_COMMERCIAL = 'ROLE_COMMERCIAL';
+    const ROLE_ACHETEUR = 'ROLE_ACHETEUR';
+    const ROLE_FOURNISSEUR = 'ROLE_FOURNISSEUR';
+
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     * @Groups({"get"})
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"get","put"})
+     * @Assert\NotBlank()
+     * @Assert\Length(min=6,max=255)
+     */
+    protected $username;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"get","put"})
+     * @Assert\NotBlank(message="ok bt")
+     * @Assert\Length(min=6,max=255)
+     */
+    protected $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"get","put"})
+     * @Assert\NotBlank()
+     * @Assert\Length(min=6,max=255)
+     */
+    protected $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"get","put"})
+     * @Assert\NotBlank()
+     * @Assert\Length(min=6,max=255)
+     */
+    protected $adresse1;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get","put"})
+     * @Assert\Length(min=6,max=255)
+     */
+    protected $adresse2;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"get","put"})
+     * @Assert\NotBlank()
+     * @Assert\Length(min=4,max=255)
+     */
+    protected $codepostal;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"get","put"})
+     * @Assert\NotBlank()
+     * @Assert\Length(min=10,max=255)
+     */
+    protected $phone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     * @Assert\Length(min=10,max=255)
+     * @Groups({"get-admin"})
+     */
+    protected $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=6,max=255)
+     * @Assert\Regex(
+     *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
+     *     message="erreur pass"
+     * )
+     */
+    protected $password;
+
+
+    /**
+     * @Assert\NotBlank(groups={"post"})
+     * @Assert\Expression(
+     *     "this.getPassword() === this.getConfirmpassword()",
+     *     message="Passwords does not match",
+     *     groups={"post"}
+     * )
+     */
+    protected $confirmpassword;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"get","put"})
+     * @Assert\NotNull()
+     */
+    protected $del;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"get"})
+     * @Assert\NotBlank()
+     */
+    protected $isactif;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Groups({"get"})
+     */
+    protected $created;
+
+
+    /**
+     * @Assert\NotBlank()
+     * @Groups({"put-reset-password"})
+     * @Assert\Length(min=6,max=255)
+     * @Assert\Regex(
+     *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
+     *     message="erreur pass"
+     * )
+     */
+    protected $newPassword;
+
+    /**
+     * @Assert\NotBlank()
+     * @Groups({"put-reset-password"})
+     * @Assert\Expression(
+     *     "this.getNewPassword() === this.getNewConfirmpassword()",
+     *     message="Passwords does not match",
+     *     groups={""}
+     * )
+     */
+    protected $newConfirmpassword;
+
+    /**
+     * @Assert\NotBlank()
+     * @Groups({"put-reset-password"})
+     * @UserPassword()
+     */
+    protected $oldPassword;
+
+
+    /**
+     * @ORM\Column(type="integer",nullable=true)
+     */
+    protected $passwordChangeDate;
+
+
+    /**
+     * @ORM\Column(type="simple_array",length=200)
+     * @Groups({"get-admin","get-owner"})
+     */
+    protected $roles;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstname): self
+    {
+        $this->firstName = $firstname;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastname): self
+    {
+        $this->lastName = $lastname;
+
+        return $this;
+    }
+
+    public function getAdresse1(): ?string
+    {
+        return $this->adresse1;
+    }
+
+    public function setAdresse1(string $adresse1): self
+    {
+        $this->adresse1 = $adresse1;
+
+        return $this;
+    }
+
+    public function getAdresse2(): ?string
+    {
+        return $this->adresse2;
+    }
+
+    public function setAdresse2(?string $adresse2): self
+    {
+        $this->adresse2 = $adresse2;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?int
+    {
+        return $this->codepostal;
+    }
+
+    public function setCodePostal(int $codepostal): self
+    {
+        $this->codepostal = $codepostal;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getDel(): ?bool
+    {
+        return $this->del;
+    }
+
+    public function setDel(bool $del): self
+    {
+        $this->del = $del;
+
+        return $this;
+    }
+
+    public function getIsActif(): ?bool
+    {
+        return $this->isactif;
+    }
+
+    public function setIsActif(bool $isactif): self
+    {
+        $this->isactif = $isactif;
+
+        return $this;
+    }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function setCreated(\DateTimeInterface $created): CreatedEntityInterface
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+
+    public function setUsername($username): self
+    {
+        $this->username = $username;
+        return $this;
+
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     *     public function getRoles()
+     *     {
+     *         return ['ROLE_USER'];
+     *     }
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return (Role|string)[] The user roles
+     */
+    public function getRoles():array
+    {
+        return $this->roles;
+    }
+    public function setRoles(array $roles)
+    {
+        $this->roles=$roles;
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfirmpassword()
+    {
+        return $this->confirmpassword;
+    }
+
+    /**
+     * @param mixed $confirmpassword
+     */
+    public function setConfirmpassword($confirmpassword): void
+    {
+        $this->confirmpassword = $confirmpassword;
+    }
+
+
+    public function getNewPassword(): ?string
+    {
+        return $this->newPassword;
+    }
+
+    /**
+     * @param mixed $newPassword
+     */
+    public function setNewPassword($newPassword): void
+    {
+        $this->newPassword = $newPassword;
+    }
+
+
+    public function getNewConfirmpassword(): ?string
+    {
+        return $this->newConfirmpassword;
+    }
+
+    /**
+     * @param mixed $newConfirmpassword
+     */
+    public function setNewConfirmpassword($newConfirmpassword): void
+    {
+        $this->newConfirmpassword = $newConfirmpassword;
+    }
+
+    public function getOldPassword(): ?string
+    {
+        return $this->oldPassword;
+    }
+
+    /**
+     * @param mixed $oldPassword
+     */
+    public function setOldPassword($oldPassword): void
+    {
+        $this->oldPassword = $oldPassword;
+    }
+
+
+    public function getPasswordChangeDate()
+    {
+        return $this->passwordChangeDate;
+    }
+
+
+    public function setPasswordChangeDate($passwordChangeDate): void
+    {
+        $this->passwordChangeDate = $passwordChangeDate;
+    }
+
+
+
+
+}
