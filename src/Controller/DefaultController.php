@@ -21,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DefaultController extends  AbstractController
 {
+    //Commentaire test
 
     /**
      * @Route("/all",name="getAllUsers",methods={"GET"})
