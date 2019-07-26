@@ -170,6 +170,14 @@ class User implements UserInterface,CreatedEntityInterface
     protected $isactif;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @Groups({"get-admin"})
+     * @ORM\JoinColumn(name="parent1", referencedColumnName="id" , nullable=true)
+     *
+     */
+    protected $parent1;
+
+    /**
      * @ORM\Column(type="datetime")
      * @Groups({"get"})
      */
@@ -177,31 +185,32 @@ class User implements UserInterface,CreatedEntityInterface
 
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"put-reset-password"})
      * @Groups({"put-reset-password"})
      * @Assert\Length(min=6,max=255)
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
-     *     message="erreur pass"
+     *     message="erreur pass",
+     *     groups={"put-reset-password"}
      * )
      */
     protected $newPassword;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"put-reset-password"})
      * @Groups({"put-reset-password"})
      * @Assert\Expression(
      *     "this.getNewPassword() === this.getNewConfirmpassword()",
      *     message="Passwords does not match",
-     *     groups={""}
+     *     groups={"put-reset-password"}
      * )
      */
     protected $newConfirmpassword;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"put-reset-password"})
      * @Groups({"put-reset-password"})
-     * @UserPassword()
+     * @UserPassword(groups={"put-reset-password"})
      */
     protected $oldPassword;
 
@@ -342,6 +351,19 @@ class User implements UserInterface,CreatedEntityInterface
 
         return $this;
     }
+
+
+    public function getParent1()
+    {
+        return $this->parent1;
+    }
+
+    public function setParent1($parent1): void
+    {
+        $this->parent1 = $parent1;
+    }
+
+
 
     public function getCreated(): ?\DateTimeInterface
     {
