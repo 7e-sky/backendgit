@@ -165,7 +165,7 @@ class User implements UserInterface,CreatedEntityInterface
     /**
      * @ORM\Column(type="boolean")
      * @Groups({"get"})
-     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     protected $isactif;
 
@@ -182,6 +182,12 @@ class User implements UserInterface,CreatedEntityInterface
      * @Groups({"get"})
      */
     protected $created;
+
+    /**
+     * @ORM\Column(type="simple_array",length=200)
+     * @Groups({"get-admin","get-owner"})
+     */
+    protected $roles;
 
 
     /**
@@ -222,10 +228,16 @@ class User implements UserInterface,CreatedEntityInterface
 
 
     /**
-     * @ORM\Column(type="simple_array",length=200)
-     * @Groups({"get-admin","get-owner"})
+     * @ORM\Column(type="string",length=40,nullable=true)
      */
-    protected $roles;
+    protected  $confirmationToken;
+
+
+    public function __construct()
+    {
+        $this->isactif=false;
+        $this->del=false;
+    }
 
     public function getId(): ?int
     {
@@ -506,6 +518,24 @@ class User implements UserInterface,CreatedEntityInterface
     {
         $this->passwordChangeDate = $passwordChangeDate;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * @param mixed $confirmationToken
+     */
+    public function setConfirmationToken($confirmationToken): void
+    {
+        $this->confirmationToken = $confirmationToken;
+    }
+
+
 
 
 

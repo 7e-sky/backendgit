@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Entity\Acheteur;
 use App\Entity\User;
+use App\Services\UserConfirmationService;
 use http\Env\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +24,17 @@ class DefaultController extends  AbstractController
 {
 
     /**
-     * @Route("/all",name="getAllUsers",methods={"GET"})
+     * @var UserConfirmationService
+     */
+    private $confirmationService;
+
+    public function __construct(UserConfirmationService $confirmationService)
+    {
+        $this->confirmationService = $confirmationService;
+    }
+
+    /**
+     * @Route("/all",name="defaultIndex",methods={"GET"})
      */
     public function index()
     {
@@ -32,6 +43,16 @@ class DefaultController extends  AbstractController
         $users = $em->getRepository(User::class)->find(14);
 
         return $this->json($users->getCodePostal());
+    }
+
+    /**
+     * @Route("/confrim-user/{token}", name="default_confirm_token")
+     */
+    public function confirm(string $token){
+
+        $this->confirmationService->confirmUser($token);
+
+        return $this->redirectToRoute('defaultIndex');
     }
 
 }

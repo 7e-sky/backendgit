@@ -9,35 +9,69 @@
 namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Email\Mailer;
 use App\Entity\Acheteur;
 use App\Entity\Commercial;
 use App\Entity\Fournisseur;
 use App\Entity\User;
 use App\Entity\ZoneCommercial;
+use App\Security\TokenGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class RoleSubscriber implements EventSubscriberInterface
+class UserRegisterSubscriber implements EventSubscriberInterface
 {
 
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $passwordEncoder;
+    /**
+     * @var TokenGenerator
+     */
+    private $tokenGenerator;
+    /**
+     * @var Mailer
+     */
+    private $mailer;
 
+
+    public  function  __construct(UserPasswordEncoderInterface $passwordEncoder,TokenGenerator $tokenGenerator ,Mailer $mailer)
+    {
+        $this->passwordEncoder = $passwordEncoder;
+        $this->tokenGenerator = $tokenGenerator;
+        $this->mailer = $mailer;
+    }
 
     public static function getSubscribedEvents()
     {
        return [
-           KernelEvents::VIEW => ['setRole',EventPriorities::PRE_WRITE]
+           KernelEvents::VIEW => ['userRegistered',EventPriorities::PRE_WRITE]
        ];
     }
-    public function setRole(GetResponseForControllerResultEvent $event){
+    public function userRegistered(GetResponseForControllerResultEvent $event){
+
         $user = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
-        if(!$user instanceof  User || $method !== Request::METHOD_POST ){
+        if(!$user instanceof  User || !in_array($method,[Request::METHOD_POST]) ){
             return;
         }
 
+        //Encode Password
+        $user->setPassword(
+            $this->passwordEncoder->encodePassword($user,$user->getPassword
+            ())
+        );
+
+
+        //Set Confirmation Token
+        $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
+
+
+        //Set Role
         if($user instanceof Fournisseur){
             $user->setRoles([User::ROLE_FOURNISSEUR]);
         }
@@ -53,5 +87,7 @@ class RoleSubscriber implements EventSubscriberInterface
         else{
             $user->setRoles([User::ROLE_ADMIN]);
         }
+
+        $this->mailer->sendConfirmationEmail($user);
     }
 }
