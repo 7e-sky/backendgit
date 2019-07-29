@@ -74,9 +74,13 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         //Set Role
         if($user instanceof Fournisseur){
             $user->setRoles([User::ROLE_FOURNISSEUR]);
+            $this->mailer->sendConfirmationEmail($user);
+
         }
         elseif($user instanceof Acheteur){
             $user->setRoles([User::ROLE_ACHETEUR]);
+            $this->mailer->sendConfirmationEmail($user);
+
         }
         elseif($user instanceof ZoneCommercial){
             $user->setRoles([User::ROLE_ZONE]);
@@ -88,6 +92,5 @@ class UserRegisterSubscriber implements EventSubscriberInterface
             $user->setRoles([User::ROLE_ADMIN]);
         }
 
-        $this->mailer->sendConfirmationEmail($user);
     }
 }
