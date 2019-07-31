@@ -2,8 +2,14 @@
 
 namespace App\Entity;
 
+
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -32,5 +38,39 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ZoneCommercial extends User
 {
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Pays")
+     * @ORM\JoinTable()
+     * @Groups({"get","put"})
+     * @Assert\NotBlank()
+     * @ApiSubresource()
+     */
+    private $pays;
+
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->pays = new ArrayCollection();
+    }
+
+    public function getPays():Collection
+    {
+        return $this->pays;
+    }
+
+    public function addPay(Pays $pays){
+
+        $this->pays->add($pays);
+
+    }
+
+    public function removePay(Pays $pays){
+
+        $this->pays->removeElement($pays);
+
+    }
+
 
 }

@@ -191,6 +191,13 @@ class User implements UserInterface,CreatedEntityInterface
 
 
     /**
+     * @ORM\ManyToOne(targetEntity="Avatar")
+     * @Groups("get")
+     */
+    protected $avatar;
+
+
+    /**
      * @Assert\NotBlank(groups={"put-reset-password"})
      * @Groups({"put-reset-password"})
      * @Assert\Length(min=6,max=255)
@@ -402,20 +409,6 @@ class User implements UserInterface,CreatedEntityInterface
 
     }
 
-    /**
-     * Returns the roles granted to the user.
-     *
-     *     public function getRoles()
-     *     {
-     *         return ['ROLE_USER'];
-     *     }
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return (Role|string)[] The user roles
-     */
     public function getRoles():array
     {
         return $this->roles;
@@ -426,12 +419,23 @@ class User implements UserInterface,CreatedEntityInterface
     }
 
     /**
-     * Returns the salt that was originally used to encode the password.
-     *
-     * This can return null if the password was not encoded using a salt.
-     *
-     * @return string|null The salt
+     * @return mixed
      */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+
+
     public function getSalt()
     {
         return null;
@@ -439,12 +443,6 @@ class User implements UserInterface,CreatedEntityInterface
 
 
 
-    /**
-     * Removes sensitive data from the user.
-     *
-     * This is important if, at any given point, sensitive information like
-     * the plain-text password is stored on this object.
-     */
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
