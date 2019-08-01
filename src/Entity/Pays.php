@@ -62,9 +62,18 @@ class Pays
     private $villes;
 
 
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"get","put"})
+     * @Assert\NotNull()
+     */
+    protected $del;
+
+
     public function __construct()
     {
         $this->villes = new ArrayCollection();
+        $this->del=false;
     }
 
 
@@ -94,5 +103,23 @@ class Pays
     {
         return $this->villes;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDel()
+    {
+        return $this->del;
+    }
+
+    /**
+     * @param mixed $del
+     */
+    public function setDel($del): void
+    {
+        $this->del = $del;
+    }
+
+
 
 }

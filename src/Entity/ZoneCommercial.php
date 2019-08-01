@@ -35,6 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\ZoneCommercialRepository")
+ *
  */
 class ZoneCommercial extends User
 {

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\ZoneCommercial;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -19,6 +20,14 @@ class ZoneCommercialRepository extends ServiceEntityRepository
         parent::__construct($registry, ZoneCommercial::class);
     }
 
+    /**
+     * @param string[] $criteria format: array('user' => <user_id>, 'name' => <name>)
+     */
+    public function findByUniqueCriteria(array $criteria)
+    {
+        // would use findOneBy() but Symfony expects a Countable object
+        return $this->_em->getRepository(User::class)->findBy($criteria);
+    }
     // /**
     //  * @return ZoneCommercial[] Returns an array of ZoneCommercial objects
     //  */

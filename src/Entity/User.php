@@ -49,8 +49,8 @@ use App\Controller\ResetPasswordAction;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"Admin" = "User","Acheteur" = "Acheteur","Fournisseur"="Fournisseur","Commercial"="Commercial","ZoneCommercial"="ZoneCommercial"})
- * @UniqueEntity("email")
- * @UniqueEntity("username")
+ * @UniqueEntity("email", repositoryMethod="findByUniqueCriteria")
+ * @UniqueEntity("username", repositoryMethod="findByUniqueCriteria")
  */
 class User implements UserInterface,CreatedEntityInterface
 {

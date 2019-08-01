@@ -15,6 +15,9 @@ use App\Entity\Commercial;
 use App\Entity\Fournisseur;
 use App\Entity\User;
 use App\Entity\ZoneCommercial;
+use App\Repository\CommercialRepository;
+use App\Repository\UserRepository;
+use App\Repository\ZoneCommercialRepository;
 use App\Security\TokenGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,13 +40,34 @@ class UserRegisterSubscriber implements EventSubscriberInterface
      * @var Mailer
      */
     private $mailer;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+    /**
+     * @var CommercialRepository
+     */
+    private $commercialRepository;
+    /**
+     * @var ZoneCommercialRepository
+     */
+    private $zoneCommercialRepository;
 
 
-    public  function  __construct(UserPasswordEncoderInterface $passwordEncoder,TokenGenerator $tokenGenerator ,Mailer $mailer)
+    public  function  __construct(
+        UserPasswordEncoderInterface $passwordEncoder,
+        TokenGenerator $tokenGenerator ,
+        Mailer $mailer,
+        UserRepository $userRepository,
+        CommercialRepository $commercialRepository,
+        ZoneCommercialRepository $zoneCommercialRepository)
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->tokenGenerator = $tokenGenerator;
         $this->mailer = $mailer;
+        $this->userRepository = $userRepository;
+        $this->commercialRepository = $commercialRepository;
+        $this->zoneCommercialRepository = $zoneCommercialRepository;
     }
 
     public static function getSubscribedEvents()
@@ -75,12 +99,10 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         if($user instanceof Fournisseur){
             $user->setRoles([User::ROLE_FOURNISSEUR]);
             $this->mailer->sendConfirmationEmail($user);
-
         }
         elseif($user instanceof Acheteur){
             $user->setRoles([User::ROLE_ACHETEUR]);
             $this->mailer->sendConfirmationEmail($user);
-
         }
         elseif($user instanceof ZoneCommercial){
             $user->setRoles([User::ROLE_ZONE]);

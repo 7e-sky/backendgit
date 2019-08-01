@@ -19,6 +19,15 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * @param string[] $criteria format: array('user' => <user_id>, 'name' => <name>)
+     */
+    public function findByUniqueCriteria(array $criteria)
+    {
+        // would use findOneBy() but Symfony expects a Countable object
+        return $this->_em->getRepository(User::class)->findBy($criteria);
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

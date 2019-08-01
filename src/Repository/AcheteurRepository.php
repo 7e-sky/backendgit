@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Acheteur;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -17,6 +18,14 @@ class AcheteurRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Acheteur::class);
+    }
+    /**
+     * @param string[] $criteria format: array('user' => <user_id>, 'name' => <name>)
+     */
+    public function findByUniqueCriteria(array $criteria)
+    {
+        // would use findOneBy() but Symfony expects a Countable object
+        return $this->_em->getRepository(User::class)->findBy($criteria);
     }
 
     // /**

@@ -63,6 +63,20 @@ class Ville
      */
     private $pays;
 
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"get","put"})
+     * @Assert\NotNull()
+     */
+    protected $del;
+
+
+    public function __construct()
+    {
+        $this->del=false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -99,6 +113,25 @@ class Ville
     {
         $this->pays = $pays;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDel()
+    {
+        return $this->del;
+    }
+
+    /**
+     * @param mixed $del
+     */
+    public function setDel($del): void
+    {
+        $this->del = $del;
+    }
+
+
+
 
 
 
