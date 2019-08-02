@@ -11,6 +11,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use App\Controller\Avatar\UploadImageAction;
 
@@ -53,6 +54,7 @@ class Avatar
     /**
      * @Vich\UploadableField(mapping="avatar",fileNameProperty="url")
      * @Assert\NotNull()
+     * @Assert\File(maxSize="1M")
      */
     private $file;
 
@@ -86,6 +88,23 @@ class Avatar
         $this->file = $file;
     }
 
+    /**
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface  $context)
+    {
+        if (! in_array($this->file->getMimeType(), array(
+            'image/jpeg',
+            'image/gif',
+            'image/png',
+        ))) {
+            $context
+                ->buildViolation('Wrong file type (jpg,gif,png)')
+                ->atPath('fileName')
+                ->addViolation()
+            ;
+        }
+    }
 
 
 

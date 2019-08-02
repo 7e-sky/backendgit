@@ -9,11 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     collectionOperations={
+ *    collectionOperations={
  *          "post"={
  *              "access_control"="is_granted('ROLE_ADMIN')"
  *          },
@@ -30,95 +29,83 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *     },
  *     normalizationContext={
- *      "groups"={"get-from-pays"}
+ *      "groups"={"get-from-secteur"}
  *     }
  * )
- * @ORM\Entity(repositoryClass="App\Repository\PaysRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\SecteurRepository")
  * @UniqueEntity("name")
  */
-class Pays
+class Secteur
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * Groups({"get-from-pays","get"})
      * @ORM\Column(type="integer")
+     * @Groups({"get-from-secteur","get-from-sous-secteur","get"})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string",length=50)
-     * @Assert\NotBlank()
-     * @Groups({"get-from-pays","get-from-ville","get"})
-     * @Assert\Length(min=4,max=50)
+     * @ORM\Column(type="string", length=100)
+     * @Groups({"get-from-secteur","get-from-sous-secteur","get"})
      */
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Ville", mappedBy="secteur")
-     * @Groups({"get-from-pays"})
-     * @ApiSubresource()
+     * @ORM\Column(type="boolean")
+     * @Groups({"get-from-secteur"})
      */
-    private $villes;
-
+    private $del;
 
     /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"get","put"})
-     * @Assert\NotNull()
+     * @ORM\OneToMany(targetEntity="SousSecteur", mappedBy="secteur")
+     * @Groups({"get-from-secteur"})
+     * @ApiSubresource()
      */
-    protected $del;
+    private $sousSecteurs;
+
 
 
     public function __construct()
     {
-        $this->villes = new ArrayCollection();
+        $this->sousSecteurs = new ArrayCollection();
         $this->del=false;
     }
-
-
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
-    public function getVilles(): Collection
-    {
-        return $this->villes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDel()
+    public function getDel(): ?bool
     {
         return $this->del;
     }
 
-    /**
-     * @param mixed $del
-     */
-    public function setDel($del): void
+    public function setDel(bool $del): self
     {
         $this->del = $del;
+
+        return $this;
     }
+
+    public function getSousSecteurs(): Collection
+    {
+        return $this->sousSecteurs;
+    }
+
 
 
 

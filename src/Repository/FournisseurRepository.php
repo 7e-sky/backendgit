@@ -29,6 +29,7 @@ class FournisseurRepository extends ServiceEntityRepository
         return $this->_em->getRepository(User::class)->findBy($criteria);
     }
 
+
     // /**
     //  * @return Fournisseur[] Returns an array of Fournisseur objects
     //  */

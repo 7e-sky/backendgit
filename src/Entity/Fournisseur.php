@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -48,6 +51,23 @@ class Fournisseur extends User
     private $ville;
 
 
+    /**
+     * @ORM\ManyToMany(targetEntity="SousSecteur")
+     * @ORM\JoinTable()
+     * @Groups({"get","put"})
+     * @Assert\NotBlank()
+     * @ApiSubresource()
+     */
+    private $sousSecteurs;
+
+
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->sousSecteurs = new ArrayCollection();
+    }
+
 
     public function getPays()
     {
@@ -73,6 +93,22 @@ class Fournisseur extends User
     }
 
 
+    public function getSousSecteurs() : Collection
+    {
+        return $this->sousSecteurs;
+    }
+
+    public function addSousSecteur(SousSecteur $secteur){
+
+        $this->sousSecteurs->add($secteur);
+
+    }
+
+    public function removeSousSecteur(SousSecteur $secteur){
+
+        $this->sousSecteurs->removeElement($secteur);
+
+    }
 
 
 }

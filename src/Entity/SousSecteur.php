@@ -3,9 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -30,96 +27,89 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *     },
  *     normalizationContext={
- *      "groups"={"get-from-pays"}
+ *      "groups"={"get-from-sous-secteur"}
  *     }
  * )
- * @ORM\Entity(repositoryClass="App\Repository\PaysRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\SousSecteurRepository")
  * @UniqueEntity("name")
  */
-class Pays
+class SousSecteur
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * Groups({"get-from-pays","get"})
      * @ORM\Column(type="integer")
+     * @Groups({"get-from-sous-secteur","get-from-secteur","get"})
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string",length=50)
+     * @ORM\Column(type="string", length=150)
+     * @Groups({"get-from-sous-secteur","get-from-secteur","get"})
      * @Assert\NotBlank()
-     * @Groups({"get-from-pays","get-from-ville","get"})
-     * @Assert\Length(min=4,max=50)
+     *
      */
     private $name;
 
+
     /**
-     * @ORM\OneToMany(targetEntity="Ville", mappedBy="secteur")
-     * @Groups({"get-from-pays"})
-     * @ApiSubresource()
+     * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="sousSecteurs")
+     * @Groups({"get-from-sous-secteur","get"})
+     * @Assert\NotBlank()
      */
-    private $villes;
+    private $secteur;
 
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get","put"})
-     * @Assert\NotNull()
      */
-    protected $del;
+    private $del;
 
 
     public function __construct()
     {
-        $this->villes = new ArrayCollection();
         $this->del=false;
     }
-
-
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
-    public function getVilles(): Collection
-    {
-        return $this->villes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDel()
+    public function getDel(): ?bool
     {
         return $this->del;
     }
 
-    /**
-     * @param mixed $del
-     */
-    public function setDel($del): void
+    public function setDel(bool $del): self
     {
         $this->del = $del;
+
+        return $this;
     }
 
+
+    public function getSecteur()
+    {
+        return $this->secteur;
+    }
+
+    public function setSecteur($secteur): void
+    {
+        $this->secteur = $secteur;
+    }
 
 
 }
