@@ -55,7 +55,7 @@ class Pays
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="Ville", mappedBy="secteur")
+     * @ORM\OneToMany(targetEntity="Ville", mappedBy="pays")
      * @Groups({"get-from-pays"})
      * @ApiSubresource()
      */
