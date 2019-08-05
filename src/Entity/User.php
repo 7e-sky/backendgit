@@ -16,7 +16,10 @@ use App\Controller\ResetPasswordAction;
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
- *               "access_control"="is_granted('ROLE_ADMIN')"
+ *              "access_control"="is_granted('ROLE_ADMIN')",
+ *              "denormalization_context"={"groups"={"post"}},
+ *              "validation_groups"={"post"}
+ *
  *          },
  *          "get"={
  *               "access_control"="is_granted('ROLE_ADMIN')"
@@ -25,8 +28,9 @@ use App\Controller\ResetPasswordAction;
  *     },
  *     itemOperations={
  *          "put"={
- *               "access_control"="is_granted('ROLE_ADMIN')"
- *          },
+ *               "access_control"="is_granted('ROLE_ADMIN')",
+ *                   "denormalization_context"={"groups"={"put"}}
+ *              },
  *         "get"={
  *               "access_control"="is_granted('ROLE_ADMIN')"
  *          },
@@ -37,7 +41,8 @@ use App\Controller\ResetPasswordAction;
  *               "controller"=ResetPasswordAction::class,
  *               "denormalization_context"={
  *                  "groups"={"put-reset-password"}
- *              }
+ *                  },
+ *               "validation_groups"={"put-reset-password"}
  *
  *           }
  *     },
@@ -49,8 +54,8 @@ use App\Controller\ResetPasswordAction;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"Admin" = "User","Acheteur" = "Acheteur","Fournisseur"="Fournisseur","Commercial"="Commercial","ZoneCommercial"="ZoneCommercial"})
- * @UniqueEntity("email", repositoryMethod="findByUniqueCriteria")
- * @UniqueEntity("username", repositoryMethod="findByUniqueCriteria")
+ * @UniqueEntity("email", repositoryMethod="findByUniqueCriteria",groups={"post"})
+ * @UniqueEntity("username", repositoryMethod="findByUniqueCriteria",groups={"post"})
  */
 class User implements UserInterface,CreatedEntityInterface
 {
@@ -70,75 +75,82 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put"})
-     * @Assert\NotBlank()
+     * @Groups({"get","put","post"})
+     * @Assert\NotBlank(groups={"post"})
      * @Assert\Length(min=6,max=255)
      */
     protected $username;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put"})
-     * @Assert\NotBlank(message="ok bt")
+     * @Groups({"get","put","post"})
+     * @Assert\NotBlank(groups={"post"})
      * @Assert\Length(min=6,max=255)
      */
     protected $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put"})
-     * @Assert\NotBlank()
+     * @Groups({"get","put","post"})
+     * @Assert\NotBlank(groups={"post"})
      * @Assert\Length(min=6,max=255)
      */
     protected $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put"})
-     * @Assert\NotBlank()
+     * @Groups({"get","put","post"})
+     * @Assert\NotBlank(groups={"post"})
      * @Assert\Length(min=6,max=255)
      */
     protected $adresse1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get","put"})
+     * @Groups({"get","put","post"})
      * @Assert\Length(min=6,max=255)
      */
     protected $adresse2;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"get","put"})
-     * @Assert\NotBlank()
+     * @Groups({"get","put","post"})
+     * @Assert\NotBlank(groups={"post"})
      * @Assert\Length(min=4,max=255)
+     * @Assert\Type(
+     *     type="integer",
+     *     message="The value {{ value }} is not a valid {{ type }}."
+     * )
+     *
      */
     protected $codepostal;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put"})
-     * @Assert\NotBlank()
+     * @Groups({"get","put","post"})
+     * @Assert\NotBlank(groups={"post"})
      * @Assert\Length(min=10,max=255)
      */
     protected $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"post"})
      * @Assert\Email()
      * @Assert\Length(min=10,max=255)
-     * @Groups({"get-admin"})
+     * @Groups({"get-admin","post"})
      */
     protected $email;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"post"})
+     * @Groups({"post"})
      * @Assert\Length(min=6,max=255)
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
-     *     message="erreur pass"
+     *     message="erreur pass",
+     *     groups={"post"}
      * )
      */
     protected $password;
@@ -146,6 +158,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @Assert\NotBlank(groups={"post"})
+     * @Groups({"post"})
      * @Assert\Expression(
      *     "this.getPassword() === this.getConfirmpassword()",
      *     message="Passwords does not match",
@@ -164,7 +177,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get"})
+     * @Groups({"get","put-admin"})
      * @Assert\NotNull()
      */
     protected $isactif;
@@ -192,7 +205,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Avatar")
-     * @Groups("get")
+     * @Groups({"get","put","post"})
      */
     protected $avatar;
 

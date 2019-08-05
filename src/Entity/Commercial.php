@@ -16,7 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     collectionOperations={
  *      "post"={
- *          "access_control"="is_granted('ROLE_ZONE')"
+ *          "access_control"="is_granted('ROLE_ZONE')",
+ *          "denormalization_context"={"groups"={"post"}},
+ *          "validation_groups"="post"
  *          },
  *      "get"={
  *          "access_control"="is_granted('ROLE_ZONE')"
@@ -44,7 +46,7 @@ class Commercial extends User
     /**
      * @ORM\ManyToMany(targetEntity="Ville")
      * @ORM\JoinTable()
-     * @Groups({"get","put"})
+     * @Groups({"get","put","post"})
      * @Assert\NotBlank()
      * @ApiSubresource()
      */

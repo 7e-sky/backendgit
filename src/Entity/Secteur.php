@@ -9,12 +9,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
  *    collectionOperations={
  *          "post"={
- *              "access_control"="is_granted('ROLE_ADMIN')"
+ *              "access_control"="is_granted('ROLE_ADMIN')",
+ *
  *          },
  *          "get"={
  *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
@@ -47,6 +49,7 @@ class Secteur
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank()
      * @Groups({"get-from-secteur","get-from-sous-secteur","get"})
      */
     private $name;

@@ -9,7 +9,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     collectionOperations={"post"},
+ *     collectionOperations={
+ *          "post"={
+ *               "denormalization_context"={"groups"={"post"}},
+ *                 "validation_groups"="post"
+ *            }
+ *      },
  *     itemOperations={
  *      "get"={
  *          "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object == user)"
@@ -30,15 +35,15 @@ class Acheteur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays")
-     * @Groups({"get"})
-     * @Assert\NotBlank()
+     * @Groups({"get","post","put"})
+     * @Assert\NotBlank(groups={"post"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"get"})
-     * @Assert\NotBlank()
+     * @Groups({"get","post","put"})
+     * @Assert\NotBlank(groups={"post"})
      */
     private $ville;
 

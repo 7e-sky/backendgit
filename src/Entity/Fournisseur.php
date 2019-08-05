@@ -13,7 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     collectionOperations={
- *     "post",
+ *     "post"={
+ *
+ *              "denormalization_context"={"groups"={"post"}},
+ *              "validation_groups"="post"
+ *     },
  *     "get"
  *      },
  *     itemOperations={
@@ -38,15 +42,15 @@ class Fournisseur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays")
-     * @Groups({"get"})
-     * @Assert\NotBlank()
+     * @Groups({"get","put","post"})
+     * @Assert\NotBlank(groups={"post"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"get"})
-     * @Assert\NotBlank()
+     * @Groups({"get","put","post"})
+     * @Assert\NotBlank(groups={"post"})
      */
     private $ville;
 

@@ -56,6 +56,7 @@ class UserContextBuilder implements SerializerContextBuilderInterface
         // Class being serialized/deserialized
         $resourceClass= $context['resource_class'] ?? null ; //Default to null if not set
 
+        //Normalization
         if(
             (
                 User::class === $resourceClass ||
@@ -69,6 +70,23 @@ class UserContextBuilder implements SerializerContextBuilderInterface
             $this->authorizationChecker->isGranted(User::ROLE_ADMIN)
         ){
             $context['groups'][]="get-admin";
+        }
+
+
+        //Dénormalization
+        if(
+            (
+                User::class === $resourceClass ||
+                Acheteur::class === $resourceClass ||
+                Fournisseur::class === $resourceClass ||
+                Commercial::class === $resourceClass ||
+                ZoneCommercial::class === $resourceClass
+            ) &&
+            isset($context['groups']) &&
+            $normalization === false &&
+            $this->authorizationChecker->isGranted(User::ROLE_ADMIN)
+        ){
+            $context['groups'][]="put-admin";
         }
         return $context;
     }
