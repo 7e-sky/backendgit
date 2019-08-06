@@ -17,8 +17,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *      "post"={
  *          "access_control"="is_granted('ROLE_ZONE')",
- *          "denormalization_context"={"groups"={"post"}},
- *          "validation_groups"="post"
+ *              "denormalization_context"={"groups"={"post"}},
+ *                "validation_groups"={"postValidation"}
  *          },
  *      "get"={
  *          "access_control"="is_granted('ROLE_ZONE')"
@@ -29,8 +29,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "access_control"="is_granted('ROLE_ZONE') or  (is_granted('ROLE_COMMERCIAL') and object == user) or ( is_granted('IS_AUTHENTICATED_FULLY') and object == user->getParent1())"
  *          },
  *      "put"={
- *          "access_control"="is_granted('ROLE_ZONE')  or (is_granted('ROLE_COMMERCIAL') and object == user) ",
- *           "denormalization_context"={"groups"={"put"}}
+ *          "access_control"="is_granted('ROLE_ADMIN')  or (is_granted('ROLE_COMMERCIAL') and object == user) or (is_granted('ROLE_ZONE') and object.getParent1() == user) ",
+ *          "denormalization_context"={"groups"={"put"}},
+ *          "validation_groups"={"putValidation"}
  *          }
  *      },
  *     normalizationContext={

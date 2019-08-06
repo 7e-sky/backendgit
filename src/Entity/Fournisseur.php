@@ -14,9 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     collectionOperations={
  *     "post"={
- *
  *              "denormalization_context"={"groups"={"post"}},
- *              "validation_groups"="post"
+ *              "validation_groups"={"postValidation"}
  *     },
  *     "get"
  *      },
@@ -27,7 +26,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *     "put"={
  *          "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_FOURNISSEUR') and object == user)",
- *           "denormalization_context"={"groups"={"put"}}
+ *           "denormalization_context"={"groups"={"put"}},
+ *              "validation_groups"={"putValidation"}
  *          }
  *     },
  *     normalizationContext={
@@ -42,15 +42,15 @@ class Fournisseur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays")
-     * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"post"})
+     * @Groups({"get","post","put"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"post"})
+     * @Groups({"get","post","put"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $ville;
 
@@ -58,7 +58,7 @@ class Fournisseur extends User
     /**
      * @ORM\ManyToMany(targetEntity="SousSecteur")
      * @ORM\JoinTable()
-     * @Groups({"get","put"})
+     * @Groups({"get","put","post"})
      * @Assert\NotBlank()
      * @ApiSubresource()
      */

@@ -18,8 +18,7 @@ use App\Controller\ResetPasswordAction;
  *          "post"={
  *              "access_control"="is_granted('ROLE_ADMIN')",
  *              "denormalization_context"={"groups"={"post"}},
- *              "validation_groups"={"post"}
- *
+ *              "validation_groups"={"postValidation"}
  *          },
  *          "get"={
  *               "access_control"="is_granted('ROLE_ADMIN')"
@@ -29,7 +28,8 @@ use App\Controller\ResetPasswordAction;
  *     itemOperations={
  *          "put"={
  *               "access_control"="is_granted('ROLE_ADMIN')",
- *                   "denormalization_context"={"groups"={"put"}}
+ *                "denormalization_context"={"groups"={"put"}},
+ *                  "validation_groups"={"putValidation"}
  *              },
  *         "get"={
  *               "access_control"="is_granted('ROLE_ADMIN')"
@@ -39,23 +39,22 @@ use App\Controller\ResetPasswordAction;
  *               "method"="PUT",
  *               "path"="/users/{id}/reset-password",
  *               "controller"=ResetPasswordAction::class,
- *               "denormalization_context"={
- *                  "groups"={"put-reset-password"}
- *                  },
- *               "validation_groups"={"put-reset-password"}
- *
+ *               "denormalization_context"={"groups"={"putResetPassword"}},
+ *              "validation_groups"={"putResetPasswordValidation"}
  *           }
  *     },
+ *
  *     normalizationContext={
  *      "groups"={"get"}
- *     }
+ *     },
+ *     attributes={"validation_groups"={"putResetPasswordValidation", "putValidation","postValidation"}}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"Admin" = "User","Acheteur" = "Acheteur","Fournisseur"="Fournisseur","Commercial"="Commercial","ZoneCommercial"="ZoneCommercial"})
- * @UniqueEntity("email", repositoryMethod="findByUniqueCriteria",groups={"post"})
- * @UniqueEntity("username", repositoryMethod="findByUniqueCriteria",groups={"post"})
+ * @UniqueEntity("email", repositoryMethod="findByUniqueCriteria",groups={"postValidation","putValidation"})
+ * @UniqueEntity("username", repositoryMethod="findByUniqueCriteria",groups={"postValidation","putValidation"})
  */
 class User implements UserInterface,CreatedEntityInterface
 {
@@ -76,51 +75,47 @@ class User implements UserInterface,CreatedEntityInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"post"})
-     * @Assert\Length(min=6,max=255)
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"post"})
-     * @Assert\Length(min=6,max=255)
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"post"})
-     * @Assert\Length(min=6,max=255)
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"post"})
-     * @Assert\Length(min=6,max=255)
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $adresse1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"get","put","post"})
-     * @Assert\Length(min=6,max=255)
+     * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $adresse2;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"post"})
-     * @Assert\Length(min=4,max=255)
-     * @Assert\Type(
-     *     type="integer",
-     *     message="The value {{ value }} is not a valid {{ type }}."
-     * )
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\Length(min=4,max=255,groups={"postValidation","putValidation"})
      *
      */
     protected $codepostal;
@@ -128,41 +123,41 @@ class User implements UserInterface,CreatedEntityInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"post"})
-     * @Assert\Length(min=10,max=255)
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\Length(min=10,max=255,groups={"postValidation","putValidation"})
      */
     protected $phone;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"post"})
-     * @Assert\Email()
-     * @Assert\Length(min=10,max=255)
+     * @Assert\NotBlank(groups={"postValidation"})
+     * @Assert\Email(groups={"postValidation"})
+     * @Assert\Length(min=10,max=255,groups={"postValidation"})
      * @Groups({"get-admin","post"})
      */
     protected $email;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"post"})
+     * @Assert\NotBlank(groups={"postValidation"})
      * @Groups({"post"})
-     * @Assert\Length(min=6,max=255)
+     * @Assert\Length(min=6,max=255,groups={"postValidation"})
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
      *     message="erreur pass",
-     *     groups={"post"}
+     *     groups={"postValidation"}
      * )
      */
     protected $password;
 
 
     /**
-     * @Assert\NotBlank(groups={"post"})
+     * @Assert\NotBlank(groups={"post","postValidation"})
      * @Groups({"post"})
      * @Assert\Expression(
      *     "this.getPassword() === this.getConfirmpassword()",
      *     message="Passwords does not match",
-     *     groups={"post"}
+     *     groups={"postValidation"}
      * )
      */
     protected $confirmpassword;
@@ -211,32 +206,33 @@ class User implements UserInterface,CreatedEntityInterface
 
 
     /**
-     * @Assert\NotBlank(groups={"put-reset-password"})
-     * @Groups({"put-reset-password"})
+     * @Assert\NotBlank()
+     * @Groups({"putResetPassword"})
      * @Assert\Length(min=6,max=255)
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
-     *     message="erreur pass",
-     *     groups={"put-reset-password"}
+     *     message="erreur pass"
+     *
      * )
      */
     protected $newPassword;
 
     /**
-     * @Assert\NotBlank(groups={"put-reset-password"})
-     * @Groups({"put-reset-password"})
+     * @Assert\NotBlank()
+     * @Groups({"putResetPassword"})
      * @Assert\Expression(
      *     "this.getNewPassword() === this.getNewConfirmpassword()",
-     *     message="Passwords does not match",
-     *     groups={"put-reset-password"}
+     *     message="Passwords does not match"
+     *
+     *
      * )
      */
     protected $newConfirmpassword;
 
     /**
-     * @Assert\NotBlank(groups={"put-reset-password"})
-     * @Groups({"put-reset-password"})
-     * @UserPassword(groups={"put-reset-password"})
+     * @Assert\NotBlank()
+     * @Groups({"putResetPassword"})
+     * @UserPassword()
      */
     protected $oldPassword;
 

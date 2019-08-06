@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *          "post"={
  *               "denormalization_context"={"groups"={"post"}},
- *                 "validation_groups"="post"
+ *                "validation_groups"={"postValidation"}
  *            }
  *      },
  *     itemOperations={
@@ -21,7 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *      "put"={
  *          "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object == user)",
- *           "denormalization_context"={"groups"={"put"}}
+ *           "denormalization_context"={"groups"={"put"}},
+ *             "validation_groups"={"putValidation"}
  *          }
  *      },
  *     normalizationContext={
@@ -36,14 +37,14 @@ class Acheteur extends User
     /**
      * @ORM\ManyToOne(targetEntity="Pays")
      * @Groups({"get","post","put"})
-     * @Assert\NotBlank(groups={"post"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
      * @Groups({"get","post","put"})
-     * @Assert\NotBlank(groups={"post"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $ville;
 

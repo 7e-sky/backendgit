@@ -12,7 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
- *              "access_control"="is_granted('ROLE_ADMIN')"
+ *              "denormalization_context"={"groups"={"post"}},
+ *              "validation_groups"={"postValid"}
  *          },
  *          "get"={
  *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
@@ -23,7 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
  *          },
  *          "put"={
- *              "access_control"="is_granted('ROLE_ADMIN')"
+ *             "denormalization_context"={"groups"={"put"}},
+ *              "validation_groups"={"putValid"}
  *          }
  *     },
  *     normalizationContext={
@@ -45,8 +47,8 @@ class SousSecteur
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Groups({"get-from-sous-secteur","get-from-secteur","get"})
-     * @Assert\NotBlank()
+     * @Groups({"get-from-sous-secteur","get-from-secteur","get","put","post"})
+     * @Assert\NotBlank(groups={"postValid","putValid"})
      *
      */
     private $name;
@@ -54,8 +56,8 @@ class SousSecteur
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="sousSecteurs")
-     * @Groups({"get-from-sous-secteur","get"})
-     * @Assert\NotBlank()
+     * @Groups({"get-from-sous-secteur","get","post"})
+     * @Assert\NotBlank(groups={"postValid"})
      */
     private $secteur;
 

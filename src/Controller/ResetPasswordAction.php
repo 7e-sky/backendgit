@@ -48,10 +48,11 @@ class ResetPasswordAction
 
     public function __invoke(User $data)
     {
-        // $reset = new ResetPasswordAction();
+        // $reset = new ResetPassword();
         // $reset();
-
         $this->validator->validate($data);
+
+
         $data->setPassword($this->passwordEncoder->encodePassword($data,$data->getNewPassword()));
 
         // After password change, old tokens are still valid

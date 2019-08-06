@@ -12,14 +12,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
- *              "access_control"="is_granted('ROLE_ACHETEUR')"
+ *              "access_control"="is_granted('ROLE_ACHETEUR')",
+ *              "denormalization_context"={"groups"={"post_demande"}},
+ *              "validation_groups"={"post_demande"}
  *          },
  *          "get"
  *     },
  *     itemOperations={
  *          "get",
  *          "put"={
- *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object == user)"
+ *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"
  *          }
  *     },
  *     normalizationContext={
@@ -40,8 +42,8 @@ class DemandeAchat implements CreatedEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur")
-     * @Groups({"get-from-demande"})
-     * @Assert\NotBlank()
+     * @Groups({"get-from-demande","post_demande"})
+     * @Assert\NotBlank(groups={"post_demande"})
      */
     private $acheteur;
 
@@ -54,30 +56,30 @@ class DemandeAchat implements CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get-from-demande"})
-     * @Assert\NotBlank()
+     * @Groups({"get-from-demande","post_demande"})
+     * @Assert\NotBlank(groups={"post_demande"})
      */
     private $reference;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     * @Groups({"get-from-demande"})
+     * @Assert\NotBlank(groups={"post_demande"})
+     * @Groups({"get-from-demande","post_demande"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"post_demande"})
      * @Assert\DateTime()
-     * @Groups({"get-from-demande"})
+     * @Groups({"get-from-demande","post_demande"})
      */
     private $dateExpiration;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get-from-demande"})
-     * @Assert\NotBlank()
+     * @Groups({"get-from-demande","post_demande"})
+     * @Assert\NotBlank(groups={"post_demande"})
      */
     private $isPublic;
 
@@ -104,6 +106,7 @@ class DemandeAchat implements CreatedEntityInterface
 
     /**
      * @ORM\Column(type="boolean")
+     *
      */
     private $isAnonyme;
 
@@ -121,6 +124,9 @@ class DemandeAchat implements CreatedEntityInterface
     public function __construct()
     {
         $this->statut=false;
+        $this->isAnonyme=false;
+        $this->isAlerted=false;
+        $this->isPublic=false;
     }
 
     public function getId(): ?int
