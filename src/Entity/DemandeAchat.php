@@ -2,9 +2,15 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Interfaces\CreatedEntityInterface;
+use App\Interfaces\SetAcheteurInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,89 +19,111 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *          "post"={
  *              "access_control"="is_granted('ROLE_ACHETEUR')",
- *              "denormalization_context"={"groups"={"post_demande"}},
- *              "validation_groups"={"post_demande"}
+ *              "denormalization_context"={"groups"={"post"}},
+ *              "validation_groups"={"postValidation"}
  *          },
- *          "get"
+ *          "get"={
+ *              "access_control"="is_granted('ROLE_ADMIN')"
+ *           }
  *     },
  *     itemOperations={
- *          "get",
+ *          "get"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"},
  *          "put"={
- *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"
- *          }
+ *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
+ *              "denormalization_context"={"groups"={"put"}},
+ *              "validation_groups"={"putValidation"}
+ *          },
+ *          "delete"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"}
  *     },
  *     normalizationContext={
  *      "groups"={"get-from-demande"}
+ *     },
+ *     attributes={"order"={"created":"desc"}},
+ *     subresourceOperations={
+ *
+ *          "api_acheteurs_demandes_get_subresource "={
+ *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') )",
+ *              "method"="GET",
+ *              "normalization_context"={"groups"={"get-from-acheteur_demandes"}}
+ *
+ *          }
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\DemandeAchatRepository")
+ * @UniqueEntity("reference", groups={"postValidation","putValidation"})
  */
-class DemandeAchat implements CreatedEntityInterface
+class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"get-from-demande"})
+     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Acheteur")
-     * @Groups({"get-from-demande","post_demande"})
-     * @Assert\NotBlank(groups={"post_demande"})
+     * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
+     * @Groups({"get-from-demande"})
      */
     private $acheteur;
 
     /**
      * @ORM\Column(type="smallint",length=1)
-     * @Groups({"get-from-demande"})
+     * @Groups({"get-from-demande","put-admin","get-from-acheteur_demandes"})
      *
      */
     private $statut;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get-from-demande","post_demande"})
-     * @Assert\NotBlank(groups={"post_demande"})
+     * @Groups({"get-from-demande","post","get-from-acheteur_demandes"})
+     * @Assert\NotBlank(groups={"postValidation"})
      */
     private $reference;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank(groups={"post_demande"})
-     * @Groups({"get-from-demande","post_demande"})
+     * @Assert\NotBlank(groups={"postValidation"})
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\NotBlank(groups={"post_demande"})
-     * @Assert\DateTime()
-     * @Groups({"get-from-demande","post_demande"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\DateTime(groups={"postValidation","putValidation"})
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
      */
     private $dateExpiration;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get-from-demande","post_demande"})
-     * @Assert\NotBlank(groups={"post_demande"})
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
      */
     private $isPublic;
 
     /**
-     * @ORM\Column(type="integer")
-     *
+     * @ORM\Column(type="integer",nullable=true)
+     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
      */
     private $nbrVisite;
 
     /**
+     * @ORM\Column(type="integer",nullable=true)
+     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
+     */
+    private $nbrShare;
+
+    /**
      * @ORM\Column(type="datetime")
+     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
      */
     private $created;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
      */
     private $dateModification;
 
@@ -105,20 +133,50 @@ class DemandeAchat implements CreatedEntityInterface
     private $isAlerted;
 
     /**
+     * @Groups({"put-admin"})
+     */
+    public $sendEmail;
+
+    /**
      * @ORM\Column(type="boolean")
-     *
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
      */
     private $isAnonyme;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text",nullable=true)
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
      */
     private $descriptionEn;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text",nullable=true)
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
      */
     private $descriptionEs;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Attachement")
+     * @ORM\JoinTable()
+     * @Groups({"put","post"})
+     * @Assert\NotBlank()
+     * @ApiSubresource()
+     */
+    private $attachements;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SousSecteur")
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     */
+    private $sousSecteur;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="DiffusionDemande", mappedBy="demande")
+     * @ApiSubresource()
+     */
+    private $diffusionsdemandes;
 
 
     public function __construct()
@@ -127,6 +185,12 @@ class DemandeAchat implements CreatedEntityInterface
         $this->isAnonyme=false;
         $this->isAlerted=false;
         $this->isPublic=false;
+        $this->nbrVisite=0;
+        $this->nbrShare=0;
+        $this->attachements = new ArrayCollection();
+        $this->diffusionsdemandes = new ArrayCollection();
+        $this->dateModification = new \DateTime();
+
     }
 
     public function getId(): ?int
@@ -141,9 +205,10 @@ class DemandeAchat implements CreatedEntityInterface
     }
 
 
-    public function setAcheteur($acheteur): void
+    public function setAcheteur(Acheteur $acheteur): SetAcheteurInterface
     {
         $this->acheteur = $acheteur;
+        return $this;
     }
 
 
@@ -291,4 +356,61 @@ class DemandeAchat implements CreatedEntityInterface
 
         return $this;
     }
+
+    public function getAttachements() : Collection
+    {
+        return $this->attachements;
+    }
+
+    public function addAttachement(Attachement $attachement){
+
+        $this->attachements->add($attachement);
+
+    }
+
+    public function removeAttachement(Attachement $attachement){
+
+        $this->attachements->removeElement($attachement);
+
+    }
+
+
+    public function getSousSecteur()
+    {
+        return $this->sousSecteur;
+    }
+
+
+    public function setSousSecteur($sousSecteur): void
+    {
+        $this->sousSecteur = $sousSecteur;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbrShare()
+    {
+        return $this->nbrShare;
+    }
+
+    /**
+     * @param mixed $nbrShare
+     */
+    public function setNbrShare($nbrShare): void
+    {
+        $this->nbrShare = $nbrShare;
+    }
+
+
+    public function getDiffusionsdemandes() : Collection
+    {
+        return $this->diffusionsdemandes;
+    }
+
+
+
+
+
+
 }

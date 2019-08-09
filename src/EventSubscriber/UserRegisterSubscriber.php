@@ -106,12 +106,15 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         }
         elseif($user instanceof ZoneCommercial){
             $user->setRoles([User::ROLE_ZONE]);
+            $user->setIsActif(true);
         }
         elseif($user instanceof Commercial){
             $user->setRoles([User::ROLE_COMMERCIAL]);
+            $user->setIsActif(true);
         }
         else{
             $user->setRoles([User::ROLE_ADMIN]);
+            $user->setIsActif(true);
         }
 
     }

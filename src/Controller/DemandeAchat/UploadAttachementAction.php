@@ -2,22 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: youne
- * Date: 31/07/2019
- * Time: 10:28
+ * Date: 07/08/2019
+ * Time: 10:59
  */
 
-namespace App\Controller\Avatar;
+namespace App\Controller\DemandeAchat;
 
 
 use ApiPlatform\Core\Validator\Exception\ValidationException;
 use ApiPlatform\Core\Validator\ValidatorInterface;
-use App\Entity\Avatar;
-use App\Form\FileUploadType;
+use App\Entity\Attachement;
+use App\Form\AttachementUploadType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class UploadImageAction
+class UploadAttachementAction
 {
     /**
      * @var FormFactoryInterface
@@ -45,20 +45,20 @@ class UploadImageAction
         // TODO: Implement __invoke() method.
 
         // Create a new Avatar instance
-        $avatar = new Avatar();
+        $attachement = new Attachement();
 
         // Validate the form
-        $form = $this->formFactory->create(FileUploadType::class,$avatar);
+        $form = $this->formFactory->create(AttachementUploadType::class,$attachement);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            //Persist the new Image entity
-            $this->entityManager->persist($avatar);
+            //Persist the new attachement entity
+            $this->entityManager->persist($attachement);
             $this->entityManager->flush();
 
-            $avatar->setFile(null);
+            $attachement->setFile(null);
 
-            return $avatar;
+            return $attachement;
         }
 
 
@@ -68,7 +68,6 @@ class UploadImageAction
 
 
         // Throw an validation exception, tha means something went wrong during
-        throw new ValidationException($this->validator->validate($avatar));
+        throw new ValidationException($this->validator->validate($attachement));
     }
-
 }

@@ -12,6 +12,7 @@ use ApiPlatform\Core\Exception\RuntimeException;
 use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
 use App\Entity\Acheteur;
 use App\Entity\Commercial;
+use App\Entity\DemandeAchat;
 use App\Entity\Fournisseur;
 use App\Entity\User;
 use App\Entity\ZoneCommercial;
@@ -80,7 +81,8 @@ class UserContextBuilder implements SerializerContextBuilderInterface
                 Acheteur::class === $resourceClass ||
                 Fournisseur::class === $resourceClass ||
                 Commercial::class === $resourceClass ||
-                ZoneCommercial::class === $resourceClass
+                ZoneCommercial::class === $resourceClass ||
+                DemandeAchat::class === $resourceClass
             ) &&
             isset($context['groups']) &&
             $normalization === false &&

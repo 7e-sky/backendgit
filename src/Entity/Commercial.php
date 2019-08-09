@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
+ *     attributes={"order"={"created":"desc"}},
  *     collectionOperations={
  *      "post"={
  *          "access_control"="is_granted('ROLE_ZONE')",
@@ -21,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                "validation_groups"={"postValidation"}
  *          },
  *      "get"={
- *          "access_control"="is_granted('ROLE_ZONE')"
+ *          "access_control"="is_granted('ROLE_ADMIN')"
  *          }
  * },
  *     itemOperations={

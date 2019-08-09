@@ -12,24 +12,31 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
+ *              "normalization_context"={"groups"={"get-from-sous-secteur"}},
  *              "denormalization_context"={"groups"={"post"}},
- *              "validation_groups"={"postValid"}
+ *              "validation_groups"={"postValidation"}
  *          },
  *          "get"={
- *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
+ *              "normalization_context"={"groups"={"get-from-sous-secteur"}}
  *          }
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
- *          },
+ *               "normalization_context"={"groups"={"get-from-sous-secteur"}}},
  *          "put"={
- *             "denormalization_context"={"groups"={"put"}},
- *              "validation_groups"={"putValid"}
+ *              "denormalization_context"={"groups"={"put"}},
+ *              "validation_groups"={"putValidation"},
+ *              "normalization_context"={"groups"={"get-from-sous-secteur"}}
  *          }
  *     },
- *     normalizationContext={
- *      "groups"={"get-from-sous-secteur"}
+ *      attributes={
+ *     "force_eager"=false,
+ *     "normalization_context"={"groups"={"get-from-sous-secteur"},"enable_max_depth"=true},
+ *     },
+ *     subresourceOperations={
+ *          "api_secteurs_sous_secteurs_get_subresource"={
+ *               "normalization_context"={"groups"={"get"}}
+ *          }
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SousSecteurRepository")
@@ -41,14 +48,15 @@ class SousSecteur
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get-from-sous-secteur","get-from-secteur","get"})
+     * @Groups({"get-from-sous-secteur","get-from-secteur","get","get-from-demande"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Groups({"get-from-sous-secteur","get-from-secteur","get","put","post"})
-     * @Assert\NotBlank(groups={"postValid","putValid"})
+     * @Groups({"get-from-sous-secteur","get-from-secteur","get","put","post","get-from-demande"})
+     * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
      */
     private $name;
@@ -56,8 +64,8 @@ class SousSecteur
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="sousSecteurs")
-     * @Groups({"get-from-sous-secteur","get","post"})
-     * @Assert\NotBlank(groups={"postValid"})
+     * @Groups({"get-from-sous-secteur","post","put"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $secteur;
 

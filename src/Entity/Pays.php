@@ -15,18 +15,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
- *              "access_control"="is_granted('ROLE_ADMIN')"
+ *              "access_control"="is_granted('ROLE_ADMIN')",
+ *              "denormalization_context"={"groups"={"post"}},
+ *              "validation_groups"={"postValidation"}
  *          },
- *          "get"={
- *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
- *          }
+ *          "get"
  *     },
  *     itemOperations={
- *          "get"={
- *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
- *          },
+ *          "get",
  *          "put"={
- *              "access_control"="is_granted('ROLE_ADMIN')"
+ *              "access_control"="is_granted('ROLE_ADMIN')" ,
+ *              "denormalization_context"={"groups"={"put"}},
+ *              "validation_groups"={"putValidation"}
  *          }
  *     },
  *     normalizationContext={
@@ -48,9 +48,9 @@ class Pays
 
     /**
      * @ORM\Column(type="string",length=50)
-     * @Assert\NotBlank()
-     * @Groups({"get-from-pays","get-from-ville","get"})
-     * @Assert\Length(min=4,max=50)
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Groups({"get-from-pays","get-from-ville","get","post","put"})
+     * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      */
     private $name;
 

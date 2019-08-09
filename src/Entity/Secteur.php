@@ -15,24 +15,27 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *    collectionOperations={
  *          "post"={
- *              "access_control"="is_granted('ROLE_ADMIN')"
+ *              "access_control"="is_granted('ROLE_ADMIN')",
+ *              "denormalization_context"={"groups"={"post"}},
+ *              "validation_groups"={"postValidation"},
+ *
  *
  *          },
- *          "get"={
- *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
- *          }
+ *          "get"
  *     },
  *     itemOperations={
- *          "get"={
- *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
- *          },
+ *          "get",
  *          "put"={
- *              "access_control"="is_granted('ROLE_ADMIN')"
+ *              "access_control"="is_granted('ROLE_ADMIN')" ,
+ *              "denormalization_context"={"groups"={"put"}},
+ *              "validation_groups"={"putValidation"}
  *          }
  *     },
- *     normalizationContext={
- *      "groups"={"get-from-secteur"}
+ *     attributes={
+ *     "force_eager"=false,
+ *     "normalization_context"={"groups"={"get-from-secteur"},"enable_max_depth"=true},
  *     }
+ *
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SecteurRepository")
  * @UniqueEntity("name")
@@ -43,26 +46,27 @@ class Secteur
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get-from-secteur","get-from-sous-secteur","get"})
+     * @Groups({"get-from-secteur","get-from-sous-secteur","get","get-from-demande"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Assert\NotBlank()
-     * @Groups({"get-from-secteur","get-from-sous-secteur","get"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
+     * @Groups({"get-from-secteur","get-from-sous-secteur","get","post","put","get-from-demande"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get-from-secteur"})
+     * @Groups({"get-from-secteur","put"})
      */
     private $del;
 
     /**
      * @ORM\OneToMany(targetEntity="SousSecteur", mappedBy="secteur")
-     * @Groups({"get-from-secteur"})
+     * @Groups({"get-from-secteur","post","put"})
      * @ApiSubresource()
      */
     private $sousSecteurs;

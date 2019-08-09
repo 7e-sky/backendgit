@@ -14,6 +14,7 @@ use App\Controller\ResetPasswordAction;
 
 /**
  * @ApiResource(
+ *     attributes={"order"={"created":"desc"}},
  *     collectionOperations={
  *          "post"={
  *              "access_control"="is_granted('ROLE_ADMIN')",
@@ -47,7 +48,11 @@ use App\Controller\ResetPasswordAction;
  *     normalizationContext={
  *      "groups"={"get"}
  *     },
- *     attributes={"validation_groups"={"putResetPasswordValidation", "putValidation","postValidation"}}
+ *     attributes={
+ *          "validation_groups"={"putResetPasswordValidation", "putValidation","postValidation"},
+ *          "order"={"created":"desc"}
+ *
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\InheritanceType("JOINED")
@@ -68,7 +73,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get"})
+     * @Groups({"get","get-from-demande"})
      */
     protected $id;
 
@@ -82,7 +87,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put","post"})
+     * @Groups({"get","put","post","get-from-demande"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -91,7 +96,7 @@ class User implements UserInterface,CreatedEntityInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation","get-from-demande"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $lastName;
