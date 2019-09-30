@@ -31,8 +31,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *      "put"={
  *          "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ZONE') and object == user)",
- *           "denormalization_context"={"groups"={"put"}},
- *             "validation_groups"={"putValidation"}
+ *          "denormalization_context"={"groups"={"put"}},
+ *          "validation_groups"={"putValidation"}
  *          }
  *      },
  *     normalizationContext={
