@@ -27,7 +27,8 @@ class AuthenticationSuccessListener{
             'data'=>[
                 'displayName'=>$user->getFirstName().' '.$user->getLastName(),
                 'photoURL'=> $user->getAvatar() ? $user->getAvatar()->getUrl() : '',
-                'email'=>$user->getEmail()
+                'email'=>$user->getEmail(),
+                'redirect'=>$user->getRedirect(),
             ]
         ];
 

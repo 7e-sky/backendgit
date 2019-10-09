@@ -59,10 +59,20 @@ class ResetPasswordAction
         $data->setPasswordChangeDate(time());
 
         $this->entityManager->flush();
-
         $token = $this->tokenManager->create($data);
 
-        return new JsonResponse(["token"=>$token]);
+        $dataa['token']=$token;
+        $dataa['user']=[
+            'id'=>$data->getId(),
+            'role'=>$data->getRoles()[0],
+            'data'=>[
+                'displayName'=>$data->getFirstName().' '.$data->getLastName(),
+                'photoURL'=> $data->getAvatar() ? $data->getAvatar()->getUrl() : '',
+                'email'=>$data->getEmail()
+            ]
+        ];
+
+        return new JsonResponse($dataa);
 
         // Validator is only called after we return the data from this action!
         // Only hear it checks for user currant password, but we've just modified it!

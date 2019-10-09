@@ -18,6 +18,15 @@ class PaysRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Pays::class);
     }
+    /**
+     * @param string[] $criteria format: array('user' => <user_id>, 'name' => <name>)
+     */
+    public function findByUniqueCriteria(array $criteria)
+    {
+        // would use findOneBy() but Symfony expects a Countable object
+        return $this->_em->getRepository(Pays::class)->findBy($criteria);
+    }
+
 
     // /**
     //  * @return Pays[] Returns an array of Pays objects

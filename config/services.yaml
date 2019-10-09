@@ -38,4 +38,10 @@ services:
             class: App\EventListener\AuthenticationSuccessListener
             tags:
                 - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
-
+    App\Services\UserService:
+         class: App\Services\UserService
+         arguments: ['@security.token_storage']
+    App\Doctrine\WithoutDelExtension:
+            tags:
+                - { name: api_platform.doctrine.orm.query_extension.collection }
+                - { name: api_platform.doctrine.orm.query_extension.item }

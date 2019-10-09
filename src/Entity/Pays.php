@@ -34,12 +34,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\PaysRepository")
- * @UniqueEntity("name")
+ * @UniqueEntity("name", repositoryMethod="findByUniqueCriteria",groups={"postValidation","putValidation"})
  */
 class Pays
 {
     /**
      * @ORM\Id()
+     * @Groups({"get-from-pays"})
      * @ORM\GeneratedValue()
      * Groups({"get-from-pays","get"})
      * @ORM\Column(type="integer")
@@ -64,7 +65,7 @@ class Pays
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get","put"})
+     * @Groups({"get-from-pays","get","put"})
      * @Assert\NotNull()
      */
     protected $del;

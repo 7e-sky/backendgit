@@ -98,22 +98,32 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         //Set Role
         if($user instanceof Fournisseur){
             $user->setRoles([User::ROLE_FOURNISSEUR]);
+            $user->setRedirect("/dashboard_fr");
             $this->mailer->sendConfirmationEmail($user);
         }
         elseif($user instanceof Acheteur){
             $user->setRoles([User::ROLE_ACHETEUR]);
+            $user->setRedirect("/dashboard_ac");
+
             $this->mailer->sendConfirmationEmail($user);
         }
         elseif($user instanceof ZoneCommercial){
             $user->setRoles([User::ROLE_ZONE]);
+            $user->setRedirect("/dashboard_zc");
+
             $user->setIsActif(true);
         }
         elseif($user instanceof Commercial){
+
             $user->setRoles([User::ROLE_COMMERCIAL]);
+            $user->setRedirect("/dashboard_cm");
+
             $user->setIsActif(true);
         }
         else{
             $user->setRoles([User::ROLE_ADMIN]);
+            $user->setRedirect("/dashboard");
+
             $user->setIsActif(true);
         }
 

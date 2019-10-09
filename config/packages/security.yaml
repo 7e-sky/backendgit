@@ -31,6 +31,10 @@ security:
 #                    - lexik_jwt_authentication.jwt_token_authenticator
                     - App\Security\TokenAuthenticator
             user_checker: App\Security\UserEnableChecker
+        currentUser:
+            pattern:  ^/api/currentUser
+            stateless: true
+            anonymous: true
 
 
     # Easy way to control access for large sections of your site

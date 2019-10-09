@@ -35,6 +35,7 @@ use App\Controller\ResetPasswordAction;
  *         "get"={
  *               "access_control"="is_granted('ROLE_ADMIN')"
  *          },
+ *
  *          "put-reset-password"={
  *               "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object === user",
  *               "method"="PUT",
@@ -253,6 +254,12 @@ class User implements UserInterface,CreatedEntityInterface
      */
     protected  $confirmationToken;
 
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"get-admin","get-owner"})
+     */
+    protected $redirect;
 
     public function __construct()
     {
@@ -546,6 +553,24 @@ class User implements UserInterface,CreatedEntityInterface
     {
         $this->confirmationToken = $confirmationToken;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRedirect()
+    {
+        return $this->redirect;
+    }
+
+    /**
+     * @param mixed $redirect
+     */
+    public function setRedirect($redirect): void
+    {
+        $this->redirect = $redirect;
+    }
+
+
 
 
 
