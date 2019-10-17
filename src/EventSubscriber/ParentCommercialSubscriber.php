@@ -46,7 +46,7 @@ class ParentCommercialSubscriber implements EventSubscriberInterface
          */
         $parent = $this->tokenStorage->getToken()->getUser();
 
-        if((!$user instanceof  ZoneCommercial && !$user instanceof  Commercial) || $method !== Request::METHOD_POST ){
+        if(!$user instanceof  Commercial || $method !== Request::METHOD_POST ){
             return;
         }
 

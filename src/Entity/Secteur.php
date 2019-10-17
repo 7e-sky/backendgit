@@ -38,7 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SecteurRepository")
- * @UniqueEntity("name")
+ * @UniqueEntity("name", repositoryMethod="findByUniqueCriteria",groups={"postValidation","putValidation"})
  */
 class Secteur
 {

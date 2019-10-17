@@ -11,6 +11,7 @@ namespace App\Serializer;
 use ApiPlatform\Core\Exception\RuntimeException;
 use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
 use App\Entity\Acheteur;
+use App\Entity\Admin;
 use App\Entity\Commercial;
 use App\Entity\DemandeAchat;
 use App\Entity\Fournisseur;
@@ -60,7 +61,7 @@ class UserContextBuilder implements SerializerContextBuilderInterface
         //Normalization
         if(
             (
-                User::class === $resourceClass ||
+                Admin::class === $resourceClass ||
                 Acheteur::class === $resourceClass ||
                 Fournisseur::class === $resourceClass ||
                 Commercial::class === $resourceClass ||
@@ -77,7 +78,7 @@ class UserContextBuilder implements SerializerContextBuilderInterface
         //Dénormalization
         if(
             (
-                User::class === $resourceClass ||
+                Admin::class === $resourceClass ||
                 Acheteur::class === $resourceClass ||
                 Fournisseur::class === $resourceClass ||
                 Commercial::class === $resourceClass ||

@@ -14,28 +14,11 @@ use App\Controller\ResetPasswordAction;
 
 /**
  * @ApiResource(
- *     attributes={"order"={"created":"desc"}},
  *     collectionOperations={
- *          "post"={
- *              "access_control"="is_granted('ROLE_ADMIN')",
- *              "denormalization_context"={"groups"={"post"}},
- *              "validation_groups"={"postValidation"}
- *          },
- *          "get"={
- *               "access_control"="is_granted('ROLE_ADMIN')"
- *          }
  *
  *     },
  *     itemOperations={
- *          "put"={
- *               "access_control"="is_granted('ROLE_ADMIN')",
- *                "denormalization_context"={"groups"={"put"}},
- *                  "validation_groups"={"putValidation"}
- *              },
- *         "get"={
- *               "access_control"="is_granted('ROLE_ADMIN')"
- *          },
- *
+
  *          "put-reset-password"={
  *               "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object === user",
  *               "method"="PUT",
@@ -49,16 +32,12 @@ use App\Controller\ResetPasswordAction;
  *     normalizationContext={
  *      "groups"={"get"}
  *     },
- *     attributes={
- *          "validation_groups"={"putResetPasswordValidation", "putValidation","postValidation"},
- *          "order"={"created":"desc"}
- *
- *     }
+
  * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"Admin" = "User","Acheteur" = "Acheteur","Fournisseur"="Fournisseur","Commercial"="Commercial","ZoneCommercial"="ZoneCommercial"})
+ * @ORM\DiscriminatorMap({"User" = "User","Admin" = "Admin","Acheteur" = "Acheteur","Fournisseur"="Fournisseur","Commercial"="Commercial","ZoneCommercial"="ZoneCommercial"})
  * @UniqueEntity("email", repositoryMethod="findByUniqueCriteria",groups={"postValidation","putValidation"})
  * @UniqueEntity("username", repositoryMethod="findByUniqueCriteria",groups={"postValidation","putValidation"})
  */
@@ -139,7 +118,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @Assert\NotBlank(groups={"postValidation"})
      * @Assert\Email(groups={"postValidation"})
      * @Assert\Length(min=10,max=255,groups={"postValidation"})
-     * @Groups({"get-admin","post"})
+     * @Groups({"get-admin","post","put-admin"})
      */
     protected $email;
 

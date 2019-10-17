@@ -72,6 +72,7 @@ class SousSecteur
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"get-from-sous-secteur","put"})
      */
     private $del;
 

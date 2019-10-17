@@ -2,21 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Secteur;
+use App\Entity\Admin;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Secteur|null find($id, $lockMode = null, $lockVersion = null)
- * @method Secteur|null findOneBy(array $criteria, array $orderBy = null)
- * @method Secteur[]    findAll()
- * @method Secteur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Admin|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Admin|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Admin[]    findAll()
+ * @method Admin[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SecteurRepository extends ServiceEntityRepository
+class AdminRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Secteur::class);
+        parent::__construct($registry, Admin::class);
     }
 
     /**
@@ -25,19 +26,18 @@ class SecteurRepository extends ServiceEntityRepository
     public function findByUniqueCriteria(array $criteria)
     {
         // would use findOneBy() but Symfony expects a Countable object
-        return $this->_em->getRepository(Secteur::class)->findBy($criteria);
+        return $this->_em->getRepository(User::class)->findBy($criteria);
     }
-
     // /**
-    //  * @return Secteur[] Returns an array of Secteur objects
+    //  * @return Admin[] Returns an array of Admin objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
+            ->orderBy('a.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -46,10 +46,10 @@ class SecteurRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Secteur
+    public function findOneBySomeField($value): ?Admin
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
