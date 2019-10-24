@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ *
  * @ApiResource(
  *     attributes={"order"={"created":"desc"}},
  *     collectionOperations={

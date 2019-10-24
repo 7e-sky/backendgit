@@ -31,6 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     normalizationContext={
  *      "groups"={"get-from-ville"}
+ *     },
+ *     attributes={
+ *     "pagination_enabled"=false
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\VilleRepository")

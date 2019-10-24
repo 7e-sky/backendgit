@@ -10,8 +10,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *     "name":"partial"
+ * }
+ * )
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -34,8 +41,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *      attributes={
  *     "force_eager"=false,
- *     "normalization_context"={"groups"={"get-from-sous-secteur"},"enable_max_depth"=true},
- *     "pagination_items_per_page"=10
+ *     "normalization_context"={"groups"={"get-from-sous-secteur"},
+ *     "enable_max_depth"=true},
+ *     "pagination_items_per_page"=10,
+ *     "order"={"id":"DESC"}
  *     },
  *     subresourceOperations={
  *          "api_secteurs_sous_secteurs_get_subresource"={
