@@ -51,7 +51,7 @@ class Fournisseur extends User
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="Pays")
+     * @ORM\ManyToOne(targetEntity="Pays",inversedBy="fournisseurs")
      * @Groups({"get","post","put"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
@@ -66,8 +66,8 @@ class Fournisseur extends User
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="SousSecteur")
-     * @ORM\JoinTable()
+     * @ORM\ManyToMany(targetEntity="SousSecteur", mappedBy="fournisseurs")
+     * @ORM\JoinTable(name="fournisseur_sous_secteur")
      * @Groups({"get","put","post"})
      * @Assert\NotBlank()
      * @ApiSubresource()

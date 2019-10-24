@@ -64,6 +64,19 @@ class Pays
 
 
     /**
+     * @ORM\OneToMany(targetEntity="Fournisseur", mappedBy="pays")
+     * @Groups({"get-from-pays"})
+     */
+    private $fournisseurs;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Acheteur", mappedBy="pays")
+     * @Groups({"get-from-pays"})
+     */
+    private $acheteurs;
+
+
+    /**
      * @ORM\Column(type="boolean")
      * @Groups({"get-from-pays","get","put"})
      * @Assert\NotNull()
@@ -75,6 +88,8 @@ class Pays
     {
         $this->villes = new ArrayCollection();
         $this->del=false;
+        $this->fournisseurs = new ArrayCollection();
+        $this->acheteurs = new ArrayCollection();
     }
 
 
@@ -121,6 +136,15 @@ class Pays
         $this->del = $del;
     }
 
+    public function getFournisseurs() : Collection
+    {
+        return $this->fournisseurs;
+    }
+
+    public function getAcheteurs() : Collection
+    {
+        return $this->acheteurs;
+    }
 
 
 }

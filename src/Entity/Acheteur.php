@@ -20,7 +20,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *               "denormalization_context"={"groups"={"post"}},
  *                "validation_groups"={"postValidation"}
  *            },
- *     "get"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *     "get"={
+ *          "access_control"="is_granted('ROLE_ADMIN')"}
  *      },
  *     itemOperations={
  *      "get"={
@@ -48,7 +49,7 @@ class Acheteur extends User
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="Pays")
+     * @ORM\ManyToOne(targetEntity="Pays", inversedBy="acheteurs")
      * @Groups({"get","post","put"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
@@ -82,11 +83,24 @@ class Acheteur extends User
     private $demandes;
 
 
+
+    /**
+     * @ORM\ManyToMany(targetEntity="SousSecteur", mappedBy="acheteurs")
+     * @ORM\JoinTable(name="achteur_sous_secteur")
+     * @Groups({"get","put","post"})
+     * @Assert\NotBlank()
+     * @ApiSubresource()
+     */
+    private $sousSecteurs;
+
+
     public function __construct()
     {
         parent::__construct();
         $this->blacklistes = new ArrayCollection();
         $this->demandes = new ArrayCollection();
+        $this->sousSecteurs = new ArrayCollection();
+
     }
 
     public function getPays()
@@ -144,7 +158,22 @@ class Acheteur extends User
         return $this->demandes;
     }
 
+    public function getSousSecteurs() : Collection
+    {
+        return $this->sousSecteurs;
+    }
 
+    public function addSousSecteur(SousSecteur $secteur){
+
+        $this->sousSecteurs->add($secteur);
+
+    }
+
+    public function removeSousSecteur(SousSecteur $secteur){
+
+        $this->sousSecteurs->removeElement($secteur);
+
+    }
 
 
 

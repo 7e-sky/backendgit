@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -32,6 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      attributes={
  *     "force_eager"=false,
  *     "normalization_context"={"groups"={"get-from-sous-secteur"},"enable_max_depth"=true},
+ *     "pagination_items_per_page"=10
  *     },
  *     subresourceOperations={
  *          "api_secteurs_sous_secteurs_get_subresource"={
@@ -72,14 +76,31 @@ class SousSecteur
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get-from-sous-secteur","put"})
+     * @Groups({"get-from-sous-secteur","put","get-from-secteur"})
      */
     private $del;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Fournisseur", inversedBy="sousSecteurs")
+     * @ORM\JoinTable(name="fournisseur_sous_secteur")
+     * @Groups({"get-from-sous-secteur"})
+     */
+    private $fournisseurs;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Acheteur", inversedBy="sousSecteurs")
+     * @ORM\JoinTable(name="acheteur_sous_secteur")
+     * @Groups({"get-from-sous-secteur"})
+     */
+    private $acheteurs;
 
 
     public function __construct()
     {
         $this->del=false;
+        $this->fournisseurs = new ArrayCollection();
+        $this->acheteurs = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -123,4 +144,13 @@ class SousSecteur
     }
 
 
+    public function getFournisseurs() : Collection
+    {
+        return $this->fournisseurs;
+    }
+
+    public function getAcheteurs() : Collection
+    {
+        return $this->acheteurs;
+    }
 }

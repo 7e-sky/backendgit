@@ -66,7 +66,7 @@ class Ville
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get","put"})
+     * @Groups({"get","put","get-from-pays"})
      * @Assert\NotNull()
      */
     protected $del;

@@ -34,6 +34,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *     "force_eager"=false,
  *     "normalization_context"={"groups"={"get-from-secteur"},"enable_max_depth"=true},
+ *     "pagination_enabled"=false
  *     }
  *
  * )

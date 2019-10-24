@@ -54,5 +54,7 @@ final class WithoutDelExtension implements QueryCollectionExtensionInterface, Qu
         $queryBuilder->andWhere('o.del = :searchTerm')
                      ->setParameter('searchTerm', 0);
 
+
+
     }
 }
