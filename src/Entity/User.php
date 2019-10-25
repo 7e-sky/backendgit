@@ -53,7 +53,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get","get-from-demande","get-from-sous-secteur","get-from-pays"})
+     * @Groups({"get","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville"})
      */
     protected $id;
 
@@ -67,7 +67,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put","post","get-from-demande","get-from-sous-secteur","get-from-pays"})
+     * @Groups({"get","put","post","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -75,7 +75,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put","post","get-from-sous-secteur","get-from-pays","get-from-demande"})
+     * @Groups({"get","put","post","get-from-sous-secteur","get-from-pays","get-from-demande","get-from-ville"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -150,7 +150,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get","put","get-from-sous-secteur","get-from-pays"})
+     * @Groups({"get","put","get-from-sous-secteur","get-from-pays","get-from-ville"})
      * @Assert\NotNull()
      */
     protected $del;

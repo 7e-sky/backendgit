@@ -46,8 +46,8 @@ class Commercial extends User
 {
 
     /**
-     * @ORM\ManyToMany(targetEntity="Ville")
-     * @ORM\JoinTable()
+     * @ORM\ManyToMany(targetEntity="Ville",mappedBy="commercials")
+     * @ORM\JoinTable(name="commercial_ville")
      * @Groups({"get","put","post"})
      * @Assert\NotBlank()
      * @ApiSubresource()

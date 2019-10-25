@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 /**
- ** @ApiFilter(
+ * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
  *     "name":"partial"
@@ -108,6 +108,7 @@ class Pays
         $this->villes = new ArrayCollection();
         $this->del=false;
         $this->fournisseurs = new ArrayCollection();
+        $this->acheteurs = new ArrayCollection();
         $this->zones = new ArrayCollection();
     }
 

@@ -2,13 +2,25 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *     "name":"partial"
+ *      }
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"id","name","pays.id"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -33,7 +45,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      "groups"={"get-from-ville"}
  *     },
  *     attributes={
- *     "pagination_enabled"=false
+ *     "pagination_items_per_page"=10
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\VilleRepository")
@@ -68,6 +80,26 @@ class Ville
 
 
     /**
+     * @ORM\OneToMany(targetEntity="Fournisseur", mappedBy="ville")
+     * @Groups({"get-from-ville"})
+     */
+    private $fournisseurs;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Acheteur", mappedBy="ville")
+     * @Groups({"get-from-ville"})
+     */
+    private $acheteurs;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Commercial", inversedBy="villes")
+     * @ORM\JoinTable(name="commercial_ville")
+     * @Groups({"get-from-ville"})
+     */
+    private $commercials;
+
+
+    /**
      * @ORM\Column(type="boolean")
      * @Groups({"get","put","get-from-pays"})
      * @Assert\NotNull()
@@ -78,6 +110,9 @@ class Ville
     public function __construct()
     {
         $this->del=false;
+        $this->fournisseurs = new ArrayCollection();
+        $this->acheteurs = new ArrayCollection();
+        $this->commercials = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,8 +169,20 @@ class Ville
     }
 
 
+    public function getFournisseurs() : Collection
+    {
+        return $this->fournisseurs;
+    }
 
+    public function getAcheteurs() : Collection
+    {
+        return $this->acheteurs;
+    }
 
+    public function getCommercials() : Collection
+    {
+        return $this->commercials;
+    }
 
 
 
