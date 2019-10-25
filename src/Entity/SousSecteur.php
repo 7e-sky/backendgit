@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,13 +11,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 /**
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
  *     "name":"partial"
- * }
+ *      }
  * )
+ * @ApiFilter(OrderFilter::class, properties={"id","name","secteur.id"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -44,7 +45,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     "normalization_context"={"groups"={"get-from-sous-secteur"},
  *     "enable_max_depth"=true},
  *     "pagination_items_per_page"=10,
- *     "order"={"id":"DESC"}
  *     },
  *     subresourceOperations={
  *          "api_secteurs_sous_secteurs_get_subresource"={

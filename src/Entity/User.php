@@ -75,8 +75,8 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put","post","get-from-sous-secteur"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation","get-from-demande","get-from-pays"})
+     * @Groups({"get","put","post","get-from-sous-secteur","get-from-pays","get-from-demande"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $lastName;

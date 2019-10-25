@@ -46,8 +46,8 @@ class ZoneCommercial extends User
 {
 
     /**
-     * @ORM\ManyToMany(targetEntity="Pays")
-     * @ORM\JoinTable()
+     * @ORM\ManyToMany(targetEntity="Pays", mappedBy="zones")
+     * @ORM\JoinTable(name="zone_commercial_pays")
      * @Groups({"get","put","post"})
      * @Assert\NotBlank()
      * @ApiSubresource()
