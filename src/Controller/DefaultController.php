@@ -81,8 +81,6 @@ class DefaultController extends  AbstractController
 
         if($this->tokenStorage->getToken() instanceof TokenInterface){
 
-
-
             $user = $this->tokenStorage->getToken()->getUser();
 
             $tokenupdate = $this->jwtManager->create($user);
@@ -95,7 +93,8 @@ class DefaultController extends  AbstractController
                 'data'=>[
                     'displayName'=>$user->getFirstName().' '.$user->getLastName(),
                     'photoURL'=> $user->getAvatar() ? $user->getAvatar()->getUrl() : '',
-                    'email'=>$user->getEmail()
+                    'email'=>$user->getEmail(),
+                    'redirect'=>$user->getRedirect(),
                 ]
             ];
         }else{

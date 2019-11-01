@@ -11,6 +11,8 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Controller\ResetPasswordAction;
+use App\Validator\Constraints as AcmeAssert;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 
 /**
  * @ApiResource(
@@ -58,9 +60,8 @@ class User implements UserInterface,CreatedEntityInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $username;
@@ -82,9 +83,8 @@ class User implements UserInterface,CreatedEntityInterface
     protected $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $adresse1;
@@ -97,17 +97,22 @@ class User implements UserInterface,CreatedEntityInterface
     protected $adresse2;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer",nullable=true)
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=4,max=255,groups={"postValidation","putValidation"})
      *
      */
     protected $codepostal;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=35)
      * @Groups({"get","put","post"})
+     * @AssertPhoneNumber(
+     *     type="mobile",
+     *     defaultRegion="MA",
+     *     groups={"postValidation","putValidation"},
+     *     message="Cette valeur n'est pas un numéro de mobile valide."
+     *     )
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=10,max=255,groups={"postValidation","putValidation"})
      */
@@ -196,7 +201,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @Assert\Length(min=6,max=255)
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
-     *     message="erreur pass"
+     *     message="erreur pass",
      *
      * )
      */
@@ -236,7 +241,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get-admin","get-owner"})
+     * @Groups({"get-admin","get-owner","put","post"})
      */
     protected $redirect;
 

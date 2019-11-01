@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+
 /**
  * @ApiResource(
  *
@@ -53,23 +55,21 @@ class Fournisseur extends User
     /**
      * @ORM\ManyToOne(targetEntity="Pays",inversedBy="fournisseurs")
      * @Groups({"get","post","put"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
      * @Groups({"get","post","put"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $ville;
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="SousSecteur", mappedBy="fournisseurs")
+     * @ORM\ManyToMany(targetEntity="SousSecteur")
      * @ORM\JoinTable(name="fournisseur_sous_secteur")
      * @Groups({"get","put","post"})
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"putValidation"})
      * @ApiSubresource()
      */
     private $sousSecteurs;
@@ -82,6 +82,48 @@ class Fournisseur extends User
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      */
     private $societe;
+
+    /**
+     * @ORM\Column(type="string", length=5)
+     * @Groups({"get","put","post"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\Length(min=1,max=5,groups={"postValidation","putValidation"})
+     */
+    private $civilite;
+
+
+    /**
+     * @ORM\Column(type="string", length=15,nullable=true)
+     * @Groups({"get","put","post"})
+     * @Assert\Length(min=15,max=15,groups={"postValidation","putValidation"})
+     */
+    private $ice;
+
+    /**
+     * @ORM\Column(type="string", length=30,nullable=true)
+     * @Groups({"get","put","post"})
+     * @AssertPhoneNumber(
+     *     type="fix",
+     *     defaultRegion="MA",
+     *     groups={"postValidation","putValidation"},
+     *     message="Cette valeur n'est pas un numéro de mobile valide."
+     *     )
+     * @Assert\Length(min=10,max=15,groups={"postValidation","putValidation"})
+     */
+    private $fix;
+
+    /**
+     * @ORM\Column(type="string", length=30,nullable=true)
+     * @Groups({"get","put","post"})
+     */
+    private $website;
+
+    /**
+     * @ORM\Column(type="text",nullable=true)
+     * @Groups({"get","put","post"})
+     * @Assert\Length(min=6,groups={"postValidation","putValidation"})
+     */
+    private $description;
 
 
 
@@ -121,15 +163,15 @@ class Fournisseur extends User
         return $this->sousSecteurs;
     }
 
-    public function addSousSecteur(SousSecteur $secteur){
+    public function addSousSecteur(SousSecteur $sousSecteur){
 
-        $this->sousSecteurs->add($secteur);
+        $this->sousSecteurs->add($sousSecteur);
 
     }
 
-    public function removeSousSecteur(SousSecteur $secteur){
+    public function removeSousSecteur(SousSecteur $sousSecteur){
 
-        $this->sousSecteurs->removeElement($secteur);
+        $this->sousSecteurs->removeElement($sousSecteur);
 
     }
 
@@ -148,6 +190,87 @@ class Fournisseur extends User
     {
         $this->societe = $societe;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCivilite()
+    {
+        return $this->civilite;
+    }
+
+    /**
+     * @param mixed $civilite
+     */
+    public function setCivilite($civilite): void
+    {
+        $this->civilite = $civilite;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIce()
+    {
+        return $this->ice;
+    }
+
+    /**
+     * @param mixed $ice
+     */
+    public function setIce($ice): void
+    {
+        $this->ice = $ice;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFix()
+    {
+        return $this->fix;
+    }
+
+    /**
+     * @param mixed $fix
+     */
+    public function setFix($fix): void
+    {
+        $this->fix = $fix;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * @param mixed $website
+     */
+    public function setWebsite($website): void
+    {
+        $this->website = $website;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
+    }
+
 
 
 

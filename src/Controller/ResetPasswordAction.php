@@ -68,7 +68,9 @@ class ResetPasswordAction
             'data'=>[
                 'displayName'=>$data->getFirstName().' '.$data->getLastName(),
                 'photoURL'=> $data->getAvatar() ? $data->getAvatar()->getUrl() : '',
-                'email'=>$data->getEmail()
+                'email'=>$data->getEmail(),
+                'redirect'=>$data->getRedirect(),
+
             ]
         ];
 

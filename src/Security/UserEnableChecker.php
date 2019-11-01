@@ -32,7 +32,7 @@ class UserEnableChecker implements UserCheckerInterface
         }
         if(!$user->getIsActif() || $user->getDel()){
 
-            throw new DisabledException("This account is inactive, please contact the administration");
+            throw new DisabledException("Ce compte est inactif, merci de contacter l'administration");
         }
 
     }

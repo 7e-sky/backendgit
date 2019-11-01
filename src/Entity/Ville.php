@@ -41,6 +41,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *              "validation_groups"={"putValidation"}
  *          }
  *     },
+ *     subresourceOperations={
+ *          "api_pays_villes_get_subresource "={
+ *              "method"="GET",
+ *              "normalization_context"={"groups"={"get-from-pays"}}
+ *          }
+ *     },
  *     normalizationContext={
  *      "groups"={"get-from-ville"}
  *     },

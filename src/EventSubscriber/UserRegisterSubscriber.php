@@ -98,7 +98,7 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         //Set Role
         if($user instanceof Fournisseur){
             $user->setRoles([User::ROLE_FOURNISSEUR]);
-            $user->setRedirect("/dashboard_fr");
+            $user->setRedirect("/register/step2");
             $this->mailer->sendConfirmationEmail($user);
         }
         elseif($user instanceof Acheteur){
