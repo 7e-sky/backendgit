@@ -29,7 +29,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  *          "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object == user)"
  *          },
  *      "put"={
- *          "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object == user)",
+ *          "access_control"="is_granted('ROLE_ADMIN') or ((is_granted('ROLE_ACHETEUR') or is_granted('ROLE_ACHETEUR_PRE')) and object == user)",
  *           "denormalization_context"={"groups"={"put"}},
  *             "validation_groups"={"putValidation"}
  *          }
@@ -127,17 +127,15 @@ class Acheteur extends User
      */
     private $demandes;
 
-
-
+    /*
     /**
      * @ORM\ManyToMany(targetEntity="SousSecteur", mappedBy="acheteurs")
      * @ORM\JoinTable(name="achteur_sous_secteur")
-     * @Groups({"get","put","post"})
+     * @Groups({"put","post"})
      * @Assert\NotBlank()
      * @ApiSubresource()
      */
-    private $sousSecteurs;
-
+   // private $sousSecteurs;
 
 
     /**
@@ -147,13 +145,20 @@ class Acheteur extends User
      */
     protected $parent2;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Secteur")
+     * @Groups({"get","post","put"})
+     */
+    private $secteur;
+
+
 
     public function __construct()
     {
         parent::__construct();
         $this->blacklistes = new ArrayCollection();
         $this->demandes = new ArrayCollection();
-        $this->sousSecteurs = new ArrayCollection();
+      //  $this->sousSecteurs = new ArrayCollection();
 
     }
 
@@ -212,6 +217,7 @@ class Acheteur extends User
         return $this->demandes;
     }
 
+    /*
     public function getSousSecteurs() : Collection
     {
         return $this->sousSecteurs;
@@ -228,7 +234,7 @@ class Acheteur extends User
         $this->sousSecteurs->removeElement($secteur);
 
     }
-
+    */
     /**
      * @return mixed
      */
@@ -326,6 +332,23 @@ class Acheteur extends User
     {
         $this->parent2 = $parent2;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSecteur()
+    {
+        return $this->secteur;
+    }
+
+    /**
+     * @param mixed $secteur
+     */
+    public function setSecteur($secteur): void
+    {
+        $this->secteur = $secteur;
+    }
+
 
 
 

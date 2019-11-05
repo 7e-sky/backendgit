@@ -32,7 +32,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  *          "defaults"={"del"="false"}
  *          },
  *     "put"={
- *          "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_FOURNISSEUR') and object == user)",
+ *          "access_control"="is_granted('ROLE_ADMIN') or ((is_granted('ROLE_FOURNISSEUR') or is_granted('ROLE_FOURNISSEUR_PRE')) and object == user)",
  *           "denormalization_context"={"groups"={"put"}},
  *              "validation_groups"={"putValidation"}
  *          }

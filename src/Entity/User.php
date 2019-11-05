@@ -45,10 +45,18 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  */
 class User implements UserInterface,CreatedEntityInterface
 {
+
+
     const ROLE_ADMIN = 'ROLE_ADMIN';
     const ROLE_ZONE = 'ROLE_ZONE';
     const ROLE_COMMERCIAL = 'ROLE_COMMERCIAL';
+
+
+    const ROLE_ACHETEUR_PRE = 'ROLE_ACHETEUR_PRE';
     const ROLE_ACHETEUR = 'ROLE_ACHETEUR';
+
+
+    const ROLE_FOURNISSEUR_PRE = 'ROLE_FOURNISSEUR_PRE';
     const ROLE_FOURNISSEUR = 'ROLE_FOURNISSEUR';
 
     /**
@@ -183,7 +191,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="simple_array",length=200)
-     * @Groups({"get-admin","get-owner"})
+     * @Groups({"get-admin","get-owner","put"})
      */
     protected $roles;
 

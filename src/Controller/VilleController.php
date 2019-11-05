@@ -23,7 +23,7 @@ class VilleController extends AbstractController
     /**
      * @Route("/pays_p/{pays}/villes", name="get_villes_p")
      */
-    public function getCurrentUser(Pays $pays){
+    public function getVilleByPays(Pays $pays){
 
         $em = $this->getDoctrine()->getManager()->getRepository(Ville::class);
         $qb = $em->createQueryBuilder('v')

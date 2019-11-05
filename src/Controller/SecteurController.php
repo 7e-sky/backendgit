@@ -9,22 +9,22 @@
 namespace App\Controller;
 
 
-use App\Entity\SousSecteur;
+use App\Entity\Secteur;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/api")
  */
-class SousSecteurController extends AbstractController
+class SecteurController extends AbstractController
 {
 
     /**
-     * @Route("/sous_secteur_p", name="get_sous_secteur_p")
+     * @Route("/secteurs_p", name="get_secteurs_p")
      */
-    public function getAllSousSecteurs(){
+    public function getAllSecteurs(){
 
-        $em = $this->getDoctrine()->getManager()->getRepository(SousSecteur::class);
+        $em = $this->getDoctrine()->getManager()->getRepository(Secteur::class);
         $qb = $em->createQueryBuilder('s')->select('s.id,s.name');
         $query = $qb->getQuery();
         return $this->json($query->execute());

@@ -96,19 +96,20 @@ class SousSecteur
      */
     private $fournisseurs;
 
+    /*
     /**
      * @ORM\ManyToMany(targetEntity="Acheteur", inversedBy="sousSecteurs")
      * @ORM\JoinTable(name="acheteur_sous_secteur")
      * @Groups({"get-from-sous-secteur"})
      */
-    private $acheteurs;
+    //private $acheteurs;
 
 
     public function __construct()
     {
         $this->del=false;
         $this->fournisseurs = new ArrayCollection();
-        $this->acheteurs = new ArrayCollection();
+     //   $this->acheteurs = new ArrayCollection();
 
     }
 
@@ -158,8 +159,8 @@ class SousSecteur
         return $this->fournisseurs;
     }
 
-    public function getAcheteurs() : Collection
+   /* public function getAcheteurs() : Collection
     {
         return $this->acheteurs;
-    }
+    }*/
 }

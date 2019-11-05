@@ -92,38 +92,36 @@ class UserRegisterSubscriber implements EventSubscriberInterface
 
 
         //Set Confirmation Token
-        $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
 
 
         //Set Role
         if($user instanceof Fournisseur){
-            $user->setRoles([User::ROLE_FOURNISSEUR]);
-            $user->setRedirect("/register/step2");
+            $user->setRoles([User::ROLE_FOURNISSEUR_PRE]);
+            $user->setRedirect("/register/fournisseur");
+            $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
             $this->mailer->sendConfirmationEmail($user);
         }
         elseif($user instanceof Acheteur){
-            $user->setRoles([User::ROLE_ACHETEUR]);
-            $user->setRedirect("/dashboard_ac");
-
+            $user->setRoles([User::ROLE_ACHETEUR_PRE]);
+            $user->setRedirect("/register/ac2");
+            $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
             $this->mailer->sendConfirmationEmail($user);
         }
         elseif($user instanceof ZoneCommercial){
             $user->setRoles([User::ROLE_ZONE]);
-            $user->setRedirect("/dashboard_zc");
+            $user->setRedirect("/dashboard");
 
             $user->setIsActif(true);
         }
         elseif($user instanceof Commercial){
 
             $user->setRoles([User::ROLE_COMMERCIAL]);
-            $user->setRedirect("/dashboard_cm");
-
+            $user->setRedirect("/dashboard");
             $user->setIsActif(true);
         }
         else{
             $user->setRoles([User::ROLE_ADMIN]);
             $user->setRedirect("/dashboard");
-
             $user->setIsActif(true);
         }
 
