@@ -61,13 +61,13 @@ class SousSecteur
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get-from-sous-secteur","get-from-secteur","get","get-from-demande"})
+     * @Groups({"get-from-sous-secteur","get-from-secteur","get","get-from-demande","get-from-acheteur_demandes"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Groups({"get-from-sous-secteur","get-from-secteur","get","put","post","get-from-demande"})
+     * @Groups({"get-from-sous-secteur","get-from-secteur","get","put","post","get-from-demande","get-from-acheteur_demandes"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
@@ -85,7 +85,7 @@ class SousSecteur
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get-from-sous-secteur","put","get-from-secteur"})
+     * @Groups({"get-from-sous-secteur","put","get-from-secteur","get-from-acheteur_demandes"})
      */
     private $del;
 
@@ -95,6 +95,15 @@ class SousSecteur
      * @Groups({"get-from-sous-secteur"})
      */
     private $fournisseurs;
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity="DemandeAchat", inversedBy="sousSecteurs")
+     * @ORM\JoinTable(name="demande_ha_sous_secteur")
+     * @Groups({"get-from-sous-secteur"})
+     */
+    private $demandes;
+
 
     /*
     /**
@@ -109,6 +118,7 @@ class SousSecteur
     {
         $this->del=false;
         $this->fournisseurs = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
      //   $this->acheteurs = new ArrayCollection();
 
     }
@@ -157,6 +167,11 @@ class SousSecteur
     public function getFournisseurs() : Collection
     {
         return $this->fournisseurs;
+    }
+
+    public function getDemandes() : Collection
+    {
+        return $this->demandes;
     }
 
    /* public function getAcheteurs() : Collection

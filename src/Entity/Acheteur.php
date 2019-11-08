@@ -92,7 +92,7 @@ class Acheteur extends User
      *     type="fix",
      *     defaultRegion="MA",
      *     groups={"postValidation","putValidation"},
-     *     message="Cette valeur n'est pas un numéro de mobile valide."
+     *     message="Cette valeur n'est pas un numéro de fix valide."
      *     )
      * @Assert\Length(min=10,max=15,groups={"postValidation","putValidation"})
      */
@@ -123,7 +123,7 @@ class Acheteur extends User
 
     /**
      * @ORM\OneToMany(targetEntity="DemandeAchat", mappedBy="acheteur")
-     * @ApiSubresource()
+     * @ApiSubresource(maxDepth=1)
      */
     private $demandes;
 

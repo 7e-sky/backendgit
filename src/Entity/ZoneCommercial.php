@@ -50,7 +50,7 @@ class ZoneCommercial extends User
      * @ORM\JoinTable(name="zone_commercial_pays")
      * @Groups({"get","put","post"})
      * @Assert\NotBlank()
-     * @ApiSubresource()
+     * @ApiSubresource(maxDepth=1)
      */
     private $pays;
 

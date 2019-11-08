@@ -20,14 +20,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "post"={
  *              "access_control"="is_granted('ROLE_ACHETEUR')",
  *              "denormalization_context"={"groups"={"post"}},
- *              "validation_groups"={"postValidation"}
+ *              "validation_groups"={"postValidation"},
+ *              "normalization_context"={"groups"={"get-from-demande"}}
  *          },
  *          "get"={
- *              "access_control"="is_granted('ROLE_ADMIN')"
+ *              "access_control"="is_granted('ROLE_ADMIN')",
+ *              "normalization_context"={"groups"={"get-from-demande"}}
  *           }
  *     },
  *     itemOperations={
- *          "get"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"},
+ *          "get"={
+ *                  "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
+ *                   "normalization_context"={"groups"={"get-from-demande"}}
+
+ *                },
  *          "put"={
  *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
  *              "denormalization_context"={"groups"={"put"}},
@@ -35,17 +41,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "delete"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"}
  *     },
- *     normalizationContext={
- *      "groups"={"get-from-demande"}
- *     },
+ *
  *     attributes={"order"={"created":"desc"}},
  *     subresourceOperations={
- *
- *          "api_acheteurs_demandes_get_subresource "={
- *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') )",
+ *          "api_acheteurs_demandes_get_subresource"={
+ *              "security"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
  *              "method"="GET",
  *              "normalization_context"={"groups"={"get-from-acheteur_demandes"}}
- *
  *          }
  *     }
  * )
@@ -144,6 +146,12 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     private $isAnonyme;
 
     /**
+     * @ORM\Column(type="string", length=4,nullable=true)
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
+     */
+    private $langueP;
+
+    /**
      * @ORM\Column(type="text",nullable=true)
      * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
      */
@@ -165,11 +173,13 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     private $attachements;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SousSecteur")
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @ORM\ManyToMany(targetEntity="SousSecteur")
+     * @ORM\JoinTable(name="demande_ha_sous_secteur")
+     * @Groups({"get-from-demande","put","post","get-from-acheteur_demandes"})
+     * @Assert\NotBlank()
+     * @ApiSubresource()
      */
-    private $sousSecteur;
+    private $sousSecteurs;
 
 
     /**
@@ -189,6 +199,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
         $this->nbrShare=0;
         $this->attachements = new ArrayCollection();
         $this->diffusionsdemandes = new ArrayCollection();
+        $this->sousSecteurs = new ArrayCollection();
         $this->dateModification = new \DateTime();
 
     }
@@ -374,17 +385,23 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     }
 
-
-    public function getSousSecteur()
+    public function getSousSecteurs() : Collection
     {
-        return $this->sousSecteur;
+        return $this->sousSecteurs;
     }
 
+    public function addSousSecteur(SousSecteur $sousSecteur){
 
-    public function setSousSecteur($sousSecteur): void
-    {
-        $this->sousSecteur = $sousSecteur;
+        $this->sousSecteurs->add($sousSecteur);
+
     }
+
+    public function removeSousSecteur(SousSecteur $sousSecteur){
+
+        $this->sousSecteurs->removeElement($sousSecteur);
+
+    }
+
 
     /**
      * @return mixed
@@ -407,6 +424,23 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     {
         return $this->diffusionsdemandes;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLangueP()
+    {
+        return $this->langueP;
+    }
+
+    /**
+     * @param mixed $langueP
+     */
+    public function setLangueP($langueP): void
+    {
+        $this->langueP = $langueP;
+    }
+
 
 
 

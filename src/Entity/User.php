@@ -142,7 +142,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @Assert\Length(min=6,max=255,groups={"postValidation"})
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
-     *     message="erreur pass",
+     *     message="Le mot de passe doit être de 6 caractères minimum combinant des lettres majuscules et minuscules et au moins un chiffre",
      *     groups={"postValidation"}
      * )
      */

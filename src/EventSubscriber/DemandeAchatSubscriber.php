@@ -57,7 +57,7 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
            KernelEvents::VIEW => [
                ['visiteDemandeAchat',EventPriorities::PRE_WRITE ],
                ['deleteDemeandeAchat',EventPriorities::PRE_WRITE ],
-               ['AccessControll',EventPriorities::PRE_WRITE ],
+            //   ['AccessControll',EventPriorities::PRE_WRITE ],
                ['putDemandeAchat',EventPriorities::PRE_WRITE ]
            ]
        ];
@@ -124,40 +124,40 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
 
     }
 
-    public function AccessControll(GetResponseForControllerResultEvent $event){
+    /*public function AccessControll(GetResponseForControllerResultEvent $event){
 
         $request = $event->getRequest();
 
         /**
          * @var UserInterface $acheteur
          */
-        $acheteur = $this->tokenStorage->getToken()->getUser();
+    /* $acheteur = $this->tokenStorage->getToken()->getUser();
 
 
-        if('api_acheteurs_demandes_get_subresource' !== $request->get('_route')){
-            return;
-        }
-        $lists = $event->getControllerResult();
+     if('api_acheteurs_demandes_get_subresource' !== $request->get('_route')){
+         return;
+     }
+     $lists = $event->getControllerResult();
 
-        if($acheteur instanceof Acheteur){
+     if($acheteur instanceof Acheteur){
 
-            $trouve = false;
-            if($lists->getTotalItems()){
-                foreach ($lists as $list){
-                    if($list->getAcheteur() == $acheteur){
-                        $trouve =true;
-                        break;
-                    }
-                }
-            }else{
-                $trouve = true;
-            }
+         $trouve = false;
+         if($lists->getTotalItems()){
+             foreach ($lists as $list){
+                 if($list->getAcheteur() == $acheteur){
+                     $trouve =true;
+                     break;
+                 }
+             }
+         }else{
+             $trouve = true;
+         }
 
-            if(!$trouve){
-                throw new AccessDeniedException();
-            }
-        }
+         if(!$trouve){
+             throw new AccessDeniedException();
+         }
+     }
 
 
-    }
+ }*/
 }
