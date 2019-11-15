@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  jeu. 24 oct. 2019 à 18:23
+-- Généré le :  ven. 15 nov. 2019 à 17:26
 -- Version du serveur :  10.1.31-MariaDB
 -- Version de PHP :  7.2.4
 
@@ -32,27 +32,54 @@ CREATE TABLE `acheteur` (
   `id` int(11) NOT NULL,
   `pays_id` int(11) DEFAULT NULL,
   `ville_id` int(11) DEFAULT NULL,
-  `societe` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `societe` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `parent2` int(11) DEFAULT NULL,
+  `civilite` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ice` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fix` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `secteur_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `acheteur`
 --
 
-INSERT INTO `acheteur` (`id`, `pays_id`, `ville_id`, `societe`) VALUES
-(2, 1, 1, ''),
-(18, 1, 1, 'ArasElect');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `acheteur_sous_secteur`
---
-
-CREATE TABLE `acheteur_sous_secteur` (
-  `sous_secteur_id` int(11) NOT NULL,
-  `acheteur_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `acheteur` (`id`, `pays_id`, `ville_id`, `societe`, `parent2`, `civilite`, `ice`, `fix`, `website`, `description`, `secteur_id`) VALUES
+(2, 1, 1, '', NULL, '', '', '', '', '', NULL),
+(18, 1, 1, 'ArasElect', NULL, '', '', '', '', '', NULL),
+(28, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
+(29, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
+(30, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
+(31, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
+(32, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
+(33, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
+(34, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
+(35, NULL, NULL, 'Testi', NULL, 'M', NULL, NULL, NULL, NULL, NULL),
+(36, NULL, NULL, 'Testi', NULL, 'M', NULL, NULL, NULL, NULL, NULL),
+(37, NULL, NULL, 'Testi', NULL, 'M', NULL, NULL, NULL, NULL, NULL),
+(38, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(39, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(40, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(41, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(42, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(43, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(44, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(45, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(46, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(47, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(48, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(49, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(50, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
+(68, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
+(69, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
+(70, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
+(71, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
+(72, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
+(73, 1, 2, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
+(74, 2, 33, '3f industrie', NULL, 'M.', NULL, '', '', '', 1),
+(76, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '0522201475', 'https://www.d.com', 'kkkkkkkkkkk', 1);
 
 -- --------------------------------------------------------
 
@@ -86,8 +113,61 @@ INSERT INTO `admin` (`id`) VALUES
 
 CREATE TABLE `attachement` (
   `id` int(11) NOT NULL,
-  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_size` int(11) NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `attachement`
+--
+
+INSERT INTO `attachement` (`id`, `url`, `file_size`, `type`) VALUES
+(23, '5dcab6fdecaa7790043530.jpg', 21519, 'image/jpeg'),
+(24, '5dcab70d04f2b669272328.pdf', 163157, 'application/pdf'),
+(26, '5dcab76c24153452341781.jpg', 21519, 'image/jpeg'),
+(27, '5dcab78977f8b734808049.pdf', 142995, 'application/pdf'),
+(29, '5dcab7954b7ce643504081.png', 562, 'image/png'),
+(31, '5dcab82be9dec954195275.pdf', 163157, 'application/pdf'),
+(32, '5dcab83595f34330036645.pdf', 646308, 'application/pdf'),
+(33, '5dcab84d8d774969024642.pdf', 646308, 'application/pdf'),
+(34, '5dcab851345a7180357856.txt', 1264, 'text/plain'),
+(35, '5dcab85671eb6095495491.jpg', 21519, 'image/jpeg'),
+(36, '5dcab866e88f6289429709.pdf', 142995, 'application/pdf'),
+(37, '5dcab87486bf8343010105.pdf', 163157, 'application/pdf'),
+(38, '5dcab8d28de3c871661751.jpg', 21519, 'image/jpeg'),
+(39, '5dcab9253f39b683227578.jpg', 21519, 'image/jpeg'),
+(40, '5dcab9429e86b424221656.jpg', 21519, 'image/jpeg'),
+(41, '5dcab98c48907826393808.jpg', 21519, 'image/jpeg'),
+(42, '5dcab9e40d2b6032270730.jpg', 21519, 'image/jpeg'),
+(44, '5dcac5f011f5f903912087.xlsx', 10231, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
+(45, '5dcacde5a4d9b380063344.jpg', 21519, 'image/jpeg'),
+(46, '5dcacdf94ff67888382922.jpg', 8864, 'image/jpeg'),
+(48, '5dcace7d5edf5436427940.pdf', 143935, 'application/pdf'),
+(49, '5dcace80c7450732121576.jpg', 21519, 'image/jpeg'),
+(50, '5dcace83db6a1763461079.jpg', 8864, 'image/jpeg'),
+(51, '5dcace872c970570331576.jpg', 21519, 'image/jpeg'),
+(52, '5dcacea7a103a410415777.jpg', 21519, 'image/jpeg'),
+(53, '5dcad10a2fc39214017493.jpg', 21519, 'image/jpeg'),
+(54, '5dcad22669f74457160233.jpg', 21519, 'image/jpeg'),
+(64, '5dcae2fc7d974503423221.jpg', 8864, 'image/jpeg'),
+(65, '5dcae2ff803c3658111922.png', 38731, 'image/png'),
+(66, '5dcae303acced226626780.jpg', 119505, 'image/jpeg'),
+(67, '5dcae30907f5c240585009.pdf', 163157, 'application/pdf'),
+(68, '5dcae420aec51694491452.jpg', 21519, 'image/jpeg'),
+(69, '5dcae4242007a499388557.jpg', 8864, 'image/jpeg'),
+(71, '5dcae45835571205831693.jpg', 8864, 'image/jpeg'),
+(72, '5dcae54e189c5902067045.jpg', 119505, 'image/jpeg'),
+(74, '5dcbdafc4e102406561612.jpg', 8864, 'image/jpeg'),
+(75, '5dcbe01de2f67540142420.png', 29628, 'image/png'),
+(77, '5dcc063a3dd89676064733.pdf', 163157, 'application/pdf'),
+(79, '5dcc06d02333d219049968.jpg', 8864, 'image/jpeg'),
+(82, '5dcc0840c4e01196060068.pdf', 143935, 'application/pdf'),
+(83, '5dcc08443e480300590687.jpg', 21519, 'image/jpeg'),
+(84, '5dcc0dced3485368884472.jpg', 21519, 'image/jpeg'),
+(85, '5dcd7afd886b2320222661.jpg', 21519, 'image/jpeg'),
+(86, '5dcd8b68cc6b7826721087.jpg', 21519, 'image/jpeg'),
+(87, '5dcd8f846c8bd831938608.jpg', 8864, 'image/jpeg');
 
 -- --------------------------------------------------------
 
@@ -157,7 +237,8 @@ CREATE TABLE `black_listes` (
 --
 
 INSERT INTO `black_listes` (`id`, `fournisseur_id`, `raison`, `created`, `acheteur_id`) VALUES
-(1, 17, 'not important', '2019-08-08 13:56:58', 18);
+(1, 17, 'not important', '2019-08-08 13:56:58', 18),
+(2, 75, 'Ok', '2019-11-15 14:41:17', 76);
 
 -- --------------------------------------------------------
 
@@ -196,10 +277,10 @@ CREATE TABLE `commercial_ville` (
 
 INSERT INTO `commercial_ville` (`commercial_id`, `ville_id`) VALUES
 (6, 1),
+(19, 1),
 (6, 2),
-(6, 6),
 (7, 2),
-(19, 1);
+(6, 6);
 
 -- --------------------------------------------------------
 
@@ -209,22 +290,34 @@ INSERT INTO `commercial_ville` (`commercial_id`, `ville_id`) VALUES
 
 CREATE TABLE `demande_achat` (
   `id` int(11) NOT NULL,
+  `acheteur_id` int(11) DEFAULT NULL,
   `statut` smallint(6) NOT NULL,
   `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_expiration` datetime NOT NULL,
   `is_public` tinyint(1) NOT NULL,
   `nbr_visite` int(11) DEFAULT NULL,
+  `nbr_share` int(11) DEFAULT NULL,
   `created` datetime NOT NULL,
   `date_modification` datetime NOT NULL,
   `is_alerted` tinyint(1) NOT NULL,
   `is_anonyme` tinyint(1) NOT NULL,
+  `langue_p` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description_en` longtext COLLATE utf8mb4_unicode_ci,
   `description_es` longtext COLLATE utf8mb4_unicode_ci,
-  `acheteur_id` int(11) DEFAULT NULL,
-  `sous_secteur_id` int(11) DEFAULT NULL,
-  `nbr_share` int(11) DEFAULT NULL
+  `motif_rejet` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `budget` decimal(10,0) NOT NULL,
+  `del` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `demande_achat`
+--
+
+INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `langue_p`, `description_en`, `description_es`, `motif_rejet`, `budget`, `del`) VALUES
+(1, 76, 0, 'aaaaa0_deleted-1', 'azertyuiop', '2019-11-14 16:59:00', 1, 0, 0, '2019-11-14 16:59:52', '2019-11-15 11:38:56', 0, 0, NULL, NULL, NULL, NULL, '100000', 1),
+(2, 76, 1, 'aaaaa0q', 'azertyuioppok', '2019-11-22 23:03:00', 1, 0, 3, '2019-11-14 17:03:25', '2019-11-15 16:49:35', 1, 0, NULL, NULL, NULL, '', '25130', 0),
+(3, 76, 0, 'qdqdsqsd', 'azqsdazeqd', '2019-11-14 14:03:00', 1, 0, 0, '2019-11-14 17:04:17', '2019-11-14 17:10:38', 0, 0, NULL, NULL, NULL, NULL, '11555', 0);
 
 -- --------------------------------------------------------
 
@@ -236,6 +329,35 @@ CREATE TABLE `demande_achat_attachement` (
   `demande_achat_id` int(11) NOT NULL,
   `attachement_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `demande_achat_attachement`
+--
+
+INSERT INTO `demande_achat_attachement` (`demande_achat_id`, `attachement_id`) VALUES
+(1, 87),
+(2, 86),
+(3, 85);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `demande_ha_sous_secteur`
+--
+
+CREATE TABLE `demande_ha_sous_secteur` (
+  `sous_secteur_id` int(11) NOT NULL,
+  `demande_achat_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `demande_ha_sous_secteur`
+--
+
+INSERT INTO `demande_ha_sous_secteur` (`sous_secteur_id`, `demande_achat_id`) VALUES
+(6, 1),
+(6, 2),
+(7, 3);
 
 -- --------------------------------------------------------
 
@@ -250,6 +372,17 @@ CREATE TABLE `diffusion_demande` (
   `date_diffusion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `diffusion_demande`
+--
+
+INSERT INTO `diffusion_demande` (`id`, `fournisseur_id`, `demande_id`, `date_diffusion`) VALUES
+(86, 61, 2, '2019-11-15 16:49:35'),
+(87, 64, 2, '2019-11-15 16:49:35'),
+(88, 65, 2, '2019-11-15 16:49:35'),
+(89, 66, 2, '2019-11-15 16:49:35'),
+(90, 67, 2, '2019-11-15 16:49:35');
+
 -- --------------------------------------------------------
 
 --
@@ -260,18 +393,41 @@ CREATE TABLE `fournisseur` (
   `id` int(11) NOT NULL,
   `pays_id` int(11) DEFAULT NULL,
   `ville_id` int(11) DEFAULT NULL,
-  `societe` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `societe` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `civilite` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ice` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fix` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `website` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `fournisseur`
 --
 
-INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`) VALUES
-(3, 2, 1, ''),
-(8, 2, 2, ''),
-(13, 1, 1, ''),
-(17, 1, 1, '');
+INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `ice`, `fix`, `website`, `description`) VALUES
+(3, 2, 1, '', '', '', '', '', ''),
+(8, 2, 2, '', '', '', '', '', ''),
+(13, 1, 1, '', '', '', '', '', ''),
+(17, 1, 1, '', '', '', '', '', ''),
+(51, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
+(52, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
+(53, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
+(54, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
+(55, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
+(56, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
+(57, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
+(58, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
+(59, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
+(60, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
+(61, 1, 1, '3f industriee', 'M.', '123456789123456', '', '', ''),
+(62, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', ''),
+(63, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', ''),
+(64, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', 'aaaaaaaaaaaaaaaaaaaaaaaaa'),
+(65, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', ''),
+(66, 1, 2, '3f industrie', 'M.', '123456789123456', '', '', ''),
+(67, 1, 15, '3F Industrie', 'M.', '001531606000066', '0696318051', '', ''),
+(75, 1, 1, '3f industrie', 'M.', '123456789123456', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -283,6 +439,31 @@ CREATE TABLE `fournisseur_sous_secteur` (
   `fournisseur_id` int(11) NOT NULL,
   `sous_secteur_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `fournisseur_sous_secteur`
+--
+
+INSERT INTO `fournisseur_sous_secteur` (`fournisseur_id`, `sous_secteur_id`) VALUES
+(61, 6),
+(64, 6),
+(65, 6),
+(66, 6),
+(67, 6),
+(75, 6),
+(61, 7),
+(64, 7),
+(75, 7),
+(61, 8),
+(65, 8),
+(67, 8),
+(64, 9),
+(65, 9),
+(66, 9),
+(67, 9),
+(67, 142),
+(75, 142),
+(67, 270);
 
 -- --------------------------------------------------------
 
@@ -300,24 +481,8 @@ CREATE TABLE `migration_versions` (
 --
 
 INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
-('20190806102017', '2019-08-06 10:20:22'),
-('20190806102110', '2019-08-06 10:21:17'),
-('20190807083307', '2019-08-07 08:33:13'),
-('20190807103330', '2019-08-07 10:33:44'),
-('20190807111841', '2019-08-07 11:18:47'),
-('20190807141020', '2019-08-07 14:10:31'),
-('20190807141659', '2019-08-07 14:17:04'),
-('20190807141844', '2019-08-07 14:18:48'),
-('20190807154655', '2019-08-07 15:47:00'),
-('20190807154800', '2019-08-07 15:48:11'),
-('20190807161609', '2019-08-07 16:16:14'),
-('20190808081420', '2019-08-08 08:14:30'),
-('20190808104600', '2019-08-08 10:46:05'),
-('20190808113735', '2019-08-08 11:37:40'),
-('20190808115254', '2019-08-08 11:52:59'),
-('20191003162344', '2019-10-03 16:23:53'),
-('20191014162105', '2019-10-14 16:21:13'),
-('20191022101913', '2019-10-22 10:19:35');
+('20191114155555', '2019-11-14 15:56:27'),
+('20191114155657', '2019-11-14 15:57:01');
 
 -- --------------------------------------------------------
 
@@ -409,7 +574,8 @@ INSERT INTO `pays` (`id`, `name`, `del`) VALUES
 (84, 'Slovaquie', 0),
 (88, 'Béni', 0),
 (90, 'Luxembourg', 0),
-(91, 'Guinée', 0);
+(91, 'Guinée', 0),
+(92, 'teeeeeeest_deleted-92', 1);
 
 -- --------------------------------------------------------
 
@@ -897,7 +1063,8 @@ INSERT INTO `sous_secteur` (`id`, `name`, `del`, `secteur_id`) VALUES
 (418, 'Centre commercial', 0, 78),
 (419, 'Université', 0, 79),
 (420, 'Logiciel', 0, 11),
-(421, 'Machine et Equipement', 0, 4);
+(421, 'Machine et Equipement', 0, 4),
+(422, 'testt_deleted-422', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -907,10 +1074,10 @@ INSERT INTO `sous_secteur` (`id`, `name`, `del`, `secteur_id`) VALUES
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `adresse1` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `adresse1` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `adresse2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `codepostal` int(11) NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `codepostal` int(11) DEFAULT NULL,
+  `phone` varchar(35) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `del` tinyint(1) NOT NULL,
@@ -918,7 +1085,7 @@ CREATE TABLE `user` (
   `created` datetime NOT NULL,
   `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `discr` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `roles` tinytext COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:simple_array)',
   `password_change_date` int(11) DEFAULT NULL,
@@ -933,29 +1100,78 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`, `password`, `del`, `isactif`, `created`, `first_name`, `last_name`, `username`, `discr`, `roles`, `password_change_date`, `parent1`, `confirmation_token`, `avatar_id`, `redirect`) VALUES
-(1, '36, rue imam al boukhari maarif', 'HAY EL KHAIR_2', 20370, '0696318051', 'webmasster@3findustrie.com', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 1, 1, '2019-08-05 17:01:48', 'YOUNESS', 'ARBOUH', 'unessami', 'Admin', 'ROLE_ADMIN', 1565020062, NULL, 'ljmRxc&Jmrgox3ZYugIYQiSzqheC4N', 1, '/dashboard'),
-(2, 'HAY EL KHAIRàà', 'HAY EL KHAIR', 26000, '0696318051', 'youness.arbouh1s@gmail.com', '$2y$13$uXkilBRFzlnwOFN7VHPkXucJ1Iz3R1IoLSvAsec3pnJlitBXcpYee', 0, 1, '2019-08-05 17:16:12', 'firstAcheteur', 'lastAcheteur', 'acheteur', 'Acheteur', 'ROLE_ACHETEUR', 1565020457, NULL, 'E.4rYgkSwxyIdaEBZpeXHmS&WON44t', 1, '/dashboard_ac'),
-(3, 'HAY EL KHAIRoo', 'HAY EL KHAIRoo', 2600, '0696318055', 'youness.arbouh1@gmail.com', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 0, 1, '2019-08-05 17:21:18', 'firstFournisseur', 'lastfrns', 'frsnora', 'Fournisseur', 'ROLE_FOURNISSEUR', 1565021174, NULL, 'mpTGWY.Z9OjHTGSgCwV7apEqapombk', 1, '/dashboard_fr'),
-(4, 'HAY EL KHA22IR', 'cmrsoia cmrsoi2a', 2622820, '0696318851', 'youness.arbouh4@gmail.com', '$2y$13$D5ucNPg0F4x3NASOS4VYgOPcbK.jT6aW4nmMn42ZBadntqFSZFM1W', 0, 0, '2019-08-05 17:30:47', 'cmrsoia2222', 'cmrsoi2a2223', 'cmrsoia22222d', 'ZoneCommercial', 'ROLE_ZONE', 1565078960, 1, 'HnmaGHUOcAiIecY01yyGKTw@pDugWR', 1, ''),
-(5, 'HAY EL 00', 'HAY EL 11', 26400, '06963088001', 'youness.arbouh5@gmail.com_deleted-5', '$2y$13$MavlmpQGslmov1KUOE1kMejriI6dW9botMR2bPgmdXoF2aE14.S6S', 1, 0, '2019-08-05 17:32:07', 'Commerc_107', 'Commerciale_107', 'cmrciale_107_deleted-5', 'ZoneCommercial', 'ROLE_ZONE', 1565079056, 1, 'mZiQL@&239srr1aa95P&EuJwWCNZfP', 1, ''),
-(6, 'HAY EL KHAIRqqq1', 'HAY EL qqqqqqqqq1', 26600, '0696318851', 'youness.arbouh6@gmail.com', '$2y$13$.kjXEmyAnYvRpqhuqKC7te0B2PKlt7aCKkwgIt.IhJbUKnkXbIBHe', 0, 1, '2019-08-05 17:38:54', 'Commerc_2', 'Commerciale_2', 'cmrciale_2', 'Commercial', 'ROLE_COMMERCIAL', NULL, 1, 'MPsPbG9uMXgReM4P66K0zBgW7cxW&g', 31, ''),
-(7, 'HAY EL KHAIRqsdfsdfsdfsdqq1', 'HAY EL qqqqqsdfqqqq1', 266100, '069635418851', 'youness.arbouh7@gmail.com', '$2y$13$sRp0FwPwQD5Y6zCCp5IQjOQzOXvvrP5UgP8r4wfB2/cU8EXYiJfmW', 0, 0, '2019-08-05 17:40:05', 'Commerciale', 'Commerciale_ok', 'cmrciale_chaalali', 'Commercial', 'ROLE_COMMERCIAL', NULL, 1, 'Q8GJ@OVh@&7F.q5EjZ02Yp7wPb9HBp', 1, ''),
-(8, 'HAY EL KHAIR1', 'kkkkkkkkkkkkkkk', 260500, '069631855051', 'youness.arbouh155@gmail.com', '$2y$13$MavlmpQGslmov1KUOE1kMejriI6dW9botMR2bPgmdXoF2aE14.S6S', 0, 1, '2019-08-05 18:09:07', '', 'Fournisseur31', '', 'Fournisseur', 'ROLE_FOURNISSEUR', 1565021584, NULL, 'P806FKQ4mSULMT3qhqwNdr8aomwqeV', 1, ''),
-(9, 'HAY EL KHA22IR', 'cmrsoia cmrsoi2a', 2622820, '0696348051', 'youness.arbouh81@gmail.com', '$2y$13$MavlmpQGslmov1KUOE1kMejriI6dW9botMR2bPgmdXoF2aE14.S6S', 0, 1, '2019-08-06 09:57:42', 'cmrsoia2222', 'cmrsoi2a2223', 'cmrsoia22222', 'Commercial', 'ROLE_COMMERCIAL', NULL, 5, 'cgmFMjrz4HE41YOihJyJgXWEp7Jh8w', 1, ''),
-(10, '36, rue imam al boukhari maarif', '', 20370, '0696318051', 'youness.arbouh55@gmail.com', '$2y$13$H./PWBuS/z5G4Zb2vnhUUeecSGafd4WpT6HOKJdB2aLajgV2sV57q', 0, 1, '2019-08-06 10:59:17', 'YOUNESS', 'ARBOUH', 'unessami1253', 'Admin', 'ROLE_ADMIN', 1569857840, NULL, 'lcL6@PnSmZRYWhJ0iWbX8cygti4tnj', 26, '/dashboard'),
-(11, 'aaaaaa', NULL, 110055, '0696311145', 'youness.aaaaa_deleted-11', '$2y$13$EZRR7o1ht29aWb3gr4L23ucEZ1HBcEeeTmm2zf9WayviOR/rVg4xa', 1, 0, '2019-08-06 17:06:31', 'aaaaaaaa', 'aaaaaa', 'aaaaaa_deleted-11', 'Admin', 'ROLE_ADMIN', NULL, NULL, 'iUXeb8wKsOdjYEcnnxQHOGWzexX4mt', NULL, ''),
-(13, 'aaaaaa', 'aaaafff', 110055, '0696311145', 'youness.arbouh@live.fr', '$2y$13$gUXUfjhomFDca0DFfLkD1eOiYBIYiaB8ld059Ci2SOFNWAfR4kjlS', 1, 1, '2019-08-06 17:15:05', 'aaaaaaa', 'aaaaaaa', 'aaaaaa', 'Fournisseur', 'ROLE_FOURNISSEUR', 1565104755, NULL, NULL, NULL, ''),
-(17, 'aaaaaa', 'aaaafff', 110055, '0696311145', 'youness.arbouh@gmail.com', '$2y$13$uXkilBRFzlnwOFN7VHPkXucJ1Iz3R1IoLSvAsec3pnJlitBXcpYee', 0, 1, '2019-08-06 17:47:54', 'aaaaaaa', 'aaaaaaa', 'aaa4aaa', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, 'kwEdkaiENyv4UWckDWZrZWHi&RFvav', NULL, ''),
-(18, 'aaaaaa', 'aaaafff', 110055, '0696311145', 'youness.arbouh2@live.fr', '$2y$13$uXkilBRFzlnwOFN7VHPkXucJ1Iz3R1IoLSvAsec3pnJlitBXcpYee', 0, 1, '2019-08-06 17:53:34', 'aaaaaaa', 'aaaaaaa', 'unessamgi14123', 'Acheteur', 'ROLE_ACHETEUR', 1565106931, NULL, NULL, NULL, ''),
-(19, 'aaaaaa', 'aaaafff', 110055, '0696311145', 'youness.arbouh23@live.fr_deleted-19', '$2y$13$CVWGvj.HTHQ.LgONjkrRieX/cy4U4TV.4mCmX5PoiJ8lsVLoktP0.', 1, 1, '2019-08-06 18:02:19', 'aaaaaaa', 'aaaaaaa', 'unessami112253_deleted-19', 'Commercial', 'ROLE_COMMERCIAL', 1565107563, 5, '3jUhm.8ew9bTX9sfufis&F8QWFm0DA', NULL, ''),
-(20, 'aaaaaa', 'aaaafff', 110055, '0696311145', 'youness.arbouh235@live.fr', '$2y$13$TB.uAeFymkMWG7EIuCHFPux4QPVDLgK5P9rEht59OjdraDWLi5Lju', 1, 0, '2019-08-06 18:10:06', 'aaaaaaa', 'aaaaaaa', 'unessami1123', 'ZoneCommercial', 'ROLE_ZONE', 1565108105, 10, 'OfGWTzltXV4ILr1uDMLHmiwu4.&VaS', NULL, ''),
-(21, 'aaaaaa', 'aaaafff', 110055, '0696311145', 'youness.arbouh23s5@live.fr', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 0, 0, '2019-08-06 18:16:42', 'aaaaaaa', 'aaaaaaa', 'unessamgi1123', 'Admin', 'ROLE_ADMIN', 1565108326, NULL, 'o.szT3OMtJbESI4JMcP1j0v0nXRI8U', 27, ''),
-(22, 'string', 'string', 44774, '0699665547', 'yooooo.aaaaa@gggg.ccc', '$2y$13$liU0naR4WW2dCeykm0i8CudqR7oK2.NUN3VEt7Zlk8enWbaAJY52S', 0, 0, '2019-10-14 18:23:20', 'straaaaaing', 'ssssss', 'aaaassaa', 'Admin', 'ROLE_ADMIN', 1571070349, NULL, '0VsOPg2Vq4z6X5C.Ry0Z52x&sxnats', NULL, '/dashboard'),
-(23, '36, rue imam al boukhari maarif', '', 20370, '0696318051', 'webmaster@3findustrie.com_deleted-23', '$2y$13$YzQdVbAs7qYZEGdi9OFaRO7GwIQJmtE2/VW7oOWmXJzDmUQ3.thi2', 1, 1, '2019-10-15 18:52:10', 'YOUNESS', 'ARBOUH', 'youness.arbouh55@gmail.com_deleted-23', 'Admin', 'ROLE_ADMIN', NULL, NULL, 'Az3Hg9qUqiKpMiBBA2AX&ps8CPczND', NULL, '/dashboard'),
-(24, '36, rue imam al boukhari maarif', '', 20370, '0696318051', 'wejjster@3findustrie.com', '$2y$13$g3yC6CnuoIaq3RGCLNDjguCNwMUc/knmtgRIozNiannjlmS/gcQqq', 0, 1, '2019-10-16 16:03:29', 'YOUNESS', 'ARBOUH', 'youness.arbouh55', 'ZoneCommercial', 'ROLE_ZONE', NULL, NULL, 'f@NPKNRa9P2O0YBvbATeATAL958fuW', 19, '/dashboard_zc'),
-(25, '36, rue imam al boukhari maarif', '', 20370, '0696318051', 'webmasterd@3findustrie.com', '$2y$13$e37Nvp/D2Apz9e39ZOgGCe7eKc5Plx3/F6mtTYsxhclhOptF0T1W2', 0, 1, '2019-10-17 16:10:07', 'YOUNESS', 'ARBOUH', 'youness.arbouh5', 'ZoneCommercial', 'ROLE_ZONE', NULL, NULL, 'IDUClPZHBdgIvY20KLZZYhxK@KLLw9', 25, '/dashboard_zc'),
-(26, '36, rue imam al boukhari maarif', '', 20370, '0696318051', 'webmastder@3findustrie.com_deleted-26', '$2y$13$RYyEg0ynyszBfDpWS/0pW./OYeTPio/Oc2xC1hkU6e/BwGwn03jqu', 1, 1, '2019-10-17 17:08:35', 'YOUNESS', 'ARBOUH', 'youness.ard_deleted-26', 'Admin', 'ROLE_ADMIN', NULL, NULL, '68AhfRTqAzBXaTntSyZjiYeIAYjEU9', 29, '/dashboard'),
-(27, '36, rue imam al boukhari maarif', '', 20370, '0696318051', 'webmastezzr@3findustrie.com_deleted-27', '$2y$13$MhdQRTZUeTh3dHgCpv3t3um40upICaxR5jauWSWmgZloE2e1h5Q3i', 1, 1, '2019-10-17 17:47:50', 'YOUNESS', 'ARBOUH', 'Youness.arzzzbo2_deleted-27', 'Admin', 'ROLE_ADMIN', NULL, NULL, 'f49VMWNa.YOKfVUItweIQaQup85hdi', 30, '/dashboard');
+(1, '36, rue imam al boukhari maarif', 'HAY EL KHAIR_2', 20370, '+212696318051', 'webmasster@3findustrie.com', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 1, 1, '2019-08-05 17:01:48', 'YOUNESS', 'ARBOUH', 'unessami', 'Admin', 'ROLE_ADMIN', 1565020062, NULL, 'ljmRxc&Jmrgox3ZYugIYQiSzqheC4N', 1, '/dashboard'),
+(2, 'HAY EL KHAIRàà', 'HAY EL KHAIR', 26000, '+212696318051', 'youness.arbouh1s@gmail.com', '$2y$13$uXkilBRFzlnwOFN7VHPkXucJ1Iz3R1IoLSvAsec3pnJlitBXcpYee', 0, 1, '2019-08-05 17:16:12', 'firstAcheteur', 'lastAcheteur', 'acheteur', 'Acheteur', 'ROLE_ACHETEUR', 1565020457, NULL, 'E.4rYgkSwxyIdaEBZpeXHmS&WON44t', 1, '/dashboard_ac'),
+(3, 'HAY EL KHAIRoo', 'HAY EL KHAIRoo', 2600, '+212696318051', 'youness.arbouh1@gmail.com', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 0, 1, '2019-08-05 17:21:18', 'firstFournisseur', 'lastfrns', 'frsnora', 'Fournisseur', 'ROLE_FOURNISSEUR', 1565021174, NULL, 'mpTGWY.Z9OjHTGSgCwV7apEqapombk', 1, '/dashboard_fr'),
+(4, 'HAY EL KHA22IR', 'cmrsoia cmrsoi2a', 2622820, '+212696318051', 'youness.arbouh4@gmail.com', '$2y$13$D5ucNPg0F4x3NASOS4VYgOPcbK.jT6aW4nmMn42ZBadntqFSZFM1W', 0, 1, '2019-08-05 17:30:47', 'cmrsoia2222', 'cmrsoi2a2223', 'cmrsoia22222d', 'ZoneCommercial', 'ROLE_ZONE', 1565078960, 1, 'HnmaGHUOcAiIecY01yyGKTw@pDugWR', 1, ''),
+(5, 'HAY EL 00', 'HAY EL 11', 26400, '+212696318051', 'youness.arbouh5@gmail.com_deleted-5', '$2y$13$MavlmpQGslmov1KUOE1kMejriI6dW9botMR2bPgmdXoF2aE14.S6S', 1, 0, '2019-08-05 17:32:07', 'Commerc_107', 'Commerciale_107', 'cmrciale_107_deleted-5', 'ZoneCommercial', 'ROLE_ZONE', 1565079056, 1, 'mZiQL@&239srr1aa95P&EuJwWCNZfP', 1, ''),
+(6, 'HAY EL KHAIRqqq1', 'HAY EL qqqqqqqqq1', 26600, '+212696318051', 'youness.arbouh6@gmail.com', '$2y$13$.kjXEmyAnYvRpqhuqKC7te0B2PKlt7aCKkwgIt.IhJbUKnkXbIBHe', 0, 1, '2019-08-05 17:38:54', 'Commerc_2', 'Commerciale_2', 'cmrciale_2', 'Commercial', 'ROLE_COMMERCIAL', NULL, 1, 'MPsPbG9uMXgReM4P66K0zBgW7cxW&g', 31, ''),
+(7, 'HAY EL KHAIRqsdfsdfsdfsdqq1', 'HAY EL qqqqqsdfqqqq1', 266100, '+212696318051', 'youness.arbouh7@gmail.com', '$2y$13$sRp0FwPwQD5Y6zCCp5IQjOQzOXvvrP5UgP8r4wfB2/cU8EXYiJfmW', 0, 0, '2019-08-05 17:40:05', 'Commerciale', 'Commerciale_ok', 'cmrciale_chaalali', 'Commercial', 'ROLE_COMMERCIAL', NULL, 1, 'Q8GJ@OVh@&7F.q5EjZ02Yp7wPb9HBp', 1, ''),
+(8, 'HAY EL KHAIR1', 'kkkkkkkkkkkkkkk', 260500, '+212696318051', 'youness.arbouh155@gmail.com', '$2y$13$MavlmpQGslmov1KUOE1kMejriI6dW9botMR2bPgmdXoF2aE14.S6S', 0, 1, '2019-08-05 18:09:07', '', 'Fournisseur31', '', 'Fournisseur', 'ROLE_FOURNISSEUR', 1565021584, NULL, 'P806FKQ4mSULMT3qhqwNdr8aomwqeV', 1, ''),
+(9, 'HAY EL KHA22IR', 'cmrsoia cmrsoi2a', 2622820, '+212696318051', 'youness.arbouh81@gmail.com', '$2y$13$MavlmpQGslmov1KUOE1kMejriI6dW9botMR2bPgmdXoF2aE14.S6S', 0, 1, '2019-08-06 09:57:42', 'cmrsoia2222', 'cmrsoi2a2223', 'cmrsoia22222', 'Commercial', 'ROLE_COMMERCIAL', NULL, 5, 'cgmFMjrz4HE41YOihJyJgXWEp7Jh8w', 1, ''),
+(10, '36, rue imam al boukhari maarif', '', 20370, '+212696318051', 'youness.arbouh55@gmail.com', '$2y$13$H./PWBuS/z5G4Zb2vnhUUeecSGafd4WpT6HOKJdB2aLajgV2sV57q', 0, 1, '2019-08-06 10:59:17', 'YOUNESS', 'ARBOUH', 'unessami1253', 'Admin', 'ROLE_ADMIN', 1569857840, NULL, 'lcL6@PnSmZRYWhJ0iWbX8cygti4tnj', 26, '/dashboard'),
+(11, 'aaaaaa', NULL, 110055, '+212696318051', 'youness.aaaaa_deleted-11', '$2y$13$EZRR7o1ht29aWb3gr4L23ucEZ1HBcEeeTmm2zf9WayviOR/rVg4xa', 1, 0, '2019-08-06 17:06:31', 'aaaaaaaa', 'aaaaaa', 'aaaaaa_deleted-11', 'Admin', 'ROLE_ADMIN', NULL, NULL, 'iUXeb8wKsOdjYEcnnxQHOGWzexX4mt', NULL, ''),
+(13, 'aaaaaa', 'aaaafff', 110055, '+212696318051', 'youness.arbouh@live.fr', '$2y$13$gUXUfjhomFDca0DFfLkD1eOiYBIYiaB8ld059Ci2SOFNWAfR4kjlS', 1, 1, '2019-08-06 17:15:05', 'aaaaaaa', 'aaaaaaa', 'aaaaaa', 'Fournisseur', 'ROLE_FOURNISSEUR', 1565104755, NULL, NULL, NULL, ''),
+(17, 'aaaaaa', 'aaaafff', 110055, '+212696318051', 'youness.arbouh465@gmail.com', '$2y$13$uXkilBRFzlnwOFN7VHPkXucJ1Iz3R1IoLSvAsec3pnJlitBXcpYee', 0, 1, '2019-08-06 17:47:54', 'aaaaaaa', 'aaaaaaa', 'aaa4aaa', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, 'kwEdkaiENyv4UWckDWZrZWHi&RFvav', NULL, ''),
+(18, 'aaaaaa', 'aaaafff', 110055, '+212696318051', 'youness.arbouh2@live.fr', '$2y$13$uXkilBRFzlnwOFN7VHPkXucJ1Iz3R1IoLSvAsec3pnJlitBXcpYee', 0, 1, '2019-08-06 17:53:34', 'aaaaaaa', 'aaaaaaa', 'unessamgi14123', 'Acheteur', 'ROLE_ACHETEUR', 1565106931, NULL, NULL, NULL, ''),
+(19, 'aaaaaa', 'aaaafff', 110055, '+212696318051', 'youness.arbouh23@live.fr_deleted-19', '$2y$13$CVWGvj.HTHQ.LgONjkrRieX/cy4U4TV.4mCmX5PoiJ8lsVLoktP0.', 1, 1, '2019-08-06 18:02:19', 'aaaaaaa', 'aaaaaaa', 'unessami112253_deleted-19', 'Commercial', 'ROLE_COMMERCIAL', 1565107563, 5, '3jUhm.8ew9bTX9sfufis&F8QWFm0DA', NULL, ''),
+(20, 'aaaaaa', 'aaaafff', 110055, '+212696318051', 'youness.arbouh235@live.fr', '$2y$13$TB.uAeFymkMWG7EIuCHFPux4QPVDLgK5P9rEht59OjdraDWLi5Lju', 1, 0, '2019-08-06 18:10:06', 'aaaaaaa', 'aaaaaaa', 'unessami1123', 'ZoneCommercial', 'ROLE_ZONE', 1565108105, 10, 'OfGWTzltXV4ILr1uDMLHmiwu4.&VaS', NULL, ''),
+(21, 'aaaaaa', 'aaaafff', 110055, '+212696318051', 'youness.arbouh23s5@live.fr', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 0, 0, '2019-08-06 18:16:42', 'aaaaaaa', 'aaaaaaa', 'unessamgi1123', 'Admin', 'ROLE_ADMIN', 1565108326, NULL, 'o.szT3OMtJbESI4JMcP1j0v0nXRI8U', 27, ''),
+(22, 'string', 'string', 44774, '+212696318051', 'yooooo.aaaaa@gggg.ccc', '$2y$13$liU0naR4WW2dCeykm0i8CudqR7oK2.NUN3VEt7Zlk8enWbaAJY52S', 0, 0, '2019-10-14 18:23:20', 'straaaaaing', 'ssssss', 'aaaassaa', 'Admin', 'ROLE_ADMIN', 1571070349, NULL, '0VsOPg2Vq4z6X5C.Ry0Z52x&sxnats', NULL, '/dashboard'),
+(23, '36, rue imam al boukhari maarif', '', 20370, '+212696318051', 'webmaster@3findustrie.com_deleted-23', '$2y$13$YzQdVbAs7qYZEGdi9OFaRO7GwIQJmtE2/VW7oOWmXJzDmUQ3.thi2', 1, 1, '2019-10-15 18:52:10', 'YOUNESS', 'ARBOUH', 'youness.arbouh55@gmail.com_deleted-23', 'Admin', 'ROLE_ADMIN', NULL, NULL, 'Az3Hg9qUqiKpMiBBA2AX&ps8CPczND', NULL, '/dashboard'),
+(24, '36, rue imam al boukhari maarif', '', 20370, '+212696318051', 'wejjster@3findustrie.com', '$2y$13$g3yC6CnuoIaq3RGCLNDjguCNwMUc/knmtgRIozNiannjlmS/gcQqq', 0, 1, '2019-10-16 16:03:29', 'YOUNESS', 'ARBOUH', 'youness.arbouh55', 'ZoneCommercial', 'ROLE_ZONE', NULL, NULL, 'f@NPKNRa9P2O0YBvbATeATAL958fuW', 19, '/dashboard_zc'),
+(25, '36, rue imam al boukhari maarif', '', 20370, '+212696318051', 'webmasterd@3findustrie.com', '$2y$13$e37Nvp/D2Apz9e39ZOgGCe7eKc5Plx3/F6mtTYsxhclhOptF0T1W2', 0, 1, '2019-10-17 16:10:07', 'YOUNESS', 'ARBOUH', 'youness.arbouh5', 'ZoneCommercial', 'ROLE_ZONE', NULL, NULL, 'IDUClPZHBdgIvY20KLZZYhxK@KLLw9', 25, '/dashboard_zc'),
+(26, '36, rue imam al boukhari maarif', '', 20370, '+212696318051', 'webmastder@3findustrie.com_deleted-26', '$2y$13$RYyEg0ynyszBfDpWS/0pW./OYeTPio/Oc2xC1hkU6e/BwGwn03jqu', 1, 1, '2019-10-17 17:08:35', 'YOUNESS', 'ARBOUH', 'youness.ard_deleted-26', 'Admin', 'ROLE_ADMIN', NULL, NULL, '68AhfRTqAzBXaTntSyZjiYeIAYjEU9', 29, '/dashboard'),
+(27, '36, rue imam al boukhari maarif', '', 20370, '+212696318051', 'webmastezzr@3findustrie.com_deleted-27', '$2y$13$MhdQRTZUeTh3dHgCpv3t3um40upICaxR5jauWSWmgZloE2e1h5Q3i', 1, 1, '2019-10-17 17:47:50', 'YOUNESS', 'ARBOUH', 'Youness.arzzzbo2_deleted-27', 'Admin', 'ROLE_ADMIN', NULL, NULL, 'f49VMWNa.YOKfVUItweIQaQup85hdi', 30, '/dashboard'),
+(28, 'abeereer', 'string', 26000, '+212696318051', 'youness.arbouh4566456@gmail.com', '$2y$13$UcBuzb3iaPdeZ6SR8pcqg.7UEBvT9fM49d2NWW7W00ZBv.z.cbld2', 0, 1, '2019-10-28 15:15:33', 'abeereer', 'abeereer', 'abeereer', 'Acheteur', 'ROLE_ACHETEUR', NULL, 6, NULL, 1, '/dashboard_ac'),
+(29, 'abeereer', 'string', 26000, '+212696318051', 'youness.arbohhuh@gmail.com', '$2y$13$t2CFetfIhT2r/dLmQrtuh.BQdK9TpVa/oVKBhsTBklL37aLoaxtQ2', 0, 0, '2019-10-29 12:40:38', 'abeereer', 'abeereer', 'abeereher', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'F@CzvAYmGhG@EdLTPfpXAdReXgDX@o', 1, '/dashboard_ac'),
+(30, 'abeereer', 'string', 26000, '+212696318051', 'youness.arbohshuh@gmail.com', '$2y$13$pQupxbncAVpGoOF.z7LklOHYcUfDFUPjW3gvKVbfriehIb2tuPegu', 0, 0, '2019-10-29 14:36:28', 'abeereer', 'abeereer', 'abeerehesr', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'v2VOtg5JToCjjDqDev6Qv.pjLMSIZ&', 1, '/dashboard_ac'),
+(31, 'abeereer', 'string', 26000, '+212696318051', 'youness.arboshshuh@gmail.com', '$2y$13$pXDV6Oy2rYuK6JFpjoAzHeWeXt9e6CPYgHLyC4QeWJRgCzfsXA0tS', 0, 0, '2019-10-29 14:37:39', 'abeereer', 'abeereer', 'abeerehessr', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'HsYYJwngtOEoR.ZqSyCQAYgHC&OO2f', 1, '/dashboard_ac'),
+(32, 'abeereer', 'string', 26000, '+212696318051', 'youness.arbosghshuh@gmail.com', '$2y$13$X9RfDpZLTfWYkZXVtgLXHO4HmwCBQl7HtAaCiRVYfoj3b5QYJx9cu', 0, 0, '2019-10-29 14:38:33', 'abeereer', 'abeereer', 'abeerehgessr', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'Qy@YDMNCKdl50jeX8maTfaBaluv@kz', 1, '/dashboard_ac'),
+(33, 'abeereer', 'string', 26000, '+212696318051', 'youness.arbosgshshuh@gmail.com', '$2y$13$8o6Y8DOCYECs7u68l9kcw.eueewtgMv90zW7ruBkKNV2mcqIj677e', 0, 0, '2019-10-29 14:42:16', 'abeereer', 'abeereer', 'abeerehsdgessr', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'LvUC@F3kQkytroO7lBg3wFBueSGQoM', 1, '/dashboard_ac'),
+(34, 'abeereer', 'string', 26000, '+212696318051', 'youness.arbosgshsgghuh@gmail.com', '$2y$13$tWZyvFkDKfMVALkLl0XmYuhTvFZW272h8eOHKLaiCs95wdVRWDvZi', 0, 0, '2019-10-29 14:45:09', 'abeereer', 'abeereer', 'abeerehsdghgessr', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'Vd7vagmV8WVFdC1Sz@CHotSgR3z.Hs', 1, '/dashboard_ac'),
+(35, NULL, NULL, NULL, '+212696318051', 'youness.arbosg4shsgghuh@gmail.com', '$2y$13$oVfZ0G7a2aLDofWMViC0Rum17Ni8zdgExElXYkeB64ag5ne8r0J6S', 0, 0, '2019-10-29 14:52:16', 'abeereer', 'abeereer', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'T2JRdH1okgCM4riqFYeYnD.gnygBIi', NULL, '/dashboard_ac'),
+(36, NULL, NULL, NULL, '+212696318051', 'youness.arbosg4shsg1ghuh@gmail.com', '$2y$13$v/zaXlzzkm.EH7yTRhhi6.RJxnKSjyQTKg5uEYpPjd2mH87YHMvO6', 0, 0, '2019-10-29 14:56:40', 'abeereer', 'abeereer', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'j4R6IYOebtSdteLkcu2lh4G6ytZwBN', NULL, '/dashboard_ac'),
+(37, NULL, NULL, NULL, '+212696318051', 'youness.arbosg4shsg1g12huh@gmail.com', '$2y$13$NuqMwxsJByhvLGvpyEIwLeQCmvdJHkNYBqMIl1VK7H0q2H28JtFom', 0, 0, '2019-10-29 14:57:57', 'abeereer', 'abeereer', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'wJORuyueHHDmko5tMeo7Czd.mWxfUH', NULL, '/dashboard_ac'),
+(38, NULL, NULL, NULL, '+212696318051', 'youness.arbouh5@gmail.com', '$2y$13$7OAwDLWuGc27JwUuAM8R.uwMhB5U/59jmNG8eZ/xZvGFlZZ9LJv6.', 0, 0, '2019-10-29 16:52:40', 'ARBOUH', 'Youness', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'ABJnt6@m2EPjHE9yTyLHBFv57bs2hP', NULL, '/dashboard_ac'),
+(39, NULL, NULL, NULL, '0622124578', 'youness.arbouhdf@gmail.com', '$2y$13$hytegz9Iz0jXkOrkx87TPunWkUpVt9qMgVBwzwm85EV1dmh.YZSWK', 0, 0, '2019-10-30 09:31:59', 'ARBOUH', 'Youness', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'FpbiZg8q&I&OOFR1wYN7O@8.T2ZMqm', NULL, '/dashboard_ac'),
+(40, NULL, NULL, NULL, '0622124578f', 'youness.arboufhdf@gmail.com', '$2y$13$lhLYSq2MCR97uIb6jHkWA.pWi.Ze7cdicmfCELIG0bbTcJ11PzCoG', 0, 0, '2019-10-30 09:32:27', 'ARBOUH', 'Youness', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'aAvyk4DWR4LxT6BUbwYaZhBFHJ8Aom', NULL, '/dashboard_ac'),
+(41, NULL, NULL, NULL, '0622331144s', 'youness.arboufh4df@gmail.com', '$2y$13$06As/1//z7wUEu95.RsX1.fOhqkASUQWFVVeoyye9vv4Y9MJPoJ1W', 0, 0, '2019-10-30 09:34:35', 'ARBOUH', 'Youness', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'alLiFnntgtqNEp8HJPr0O2fHgSJb@r', NULL, '/dashboard_ac'),
+(42, NULL, NULL, NULL, 'b0622331144', 'youness.arbocufh4df@gmail.com', '$2y$13$QoSpdJFjsDGaucLj1k7ed.KMeRtfyHTeIOug.DS0JljhCtFAQjdlm', 0, 0, '2019-10-30 09:34:49', 'ARBOUH', 'Youness', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'd5R5Ue97i3.QtL&yLia6RGvWM.FCxZ', NULL, '/dashboard_ac'),
+(43, NULL, NULL, NULL, '0696318051', 'youness.arbouh5d5@gmail.com', '$2y$13$2QGhNMmEBbgQLTnewIV9Auv/hUJNTojwq2DCD7jvHVRSWuAuxuWu2', 0, 0, '2019-10-30 17:39:15', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, '@uenxyu3qTUJynpX1G455JnRXBdMNb', NULL, '/dashboard_ac'),
+(44, NULL, NULL, NULL, '0696318051', 'youness.arbouh5sdd5@gmail.com', '$2y$13$htiGoQ7iMs9uLZdDcIKhH.h6j9.TdoL4sTkqo5SHugeRm8Sd5Td1C', 0, 0, '2019-10-30 17:40:45', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'nta19&pQ8RULdlFbaWFObmOem.JxcD', NULL, '/dashboard_ac'),
+(45, NULL, NULL, NULL, '0696318051', 'youness.arbouh551@gmail.com', '$2y$13$k74aCKb7NkwFzM8GoAr85ejVQTa2aC8qAVQYWopq2R1oJu2C/1pm2', 0, 0, '2019-10-30 17:49:08', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, '0bAbId.LqhtZsp6QhueR7u5pDg3Cx4', NULL, '/dashboard_ac'),
+(46, NULL, NULL, NULL, '0696318051', 'youness.arbouhiu55@gmail.com', '$2y$13$pK2.IJLEpUzWstL3UirnF.WGUkxbTRoQK58FOY8DrCwJWtMI8tldK', 0, 0, '2019-10-30 17:50:35', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'CNf2P8uZh6QRn9Fe9Jmj@Zqb8XX.jr', NULL, '/dashboard_ac'),
+(47, NULL, NULL, NULL, '0696318051', 'youness.arbouh5665@gmail.com', '$2y$13$fIB4YWQ/lbqMbn4p5xteTOo9g2iT.1.z2o826SOvE12dVOUM/BYjq', 0, 0, '2019-10-30 17:53:21', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'pPl0W2BLXDpmHP@evJcFqpOaugxjnp', NULL, '/dashboard_ac'),
+(48, NULL, NULL, NULL, '0696318051', 'youness.arbouh5ss5@gmail.com', '$2y$13$51iq0L6Z9SMcXaRIsvlPlukCsZPAHyO3PhLhgEAWdVs7suHTiA4DW', 0, 0, '2019-10-30 17:54:46', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'vG99MxBxa.nlLLOtSCD1d8wlskB52t', NULL, '/dashboard_ac'),
+(49, NULL, NULL, NULL, '0696318051', 'youness.arbouh55ff@gmail.com', '$2y$13$hA.IlVTPhxnAjR/4F4rvOuZwd80eruRdASxg4O/5TRAOe1QSTtyCq', 0, 0, '2019-10-30 18:04:36', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'xHpEQzXs&fMK@08jF7WSAPG1Xyuy4H', NULL, '/dashboard_ac'),
+(50, NULL, NULL, NULL, '0696318051', 'youness.arbouhsdsds@gmail.com', '$2y$13$mvfJH1lakO0IofkSPn3xPuYrz9Gxtf9S8Wr/AE3hZ4TXtVRwI0YbC', 0, 0, '2019-10-30 18:05:35', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'juYNj0SpheW&gJRIx8TRgEI8hmU4&y', NULL, '/dashboard_ac'),
+(51, NULL, NULL, NULL, '0696318051', 'youness.arbouh12@gmail.com', '$2y$13$jrjFZ1K7z3M.OzVDyDSKA.a/McHPxzDqA0ZjkwRFE54I4hBzfHm2a', 0, 0, '2019-10-31 09:46:18', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, 'oF0kqtXb66134Yb2uYhM5rZoOECC&h', NULL, '/dashboard_fr'),
+(52, NULL, NULL, NULL, '0696318051', 'youness.arbouh555@gmail.com', '$2y$13$cfS6na4wnF3DCJvnfL9Do.7jndbFgTgYTbfbiB/bGJBDO2c6yBqGW', 0, 0, '2019-10-31 09:49:11', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, 'tmpnLcnyB0HL9T88wzxc@bNvPshgrH', NULL, '/dashboard_fr'),
+(53, NULL, NULL, NULL, '0696318051', 'youness.arbouhqdfqf@gmail.com', '$2y$13$6L5blmVWdhzyE2sdOzRwMegfwgbmmhuxrLHlX7DLTvRqep6wimgcO', 0, 0, '2019-10-31 10:00:14', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, '23fPoHQ12UwuHUcfiJUCazoy9II8ij', NULL, '/dashboard_fr'),
+(54, NULL, NULL, NULL, '0696318051', 'youness.arbouhl@gmail.com', '$2y$13$yKWxA8j2kPboSJu6bTq3XuqGaaXPSDGv2H930EQ5v.PnsZw9wbhUq', 0, 1, '2019-10-31 10:05:28', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, '24&HH3wyjaneayetvBnbexirsdfsdKD&s0N', NULL, '/register/step2'),
+(55, NULL, NULL, NULL, '0696318051', 'youness.arbouhqsdsd@gmail.com', '$2y$13$tpYPAkjgPVewskLHOFCNg.1pdwScFdGaIHlJERHWm8x0BSF3rqvJ6', 0, 1, '2019-10-31 12:14:51', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard_fr'),
+(56, NULL, NULL, NULL, '0696318051', 'youness.arbouhxcvxcv@gmail.com', '$2y$13$0U7UEnwF2iXRjwWicDnA5.lkAT5xdMFRJl.MrmEjMr9HczfVf2ozC', 0, 1, '2019-10-31 12:16:40', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/register/step2'),
+(57, NULL, NULL, NULL, '0696318051', 'youness.arbouhkkl@gmail.com', '$2y$13$Gc8Tsg49aAfWTFZ3B.IaxeOzLeGiG1pPmqnrj6.L0xwjgEapwzotO', 0, 1, '2019-10-31 12:21:45', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/register/step2'),
+(58, NULL, NULL, NULL, '0696318051', 'youness.arbouh5sss5@gmail.com', '$2y$13$d1l.y50a.SpfvjVCdfhS5Oj/jN1b03gRRKx8A3tv62Ie06eM00DIC', 0, 0, '2019-10-31 12:23:05', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, 'H7rLvJqTgELcsTP2kiuTI.9hkRuEPU', NULL, '/register/step2'),
+(59, NULL, NULL, NULL, '0696318051', 'youness.arbouhdfdf@gmail.com', '$2y$13$vxiZp6R54paCNbz2EzEG2OPIz2a9Oz/kF.F/HWJbnQxJZ9VvhoYli', 0, 1, '2019-10-31 12:26:05', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/register/step2'),
+(60, NULL, NULL, NULL, '0696318051', 'youness.arboutyth@gmail.com', '$2y$13$O8Mne.hFXglWwLPDwyL.NOe7EoaXD00ZsuVFW2KNeE1UJHtxOXNHq', 0, 1, '2019-10-31 14:31:40', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/register/step2'),
+(61, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhkkk@gmail.com', '$2y$13$BQ6beK.SmtMTTCiO42q09OiiLdwnYU7CKVp0wknshFTrrZptKSt7W', 0, 1, '2019-10-31 15:16:00', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(62, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhljcd@gmail.com', '$2y$13$iJEJStfF7cd12UaW72v0auAzHPP.zTPhOGcA4FzJMfa2phWifxqla', 0, 1, '2019-11-01 16:34:41', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/register/step3'),
+(63, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbodfsfsdfsdfuh@gmail.com', '$2y$13$.gE2tS39CEzPJr29U8Zfc.a.cmnToMA..vazl7Qni7TwprYpvdth.', 0, 1, '2019-11-01 16:39:29', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/register/step3'),
+(64, '36, rue imam al boukhari maarif', 'youness.arbouh55@gmail.com', NULL, '0696318051', 'youness.arbouhdfdfdf@gmail.com', '$2y$13$MTha1LuCim6J6JpmIYCsNOqVUa7ydwgJDNUePlqmSPGbbaBovA7NC', 0, 1, '2019-11-01 16:43:10', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(65, '36, rue imam al boukhari maarif', 'HAY EL KHAIR_21', NULL, '0696318051', 'youness.asdsdsdsdrbouh@gmail.com', '$2y$13$3LsoRp.wt2x4Yl5FYoNw4OTZ.XWi.6z.IShIkbeK1EaO0iM3aa3J.', 0, 1, '2019-11-01 16:46:52', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(66, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouh12s@gmail.com', '$2y$13$eAq2AlDCVUcB9gzZA5J6BuZBT55fwO4OOivrHabTzEFAQQlyT7tgO', 0, 1, '2019-11-01 16:51:04', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(67, '36, RUE IMAM AL BOUKHARI MAARIF', '', NULL, '+212661355218', '3findustrie@gmail.com', '$2y$13$Xnhn/wvI8jzjbjjfGCE3Aea7IW3YGW2B9uCPCYBPgCo.dpBrrbFS2', 0, 1, '2019-11-04 11:03:22', 'Younes', 'HALOUI', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(68, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhdf@gmail.com', '$2y$13$U86NTGZtfq708W56jTUF4O5p1BNRqBpZxRPRF29KMzBzqBIxaU.sG', 0, 1, '2019-11-05 10:03:35', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(69, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhgh@gmail.com', '$2y$13$tjXGiJD./0qq6aGSbBUiou8VfMfV5cO3PvbzYXPwo.wVxMZB9AfX.', 0, 1, '2019-11-05 10:42:39', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(70, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhcc@gmail.com', '$2y$13$L/7EhA8GTglr6gRniYhdA.SVZlozETjA5Fnllj5mBuhRTDbMxdq8W', 0, 1, '2019-11-05 10:46:13', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(71, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhsd@gmail.com', '$2y$13$14HI/1V4MUyTFoLxZn76iuOOkgHSYPIk6kv9G0TQjF1F4lnzLwiNK', 0, 1, '2019-11-05 11:04:11', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(72, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhdfg@gmail.com', '$2y$13$Rs/FDPO.vKtbYKE5gzNdl.R1ANygr/23DkGQuuLDIaUqhb5RibHVm', 0, 1, '2019-11-05 11:09:13', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(73, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arboullllllllllh@gmail.com', '$2y$13$uCucAmjImgBX7VNOVHBfWuXsAgDra9E7Spg2h.o0zjlSxlMUBXcke', 0, 1, '2019-11-05 11:11:44', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(74, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhjikjlkl@gmail.com', '$2y$13$gG.Dj.Lpn/m9JPNKtUpcbeZDjA2HCecBOAJaRnqCNDoEaD0MLxAYe', 0, 1, '2019-11-05 12:40:28', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(75, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhssscq@gmail.com', '$2y$13$XtHRg8ztNRAFMlDoO2UEVuTCuIirNUToCSSlQMo.N2j/1PMAbllgy', 0, 1, '2019-11-05 15:38:55', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(76, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouh@gmail.com', '$2y$13$sM9Bh/7O/2wGuN8XlQmzOek475mmfrQvtDo1RMJOJw5rW27zD6IsW', 0, 1, '2019-11-07 09:30:02', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard');
 
 -- --------------------------------------------------------
 
@@ -1108,12 +1324,12 @@ CREATE TABLE `zone_commercial_pays` (
 
 INSERT INTO `zone_commercial_pays` (`zone_commercial_id`, `pays_id`) VALUES
 (4, 1),
-(4, 2),
-(5, 2),
 (20, 1),
 (24, 1),
-(24, 2),
-(25, 1);
+(25, 1),
+(4, 2),
+(5, 2),
+(24, 2);
 
 --
 -- Index pour les tables déchargées
@@ -1125,15 +1341,9 @@ INSERT INTO `zone_commercial_pays` (`zone_commercial_id`, `pays_id`) VALUES
 ALTER TABLE `acheteur`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_304AFF9DA6E44244` (`pays_id`),
-  ADD KEY `IDX_304AFF9DA73F0036` (`ville_id`);
-
---
--- Index pour la table `acheteur_sous_secteur`
---
-ALTER TABLE `acheteur_sous_secteur`
-  ADD PRIMARY KEY (`sous_secteur_id`,`acheteur_id`),
-  ADD KEY `IDX_C05B6E7E790611EF` (`sous_secteur_id`),
-  ADD KEY `IDX_C05B6E7E96A7BB5F` (`acheteur_id`);
+  ADD KEY `IDX_304AFF9DA73F0036` (`ville_id`),
+  ADD KEY `IDX_304AFF9DFC8B6C6C` (`parent2`),
+  ADD KEY `IDX_304AFF9D9F7E4405` (`secteur_id`);
 
 --
 -- Index pour la table `admin`
@@ -1171,7 +1381,7 @@ ALTER TABLE `commercial`
 -- Index pour la table `commercial_ville`
 --
 ALTER TABLE `commercial_ville`
-  ADD PRIMARY KEY (`commercial_id`,`ville_id`),
+  ADD PRIMARY KEY (`ville_id`,`commercial_id`),
   ADD KEY `IDX_6CBDDBE27854071C` (`commercial_id`),
   ADD KEY `IDX_6CBDDBE2A73F0036` (`ville_id`);
 
@@ -1181,7 +1391,7 @@ ALTER TABLE `commercial_ville`
 ALTER TABLE `demande_achat`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_D077077F96A7BB5F` (`acheteur_id`),
-  ADD KEY `IDX_D077077F790611EF` (`sous_secteur_id`);
+  ADD KEY `search_idx` (`statut`);
 
 --
 -- Index pour la table `demande_achat_attachement`
@@ -1190,6 +1400,14 @@ ALTER TABLE `demande_achat_attachement`
   ADD PRIMARY KEY (`demande_achat_id`,`attachement_id`),
   ADD KEY `IDX_B1D67F41B8CC98D5` (`demande_achat_id`),
   ADD KEY `IDX_B1D67F41A05591E0` (`attachement_id`);
+
+--
+-- Index pour la table `demande_ha_sous_secteur`
+--
+ALTER TABLE `demande_ha_sous_secteur`
+  ADD PRIMARY KEY (`sous_secteur_id`,`demande_achat_id`),
+  ADD KEY `IDX_457CE2F8790611EF` (`sous_secteur_id`),
+  ADD KEY `IDX_457CE2F8B8CC98D5` (`demande_achat_id`);
 
 --
 -- Index pour la table `diffusion_demande`
@@ -1265,7 +1483,7 @@ ALTER TABLE `zone_commercial`
 -- Index pour la table `zone_commercial_pays`
 --
 ALTER TABLE `zone_commercial_pays`
-  ADD PRIMARY KEY (`zone_commercial_id`,`pays_id`),
+  ADD PRIMARY KEY (`pays_id`,`zone_commercial_id`),
   ADD KEY `IDX_723D3B09675444E0` (`zone_commercial_id`),
   ADD KEY `IDX_723D3B09A6E44244` (`pays_id`);
 
@@ -1277,7 +1495,7 @@ ALTER TABLE `zone_commercial_pays`
 -- AUTO_INCREMENT pour la table `attachement`
 --
 ALTER TABLE `attachement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT pour la table `avatar`
@@ -1289,25 +1507,25 @@ ALTER TABLE `avatar`
 -- AUTO_INCREMENT pour la table `black_listes`
 --
 ALTER TABLE `black_listes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT pour la table `pays`
 --
 ALTER TABLE `pays`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT pour la table `secteur`
@@ -1319,13 +1537,13 @@ ALTER TABLE `secteur`
 -- AUTO_INCREMENT pour la table `sous_secteur`
 --
 ALTER TABLE `sous_secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=422;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=423;
 
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT pour la table `ville`
@@ -1341,16 +1559,11 @@ ALTER TABLE `ville`
 -- Contraintes pour la table `acheteur`
 --
 ALTER TABLE `acheteur`
+  ADD CONSTRAINT `FK_304AFF9D9F7E4405` FOREIGN KEY (`secteur_id`) REFERENCES `secteur` (`id`),
   ADD CONSTRAINT `FK_304AFF9DA6E44244` FOREIGN KEY (`pays_id`) REFERENCES `pays` (`id`),
   ADD CONSTRAINT `FK_304AFF9DA73F0036` FOREIGN KEY (`ville_id`) REFERENCES `ville` (`id`),
-  ADD CONSTRAINT `FK_304AFF9DBF396750` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `acheteur_sous_secteur`
---
-ALTER TABLE `acheteur_sous_secteur`
-  ADD CONSTRAINT `FK_C05B6E7E790611EF` FOREIGN KEY (`sous_secteur_id`) REFERENCES `sous_secteur` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `FK_C05B6E7E96A7BB5F` FOREIGN KEY (`acheteur_id`) REFERENCES `acheteur` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `FK_304AFF9DBF396750` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_304AFF9DFC8B6C6C` FOREIGN KEY (`parent2`) REFERENCES `acheteur` (`id`);
 
 --
 -- Contraintes pour la table `admin`
@@ -1382,7 +1595,6 @@ ALTER TABLE `commercial_ville`
 -- Contraintes pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
-  ADD CONSTRAINT `FK_D077077F790611EF` FOREIGN KEY (`sous_secteur_id`) REFERENCES `sous_secteur` (`id`),
   ADD CONSTRAINT `FK_D077077F96A7BB5F` FOREIGN KEY (`acheteur_id`) REFERENCES `acheteur` (`id`);
 
 --
@@ -1391,6 +1603,13 @@ ALTER TABLE `demande_achat`
 ALTER TABLE `demande_achat_attachement`
   ADD CONSTRAINT `FK_B1D67F41A05591E0` FOREIGN KEY (`attachement_id`) REFERENCES `attachement` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `FK_B1D67F41B8CC98D5` FOREIGN KEY (`demande_achat_id`) REFERENCES `demande_achat` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `demande_ha_sous_secteur`
+--
+ALTER TABLE `demande_ha_sous_secteur`
+  ADD CONSTRAINT `FK_457CE2F8790611EF` FOREIGN KEY (`sous_secteur_id`) REFERENCES `sous_secteur` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_457CE2F8B8CC98D5` FOREIGN KEY (`demande_achat_id`) REFERENCES `demande_achat` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `diffusion_demande`
