@@ -58,7 +58,8 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
                ['visiteDemandeAchat',EventPriorities::PRE_WRITE ],
                ['deleteDemeandeAchat',EventPriorities::PRE_WRITE ],
             //   ['AccessControll',EventPriorities::PRE_WRITE ],
-               ['putDemandeAchat',EventPriorities::PRE_WRITE ]
+               ['putDemandeAchat',EventPriorities::PRE_WRITE ],
+               ['sendEmails',EventPriorities::POST_WRITE ]
            ]
        ];
     }
@@ -74,12 +75,47 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
         }
 
         $demande->setDateModification(new \DateTime());
-        if($demande->getStatut() === 1 && $demande->sendEmail){
-            $demande->setNbrShare($this->mailer->alerterFournisseurs($demande));
+
+        /**
+         * @var UserInterface $acheteur
+         */
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        if($user->getRoles()[0] === 'ROLE_ACHETEUR'){
+            $demande->setStatut(0);
+        }
+
+//        if($demande->getStatut() === 1 && $demande->sendEmail){
+//            $demande->setNbrShare($this->mailer->alerterFournisseurs($demande));
+//        }
+        if($demande->getStatut() === 1 ){
+            $demande->setMotifRejet('');
         }
         if($demande->sendEmail){
             $demande->setIsAlerted(true);
         }
+
+    }
+
+    public function sendEmails(GetResponseForControllerResultEvent $event){
+
+        $demande = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        //$demande->setNbrShare(5);
+
+        if(!$demande instanceof  DemandeAchat  || $method !== Request::METHOD_PUT ){
+            return;
+        }
+
+
+        if( $demande->getStatut() !== 1 || !$demande->sendEmail) {
+           return;
+        }
+
+        $this->mailer->alerterFournisseurs($demande);
+        $this->entityManager->flush();
+
 
     }
     public function visiteDemandeAchat(GetResponseForControllerResultEvent $event){

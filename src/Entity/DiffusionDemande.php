@@ -56,7 +56,7 @@ class DiffusionDemande
     private $fournisseur;
 
     /**
-     * @ORM\ManyToOne(targetEntity="DemandeAchat", inversedBy="diffusionsdemandes")
+     * @ORM\ManyToOne(targetEntity="DemandeAchat", inversedBy="diffusionsdemandes",cascade={"persist"})
      */
     private $demande;
 

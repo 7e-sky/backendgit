@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Interfaces\CreatedEntityInterface;
@@ -15,6 +18,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *     "description":"partial"
+ *      }
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"reference","description","dateExpiration","created","budget","isPublic","sousSecteurs.name"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -42,7 +52,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "delete"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"}
  *     },
  *
- *     attributes={"order"={"created":"desc"}},
+ *     attributes={"pagination_items_per_page"=10},
  *     subresourceOperations={
  *          "api_acheteurs_demandes_get_subresource"={
  *              "security"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
@@ -52,6 +62,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\DemandeAchatRepository")
+ * @ORM\Table(name="demande_achat",indexes={@ORM\Index(name="search_idx", columns={"statut"})})
  * @UniqueEntity("reference", groups={"postValidation","putValidation"})
  */
 class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
@@ -66,7 +77,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
-     * @Groups({"get-from-demande"})
+     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
      */
     private $acheteur;
 
@@ -79,7 +90,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get-from-demande","post","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
      * @Assert\NotBlank(groups={"postValidation"})
      */
     private $reference;
@@ -166,7 +177,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\ManyToMany(targetEntity="Attachement")
      * @ORM\JoinTable()
-     * @Groups({"put","post"})
+     * @Groups({"get-from-demande","put","post"})
      * @Assert\NotBlank()
      * @ApiSubresource()
      */
@@ -183,15 +194,40 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
 
     /**
-     * @ORM\OneToMany(targetEntity="DiffusionDemande", mappedBy="demande")
+     * @ORM\OneToMany(targetEntity="DiffusionDemande", mappedBy="demande",cascade={"persist"})
+     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
      * @ApiSubresource()
      */
     private $diffusionsdemandes;
 
 
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     * @Groups({"get-from-demande","put-admin","get-from-acheteur_demandes"})
+     */
+    private $motifRejet;
+
+
+    /**
+     * @ORM\Column(type="decimal")
+     * @Assert\NotBlank()
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
+     */
+    private $budget ;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
+     * @Assert\NotNull()
+     */
+    private $del;
+
+
     public function __construct()
     {
         $this->statut=false;
+        $this->del=false;
         $this->isAnonyme=false;
         $this->isAlerted=false;
         $this->isPublic=false;
@@ -425,6 +461,13 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
         return $this->diffusionsdemandes;
     }
 
+    public function addDiffusionsdemande(DiffusionDemande $diffusionDemande){
+
+        $this->diffusionsdemandes->add($diffusionDemande);
+
+    }
+
+
     /**
      * @return mixed
      */
@@ -440,6 +483,57 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     {
         $this->langueP = $langueP;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getMotifRejet()
+    {
+        return $this->motifRejet;
+    }
+
+    /**
+     * @param mixed $motifRejet
+     */
+    public function setMotifRejet($motifRejet): void
+    {
+        $this->motifRejet = $motifRejet;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBudget()
+    {
+        return $this->budget;
+    }
+
+    /**
+     * @param mixed $budget
+     */
+    public function setBudget($budget): void
+    {
+        $this->budget = $budget;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDel()
+    {
+        return $this->del;
+    }
+
+    /**
+     * @param mixed $del
+     */
+    public function setDel($del): void
+    {
+        $this->del = $del;
+    }
+
+
+
 
 
 

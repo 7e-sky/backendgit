@@ -21,6 +21,8 @@ class AuthenticationSuccessListener{
             return;
         }
 
+
+
         $data['user']=[
             'id'=>$user->getId(),
             'role'=>$user->getRoles()[0],

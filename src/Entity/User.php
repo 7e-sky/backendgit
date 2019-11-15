@@ -63,7 +63,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville"})
+     * @Groups({"get","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville","get-from-acheteur_demandes"})
      */
     protected $id;
 
@@ -114,7 +114,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=35)
-     * @Groups({"get","put","post"})
+     * @Groups({"get","put","post","get-from-demande"})
      * @AssertPhoneNumber(
      *     type="mobile",
      *     defaultRegion="MA",

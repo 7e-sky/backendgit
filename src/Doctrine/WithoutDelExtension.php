@@ -9,6 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Acheteur;
 use App\Entity\Admin;
 use App\Entity\Commercial;
+use App\Entity\DemandeAchat;
 use App\Entity\Fournisseur;
 use App\Entity\Pays;
 use App\Entity\Secteur;
@@ -46,6 +47,7 @@ final class WithoutDelExtension implements QueryCollectionExtensionInterface, Qu
             Commercial::class !== $resourceClass &&
             Acheteur::class !== $resourceClass &&
             Fournisseur::class !== $resourceClass &&
+            DemandeAchat::class !== $resourceClass &&
             Admin::class !== $resourceClass
         )
         {

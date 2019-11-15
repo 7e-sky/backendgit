@@ -30,7 +30,7 @@ use App\Controller\DemandeAchat\UploadAttachementAction;
  *
  *     }
  * },
- *     itemOperations={"put","get"},
+ *     itemOperations={"put","get","delete"},
  *     normalizationContext={
  *      "groups"={"get"}
  *     }
@@ -54,12 +54,25 @@ class Attachement
     private $url;
 
     /**
-     * @Vich\UploadableField(mapping="demande",fileNameProperty="url")
+     * @Vich\UploadableField(mapping="demande",fileNameProperty="url",size="fileSize",mimeType="type")
      * @Assert\NotNull()
      * @Assert\File(maxSize="1M")
      */
     private $file;
 
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"get","get-from-demande"})
+     * @var integer
+     */
+    private $fileSize;
+
+    /**
+     * @ORM\Column(nullable=true)
+     * @Groups({"get","get-from-demande"})
+     */
+    private $type;
 
 
     public function getId()
@@ -89,6 +102,40 @@ class Attachement
     {
         $this->file = $file;
     }
+
+    /**
+     * @return int
+     */
+    public function getFileSize(): int
+    {
+        return $this->fileSize;
+    }
+
+    /**
+     * @param int $fileSize
+     */
+    public function setFileSize(?int $fileSize): void
+    {
+        $this->fileSize = $fileSize;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type): void
+    {
+        $this->type = $type;
+    }
+
+
 
     /**
      * @Assert\Callback

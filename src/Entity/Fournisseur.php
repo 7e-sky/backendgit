@@ -66,7 +66,7 @@ class Fournisseur extends User
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="fournisseurs")
+     * @ORM\ManyToMany(targetEntity="SousSecteur")
      * @ORM\JoinTable(name="fournisseur_sous_secteur")
      * @Groups({"get","put","post"})
      * @Assert\NotBlank(groups={"putValidation"})

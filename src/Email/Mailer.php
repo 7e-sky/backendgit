@@ -79,16 +79,23 @@ class Mailer
         $body = $this->twig->render(
             'email/alertClients.html.twig',['demande'=>$demande]
         );
+
+        $ids_sous_secteurs = [];
+
+        foreach ($demande->getSousSecteurs() as $sousSecteur){
+            array_push($ids_sous_secteurs,$sousSecteur->getId());
+        }
         $fournisseurs = $this->fournisseurRepository->createQueryBuilder('f')
             ->innerJoin('f.sousSecteurs','s')
-            ->where('s.id = :sous_secteurs_id')
+            ->where('s.id in (:sous_secteurs_id)')
             ->andWhere('s.del = 0')
             ->andWhere('f.del = 0')
             ->andWhere('f.isactif = 1')
             ->select('f')
-            ->setParameter('sous_secteurs_id', $demande->getSousSecteur())
+            ->setParameter('sous_secteurs_id', $ids_sous_secteurs)
             ->getQuery()
             ->getResult();
+
 
         $fournisseurs_blacklists = $this->blackListesRepository->createQueryBuilder('b')
             ->where('b.acheteur = :acheteur')
@@ -98,6 +105,7 @@ class Mailer
             ->getResult();
 
 
+        $nbrshare = 0;
         foreach ($fournisseurs as $fournisseur){
 
             $trouve = false;
@@ -119,15 +127,14 @@ class Mailer
                 $diffusionDemande->setDateDiffusion(new \DateTime());
                 $diffusionDemande->setFournisseur($fournisseur);
                 $diffusionDemande->setDemande($demande);
-                $this->entityManager->flush();
+                $demande->addDiffusionsdemande($diffusionDemande);
+                $nbrshare++;
+
             }
 
         }
-        return count($fournisseurs);
-
-
-
-
+        //return $nbrshare;
 
     }
+
 }
