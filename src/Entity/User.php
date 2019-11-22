@@ -76,7 +76,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put","post","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville"})
+     * @Groups({"get","put","post","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -84,7 +84,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put","post","get-from-sous-secteur","get-from-pays","get-from-demande","get-from-ville"})
+     * @Groups({"get","put","post","get-from-sous-secteur","get-from-pays","get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -131,7 +131,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @Assert\NotBlank(groups={"postValidation"})
      * @Assert\Email(groups={"postValidation"})
      * @Assert\Length(min=10,max=255,groups={"postValidation"})
-     * @Groups({"get-admin","post","put-admin"})
+     * @Groups({"get-admin","get-owner","post","put-admin"})
      */
     protected $email;
 
@@ -209,7 +209,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @Assert\Length(min=6,max=255)
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
-     *     message="erreur pass",
+     *     message="Le mot de passe doit être de 6 caractères minimum combinant des lettres majuscules et minuscules et au moins un chiffre",
      *
      * )
      */

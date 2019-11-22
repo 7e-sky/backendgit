@@ -52,9 +52,8 @@ class Pays
 {
     /**
      * @ORM\Id()
-     * @Groups({"get-from-pays"})
      * @ORM\GeneratedValue()
-     * Groups({"get-from-pays","get"})
+     * @Groups({"get-from-pays","get"})
      * @ORM\Column(type="integer")
      */
     private $id;

@@ -59,7 +59,7 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
                ['deleteDemeandeAchat',EventPriorities::PRE_WRITE ],
             //   ['AccessControll',EventPriorities::PRE_WRITE ],
                ['putDemandeAchat',EventPriorities::PRE_WRITE ],
-               ['sendEmails',EventPriorities::POST_WRITE ]
+              // ['sendEmails',EventPriorities::POST_WRITE ]
            ]
        ];
     }

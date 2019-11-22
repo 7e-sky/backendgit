@@ -19,6 +19,11 @@ class BlackListesRepository extends ServiceEntityRepository
         parent::__construct($registry, BlackListes::class);
     }
 
+    public function findByUniqueCriteria(array $criteria)
+    {
+        // would use findOneBy() but Symfony expects a Countable object
+        return $this->_em->getRepository(BlackListes::class)->findOneBy($criteria);
+    }
     // /**
     //  * @return BlackListes[] Returns an array of BlackListes objects
     //  */

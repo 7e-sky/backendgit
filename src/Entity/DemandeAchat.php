@@ -21,7 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
- *     "description":"partial"
+ *     "description": "partial",
+ *     "reference": "partial",
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"reference","description","dateExpiration","created","budget","isPublic","sousSecteurs.name"})
@@ -62,7 +63,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\DemandeAchatRepository")
- * @ORM\Table(name="demande_achat",indexes={@ORM\Index(name="search_idx", columns={"statut"})})
+ * @ORM\EntityListeners({"App\EventListener\DemandeAchatChangedNotifier"})
+ * @ORM\Table(name="demande_achat",indexes={@ORM\Index(name="search_idx", columns={"statut","del"})})
  * @UniqueEntity("reference", groups={"postValidation","putValidation"})
  */
 class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface

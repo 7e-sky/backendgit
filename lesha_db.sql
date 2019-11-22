@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 15 nov. 2019 à 17:26
+-- Généré le :  ven. 22 nov. 2019 à 18:08
 -- Version du serveur :  10.1.31-MariaDB
 -- Version de PHP :  7.2.4
 
@@ -79,7 +79,7 @@ INSERT INTO `acheteur` (`id`, `pays_id`, `ville_id`, `societe`, `parent2`, `civi
 (72, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
 (73, 1, 2, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
 (74, 2, 33, '3f industrie', NULL, 'M.', NULL, '', '', '', 1),
-(76, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '0522201475', 'https://www.d.com', 'kkkkkkkkkkk', 1);
+(76, 1, 1, '3f industrie2', NULL, 'M.', '124554474445612', '0622201475', 'https://www.d.fr', 'skkkkkkkkkkk', 3);
 
 -- --------------------------------------------------------
 
@@ -167,7 +167,13 @@ INSERT INTO `attachement` (`id`, `url`, `file_size`, `type`) VALUES
 (84, '5dcc0dced3485368884472.jpg', 21519, 'image/jpeg'),
 (85, '5dcd7afd886b2320222661.jpg', 21519, 'image/jpeg'),
 (86, '5dcd8b68cc6b7826721087.jpg', 21519, 'image/jpeg'),
-(87, '5dcd8f846c8bd831938608.jpg', 8864, 'image/jpeg');
+(87, '5dcd8f846c8bd831938608.jpg', 8864, 'image/jpeg'),
+(88, '5dd64e92b71a2474530957.doc', 83456, 'application/msword'),
+(89, '5dd64ec2d4ae2368177952.doc', 83456, 'application/msword'),
+(90, '5dd64f2b073b2505359657.doc', 83456, 'application/msword'),
+(91, '5dd64f41ede83672399745.doc', 83456, 'application/msword'),
+(92, '5dd64f772a509532426686.doc', 83456, 'application/msword'),
+(93, '5dd64f89534cc912135849.doc', 83456, 'application/msword');
 
 -- --------------------------------------------------------
 
@@ -216,7 +222,11 @@ INSERT INTO `avatar` (`id`, `url`) VALUES
 (29, '5da883f157336819105949.png'),
 (30, '5da88d2340759715353386.jpg'),
 (31, '5da998970480e538063043.jpeg'),
-(32, '5da9e5ad981db017469990.png');
+(32, '5da9e5ad981db017469990.png'),
+(33, '5dd7fc9dbd65f256435782.png'),
+(34, '5dd7fcd8128ca705073747.png'),
+(35, '5dd7fcfa722c7806280573.png'),
+(36, '5dd7fd413f5d6763820939.jpg');
 
 -- --------------------------------------------------------
 
@@ -237,8 +247,7 @@ CREATE TABLE `black_listes` (
 --
 
 INSERT INTO `black_listes` (`id`, `fournisseur_id`, `raison`, `created`, `acheteur_id`) VALUES
-(1, 17, 'not important', '2019-08-08 13:56:58', 18),
-(2, 75, 'Ok', '2019-11-15 14:41:17', 76);
+(51, 75, 'makantfahmouch ', '2019-11-21 09:23:05', 76);
 
 -- --------------------------------------------------------
 
@@ -316,7 +325,7 @@ CREATE TABLE `demande_achat` (
 
 INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `langue_p`, `description_en`, `description_es`, `motif_rejet`, `budget`, `del`) VALUES
 (1, 76, 0, 'aaaaa0_deleted-1', 'azertyuiop', '2019-11-14 16:59:00', 1, 0, 0, '2019-11-14 16:59:52', '2019-11-15 11:38:56', 0, 0, NULL, NULL, NULL, NULL, '100000', 1),
-(2, 76, 1, 'aaaaa0q', 'azertyuioppok', '2019-11-22 23:03:00', 1, 0, 3, '2019-11-14 17:03:25', '2019-11-15 16:49:35', 1, 0, NULL, NULL, NULL, '', '25130', 0),
+(2, 76, 1, 'aaaaa0q', 'azertyuioppok', '2019-11-22 23:03:00', 1, 0, 5, '2019-11-14 17:03:25', '2019-11-19 14:47:55', 1, 0, NULL, NULL, NULL, '', '25130', 0),
 (3, 76, 0, 'qdqdsqsd', 'azqsdazeqd', '2019-11-14 14:03:00', 1, 0, 0, '2019-11-14 17:04:17', '2019-11-14 17:10:38', 0, 0, NULL, NULL, NULL, NULL, '11555', 0);
 
 -- --------------------------------------------------------
@@ -1156,13 +1165,13 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (58, NULL, NULL, NULL, '0696318051', 'youness.arbouh5sss5@gmail.com', '$2y$13$d1l.y50a.SpfvjVCdfhS5Oj/jN1b03gRRKx8A3tv62Ie06eM00DIC', 0, 0, '2019-10-31 12:23:05', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, 'H7rLvJqTgELcsTP2kiuTI.9hkRuEPU', NULL, '/register/step2'),
 (59, NULL, NULL, NULL, '0696318051', 'youness.arbouhdfdf@gmail.com', '$2y$13$vxiZp6R54paCNbz2EzEG2OPIz2a9Oz/kF.F/HWJbnQxJZ9VvhoYli', 0, 1, '2019-10-31 12:26:05', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/register/step2'),
 (60, NULL, NULL, NULL, '0696318051', 'youness.arboutyth@gmail.com', '$2y$13$O8Mne.hFXglWwLPDwyL.NOe7EoaXD00ZsuVFW2KNeE1UJHtxOXNHq', 0, 1, '2019-10-31 14:31:40', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/register/step2'),
-(61, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhkkk@gmail.com', '$2y$13$BQ6beK.SmtMTTCiO42q09OiiLdwnYU7CKVp0wknshFTrrZptKSt7W', 0, 1, '2019-10-31 15:16:00', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(61, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'it.3findustrie@gmail.com', '$2y$13$BQ6beK.SmtMTTCiO42q09OiiLdwnYU7CKVp0wknshFTrrZptKSt7W', 0, 1, '2019-10-31 15:16:00', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (62, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhljcd@gmail.com', '$2y$13$iJEJStfF7cd12UaW72v0auAzHPP.zTPhOGcA4FzJMfa2phWifxqla', 0, 1, '2019-11-01 16:34:41', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/register/step3'),
 (63, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbodfsfsdfsdfuh@gmail.com', '$2y$13$.gE2tS39CEzPJr29U8Zfc.a.cmnToMA..vazl7Qni7TwprYpvdth.', 0, 1, '2019-11-01 16:39:29', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/register/step3'),
 (64, '36, rue imam al boukhari maarif', 'youness.arbouh55@gmail.com', NULL, '0696318051', 'youness.arbouhdfdfdf@gmail.com', '$2y$13$MTha1LuCim6J6JpmIYCsNOqVUa7ydwgJDNUePlqmSPGbbaBovA7NC', 0, 1, '2019-11-01 16:43:10', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (65, '36, rue imam al boukhari maarif', 'HAY EL KHAIR_21', NULL, '0696318051', 'youness.asdsdsdsdrbouh@gmail.com', '$2y$13$3LsoRp.wt2x4Yl5FYoNw4OTZ.XWi.6z.IShIkbeK1EaO0iM3aa3J.', 0, 1, '2019-11-01 16:46:52', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (66, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouh12s@gmail.com', '$2y$13$eAq2AlDCVUcB9gzZA5J6BuZBT55fwO4OOivrHabTzEFAQQlyT7tgO', 0, 1, '2019-11-01 16:51:04', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
-(67, '36, RUE IMAM AL BOUKHARI MAARIF', '', NULL, '+212661355218', '3findustrie@gmail.com', '$2y$13$Xnhn/wvI8jzjbjjfGCE3Aea7IW3YGW2B9uCPCYBPgCo.dpBrrbFS2', 0, 1, '2019-11-04 11:03:22', 'Younes', 'HALOUI', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(67, '36, RUE IMAM AL BOUKHARI MAARIF', '', NULL, '+212661355218', 'webmaster@lesachatsindustriels.com', '$2y$13$Xnhn/wvI8jzjbjjfGCE3Aea7IW3YGW2B9uCPCYBPgCo.dpBrrbFS2', 0, 1, '2019-11-04 11:03:22', 'Younes', 'HALOUI', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (68, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhdf@gmail.com', '$2y$13$U86NTGZtfq708W56jTUF4O5p1BNRqBpZxRPRF29KMzBzqBIxaU.sG', 0, 1, '2019-11-05 10:03:35', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (69, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhgh@gmail.com', '$2y$13$tjXGiJD./0qq6aGSbBUiou8VfMfV5cO3PvbzYXPwo.wVxMZB9AfX.', 0, 1, '2019-11-05 10:42:39', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (70, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhcc@gmail.com', '$2y$13$L/7EhA8GTglr6gRniYhdA.SVZlozETjA5Fnllj5mBuhRTDbMxdq8W', 0, 1, '2019-11-05 10:46:13', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
@@ -1171,7 +1180,7 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (73, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arboullllllllllh@gmail.com', '$2y$13$uCucAmjImgBX7VNOVHBfWuXsAgDra9E7Spg2h.o0zjlSxlMUBXcke', 0, 1, '2019-11-05 11:11:44', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (74, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhjikjlkl@gmail.com', '$2y$13$gG.Dj.Lpn/m9JPNKtUpcbeZDjA2HCecBOAJaRnqCNDoEaD0MLxAYe', 0, 1, '2019-11-05 12:40:28', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (75, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhssscq@gmail.com', '$2y$13$XtHRg8ztNRAFMlDoO2UEVuTCuIirNUToCSSlQMo.N2j/1PMAbllgy', 0, 1, '2019-11-05 15:38:55', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
-(76, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouh@gmail.com', '$2y$13$sM9Bh/7O/2wGuN8XlQmzOek475mmfrQvtDo1RMJOJw5rW27zD6IsW', 0, 1, '2019-11-07 09:30:02', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard');
+(76, '36, rue i2', 'adresse ee 23', 26000, '0696318051', 'youness.arbouh@gmail.com', '$2y$13$T7KXkmI59DJgTD0yBavZq.z/1zBtMRSTTAP62O9XbXhrI4qczjJhm', 0, 1, '2019-11-07 09:30:02', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', 1574433080, NULL, NULL, 36, '/dashboard');
 
 -- --------------------------------------------------------
 
@@ -1495,19 +1504,19 @@ ALTER TABLE `zone_commercial_pays`
 -- AUTO_INCREMENT pour la table `attachement`
 --
 ALTER TABLE `attachement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT pour la table `avatar`
 --
 ALTER TABLE `avatar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT pour la table `black_listes`
 --
 ALTER TABLE `black_listes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT pour la table `demande_achat`
@@ -1519,7 +1528,7 @@ ALTER TABLE `demande_achat`
 -- AUTO_INCREMENT pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- AUTO_INCREMENT pour la table `pays`

@@ -11,7 +11,12 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Acheteur;
-use App\Entity\User;
+use App\Entity\BlackListes;
+use App\Repository\BlackListesRepository;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -26,17 +31,33 @@ class BlackListesSubscriber implements EventSubscriberInterface
      * @var TokenStorageInterface
      */
     private $tokenStorage;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+    /**
+     * @var BlackListesRepository
+     */
+    private $blackListesRepository;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function __construct(TokenStorageInterface $tokenStorage,
+                                BlackListesRepository $blackListesRepository,
+                                EntityManagerInterface $entityManager
+)
     {
 
         $this->tokenStorage = $tokenStorage;
+        $this->entityManager = $entityManager;
+        $this->blackListesRepository = $blackListesRepository;
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => ['AccessControll',EventPriorities::PRE_WRITE]
+            KernelEvents::VIEW => [
+                ['AccessControll',EventPriorities::PRE_WRITE],
+                ['postBlackListe',EventPriorities::PRE_WRITE],
+                ]
         ];
     }
 
@@ -74,6 +95,34 @@ class BlackListesSubscriber implements EventSubscriberInterface
             }
         }
 
+
+    }
+    public function postBlackListe(GetResponseForControllerResultEvent $event){
+
+        $entity = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+        /**
+         * @var UserInterface $acheteur
+         */
+        $acheteur = $this->tokenStorage->getToken()->getUser();
+
+        if(!$entity instanceof  BlackListes  || !in_array($method,[Request::METHOD_POST,Request::METHOD_PUT])  ){
+            return;
+        }
+        if(!$acheteur instanceof Acheteur){
+            return;
+        }
+
+        $entities= $this->blackListesRepository->findByUniqueCriteria(['acheteur'=>$acheteur,'fournisseur'=>$entity->getFournisseur()]);
+
+        if($entities && $method === Request::METHOD_PUT){
+            if($entity->getId() !== $entities->getId()){
+                throw new Exception('Cette société déjà black listé');
+            }
+        }
+        elseif($entities && $method === Request::METHOD_POST){
+                throw new Exception('Cette société déjà black listé');
+        }
 
     }
 }

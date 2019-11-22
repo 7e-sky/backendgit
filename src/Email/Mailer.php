@@ -133,6 +133,7 @@ class Mailer
             }
 
         }
+        $this->entityManager->flush();
         //return $nbrshare;
 
     }

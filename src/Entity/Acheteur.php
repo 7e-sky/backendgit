@@ -116,7 +116,7 @@ class Acheteur extends User
 
     /**
      * @ORM\OneToMany(targetEntity="BlackListes", mappedBy="acheteur")
-     * @ApiSubresource()
+     * @ApiSubresource(maxDepth=1)
      */
     private $blacklistes;
 

@@ -45,3 +45,7 @@ services:
             tags:
                 - { name: api_platform.doctrine.orm.query_extension.collection }
                 - { name: api_platform.doctrine.orm.query_extension.item }
+    demandeachat_listner:
+            class: App\EventListener\DemandeAchatChangedNotifier
+            tags:
+                - { name: doctrine.orm.entity_listener, lazy: true }

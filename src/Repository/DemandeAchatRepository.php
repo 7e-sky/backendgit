@@ -18,6 +18,9 @@ class DemandeAchatRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, DemandeAchat::class);
     }
+    /**
+     * @param string[] $criteria format: array('user' => <user_id>, 'name' => <name>)
+     */
 
     // /**
     //  * @return DemandeAchat[] Returns an array of DemandeAchat objects

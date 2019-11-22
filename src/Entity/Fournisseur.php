@@ -12,6 +12,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 /**
  * @ApiResource(
@@ -23,7 +25,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  *              "validation_groups"={"postValidation"},
  *
  *     },
- *     "get"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *     "get"={"access_control"="is_granted('ROLE_ADMIN') or is_granted('ROLE_ACHETEUR')"}
  *      },
  *     itemOperations={
  *     "get"={
@@ -45,6 +47,20 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  * )
  * @ApiFilter(
  *     BooleanFilter::class,properties={"del"}
+ * )
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *     "societe": "partial",
+ *      }
+ * )
+ * @ApiFilter(
+ *     PropertyFilter::class,
+ *     arguments={
+ *     "parameterName": "props",
+ *     "overrideDefaultProperties": false,
+ *     "whitelist": {"id","societe"},
+ *      }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\FournisseurRepository")
  *
@@ -77,7 +93,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist"})
+     * @Groups({"get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      */
