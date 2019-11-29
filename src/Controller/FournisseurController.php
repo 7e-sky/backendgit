@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/api")
  */
-class AdminController extends AbstractController
+class FournisseurController extends AbstractController
 {
 
     /**
@@ -37,7 +37,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/example-component")
+     * @Route("/demandes_prix")
      */
     public function getCountDemandesEnCours(){
 

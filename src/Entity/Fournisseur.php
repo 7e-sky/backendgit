@@ -86,7 +86,7 @@ class Fournisseur extends User
      * @ORM\JoinTable(name="fournisseur_sous_secteur")
      * @Groups({"get","put","post"})
      * @Assert\NotBlank(groups={"putValidation"})
-     * @ApiSubresource()
+     * @ApiSubresource(maxDepth=1)
      */
     private $sousSecteurs;
 

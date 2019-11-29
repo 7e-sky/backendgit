@@ -43,13 +43,13 @@ class Attachement
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get","get-from-demande"})
+     * @Groups({"get","get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $id;
 
     /**
      * @ORM\Column(nullable=true)
-     * @Groups({"get","get-from-demande"})
+     * @Groups({"get","get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $url;
 
@@ -70,7 +70,7 @@ class Attachement
 
     /**
      * @ORM\Column(nullable=true)
-     * @Groups({"get","get-from-demande"})
+     * @Groups({"get","get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $type;
 

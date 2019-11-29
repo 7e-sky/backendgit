@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -67,7 +68,7 @@ class SousSecteur
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Groups({"get-from-sous-secteur","get-from-secteur","get","put","post","get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"get-from-sous-secteur","get-from-secteur","get","put","post","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
@@ -101,6 +102,7 @@ class SousSecteur
      * @ORM\ManyToMany(targetEntity="DemandeAchat", inversedBy="sousSecteurs")
      * @ORM\JoinTable(name="demande_ha_sous_secteur")
      * @Groups({"get-from-sous-secteur"})
+     * @ApiSubresource(maxDepth=1)
      */
     private $demandes;
 

@@ -37,13 +37,25 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get"={
  *              "access_control"="is_granted('ROLE_ADMIN')",
  *              "normalization_context"={"groups"={"get-from-demande"}}
- *           }
+ *           },
+ *          "get_by_fournisseur"={
+ *              "method"="GET",
+ *              "path"="/demande_achats/fournisseur",
+ *              "access_control"="is_granted('ROLE_FOURNISSEUR')",
+ *              "normalization_context"={"groups"={"fournisseur:get-from-demande"}}
+ *          }
  *     },
  *     itemOperations={
+ *
+ *          "get_item_by_fournisseur"={
+ *              "method"="GET",
+ *              "path"="/demande_achats/{id}/fournisseur",
+ *              "access_control"="is_granted('ROLE_FOURNISSEUR')",
+ *              "normalization_context"={"groups"={"fournisseur:get-item-from-demande"}}
+ *          },
  *          "get"={
  *                  "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
- *                   "normalization_context"={"groups"={"get-from-demande"}}
-
+ *                  "normalization_context"={"groups"={"get-from-demande"}}
  *                },
  *          "put"={
  *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
@@ -72,7 +84,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande"})
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -85,14 +97,14 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="smallint",length=1)
-     * @Groups({"get-from-demande","put-admin","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","put-admin","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      *
      */
     private $statut;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank(groups={"postValidation"})
      */
     private $reference;
@@ -100,7 +112,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(groups={"postValidation"})
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $description;
 
@@ -108,7 +120,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\DateTime(groups={"postValidation","putValidation"})
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $dateExpiration;
 
@@ -132,7 +144,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $created;
 
@@ -154,7 +166,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-item-from-demande"})
      */
     private $isAnonyme;
 
@@ -179,18 +191,18 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\ManyToMany(targetEntity="Attachement")
      * @ORM\JoinTable()
-     * @Groups({"get-from-demande","put","post"})
+     * @Groups({"get-from-demande","put","post","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank()
-     * @ApiSubresource()
+     * @ApiSubresource(maxDepth=1)
      */
     private $attachements;
 
     /**
      * @ORM\ManyToMany(targetEntity="SousSecteur")
      * @ORM\JoinTable(name="demande_ha_sous_secteur")
-     * @Groups({"get-from-demande","put","post","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank()
-     * @ApiSubresource()
+     * @ApiSubresource(maxDepth=1)
      */
     private $sousSecteurs;
 
@@ -198,7 +210,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\OneToMany(targetEntity="DiffusionDemande", mappedBy="demande",cascade={"persist"})
      * @Groups({"get-from-demande","get-from-acheteur_demandes"})
-     * @ApiSubresource()
+     * @ApiSubresource(maxDepth=1)
      */
     private $diffusionsdemandes;
 
@@ -213,7 +225,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\Column(type="decimal")
      * @Assert\NotBlank()
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $budget ;
 

@@ -68,7 +68,7 @@ class Secteur
     /**
      * @ORM\OneToMany(targetEntity="SousSecteur", mappedBy="secteur")
      * @Groups({"get-from-secteur","post","put"})
-     * @ApiSubresource()
+     * @ApiSubresource(maxDepth=1)
      */
     private $sousSecteurs;
 
