@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 22 nov. 2019 à 18:08
+-- Généré le :  ven. 29 nov. 2019 à 18:07
 -- Version du serveur :  10.1.31-MariaDB
 -- Version de PHP :  7.2.4
 
@@ -79,7 +79,7 @@ INSERT INTO `acheteur` (`id`, `pays_id`, `ville_id`, `societe`, `parent2`, `civi
 (72, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
 (73, 1, 2, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
 (74, 2, 33, '3f industrie', NULL, 'M.', NULL, '', '', '', 1),
-(76, 1, 1, '3f industrie2', NULL, 'M.', '124554474445612', '0622201475', 'https://www.d.fr', 'skkkkkkkkkkk', 3);
+(76, 1, 1, '3f industrie23', NULL, 'M.', '124554474445612', '0622201475', 'https://www.d.fr0', 'skkkkkkkkkkk2', 3);
 
 -- --------------------------------------------------------
 
@@ -324,9 +324,10 @@ CREATE TABLE `demande_achat` (
 --
 
 INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `langue_p`, `description_en`, `description_es`, `motif_rejet`, `budget`, `del`) VALUES
-(1, 76, 0, 'aaaaa0_deleted-1', 'azertyuiop', '2019-11-14 16:59:00', 1, 0, 0, '2019-11-14 16:59:52', '2019-11-15 11:38:56', 0, 0, NULL, NULL, NULL, NULL, '100000', 1),
-(2, 76, 1, 'aaaaa0q', 'azertyuioppok', '2019-11-22 23:03:00', 1, 0, 5, '2019-11-14 17:03:25', '2019-11-19 14:47:55', 1, 0, NULL, NULL, NULL, '', '25130', 0),
-(3, 76, 0, 'qdqdsqsd', 'azqsdazeqd', '2019-11-14 14:03:00', 1, 0, 0, '2019-11-14 17:04:17', '2019-11-14 17:10:38', 0, 0, NULL, NULL, NULL, NULL, '11555', 0);
+(2, 76, 1, 'aaaaa0q', 'azertyuioppok', '2019-11-30 23:03:00', 1, 0, 5, '2019-11-25 08:03:25', '2019-11-28 14:00:30', 1, 0, NULL, NULL, NULL, '', '25132', 0),
+(3, 76, 0, 'qdqdsqsd', 'azqsdazeqd', '2019-11-26 08:03:00', 1, 0, 0, '2019-11-26 17:04:17', '2019-11-14 17:10:38', 0, 0, NULL, NULL, NULL, NULL, '11555', 0),
+(4, 76, 0, 'test', 'aji tfhel achno fhemt', '2019-11-30 12:20:00', 1, 0, 0, '2019-11-28 12:21:21', '2019-11-28 12:21:21', 0, 0, NULL, NULL, NULL, NULL, '5000', 0),
+(5, 76, 0, 'test2', 'mmmmmmmmmm', '2019-11-30 12:21:00', 1, 0, 0, '2019-11-28 12:22:21', '2019-11-28 12:22:21', 0, 0, NULL, NULL, NULL, NULL, '1', 0);
 
 -- --------------------------------------------------------
 
@@ -344,7 +345,6 @@ CREATE TABLE `demande_achat_attachement` (
 --
 
 INSERT INTO `demande_achat_attachement` (`demande_achat_id`, `attachement_id`) VALUES
-(1, 87),
 (2, 86),
 (3, 85);
 
@@ -364,9 +364,11 @@ CREATE TABLE `demande_ha_sous_secteur` (
 --
 
 INSERT INTO `demande_ha_sous_secteur` (`sous_secteur_id`, `demande_achat_id`) VALUES
-(6, 1),
 (6, 2),
-(7, 3);
+(6, 4),
+(7, 3),
+(7, 5),
+(8, 4);
 
 -- --------------------------------------------------------
 
@@ -1179,8 +1181,8 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (72, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhdfg@gmail.com', '$2y$13$Rs/FDPO.vKtbYKE5gzNdl.R1ANygr/23DkGQuuLDIaUqhb5RibHVm', 0, 1, '2019-11-05 11:09:13', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (73, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arboullllllllllh@gmail.com', '$2y$13$uCucAmjImgBX7VNOVHBfWuXsAgDra9E7Spg2h.o0zjlSxlMUBXcke', 0, 1, '2019-11-05 11:11:44', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (74, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhjikjlkl@gmail.com', '$2y$13$gG.Dj.Lpn/m9JPNKtUpcbeZDjA2HCecBOAJaRnqCNDoEaD0MLxAYe', 0, 1, '2019-11-05 12:40:28', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
-(75, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhssscq@gmail.com', '$2y$13$XtHRg8ztNRAFMlDoO2UEVuTCuIirNUToCSSlQMo.N2j/1PMAbllgy', 0, 1, '2019-11-05 15:38:55', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
-(76, '36, rue i2', 'adresse ee 23', 26000, '0696318051', 'youness.arbouh@gmail.com', '$2y$13$T7KXkmI59DJgTD0yBavZq.z/1zBtMRSTTAP62O9XbXhrI4qczjJhm', 0, 1, '2019-11-07 09:30:02', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', 1574433080, NULL, NULL, 36, '/dashboard');
+(75, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhssscq@gmail.com', '$2y$13$H./PWBuS/z5G4Zb2vnhUUeecSGafd4WpT6HOKJdB2aLajgV2sV57q', 0, 1, '2019-11-05 15:38:55', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(76, '36, rue i25', 'adresse ee 2323', 26000, '0696318054', 'youness.arbouh@gmail.com', '$2y$13$T7KXkmI59DJgTD0yBavZq.z/1zBtMRSTTAP62O9XbXhrI4qczjJhm', 0, 1, '2019-11-07 09:30:02', 'YOUNESS2', 'ARBOUH1', NULL, 'Acheteur', 'ROLE_ACHETEUR', 1574433080, NULL, NULL, 36, '/dashboard');
 
 -- --------------------------------------------------------
 
@@ -1516,19 +1518,19 @@ ALTER TABLE `avatar`
 -- AUTO_INCREMENT pour la table `black_listes`
 --
 ALTER TABLE `black_listes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 
 --
 -- AUTO_INCREMENT pour la table `pays`
