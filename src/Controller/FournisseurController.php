@@ -10,46 +10,69 @@ namespace App\Controller;
 
 
 use App\Entity\DemandeAchat;
+use App\Entity\Fournisseur;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/api")
+ * @IsGranted("ROLE_FOURNISSEUR")
  */
 class FournisseurController extends AbstractController
 {
 
     /**
-     * @Route("/demandes-admin")
+     * @var TokenStorageInterface
      */
-    public function getCountDemandesEnAttentes(){
+    private $tokenStorage;
 
-        $em = $this->getDoctrine()->getManager()->getRepository(DemandeAchat::class);
-        $qb = $em->createQueryBuilder('d')
-            ->where('d.statut = :searchTerm')
-            ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
-            ->setParameter('searchTerm', 0)
-            ->select('count(d.id)');
-        $query = $qb->getQuery();
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
 
-        return $this->json($query->getSingleScalarResult());
-
+        $this->tokenStorage = $tokenStorage;
     }
-
     /**
      * @Route("/demandes_prix")
      */
     public function getCountDemandesEnCours(){
 
+        /**
+         * @var UserInterface $fournisseur
+         */
+        $fournisseur = $this->tokenStorage->getToken()->getUser();
         $em = $this->getDoctrine()->getManager()->getRepository(DemandeAchat::class);
-        $qb = $em->createQueryBuilder('d')
-            ->where('d.statut = :searchTerm')
-            ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
-            ->setParameter('searchTerm', 1)
-            ->select('count(d.id)');
-        $query = $qb->getQuery();
+        if($fournisseur instanceof Fournisseur){
 
-        return $this->json($query->getSingleScalarResult());
+            $sous_secteurs = $fournisseur->getSousSecteurs();
+            $sous_secteurs_id=[];
+            foreach ($sous_secteurs as $secteur){
+                if($secteur)
+                    array_push($sous_secteurs_id,$secteur->getId());
+            }
+            if (!empty($sous_secteurs_id)) {
+
+                $qb = $em->createQueryBuilder('d')
+                    ->innerJoin('d.sousSecteurs','s')
+                    ->where('s.id in (:sous_secteurs_id)')
+                    ->andWhere('d.statut = :searchTerm')
+                    ->andWhere('Date(d.dateExpiration) >= CURRENT_TIMESTAMP()')
+                    ->andWhere('d.del = 0')
+                    ->setParameter('searchTerm', 1)
+                    ->setParameter('sous_secteurs_id', $sous_secteurs_id)
+                    ->select('count(d.id)');
+                $query = $qb->getQuery();
+
+                return $this->json($query->getSingleScalarResult());
+
+            }
+
+        }
+
+        return 0;
+
 
     }
 

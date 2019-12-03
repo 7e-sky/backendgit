@@ -10,11 +10,13 @@ namespace App\Controller;
 
 
 use App\Entity\DemandeAchat;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/api")
+ * @IsGranted("ROLE_ADMIN")
  */
 class AdminController extends AbstractController
 {
@@ -28,6 +30,7 @@ class AdminController extends AbstractController
         $qb = $em->createQueryBuilder('d')
             ->where('d.statut = :searchTerm')
             ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
+            ->andWhere('d.del = 0')
             ->setParameter('searchTerm', 0)
             ->select('count(d.id)');
         $query = $qb->getQuery();

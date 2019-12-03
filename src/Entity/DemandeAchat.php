@@ -91,7 +91,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
-     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"visit:get-all","get-from-demande","get-from-acheteur_demandes"})
      */
     private $acheteur;
 
@@ -198,6 +198,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     private $attachements;
 
     /**
+     * add mapped by if you want to miggrate
      * @ORM\ManyToMany(targetEntity="SousSecteur")
      * @ORM\JoinTable(name="demande_ha_sous_secteur")
      * @Groups({"get-from-demande","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})

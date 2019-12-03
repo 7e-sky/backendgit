@@ -47,7 +47,7 @@ class Avatar
 
     /**
      * @ORM\Column(nullable=true)
-     * @Groups({"get"})
+     * @Groups({"visit:get-all","get"})
      */
     private $url;
 

@@ -51,19 +51,19 @@ class Acheteur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays", inversedBy="acheteurs")
-     * @Groups({"get","post","put"})
+     * @Groups({"visit:get-all","get","post","put"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"get","post","put"})
+     * @Groups({"visit:get-all","get","post","put"})
      */
     private $ville;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get","put","post","get-from-demande"})
+     * @Groups({"visit:get-all","get","put","post","get-from-demande"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      */
@@ -71,7 +71,7 @@ class Acheteur extends User
 
     /**
      * @ORM\Column(type="string", length=5)
-     * @Groups({"get","put","post"})
+     * @Groups({"visit:get-all","get","put","post"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=1,max=5,groups={"postValidation","putValidation"})
      */
@@ -80,14 +80,14 @@ class Acheteur extends User
 
     /**
      * @ORM\Column(type="string", length=15,nullable=true)
-     * @Groups({"get","put","post"})
+     * @Groups({"visit:get-all","get","put","post"})
      * @Assert\Length(min=15,max=15,groups={"postValidation","putValidation"})
      */
     private $ice;
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
-     * @Groups({"get","put","post"})
+     * @Groups({"visit:get-all","get","put","post"})
      *  @AssertPhoneNumber(
      *     type="fix",
      *     defaultRegion="MA",
@@ -101,14 +101,14 @@ class Acheteur extends User
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
-     * @Groups({"get","put","post"})
+     * @Groups({"visit:get-all","get","put","post"})
 
      */
     private $website;
 
     /**
      * @ORM\Column(type="text",nullable=true)
-     * @Groups({"get","put","post"})
+     * @Groups({"visit:get-all","get","put","post"})
      * @Assert\Length(min=6,groups={"postValidation","putValidation"})
      */
     private $description;
@@ -146,7 +146,7 @@ class Acheteur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur")
-     * @Groups({"get","post","put"})
+     * @Groups({"visit:get-all","get","post","put"})
      */
     private $secteur;
 
