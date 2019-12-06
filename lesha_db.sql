@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 29 nov. 2019 à 18:07
+-- Généré le :  ven. 06 déc. 2019 à 18:03
 -- Version du serveur :  10.1.31-MariaDB
 -- Version de PHP :  7.2.4
 
@@ -173,7 +173,11 @@ INSERT INTO `attachement` (`id`, `url`, `file_size`, `type`) VALUES
 (90, '5dd64f2b073b2505359657.doc', 83456, 'application/msword'),
 (91, '5dd64f41ede83672399745.doc', 83456, 'application/msword'),
 (92, '5dd64f772a509532426686.doc', 83456, 'application/msword'),
-(93, '5dd64f89534cc912135849.doc', 83456, 'application/msword');
+(93, '5dd64f89534cc912135849.doc', 83456, 'application/msword'),
+(94, '5de5359013251332921903.png', 38731, 'image/png'),
+(95, '5de53e446ccae223568061.jpg', 8864, 'image/jpeg'),
+(96, '5de54252e58e5216591597.jpg', 119505, 'image/jpeg'),
+(97, '5de617c114ee1045765045.jpg', 8864, 'image/jpeg');
 
 -- --------------------------------------------------------
 
@@ -226,7 +230,9 @@ INSERT INTO `avatar` (`id`, `url`) VALUES
 (33, '5dd7fc9dbd65f256435782.png'),
 (34, '5dd7fcd8128ca705073747.png'),
 (35, '5dd7fcfa722c7806280573.png'),
-(36, '5dd7fd413f5d6763820939.jpg');
+(36, '5dd7fd413f5d6763820939.jpg'),
+(37, '5de7b82c30b16184376461.jpg'),
+(38, '5dea1b68181f5676822270.png');
 
 -- --------------------------------------------------------
 
@@ -327,7 +333,14 @@ INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `descri
 (2, 76, 1, 'aaaaa0q', 'azertyuioppok', '2019-11-30 23:03:00', 1, 0, 5, '2019-11-25 08:03:25', '2019-11-28 14:00:30', 1, 0, NULL, NULL, NULL, '', '25132', 0),
 (3, 76, 0, 'qdqdsqsd', 'azqsdazeqd', '2019-11-26 08:03:00', 1, 0, 0, '2019-11-26 17:04:17', '2019-11-14 17:10:38', 0, 0, NULL, NULL, NULL, NULL, '11555', 0),
 (4, 76, 0, 'test', 'aji tfhel achno fhemt', '2019-11-30 12:20:00', 1, 0, 0, '2019-11-28 12:21:21', '2019-11-28 12:21:21', 0, 0, NULL, NULL, NULL, NULL, '5000', 0),
-(5, 76, 0, 'test2', 'mmmmmmmmmm', '2019-11-30 12:21:00', 1, 0, 0, '2019-11-28 12:22:21', '2019-11-28 12:22:21', 0, 0, NULL, NULL, NULL, NULL, '1', 0);
+(5, 76, 0, 'test2', 'mmmmmmmmmm', '2019-11-30 12:21:00', 1, 0, 0, '2019-11-28 12:22:21', '2019-11-28 12:22:21', 0, 0, NULL, NULL, NULL, NULL, '1', 0),
+(6, 76, 1, 'aaaaa0', 'testtttttt', '2019-12-25 16:53:00', 1, 0, 0, '2019-12-02 16:53:55', '2019-12-02 16:53:55', 0, 0, NULL, NULL, NULL, NULL, '251101', 0),
+(7, 76, 1, 'aaaaa0sqd', 'azazeaqsdqq', '2019-12-24 17:01:00', 1, 0, 0, '2019-12-02 17:01:26', '2019-12-02 17:11:10', 0, 0, NULL, NULL, NULL, '', '10001', 0),
+(8, 76, 1, 'abcde', 'qsqdqsdqqqa', '2019-12-31 17:01:00', 1, 0, 0, '2019-12-02 17:01:50', '2019-12-02 17:11:27', 0, 1, NULL, NULL, NULL, '', '20199', 0),
+(9, 76, 1, 'qqqqqq', 'azertyuuuuu', '2019-12-25 17:02:00', 1, 0, 0, '2019-12-02 17:02:29', '2019-12-02 18:05:53', 0, 0, NULL, NULL, NULL, '', '5000', 0),
+(10, 76, 0, '10224', 'azertyuopa', '2019-12-25 09:06:00', 1, 0, 0, '2019-12-03 09:07:34', '2019-12-03 09:07:33', 0, 0, NULL, NULL, NULL, NULL, '500000', 0),
+(11, 76, 1, 'aaaaa', 'aaaaaaaaaaaaaaaa', '2019-12-09 09:07:00', 1, 0, 0, '2019-12-03 09:08:03', '2019-12-06 17:35:52', 1, 0, NULL, NULL, NULL, '', '8888886', 0),
+(12, 76, 1, 'azqs', 'azertyuiuu', '2019-12-18 09:08:00', 1, 0, 0, '2019-12-03 09:08:27', '2019-12-03 09:25:41', 0, 0, NULL, NULL, NULL, '', '12447', 0);
 
 -- --------------------------------------------------------
 
@@ -346,7 +359,11 @@ CREATE TABLE `demande_achat_attachement` (
 
 INSERT INTO `demande_achat_attachement` (`demande_achat_id`, `attachement_id`) VALUES
 (2, 86),
-(3, 85);
+(3, 85),
+(9, 94),
+(9, 95),
+(9, 96),
+(10, 97);
 
 -- --------------------------------------------------------
 
@@ -366,9 +383,40 @@ CREATE TABLE `demande_ha_sous_secteur` (
 INSERT INTO `demande_ha_sous_secteur` (`sous_secteur_id`, `demande_achat_id`) VALUES
 (6, 2),
 (6, 4),
+(6, 6),
+(6, 8),
 (7, 3),
 (7, 5),
-(8, 4);
+(7, 7),
+(7, 9),
+(8, 4),
+(8, 10),
+(9, 11),
+(10, 12);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `detail_visite`
+--
+
+CREATE TABLE `detail_visite` (
+  `id` int(11) NOT NULL,
+  `fournisseur_id` int(11) DEFAULT NULL,
+  `demande_id` int(11) DEFAULT NULL,
+  `created` datetime NOT NULL,
+  `date_rec` datetime NOT NULL,
+  `etat_validation` tinyint(1) NOT NULL,
+  `is_send` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `detail_visite`
+--
+
+INSERT INTO `detail_visite` (`id`, `fournisseur_id`, `demande_id`, `created`, `date_rec`, `etat_validation`, `is_send`) VALUES
+(1, 75, 3, '2019-12-02 10:50:01', '2019-12-02 10:50:02', 1, 1),
+(2, 75, 2, '2019-12-02 10:50:23', '2019-12-02 10:50:24', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -392,7 +440,42 @@ INSERT INTO `diffusion_demande` (`id`, `fournisseur_id`, `demande_id`, `date_dif
 (87, 64, 2, '2019-11-15 16:49:35'),
 (88, 65, 2, '2019-11-15 16:49:35'),
 (89, 66, 2, '2019-11-15 16:49:35'),
-(90, 67, 2, '2019-11-15 16:49:35');
+(90, 67, 2, '2019-11-15 16:49:35'),
+(91, 64, 11, '2019-12-06 17:35:52'),
+(92, 65, 11, '2019-12-06 17:35:52'),
+(93, 66, 11, '2019-12-06 17:35:52'),
+(94, 67, 11, '2019-12-06 17:35:52');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `fiche`
+--
+
+CREATE TABLE `fiche` (
+  `id` int(11) NOT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_size` int(11) NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `fiche`
+--
+
+INSERT INTO `fiche` (`id`, `url`, `file_size`, `type`) VALUES
+(1, '5de7ba8d1d1ab366562345.doc', 83456, 'application/msword'),
+(2, '5de90d909277b147797610.pdf', 143935, 'application/pdf'),
+(3, '5de90dcf19b75059484436.png', 38731, 'image/png'),
+(4, '5de90e517f04b944921937.jpg', 8864, 'image/jpeg'),
+(6, '5de90e8a9d88d482672869.jpg', 8864, 'image/jpeg'),
+(8, '5de90f6faf7ae563104404.pdf', 143935, 'application/pdf'),
+(9, '5de90fb4d11ee013565933.pdf', 143935, 'application/pdf'),
+(10, '5de9105c8fbe7835227044.pdf', 143935, 'application/pdf'),
+(11, '5de91079f31b9803979874.pdf', 143935, 'application/pdf'),
+(12, '5de910c6cccfd865714410.pdf', 143935, 'application/pdf'),
+(13, '5de91538cf3a1775715736.pdf', 143935, 'application/pdf'),
+(14, '5de91f17c1bbc561116568.pdf', 143935, 'application/pdf');
 
 -- --------------------------------------------------------
 
@@ -438,7 +521,7 @@ INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `
 (65, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', ''),
 (66, 1, 2, '3f industrie', 'M.', '123456789123456', '', '', ''),
 (67, 1, 15, '3F Industrie', 'M.', '001531606000066', '0696318051', '', ''),
-(75, 1, 1, '3f industrie', 'M.', '123456789123456', '', '', '');
+(75, 1, 2, '3f industrie2', 'M.', '123456789123456', '0523547812', 'http://www.3fi.com', '');
 
 -- --------------------------------------------------------
 
@@ -472,9 +555,69 @@ INSERT INTO `fournisseur_sous_secteur` (`fournisseur_id`, `sous_secteur_id`) VAL
 (65, 9),
 (66, 9),
 (67, 9),
+(75, 9),
 (67, 142),
 (75, 142),
 (67, 270);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `image_produit`
+--
+
+CREATE TABLE `image_produit` (
+  `id` int(11) NOT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `image_produit`
+--
+
+INSERT INTO `image_produit` (`id`, `url`) VALUES
+(1, '5de7ba78c8b88456413076.jpg'),
+(2, '5de8d8bff09b3195675862.jpg'),
+(3, '5de8d8ff41cbc701720058.png'),
+(4, '5de8d94125199683447386.jpg'),
+(5, '5de8d9489cbb0055108313.jpg'),
+(6, '5de8d94cb15ce861482956.jpg'),
+(7, '5de8d9508171a778718273.jpg'),
+(8, '5de8d95464168380366332.png'),
+(9, '5de8d95838ef7746389193.jpg'),
+(10, '5de8d95c99a63672653092.jpg'),
+(11, '5de8d986cb0d0650802756.jpg'),
+(12, '5de8d9cea815f152662161.jpg'),
+(13, '5de8da1ccabd2268788537.jpg'),
+(14, '5de8da25281b6483115902.png'),
+(15, '5de8da302d1e2545162858.jpg'),
+(16, '5de8da3c0fd87743469761.png'),
+(17, '5de8da3f13efe307942283.jpg'),
+(18, '5de8dbc089850037382546.jpg'),
+(19, '5de8dbee2ce0a098098736.jpg'),
+(20, '5de8dc018c750579949309.jpg'),
+(21, '5de8dc1e67e46410831978.jpg'),
+(22, '5de8dc79177cf126264438.jpg'),
+(23, '5de8dc7dd1a1b440262562.png'),
+(25, '5de8dca8b515b029588841.png'),
+(26, '5de8dcae3eaaf445763012.jpg'),
+(27, '5de8e2ba236e2033272105.jpg'),
+(28, '5de8e2bd20cc7243501542.png'),
+(29, '5de8e308ae963435083351.jpg'),
+(30, '5de8e30cd565c689245790.png'),
+(31, '5de8e36c47e9c110534280.jpg'),
+(32, '5de8e370360b0645355459.png'),
+(33, '5de8e4fe133c8650442489.jpg'),
+(34, '5de8e501a7ca2957855790.png'),
+(35, '5de8e5049fc27565885299.jpg'),
+(36, '5de8e507a8651488970123.png'),
+(37, '5de8e50ac4003967237893.jpg'),
+(42, '5de908e06821a065765064.png'),
+(43, '5de90f688ef6f219955375.jpg'),
+(44, '5de90fb9bcd5d524573955.jpg'),
+(45, '5de91082ec613433490143.jpg'),
+(46, '5de910caa3dcd273411931.jpg'),
+(47, '5de91531d04d2181711964.jpg');
 
 -- --------------------------------------------------------
 
@@ -493,7 +636,15 @@ CREATE TABLE `migration_versions` (
 
 INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
 ('20191114155555', '2019-11-14 15:56:27'),
-('20191114155657', '2019-11-14 15:57:01');
+('20191114155657', '2019-11-14 15:57:01'),
+('20191202094120', '2019-12-02 09:41:45'),
+('20191204111630', '2019-12-04 11:16:36'),
+('20191204140113', '2019-12-04 14:01:22'),
+('20191204162047', '2019-12-04 16:20:52'),
+('20191205084551', '2019-12-05 08:45:57'),
+('20191205100305', '2019-12-05 10:03:10'),
+('20191205114029', '2019-12-05 11:40:35'),
+('20191205135951', '2019-12-05 13:59:59');
 
 -- --------------------------------------------------------
 
@@ -587,6 +738,74 @@ INSERT INTO `pays` (`id`, `name`, `del`) VALUES
 (90, 'Luxembourg', 0),
 (91, 'Guinée', 0),
 (92, 'teeeeeeest_deleted-92', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `produit`
+--
+
+CREATE TABLE `produit` (
+  `id` int(11) NOT NULL,
+  `secteur_id` int(11) DEFAULT NULL,
+  `sous_secteurs_id` int(11) DEFAULT NULL,
+  `fournisseur_id` int(11) DEFAULT NULL,
+  `fiche_technique_id` int(11) DEFAULT NULL,
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pu` double NOT NULL,
+  `del` tinyint(1) NOT NULL,
+  `is_select` tinyint(1) NOT NULL,
+  `is_valid` tinyint(1) NOT NULL,
+  `created` datetime NOT NULL,
+  `videos` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `categorie_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `produit`
+--
+
+INSERT INTO `produit` (`id`, `secteur_id`, `sous_secteurs_id`, `fournisseur_id`, `fiche_technique_id`, `reference`, `description`, `pu`, `del`, `is_select`, `is_valid`, `created`, `videos`, `categorie_id`) VALUES
+(1, 2, 6, 75, 1, 'P10024', 'ddd155jkjg', 0, 0, 0, 0, '2019-12-04 15:02:22', NULL, 424),
+(2, 1, 51, 75, NULL, 'aaaaa0', 'asidi merhba biko2', 1003.5, 0, 0, 0, '2019-12-05 10:57:14', NULL, NULL),
+(3, 1, 52, 75, NULL, 'ddddd', 'aaji tfhmel', 15542.255, 0, 0, 0, '2019-12-05 11:05:58', NULL, NULL),
+(4, 1, 50, 75, NULL, 'aaaaa0', 'BOn to ej e', 15.25, 0, 0, 0, '2019-12-05 11:32:46', NULL, NULL),
+(5, 1, 51, 75, NULL, 'abcde', '10005ggv ddd', 0, 0, 0, 0, '2019-12-05 11:58:21', NULL, NULL),
+(6, 1, 50, 75, NULL, 'aaaaa0', 'vvvvvvvvvvvvvv', 0, 0, 0, 0, '2019-12-05 11:59:06', NULL, NULL),
+(7, 2, 63, 75, NULL, 'aaaaa0', 'vccccccccc', 0, 0, 0, 0, '2019-12-05 11:59:28', NULL, NULL),
+(8, 1, 50, 75, NULL, 'aaaaa0', '144lll jjm', 0, 0, 0, 0, '2019-12-05 15:08:59', NULL, 424),
+(9, 1, 50, 75, NULL, 'wwwww', 'wwwwwwwwwww', 0, 0, 0, 0, '2019-12-05 15:10:21', NULL, NULL),
+(10, 1, 50, 75, NULL, 'aaaaa0s', 'sqsqsqsqsqs', 0, 0, 0, 0, '2019-12-05 15:13:35', NULL, NULL),
+(11, 1, 50, 75, 12, 'aaaaa0sdssd00', 'sfsfsfsfsfsfsfsfssssssdddddd00', 0, 0, 0, 0, '2019-12-05 15:14:49', NULL, 424),
+(12, 1, 51, 75, 13, 'aaaaa0', 'aaaaaaaaaa', 0, 0, 0, 0, '2019-12-05 15:33:33', NULL, NULL),
+(13, 2, 6, 75, 1, 'P10024', 'ddd155jkjg', 0, 0, 0, 0, '2019-12-06 16:02:34', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `produit_image_produit`
+--
+
+CREATE TABLE `produit_image_produit` (
+  `produit_id` int(11) NOT NULL,
+  `image_produit_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `produit_image_produit`
+--
+
+INSERT INTO `produit_image_produit` (`produit_id`, `image_produit_id`) VALUES
+(1, 1),
+(7, 29),
+(7, 30),
+(8, 43),
+(9, 44),
+(10, 45),
+(11, 46),
+(12, 47),
+(13, 1);
 
 -- --------------------------------------------------------
 
@@ -685,397 +904,399 @@ CREATE TABLE `sous_secteur` (
   `id` int(11) NOT NULL,
   `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `del` tinyint(1) NOT NULL,
-  `secteur_id` int(11) DEFAULT NULL
+  `secteur_id` int(11) DEFAULT NULL,
+  `parent` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `sous_secteur`
 --
 
-INSERT INTO `sous_secteur` (`id`, `name`, `del`, `secteur_id`) VALUES
-(6, 'Acier Inoxydable', 0, 38),
-(7, 'Aciers spéciaux', 0, 38),
-(8, 'Aluminium en barre', 0, 38),
-(9, 'Bois en panneau et dérivé', 0, 38),
-(10, 'Profilé aluminium', 0, 38),
-(11, 'Tôles ondulées', 0, 38),
-(12, 'Tube et Raccord', 0, 38),
-(13, 'Additifs alimentaires', 0, 39),
-(14, 'Alimentation animale', 0, 39),
-(15, 'Aliments pour bébés', 0, 39),
-(16, 'Fabrication Alimentation générale ', 0, 39),
-(17, 'Fabrication d’huiles et graisses alimentaires', 0, 39),
-(18, 'Fabrication de chocolats ', 0, 39),
-(19, 'Fabrication de Confiseries', 0, 39),
-(20, 'Fabrication de Glaces et sorbets ', 0, 39),
-(21, 'Fabrication de Sucres', 0, 39),
-(22, 'Fabrication Pâtes alimentaires', 0, 39),
-(23, 'Fourniture de Minerais et minéraux', 0, 39),
-(24, 'Fours pour boulangeries et pâtisseries', 0, 39),
-(25, 'Graisses alimentaires', 0, 39),
-(26, 'Lait médical et alimentation pour bébés', 0, 39),
-(27, 'Machines à café installation et entretie', 0, 39),
-(28, 'Matériel et fournitures boucheries et charcuterie', 0, 39),
-(29, 'Matériel et fournitures pour Boulangeries et pâtis', 0, 39),
-(30, 'Matériel et fournitures pour café et restaurant', 0, 39),
-(31, 'Matériel et fournitures pour Glaciers ', 0, 39),
-(32, 'Matériel et fournitures Industrie Alimentaire', 0, 39),
-(33, 'Matériel et fournitures Pâtisseries confiserie', 0, 39),
-(34, 'Mobilier pour magasins, cafés', 0, 39),
-(35, 'Produits alimentaires de luxe', 0, 39),
-(36, 'Produits alimentaires Surgelés', 0, 39),
-(37, 'Produits alimentaires surgelés et congelés', 0, 39),
-(38, 'Balance et bascule', 0, 42),
-(39, 'Broyeur', 0, 42),
-(40, 'Chauffage ', 0, 42),
-(41, 'Compresseur', 0, 42),
-(42, 'Extrudeuse', 0, 42),
-(43, 'Froid industriel', 0, 42),
-(44, 'Machine d’injection plastique', 0, 42),
-(45, 'Machine divers', 0, 42),
-(46, 'Machine-outil', 0, 42),
-(47, 'Matériel et fourniture pour blanchisserie et laver', 0, 42),
-(48, 'Souffleuse', 0, 42),
-(49, 'Traitement des eaux', 0, 42),
-(50, 'Caisse enregistreuse ', 0, 1),
-(51, 'Climatiseur', 0, 1),
-(52, 'Coffre-fort', 0, 1),
-(53, 'Distributeur de confiseries, snacks et tabac ', 0, 1),
-(54, 'Distributeurs de boissons froides ', 0, 1),
-(55, 'Distributeurs de café et boissons chaudes ', 0, 1),
-(56, 'Fontaines à eau ', 0, 1),
-(57, 'Mobilier de bureau ', 0, 1),
-(58, 'Papier ', 0, 1),
-(59, 'Photocopieurs ', 0, 1),
-(60, 'Projecteurs ', 0, 1),
-(61, 'Télécopieurs', 0, 1),
-(63, 'Conception et réalisation de brochures et catalogu', 0, 2),
-(64, 'Conception et réalisation de support publicitaire ', 0, 2),
-(65, 'Création logo ou charte graphique', 0, 2),
-(66, 'Comptabilité et Expert financier', 0, 3),
-(67, 'Conseil opérationnel et industriel', 0, 3),
-(68, 'Conseil stratégique et études', 0, 3),
-(69, 'Recouvrement de créances', 0, 3),
-(70, 'Boulonnerie, visserie, articles de fixatio', 0, 44),
-(71, 'Carburant, fuel ', 0, 44),
-(72, 'Consommable de soudure', 0, 44),
-(73, 'Consommable et composant électrique', 0, 44),
-(74, 'Droguerie', 0, 44),
-(75, 'Emballage et conditionnement', 0, 44),
-(76, 'Produit d’entretien et de nettoyage', 0, 44),
-(77, 'Quincaillerie ', 0, 44),
-(78, 'Vêtement de sécurité', 0, 44),
-(79, 'Vêtement de travaille', 0, 44),
-(80, 'Carton ondulé', 0, 4),
-(81, 'Design emballage et étiquettes', 0, 4),
-(82, 'Emballage et conditionnement ', 0, 4),
-(83, 'Fioul - mazout', 0, 5),
-(84, 'Energie Solaire', 0, 5),
-(85, 'Biocarburant', 0, 5),
-(86, 'Agencement, décoratio', 0, 45),
-(87, 'Bâtiment préfabriqué', 0, 45),
-(88, 'Construction métallique', 0, 45),
-(89, 'Entreprise de construction de bâtiment', 0, 45),
-(90, 'Génie civil', 0, 45),
-(91, 'Gros-œuvre ', 0, 45),
-(92, 'Menuiserie aluminium', 0, 45),
-(93, 'Menuiserie bois', 0, 45),
-(94, 'Piscine ', 0, 45),
-(95, 'Porte, cloison amovible', 0, 45),
-(96, 'Terrassement', 0, 45),
-(97, 'Travaux tout corps d’état', 0, 45),
-(98, 'Enseignes pour stand d\'exposition ', 0, 6),
-(99, 'Hôtesses ', 0, 6),
-(100, 'Location de salles pour mariage, fêtes,... ', 0, 6),
-(101, 'Location de salles pour séminaire, réunion,... ', 0, 6),
-(102, 'Location matériel et tentes', 0, 6),
-(103, 'Organisation d\'événements ', 0, 6),
-(104, 'Salons et conventions ', 0, 6),
-(105, 'Services de traiteur ', 0, 6),
-(106, 'Son et lumière', 0, 6),
-(107, 'Formation continue ', 0, 7),
-(108, 'Formation du soir', 0, 7),
-(109, 'Formation extra-entreprise', 0, 7),
-(110, 'Formation intra-entreprise', 0, 7),
-(111, 'Formation langue ', 0, 7),
-(112, 'Formation logiciel ', 0, 7),
-(113, 'Formation professionnel', 0, 7),
-(114, 'Formation vente et marketing', 0, 7),
-(115, 'Brochures et catalogues ', 0, 8),
-(116, 'Impression cartes de visite et papier à lettres ', 0, 8),
-(117, 'Impression classeurs et boîtes de rangement ', 0, 8),
-(118, 'Impression enveloppes ', 0, 8),
-(119, 'Impression factures et formulaires ', 0, 8),
-(120, 'Impression feuillets, dépliants et affiches ', 0, 8),
-(121, 'Impression magazines, livres et journaux ', 0, 8),
-(122, 'Impression rapports annuels ', 0, 8),
-(123, 'Impression spéciale', 0, 8),
-(124, 'Conseil informatique', 0, 9),
-(125, 'Développement et intégration base de données', 0, 9),
-(126, 'Développement, programmation logiciel ', 0, 9),
-(127, 'Intégration et gestion de projet', 0, 9),
-(128, 'Logiciel gestion CRM - SRM', 0, 9),
-(129, 'Logiciel gestion documents ', 0, 9),
-(130, 'Logiciel standard', 0, 9),
-(131, 'Progiciel de gestion intégré (ERP) ', 0, 9),
-(132, 'Services sécurité informatique', 0, 9),
-(133, 'Création site web de présentation ', 0, 46),
-(134, 'Création site web gestion et e-commerce ', 0, 46),
-(135, 'Fournisseur d\'accès FAI ', 0, 46),
-(136, 'Graphisme et animations web ', 0, 46),
-(137, 'Hébergement sites web ', 0, 46),
-(138, 'Marketing internet ', 0, 46),
-(139, 'Réalisation de bannières ', 0, 46),
-(140, 'Référencement moteur de recherche', 0, 46),
-(141, 'Bacs de stockage et conteneurs ', 0, 11),
-(142, 'Chariots élévateurs', 0, 11),
-(143, 'Transpalette et Gerbeur', 0, 11),
-(144, 'Entreposage ', 0, 11),
-(145, 'Grues ', 0, 11),
-(146, 'Palettes ', 0, 11),
-(148, 'Achat / location de bases de données', 0, 12),
-(149, 'Agence de marketing direct ', 0, 12),
-(150, 'Agence de publicité ', 0, 12),
-(151, 'Conseil vente et marketing ', 0, 12),
-(152, 'Enseignes lumineuses et signalétique ', 0, 12),
-(153, 'Mailing direct ', 0, 12),
-(154, 'Rédaction de textes ', 0, 12),
-(155, 'Relations presse', 0, 12),
-(156, 'Télémarketing et Centres d\'appels', 0, 12),
-(157, 'Aspirateur et cireuse', 0, 48),
-(158, 'Chocolat et confiserie', 0, 48),
-(159, 'Electroménager', 0, 48),
-(160, 'Hi-fi', 0, 48),
-(161, 'Literie, draps  ', 0, 48),
-(162, 'Sonorisation et effet lumineux', 0, 48),
-(163, 'Vêtement de travaille', 0, 48),
-(164, 'Armoire et coffret', 0, 49),
-(165, 'Automate programmable', 0, 49),
-(166, 'Bobinage pour moteur électrique', 0, 49),
-(167, 'Câble et fil électrique', 0, 49),
-(168, 'Carte électronique', 0, 49),
-(169, 'Composant d’automatisme pneumatique', 0, 49),
-(170, 'Composant électronique', 0, 49),
-(171, 'Composant et article hydraulique', 0, 49),
-(172, 'Conception et installation d’automatisme', 0, 49),
-(173, 'Disjoncteur, relais électrique', 0, 49),
-(174, 'Transformateur électrique', 0, 49),
-(177, 'Imprimantes ', 0, 9),
-(179, 'Ordinateurs PC', 0, 9),
-(180, 'PC portables ', 0, 9),
-(181, 'Serveurs ', 0, 9),
-(182, 'Support hardware', 0, 9),
-(183, 'Carto', 0, 50),
-(184, 'Encre', 0, 50),
-(185, 'Machine', 0, 50),
-(186, 'Papier', 0, 50),
-(187, 'Audit environnemental', 0, 14),
-(188, 'Gestion de déchèterie ', 0, 14),
-(189, 'Gestion du nettoyage ', 0, 14),
-(190, 'Matériel et produits de nettoyage ', 0, 14),
-(191, 'Nettoyage & Environnement', 0, 14),
-(192, 'Services de nettoyage', 0, 14),
-(193, 'Concepteur de reportage vidéo ', 0, 15),
-(194, 'Duplication de CD ou DVD ', 0, 15),
-(195, 'Photographie ', 0, 15),
-(196, 'Production spot radio ', 0, 15),
-(197, 'Production vidéo présentation d\'entreprise', 0, 15),
-(198, 'Production vidéo pour publicité ', 0, 15),
-(199, 'Présentation CD ou DVD ', 0, 15),
-(200, 'Streaming vidéo', 0, 15),
-(201, 'Streaming vidéo', 0, 15),
-(202, 'PLV', 0, 15),
-(203, 'Affichage', 0, 15),
-(204, 'Accessoire et équipement ', 0, 52),
-(205, 'Entretien et maintenance', 0, 52),
-(206, 'Pièce détaché pour moteur', 0, 52),
-(207, 'Accessoire et équipement ', 0, 53),
-(208, 'Entretien et maintenance', 0, 53),
-(209, 'Pièce détaché pour moteur', 0, 53),
-(210, 'Colorant pour matière plastique', 0, 54),
-(211, 'Articles promotionnels ', 0, 16),
-(212, 'Cadeaux d\'affaires ', 0, 16),
-(213, 'Vêtements promotionnels', 0, 16),
-(214, 'Architecture d\'intérieur ', 0, 18),
-(215, 'Climatisation ', 0, 18),
-(216, 'Construction générale ', 0, 18),
-(217, 'Décoration intérieure ', 0, 18),
-(218, 'Installation électrique ', 0, 18),
-(219, 'Installations spéciales ', 0, 18),
-(220, 'Peinture et rafraîchissement ', 0, 18),
-(221, 'Rénovation  bâtiment', 0, 18),
-(222, 'Sol et fondation ', 0, 18),
-(223, 'Toit et isolation ', 0, 18),
-(224, 'Tuyauterie et sanitaire', 0, 18),
-(225, 'Intérim ', 0, 17),
-(226, 'Gardiennage', 0, 17),
-(227, 'Recrutement ', 0, 17),
-(228, 'Relocation ', 0, 17),
-(229, 'Alarme et appareil de surveillance', 0, 19),
-(230, 'Antivol', 0, 19),
-(231, 'Contrôle d’accès', 0, 19),
-(232, 'Détection d’incendie', 0, 19),
-(233, 'Gardiennage', 0, 19),
-(234, 'Prévention contre le feu ', 0, 19),
-(235, 'Surveillance vidéo ', 0, 19),
-(236, 'Centraux téléphoniques', 0, 55),
-(237, 'Câblage et réseaux ', 0, 55),
-(238, 'Téléphonie VOIP ', 0, 55),
-(239, 'Téléphonie mobile', 0, 55),
-(240, 'Téléphonie Fixe', 0, 55),
-(249, 'Billets d\'avion ', 0, 24),
-(250, 'Location d\'autocars', 0, 24),
-(251, 'Hôtel', 0, 24),
-(252, 'Aciers de constructio', 0, 27),
-(253, 'Agrafages – vulcanisatio', 0, 53),
-(254, 'outillage', 0, 44),
-(255, 'Appareils de mesure et de contrôle électrique', 0, 36),
-(256, 'Location de véhicule utilitaire', 0, 56),
-(257, 'Location de camio', 0, 56),
-(258, 'VEHICULE UTILITAIRE', 0, 20),
-(259, 'CAMIO', 0, 20),
-(260, 'AUTOMOBILES', 0, 20),
-(261, 'MINIBUS', 0, 20),
-(262, 'FOURGONNETTES, FOURGONS', 0, 20),
-(263, 'Transport National', 0, 57),
-(264, 'Tansport International', 0, 57),
-(265, 'Messagerie', 0, 57),
-(266, 'Services de Coursiers', 0, 57),
-(267, 'Déménagement', 0, 57),
-(268, 'Matériel Informatique', 0, 9),
-(269, 'Palettes', 0, 61),
-(270, 'Rayonnage', 0, 11),
-(271, 'Chariots élévateurs', 0, 62),
-(272, 'Transpalettes', 0, 62),
-(273, 'Gerbeurs', 0, 62),
-(274, 'Ustensiles', 0, 48),
-(275, 'Tables et chaises', 0, 48),
-(276, 'Accessoires HCR', 0, 48),
-(286, 'Industrie Mécanique', 0, 28),
-(287, 'Manufactures', 0, 28),
-(288, 'Chargeuses sur pneus', 0, 74),
-(289, 'Chargeuses - pelleteuses', 0, 74),
-(290, 'Pelles', 0, 74),
-(291, 'Tombereaux articulés', 0, 74),
-(292, 'Niveleuses', 0, 74),
-(293, 'Finisseurs de routes', 0, 74),
-(294, 'Raboteuses', 0, 74),
-(295, 'Compacteurs', 0, 74),
-(296, 'Froid et climatisatio', 0, 75),
-(297, 'AUTRE', 0, 75),
-(298, 'Accessoires', 0, 9),
-(299, 'Entretien et réparatio', 0, 9),
-(301, 'Ordinateurs Mac', 0, 9),
-(306, 'Autre (à préciser sur le descriptif)', 0, 23),
-(307, 'Sols', 0, 25),
-(308, 'Mines', 0, 25),
-(309, 'Carrière', 0, 25),
-(311, 'Agro-industrie', 0, 26),
-(312, 'Matériaux de construction ', 0, 27),
-(313, 'Sidérurgie', 0, 29),
-(314, 'Métallurgie', 0, 29),
-(315, 'Industrie de transformatio', 0, 30),
-(316, 'Energie', 0, 31),
-(317, 'Electricité', 0, 31),
-(319, 'Electronique', 0, 31),
-(320, 'Environnement', 0, 32),
-(321, 'Equipements', 0, 34),
-(322, 'Infrastructures', 0, 34),
-(323, 'Pétrole', 0, 35),
-(324, 'Gaz', 0, 35),
-(325, 'Chimie', 0, 37),
-(326, 'Parachimie', 0, 37),
-(327, 'Pharmacie', 0, 37),
-(328, 'Santé', 0, 37),
-(329, 'Architectes', 0, 40),
-(330, 'Ascenseurs', 0, 41),
-(331, 'Montes charges', 0, 41),
-(332, 'Bureau d\'étude', 0, 43),
-(333, 'Maintenance', 0, 47),
-(334, 'Entretie', 0, 47),
-(335, 'Plastiques', 0, 51),
-(336, 'Caoutchouc', 0, 51),
-(337, 'Dérivés de matières plastiques', 0, 51),
-(338, 'Audit', 0, 58),
-(339, 'Conseil', 0, 58),
-(340, 'Chaudronerie', 0, 59),
-(341, 'Charpente', 0, 60),
-(342, 'Rayonnages', 0, 61),
-(343, 'Peinture à huile', 0, 63),
-(344, 'Colorant', 0, 63),
-(345, 'Services de tranport', 0, 64),
-(346, 'Agence immobilière', 0, 64),
-(347, 'Agence de location de voiture', 0, 64),
-(348, 'Sécurité', 0, 64),
-(349, 'Nettoyage', 0, 64),
-(350, 'Assistance', 0, 64),
-(351, 'Dépannage', 0, 64),
-(352, 'Bricolage', 0, 64),
-(353, 'Matériel de manutentio', 0, 65),
-(354, 'Outillage à mai', 0, 65),
-(355, 'Expertise', 0, 67),
-(356, 'Distributio', 0, 68),
-(357, 'Place de marché', 0, 70),
-(358, 'Autre', 0, 34),
-(364, 'Autre', 0, 6),
-(365, 'Autre', 0, 7),
-(366, 'Autre', 0, 8),
-(367, 'Autre', 0, 9),
-(368, 'Autre', 0, 11),
-(369, 'Autre', 0, 12),
-(370, 'Autre', 0, 14),
-(371, 'Autre', 0, 15),
-(372, 'Autre', 0, 16),
-(373, 'Autre', 0, 17),
-(374, 'Autre', 0, 18),
-(375, 'Autre', 0, 19),
-(376, 'Autre', 0, 20),
-(377, 'Autre', 0, 24),
-(378, 'Autre', 0, 25),
-(379, 'Autre', 0, 26),
-(380, 'Autre', 0, 27),
-(381, 'Autre', 0, 28),
-(382, 'Autre', 0, 29),
-(383, 'Autre', 0, 30),
-(384, 'Autre', 0, 32),
-(385, 'Autre', 0, 36),
-(386, 'Autre', 0, 37),
-(387, 'Autre', 0, 38),
-(388, 'Autre', 0, 39),
-(389, 'Autre', 0, 40),
-(390, 'Autre', 0, 41),
-(391, 'Autre', 0, 42),
-(392, 'Autre', 0, 43),
-(393, 'Autre', 0, 44),
-(394, 'Autre', 0, 45),
-(395, 'Autre', 0, 46),
-(396, 'Autre', 0, 48),
-(397, 'Autre', 0, 49),
-(398, 'Autre', 0, 50),
-(399, 'Autre', 0, 51),
-(400, 'Autre', 0, 52),
-(401, 'Autre', 0, 53),
-(402, 'Autre', 0, 54),
-(403, 'Autre', 0, 55),
-(404, 'Autre', 0, 56),
-(405, 'Autre', 0, 57),
-(406, 'Autre', 0, 58),
-(407, 'Autre', 0, 59),
-(408, 'Autre', 0, 60),
-(409, 'Autre', 0, 61),
-(410, 'Autre', 0, 62),
-(411, 'Autre', 0, 63),
-(412, 'Autre', 0, 64),
-(413, 'Autre', 0, 65),
-(414, 'Autre', 0, 67),
-(415, 'Autre', 0, 68),
-(416, 'Autre', 0, 70),
-(417, 'Autre', 0, 74),
-(418, 'Centre commercial', 0, 78),
-(419, 'Université', 0, 79),
-(420, 'Logiciel', 0, 11),
-(421, 'Machine et Equipement', 0, 4),
-(422, 'testt_deleted-422', 1, 1);
+INSERT INTO `sous_secteur` (`id`, `name`, `del`, `secteur_id`, `parent`) VALUES
+(6, 'Acier Inoxydable', 0, 38, NULL),
+(7, 'Aciers spéciaux', 0, 38, 6),
+(8, 'Aluminium en barre', 0, 38, NULL),
+(9, 'Bois en panneau et dérivé', 0, 38, NULL),
+(10, 'Profilé aluminium', 0, 38, NULL),
+(11, 'Tôles ondulées', 0, 38, NULL),
+(12, 'Tube et Raccord', 0, 38, NULL),
+(13, 'Additifs alimentaires', 0, 39, NULL),
+(14, 'Alimentation animale', 0, 39, NULL),
+(15, 'Aliments pour bébés', 0, 39, NULL),
+(16, 'Fabrication Alimentation générale ', 0, 39, NULL),
+(17, 'Fabrication d’huiles et graisses alimentaires', 0, 39, NULL),
+(18, 'Fabrication de chocolats ', 0, 39, NULL),
+(19, 'Fabrication de Confiseries', 0, 39, NULL),
+(20, 'Fabrication de Glaces et sorbets ', 0, 39, NULL),
+(21, 'Fabrication de Sucres', 0, 39, NULL),
+(22, 'Fabrication Pâtes alimentaires', 0, 39, NULL),
+(23, 'Fourniture de Minerais et minéraux', 0, 39, NULL),
+(24, 'Fours pour boulangeries et pâtisseries', 0, 39, NULL),
+(25, 'Graisses alimentaires', 0, 39, NULL),
+(26, 'Lait médical et alimentation pour bébés', 0, 39, NULL),
+(27, 'Machines à café installation et entretie', 0, 39, NULL),
+(28, 'Matériel et fournitures boucheries et charcuterie', 0, 39, NULL),
+(29, 'Matériel et fournitures pour Boulangeries et pâtis', 0, 39, NULL),
+(30, 'Matériel et fournitures pour café et restaurant', 0, 39, NULL),
+(31, 'Matériel et fournitures pour Glaciers ', 0, 39, NULL),
+(32, 'Matériel et fournitures Industrie Alimentaire', 0, 39, NULL),
+(33, 'Matériel et fournitures Pâtisseries confiserie', 0, 39, NULL),
+(34, 'Mobilier pour magasins, cafés', 0, 39, NULL),
+(35, 'Produits alimentaires de luxe', 0, 39, NULL),
+(36, 'Produits alimentaires Surgelés', 0, 39, NULL),
+(37, 'Produits alimentaires surgelés et congelés', 0, 39, NULL),
+(38, 'Balance et bascule', 0, 42, NULL),
+(39, 'Broyeur', 0, 42, NULL),
+(40, 'Chauffage ', 0, 42, NULL),
+(41, 'Compresseur', 0, 42, NULL),
+(42, 'Extrudeuse', 0, 42, NULL),
+(43, 'Froid industriel', 0, 42, NULL),
+(44, 'Machine d’injection plastique', 0, 42, NULL),
+(45, 'Machine divers', 0, 42, NULL),
+(46, 'Machine-outil', 0, 42, NULL),
+(47, 'Matériel et fourniture pour blanchisserie et laver', 0, 42, NULL),
+(48, 'Souffleuse', 0, 42, NULL),
+(49, 'Traitement des eaux', 0, 42, NULL),
+(50, 'Caisse enregistreuse ', 0, 1, NULL),
+(51, 'Climatiseur', 0, 1, NULL),
+(52, 'Coffre-fort', 0, 1, NULL),
+(53, 'Distributeur de confiseries, snacks et tabac ', 0, 1, NULL),
+(54, 'Distributeurs de boissons froides ', 0, 1, NULL),
+(55, 'Distributeurs de café et boissons chaudes ', 0, 1, NULL),
+(56, 'Fontaines à eau ', 0, 1, NULL),
+(57, 'Mobilier de bureau ', 0, 1, NULL),
+(58, 'Papier ', 0, 1, NULL),
+(59, 'Photocopieurs ', 0, 1, NULL),
+(60, 'Projecteurs ', 0, 1, NULL),
+(61, 'Télécopieurs', 0, 1, NULL),
+(63, 'Conception et réalisation de brochures et catalogu', 0, 2, NULL),
+(64, 'Conception et réalisation de support publicitaire ', 0, 2, NULL),
+(65, 'Création logo ou charte graphique', 0, 2, NULL),
+(66, 'Comptabilité et Expert financier', 0, 3, NULL),
+(67, 'Conseil opérationnel et industriel', 0, 3, NULL),
+(68, 'Conseil stratégique et études', 0, 3, NULL),
+(69, 'Recouvrement de créances', 0, 3, NULL),
+(70, 'Boulonnerie, visserie, articles de fixatio', 0, 44, NULL),
+(71, 'Carburant, fuel ', 0, 44, NULL),
+(72, 'Consommable de soudure', 0, 44, NULL),
+(73, 'Consommable et composant électrique', 0, 44, NULL),
+(74, 'Droguerie', 0, 44, NULL),
+(75, 'Emballage et conditionnement', 0, 44, NULL),
+(76, 'Produit d’entretien et de nettoyage', 0, 44, NULL),
+(77, 'Quincaillerie ', 0, 44, NULL),
+(78, 'Vêtement de sécurité', 0, 44, NULL),
+(79, 'Vêtement de travaille', 0, 44, NULL),
+(80, 'Carton ondulé', 0, 4, NULL),
+(81, 'Design emballage et étiquettes', 0, 4, NULL),
+(82, 'Emballage et conditionnement ', 0, 4, NULL),
+(83, 'Fioul - mazout', 0, 5, NULL),
+(84, 'Energie Solaire', 0, 5, NULL),
+(85, 'Biocarburant', 0, 5, NULL),
+(86, 'Agencement, décoratio', 0, 45, NULL),
+(87, 'Bâtiment préfabriqué', 0, 45, NULL),
+(88, 'Construction métallique', 0, 45, NULL),
+(89, 'Entreprise de construction de bâtiment', 0, 45, NULL),
+(90, 'Génie civil', 0, 45, NULL),
+(91, 'Gros-œuvre ', 0, 45, NULL),
+(92, 'Menuiserie aluminium', 0, 45, NULL),
+(93, 'Menuiserie bois', 0, 45, NULL),
+(94, 'Piscine ', 0, 45, NULL),
+(95, 'Porte, cloison amovible', 0, 45, NULL),
+(96, 'Terrassement', 0, 45, NULL),
+(97, 'Travaux tout corps d’état', 0, 45, NULL),
+(98, 'Enseignes pour stand d\'exposition ', 0, 6, NULL),
+(99, 'Hôtesses ', 0, 6, NULL),
+(100, 'Location de salles pour mariage, fêtes,... ', 0, 6, NULL),
+(101, 'Location de salles pour séminaire, réunion,... ', 0, 6, NULL),
+(102, 'Location matériel et tentes', 0, 6, NULL),
+(103, 'Organisation d\'événements ', 0, 6, NULL),
+(104, 'Salons et conventions ', 0, 6, NULL),
+(105, 'Services de traiteur ', 0, 6, NULL),
+(106, 'Son et lumière', 0, 6, NULL),
+(107, 'Formation continue ', 0, 7, NULL),
+(108, 'Formation du soir', 0, 7, NULL),
+(109, 'Formation extra-entreprise', 0, 7, NULL),
+(110, 'Formation intra-entreprise', 0, 7, NULL),
+(111, 'Formation langue ', 0, 7, NULL),
+(112, 'Formation logiciel ', 0, 7, NULL),
+(113, 'Formation professionnel', 0, 7, NULL),
+(114, 'Formation vente et marketing', 0, 7, NULL),
+(115, 'Brochures et catalogues ', 0, 8, NULL),
+(116, 'Impression cartes de visite et papier à lettres ', 0, 8, NULL),
+(117, 'Impression classeurs et boîtes de rangement ', 0, 8, NULL),
+(118, 'Impression enveloppes ', 0, 8, NULL),
+(119, 'Impression factures et formulaires ', 0, 8, NULL),
+(120, 'Impression feuillets, dépliants et affiches ', 0, 8, NULL),
+(121, 'Impression magazines, livres et journaux ', 0, 8, NULL),
+(122, 'Impression rapports annuels ', 0, 8, NULL),
+(123, 'Impression spéciale', 0, 8, NULL),
+(124, 'Conseil informatique', 0, 9, NULL),
+(125, 'Développement et intégration base de données', 0, 9, NULL),
+(126, 'Développement, programmation logiciel ', 0, 9, NULL),
+(127, 'Intégration et gestion de projet', 0, 9, NULL),
+(128, 'Logiciel gestion CRM - SRM', 0, 9, NULL),
+(129, 'Logiciel gestion documents ', 0, 9, NULL),
+(130, 'Logiciel standard', 0, 9, NULL),
+(131, 'Progiciel de gestion intégré (ERP) ', 0, 9, NULL),
+(132, 'Services sécurité informatique', 0, 9, NULL),
+(133, 'Création site web de présentation ', 0, 46, NULL),
+(134, 'Création site web gestion et e-commerce ', 0, 46, NULL),
+(135, 'Fournisseur d\'accès FAI ', 0, 46, NULL),
+(136, 'Graphisme et animations web ', 0, 46, NULL),
+(137, 'Hébergement sites web ', 0, 46, NULL),
+(138, 'Marketing internet ', 0, 46, NULL),
+(139, 'Réalisation de bannières ', 0, 46, NULL),
+(140, 'Référencement moteur de recherche', 0, 46, NULL),
+(141, 'Bacs de stockage et conteneurs ', 0, 11, NULL),
+(142, 'Chariots élévateurs', 0, 11, NULL),
+(143, 'Transpalette et Gerbeur', 0, 11, NULL),
+(144, 'Entreposage ', 0, 11, NULL),
+(145, 'Grues ', 0, 11, NULL),
+(146, 'Palettes ', 0, 11, NULL),
+(148, 'Achat / location de bases de données', 0, 12, NULL),
+(149, 'Agence de marketing direct ', 0, 12, NULL),
+(150, 'Agence de publicité ', 0, 12, NULL),
+(151, 'Conseil vente et marketing ', 0, 12, NULL),
+(152, 'Enseignes lumineuses et signalétique ', 0, 12, NULL),
+(153, 'Mailing direct ', 0, 12, NULL),
+(154, 'Rédaction de textes ', 0, 12, NULL),
+(155, 'Relations presse', 0, 12, NULL),
+(156, 'Télémarketing et Centres d\'appels', 0, 12, NULL),
+(157, 'Aspirateur et cireuse', 0, 48, NULL),
+(158, 'Chocolat et confiserie', 0, 48, NULL),
+(159, 'Electroménager', 0, 48, NULL),
+(160, 'Hi-fi', 0, 48, NULL),
+(161, 'Literie, draps  ', 0, 48, NULL),
+(162, 'Sonorisation et effet lumineux', 0, 48, NULL),
+(163, 'Vêtement de travaille', 0, 48, NULL),
+(164, 'Armoire et coffret', 0, 49, NULL),
+(165, 'Automate programmable', 0, 49, NULL),
+(166, 'Bobinage pour moteur électrique', 0, 49, NULL),
+(167, 'Câble et fil électrique', 0, 49, NULL),
+(168, 'Carte électronique', 0, 49, NULL),
+(169, 'Composant d’automatisme pneumatique', 0, 49, NULL),
+(170, 'Composant électronique', 0, 49, NULL),
+(171, 'Composant et article hydraulique', 0, 49, NULL),
+(172, 'Conception et installation d’automatisme', 0, 49, NULL),
+(173, 'Disjoncteur, relais électrique', 0, 49, NULL),
+(174, 'Transformateur électrique', 0, 49, NULL),
+(177, 'Imprimantes ', 0, 9, NULL),
+(179, 'Ordinateurs PC', 0, 9, NULL),
+(180, 'PC portables ', 0, 9, NULL),
+(181, 'Serveurs ', 0, 9, NULL),
+(182, 'Support hardware', 0, 9, NULL),
+(183, 'Carto', 0, 50, NULL),
+(184, 'Encre', 0, 50, NULL),
+(185, 'Machine', 0, 50, NULL),
+(186, 'Papier', 0, 50, NULL),
+(187, 'Audit environnemental', 0, 14, NULL),
+(188, 'Gestion de déchèterie ', 0, 14, NULL),
+(189, 'Gestion du nettoyage ', 0, 14, NULL),
+(190, 'Matériel et produits de nettoyage ', 0, 14, NULL),
+(191, 'Nettoyage & Environnement', 0, 14, NULL),
+(192, 'Services de nettoyage', 0, 14, NULL),
+(193, 'Concepteur de reportage vidéo ', 0, 15, NULL),
+(194, 'Duplication de CD ou DVD ', 0, 15, NULL),
+(195, 'Photographie ', 0, 15, NULL),
+(196, 'Production spot radio ', 0, 15, NULL),
+(197, 'Production vidéo présentation d\'entreprise', 0, 15, NULL),
+(198, 'Production vidéo pour publicité ', 0, 15, NULL),
+(199, 'Présentation CD ou DVD ', 0, 15, NULL),
+(200, 'Streaming vidéo', 0, 15, NULL),
+(201, 'Streaming vidéo', 0, 15, NULL),
+(202, 'PLV', 0, 15, NULL),
+(203, 'Affichage', 0, 15, NULL),
+(204, 'Accessoire et équipement ', 0, 52, NULL),
+(205, 'Entretien et maintenance', 0, 52, NULL),
+(206, 'Pièce détaché pour moteur', 0, 52, NULL),
+(207, 'Accessoire et équipement ', 0, 53, NULL),
+(208, 'Entretien et maintenance', 0, 53, NULL),
+(209, 'Pièce détaché pour moteur', 0, 53, NULL),
+(210, 'Colorant pour matière plastique', 0, 54, NULL),
+(211, 'Articles promotionnels ', 0, 16, NULL),
+(212, 'Cadeaux d\'affaires ', 0, 16, NULL),
+(213, 'Vêtements promotionnels', 0, 16, NULL),
+(214, 'Architecture d\'intérieur ', 0, 18, NULL),
+(215, 'Climatisation ', 0, 18, NULL),
+(216, 'Construction générale ', 0, 18, NULL),
+(217, 'Décoration intérieure ', 0, 18, NULL),
+(218, 'Installation électrique ', 0, 18, NULL),
+(219, 'Installations spéciales ', 0, 18, NULL),
+(220, 'Peinture et rafraîchissement ', 0, 18, NULL),
+(221, 'Rénovation  bâtiment', 0, 18, NULL),
+(222, 'Sol et fondation ', 0, 18, NULL),
+(223, 'Toit et isolation ', 0, 18, NULL),
+(224, 'Tuyauterie et sanitaire', 0, 18, NULL),
+(225, 'Intérim ', 0, 17, NULL),
+(226, 'Gardiennage', 0, 17, NULL),
+(227, 'Recrutement ', 0, 17, NULL),
+(228, 'Relocation ', 0, 17, NULL),
+(229, 'Alarme et appareil de surveillance', 0, 19, NULL),
+(230, 'Antivol', 0, 19, NULL),
+(231, 'Contrôle d’accès', 0, 19, NULL),
+(232, 'Détection d’incendie', 0, 19, NULL),
+(233, 'Gardiennage', 0, 19, NULL),
+(234, 'Prévention contre le feu ', 0, 19, NULL),
+(235, 'Surveillance vidéo ', 0, 19, NULL),
+(236, 'Centraux téléphoniques', 0, 55, NULL),
+(237, 'Câblage et réseaux ', 0, 55, NULL),
+(238, 'Téléphonie VOIP ', 0, 55, NULL),
+(239, 'Téléphonie mobile', 0, 55, NULL),
+(240, 'Téléphonie Fixe', 0, 55, NULL),
+(249, 'Billets d\'avion ', 0, 24, NULL),
+(250, 'Location d\'autocars', 0, 24, NULL),
+(251, 'Hôtel', 0, 24, NULL),
+(252, 'Aciers de constructio', 0, 27, NULL),
+(253, 'Agrafages – vulcanisatio', 0, 53, NULL),
+(254, 'outillage', 0, 44, NULL),
+(255, 'Appareils de mesure et de contrôle électrique', 0, 36, NULL),
+(256, 'Location de véhicule utilitaire', 0, 56, NULL),
+(257, 'Location de camio', 0, 56, NULL),
+(258, 'VEHICULE UTILITAIRE', 0, 20, NULL),
+(259, 'CAMIO', 0, 20, NULL),
+(260, 'AUTOMOBILES', 0, 20, NULL),
+(261, 'MINIBUS', 0, 20, NULL),
+(262, 'FOURGONNETTES, FOURGONS', 0, 20, NULL),
+(263, 'Transport National', 0, 57, NULL),
+(264, 'Tansport International', 0, 57, NULL),
+(265, 'Messagerie', 0, 57, NULL),
+(266, 'Services de Coursiers', 0, 57, NULL),
+(267, 'Déménagement', 0, 57, NULL),
+(268, 'Matériel Informatique', 0, 9, NULL),
+(269, 'Palettes', 0, 61, NULL),
+(270, 'Rayonnage', 0, 11, NULL),
+(271, 'Chariots élévateurs', 0, 62, NULL),
+(272, 'Transpalettes', 0, 62, NULL),
+(273, 'Gerbeurs', 0, 62, NULL),
+(274, 'Ustensiles', 0, 48, NULL),
+(275, 'Tables et chaises', 0, 48, NULL),
+(276, 'Accessoires HCR', 0, 48, NULL),
+(286, 'Industrie Mécanique', 0, 28, NULL),
+(287, 'Manufactures', 0, 28, NULL),
+(288, 'Chargeuses sur pneus', 0, 74, NULL),
+(289, 'Chargeuses - pelleteuses', 0, 74, NULL),
+(290, 'Pelles', 0, 74, NULL),
+(291, 'Tombereaux articulés', 0, 74, NULL),
+(292, 'Niveleuses', 0, 74, NULL),
+(293, 'Finisseurs de routes', 0, 74, NULL),
+(294, 'Raboteuses', 0, 74, NULL),
+(295, 'Compacteurs', 0, 74, NULL),
+(296, 'Froid et climatisatio', 0, 75, NULL),
+(297, 'AUTRE', 0, 75, NULL),
+(298, 'Accessoires', 0, 9, NULL),
+(299, 'Entretien et réparatio', 0, 9, NULL),
+(301, 'Ordinateurs Mac', 0, 9, NULL),
+(306, 'Autre (à préciser sur le descriptif)', 0, 23, NULL),
+(307, 'Sols', 0, 25, NULL),
+(308, 'Mines', 0, 25, NULL),
+(309, 'Carrière', 0, 25, NULL),
+(311, 'Agro-industrie', 0, 26, NULL),
+(312, 'Matériaux de construction ', 0, 27, NULL),
+(313, 'Sidérurgie', 0, 29, NULL),
+(314, 'Métallurgie', 0, 29, NULL),
+(315, 'Industrie de transformatio', 0, 30, NULL),
+(316, 'Energie', 0, 31, NULL),
+(317, 'Electricité', 0, 31, NULL),
+(319, 'Electronique', 0, 31, NULL),
+(320, 'Environnement', 0, 32, NULL),
+(321, 'Equipements', 0, 34, NULL),
+(322, 'Infrastructures', 0, 34, NULL),
+(323, 'Pétrole', 0, 35, NULL),
+(324, 'Gaz', 0, 35, NULL),
+(325, 'Chimie', 0, 37, NULL),
+(326, 'Parachimie', 0, 37, NULL),
+(327, 'Pharmacie', 0, 37, NULL),
+(328, 'Santé', 0, 37, NULL),
+(329, 'Architectes', 0, 40, NULL),
+(330, 'Ascenseurs', 0, 41, NULL),
+(331, 'Montes charges', 0, 41, NULL),
+(332, 'Bureau d\'étude', 0, 43, NULL),
+(333, 'Maintenance', 0, 47, NULL),
+(334, 'Entretie', 0, 47, NULL),
+(335, 'Plastiques', 0, 51, NULL),
+(336, 'Caoutchouc', 0, 51, NULL),
+(337, 'Dérivés de matières plastiques', 0, 51, NULL),
+(338, 'Audit', 0, 58, NULL),
+(339, 'Conseil', 0, 58, NULL),
+(340, 'Chaudronerie', 0, 59, NULL),
+(341, 'Charpente', 0, 60, NULL),
+(342, 'Rayonnages', 0, 61, NULL),
+(343, 'Peinture à huile', 0, 63, NULL),
+(344, 'Colorant', 0, 63, NULL),
+(345, 'Services de tranport', 0, 64, NULL),
+(346, 'Agence immobilière', 0, 64, NULL),
+(347, 'Agence de location de voiture', 0, 64, NULL),
+(348, 'Sécurité', 0, 64, NULL),
+(349, 'Nettoyage', 0, 64, NULL),
+(350, 'Assistance', 0, 64, NULL),
+(351, 'Dépannage', 0, 64, NULL),
+(352, 'Bricolage', 0, 64, NULL),
+(353, 'Matériel de manutentio', 0, 65, NULL),
+(354, 'Outillage à mai', 0, 65, NULL),
+(355, 'Expertise', 0, 67, NULL),
+(356, 'Distributio', 0, 68, NULL),
+(357, 'Place de marché', 0, 70, NULL),
+(358, 'Autre', 0, 34, NULL),
+(364, 'Autre', 0, 6, NULL),
+(365, 'Autre', 0, 7, NULL),
+(366, 'Autre', 0, 8, NULL),
+(367, 'Autre', 0, 9, NULL),
+(368, 'Autre', 0, 11, NULL),
+(369, 'Autre', 0, 12, NULL),
+(370, 'Autre', 0, 14, NULL),
+(371, 'Autre', 0, 15, NULL),
+(372, 'Autre', 0, 16, NULL),
+(373, 'Autre', 0, 17, NULL),
+(374, 'Autre', 0, 18, NULL),
+(375, 'Autre', 0, 19, NULL),
+(376, 'Autre', 0, 20, NULL),
+(377, 'Autre', 0, 24, NULL),
+(378, 'Autre', 0, 25, NULL),
+(379, 'Autre', 0, 26, NULL),
+(380, 'Autre', 0, 27, NULL),
+(381, 'Autre', 0, 28, NULL),
+(382, 'Autre', 0, 29, NULL),
+(383, 'Autre', 0, 30, NULL),
+(384, 'Autre', 0, 32, NULL),
+(385, 'Autre', 0, 36, NULL),
+(386, 'Autre', 0, 37, NULL),
+(387, 'Autre', 0, 38, NULL),
+(388, 'Autre', 0, 39, NULL),
+(389, 'Autre', 0, 40, NULL),
+(390, 'Autre', 0, 41, NULL),
+(391, 'Autre', 0, 42, NULL),
+(392, 'Autre', 0, 43, NULL),
+(393, 'Autre', 0, 44, NULL),
+(394, 'Autre', 0, 45, NULL),
+(395, 'Autre', 0, 46, NULL),
+(396, 'Autre', 0, 48, NULL),
+(397, 'Autre', 0, 49, NULL),
+(398, 'Autre', 0, 50, NULL),
+(399, 'Autre', 0, 51, NULL),
+(400, 'Autre', 0, 52, NULL),
+(401, 'Autre', 0, 53, NULL),
+(402, 'Autre', 0, 54, NULL),
+(403, 'Autre', 0, 55, NULL),
+(404, 'Autre', 0, 56, NULL),
+(405, 'Autre', 0, 57, NULL),
+(406, 'Autre', 0, 58, NULL),
+(407, 'Autre', 0, 59, NULL),
+(408, 'Autre', 0, 60, NULL),
+(409, 'Autre', 0, 61, NULL),
+(410, 'Autre', 0, 62, NULL),
+(411, 'Autre', 0, 63, NULL),
+(412, 'Autre', 0, 64, NULL),
+(413, 'Autre', 0, 65, NULL),
+(414, 'Autre', 0, 67, NULL),
+(415, 'Autre', 0, 68, NULL),
+(416, 'Autre', 0, 70, NULL),
+(417, 'Autre', 0, 74, NULL),
+(418, 'Centre commercial', 0, 78, NULL),
+(419, 'Université', 0, 79, NULL),
+(420, 'Logiciel', 0, 11, NULL),
+(421, 'Machine et Equipement', 0, 4, NULL),
+(422, 'testt_deleted-422', 1, 1, NULL),
+(424, 'Algeriee2', 0, 1, 50);
 
 -- --------------------------------------------------------
 
@@ -1181,8 +1402,8 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (72, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhdfg@gmail.com', '$2y$13$Rs/FDPO.vKtbYKE5gzNdl.R1ANygr/23DkGQuuLDIaUqhb5RibHVm', 0, 1, '2019-11-05 11:09:13', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (73, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arboullllllllllh@gmail.com', '$2y$13$uCucAmjImgBX7VNOVHBfWuXsAgDra9E7Spg2h.o0zjlSxlMUBXcke', 0, 1, '2019-11-05 11:11:44', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (74, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhjikjlkl@gmail.com', '$2y$13$gG.Dj.Lpn/m9JPNKtUpcbeZDjA2HCecBOAJaRnqCNDoEaD0MLxAYe', 0, 1, '2019-11-05 12:40:28', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
-(75, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhssscq@gmail.com', '$2y$13$H./PWBuS/z5G4Zb2vnhUUeecSGafd4WpT6HOKJdB2aLajgV2sV57q', 0, 1, '2019-11-05 15:38:55', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
-(76, '36, rue i25', 'adresse ee 2323', 26000, '0696318054', 'youness.arbouh@gmail.com', '$2y$13$T7KXkmI59DJgTD0yBavZq.z/1zBtMRSTTAP62O9XbXhrI4qczjJhm', 0, 1, '2019-11-07 09:30:02', 'YOUNESS2', 'ARBOUH1', NULL, 'Acheteur', 'ROLE_ACHETEUR', 1574433080, NULL, NULL, 36, '/dashboard');
+(75, '36, rue imam al boukhari maarif', '', 26000, '0696318051', 'youness.arbouhssscq@gmail.com', '$2y$13$H./PWBuS/z5G4Zb2vnhUUeecSGafd4WpT6HOKJdB2aLajgV2sV57q', 0, 1, '2019-11-05 15:38:55', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, 38, '/dashboard'),
+(76, '36, rue i25', 'adresse ee 2323', 26000, '0696318054', 'youness.arbouh@gmail.com', '$2y$13$T7KXkmI59DJgTD0yBavZq.z/1zBtMRSTTAP62O9XbXhrI4qczjJhm', 0, 1, '2019-11-07 09:30:02', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', 1574433080, NULL, NULL, 36, '/dashboard');
 
 -- --------------------------------------------------------
 
@@ -1402,7 +1623,7 @@ ALTER TABLE `commercial_ville`
 ALTER TABLE `demande_achat`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_D077077F96A7BB5F` (`acheteur_id`),
-  ADD KEY `search_idx` (`statut`);
+  ADD KEY `search_idx` (`statut`,`del`);
 
 --
 -- Index pour la table `demande_achat_attachement`
@@ -1421,12 +1642,26 @@ ALTER TABLE `demande_ha_sous_secteur`
   ADD KEY `IDX_457CE2F8B8CC98D5` (`demande_achat_id`);
 
 --
+-- Index pour la table `detail_visite`
+--
+ALTER TABLE `detail_visite`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_A2569520670C757F` (`fournisseur_id`),
+  ADD KEY `IDX_A256952080E95E18` (`demande_id`);
+
+--
 -- Index pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_65C68FFF670C757F` (`fournisseur_id`),
   ADD KEY `IDX_65C68FFF80E95E18` (`demande_id`);
+
+--
+-- Index pour la table `fiche`
+--
+ALTER TABLE `fiche`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `fournisseur`
@@ -1445,6 +1680,12 @@ ALTER TABLE `fournisseur_sous_secteur`
   ADD KEY `IDX_CA2D7FC3790611EF` (`sous_secteur_id`);
 
 --
+-- Index pour la table `image_produit`
+--
+ALTER TABLE `image_produit`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `migration_versions`
 --
 ALTER TABLE `migration_versions`
@@ -1457,6 +1698,25 @@ ALTER TABLE `pays`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `produit`
+--
+ALTER TABLE `produit`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_29A5EC279F7E4405` (`secteur_id`),
+  ADD KEY `IDX_29A5EC27D7BD44DD` (`sous_secteurs_id`),
+  ADD KEY `IDX_29A5EC27670C757F` (`fournisseur_id`),
+  ADD KEY `IDX_29A5EC27431AD613` (`fiche_technique_id`),
+  ADD KEY `IDX_29A5EC27BCF5E72D` (`categorie_id`);
+
+--
+-- Index pour la table `produit_image_produit`
+--
+ALTER TABLE `produit_image_produit`
+  ADD PRIMARY KEY (`produit_id`,`image_produit_id`),
+  ADD KEY `IDX_92EB1D25F347EFB` (`produit_id`),
+  ADD KEY `IDX_92EB1D2563EA69CD` (`image_produit_id`);
+
+--
 -- Index pour la table `secteur`
 --
 ALTER TABLE `secteur`
@@ -1467,7 +1727,8 @@ ALTER TABLE `secteur`
 --
 ALTER TABLE `sous_secteur`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_A34C5D529F7E4405` (`secteur_id`);
+  ADD KEY `IDX_A34C5D529F7E4405` (`secteur_id`),
+  ADD KEY `IDX_A34C5D523D8E604F` (`parent`);
 
 --
 -- Index pour la table `user`
@@ -1506,37 +1767,61 @@ ALTER TABLE `zone_commercial_pays`
 -- AUTO_INCREMENT pour la table `attachement`
 --
 ALTER TABLE `attachement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
 
 --
 -- AUTO_INCREMENT pour la table `avatar`
 --
 ALTER TABLE `avatar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT pour la table `black_listes`
 --
 ALTER TABLE `black_listes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT pour la table `detail_visite`
+--
+ALTER TABLE `detail_visite`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+
+--
+-- AUTO_INCREMENT pour la table `fiche`
+--
+ALTER TABLE `fiche`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT pour la table `image_produit`
+--
+ALTER TABLE `image_produit`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT pour la table `pays`
 --
 ALTER TABLE `pays`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+
+--
+-- AUTO_INCREMENT pour la table `produit`
+--
+ALTER TABLE `produit`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pour la table `secteur`
@@ -1548,7 +1833,7 @@ ALTER TABLE `secteur`
 -- AUTO_INCREMENT pour la table `sous_secteur`
 --
 ALTER TABLE `sous_secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=423;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=425;
 
 --
 -- AUTO_INCREMENT pour la table `user`
@@ -1623,6 +1908,13 @@ ALTER TABLE `demande_ha_sous_secteur`
   ADD CONSTRAINT `FK_457CE2F8B8CC98D5` FOREIGN KEY (`demande_achat_id`) REFERENCES `demande_achat` (`id`) ON DELETE CASCADE;
 
 --
+-- Contraintes pour la table `detail_visite`
+--
+ALTER TABLE `detail_visite`
+  ADD CONSTRAINT `FK_A2569520670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
+  ADD CONSTRAINT `FK_A256952080E95E18` FOREIGN KEY (`demande_id`) REFERENCES `demande_achat` (`id`);
+
+--
 -- Contraintes pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
@@ -1645,9 +1937,27 @@ ALTER TABLE `fournisseur_sous_secteur`
   ADD CONSTRAINT `FK_CA2D7FC3790611EF` FOREIGN KEY (`sous_secteur_id`) REFERENCES `sous_secteur` (`id`) ON DELETE CASCADE;
 
 --
+-- Contraintes pour la table `produit`
+--
+ALTER TABLE `produit`
+  ADD CONSTRAINT `FK_29A5EC27431AD613` FOREIGN KEY (`fiche_technique_id`) REFERENCES `fiche` (`id`),
+  ADD CONSTRAINT `FK_29A5EC27670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
+  ADD CONSTRAINT `FK_29A5EC279F7E4405` FOREIGN KEY (`secteur_id`) REFERENCES `secteur` (`id`),
+  ADD CONSTRAINT `FK_29A5EC27BCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `sous_secteur` (`id`),
+  ADD CONSTRAINT `FK_29A5EC27D7BD44DD` FOREIGN KEY (`sous_secteurs_id`) REFERENCES `sous_secteur` (`id`);
+
+--
+-- Contraintes pour la table `produit_image_produit`
+--
+ALTER TABLE `produit_image_produit`
+  ADD CONSTRAINT `FK_92EB1D2563EA69CD` FOREIGN KEY (`image_produit_id`) REFERENCES `image_produit` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_92EB1D25F347EFB` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`id`) ON DELETE CASCADE;
+
+--
 -- Contraintes pour la table `sous_secteur`
 --
 ALTER TABLE `sous_secteur`
+  ADD CONSTRAINT `FK_A34C5D523D8E604F` FOREIGN KEY (`parent`) REFERENCES `sous_secteur` (`id`),
   ADD CONSTRAINT `FK_A34C5D529F7E4405` FOREIGN KEY (`secteur_id`) REFERENCES `secteur` (`id`);
 
 --
