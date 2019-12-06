@@ -66,6 +66,11 @@ class Acheteur extends User
      * @Groups({"visit:get-all","get","put","post","get-from-demande"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
+     * @Assert\Regex(
+     *     pattern="/[a-zA-Z0-9]{3,}/",
+     *     message="Raison social (minimum de 3 caractères alphanumériques)",
+     *     groups={"postValidation","putValidation"}
+     * )
      */
     private $societe;
 

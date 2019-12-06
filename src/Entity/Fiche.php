@@ -7,13 +7,14 @@
  */
 
 namespace App\Entity;
+
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use App\Controller\DemandeAchat\UploadAttachementAction;
+use App\Controller\ImageProduit\UploadAttachementProduitAction;
 
 
 /**
@@ -22,10 +23,10 @@ use App\Controller\DemandeAchat\UploadAttachementAction;
  *     collectionOperations={
  *     "get",
  *     "post"={
- *           "access_control"="is_granted('ROLE_ACHETEUR')",
+ *           "access_control"="is_granted('ROLE_FOURNISSEUR')",
  *           "method"="POST",
- *           "path"="/attachements",
- *           "controller"=UploadAttachementAction::class,
+ *           "path"="/fiches",
+ *           "controller"=UploadAttachementProduitAction::class,
  *           "defaults"={"_api_receive"=false}
  *
  *     }
@@ -37,42 +38,45 @@ use App\Controller\DemandeAchat\UploadAttachementAction;
  * )
  * @Vich\Uploadable()
  */
-class Attachement
+class Fiche
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
+     * @Groups({"get","produit:get-item"})
      * @ORM\Column(type="integer")
-     * @Groups({"visit:get-item","get","get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $id;
 
     /**
      * @ORM\Column(nullable=true)
-     * @Groups({"visit:get-item","get","get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"get","produit:get-item"})
      */
     private $url;
 
     /**
-     * @Vich\UploadableField(mapping="demande",fileNameProperty="url",size="fileSize",mimeType="type")
+     * @Vich\UploadableField(mapping="produitFiche",fileNameProperty="url",size="fileSize",mimeType="type")
      * @Assert\NotNull()
-     * @Assert\File(maxSize="1M")
+     * @Assert\File(maxSize="3M")
      */
     private $file;
 
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"visit:get-item","get","get-from-demande"})
+     * @Groups({"get"})
      * @var integer
      */
     private $fileSize;
 
     /**
      * @ORM\Column(nullable=true)
-     * @Groups({"visit:get-item","get","get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"get"})
      */
     private $type;
+
+
+
 
 
     public function getId()
@@ -83,7 +87,7 @@ class Attachement
 
     public function getUrl()
     {
-        return '/attachement/demandeAchat/'.$this->url;
+        return '/attachement/produits/'.$this->url;
     }
 
 

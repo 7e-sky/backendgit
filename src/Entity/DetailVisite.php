@@ -19,18 +19,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
+ *              "access_control"="is_granted('ROLE_FOURNISSEUR')",
  *              "denormalization_context"={"groups"={"visit:post"}},
  *              "validation_groups"={"visit:postValidation"},
  *              "normalization_context"={"groups"={"visit:get-all"}}
  *          },
  *          "get"={
+ *              "access_control"="is_granted('ROLE_FOURNISSEUR')",
  *              "normalization_context"={"groups"={"visit:get-all"}}
  *          }
  *     },
  *     itemOperations={
  *
  *          "get"={
- *
+ *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_FOURNISSEUR') and object.getFournisseur() == user)",
+ *              "normalization_context"={"groups"={"visit:get-item","visit:get-all"}}
  *          },
  *          "put"={
  *              "denormalization_context"={"groups"={"visit:put"}},
@@ -38,6 +41,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "validation_groups"={"visit:putValidation"}
  *          },
  *     },
+ *     attributes={"pagination_items_per_page"=10},
  * )
  * @ORM\Entity(repositoryClass="App\Repository\DetailVisiteRepository")
  */

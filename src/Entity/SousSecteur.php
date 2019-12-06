@@ -13,14 +13,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+
+
 /**
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
- *     "name":"partial"
+ *     "name":"partial",
+ *     "parent":"exact"
  *      }
  * )
- * @ApiFilter(OrderFilter::class, properties={"id","name","secteur.id"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
+ * @ApiFilter(ExistsFilter::class, properties={"parent"})
+ * @ApiFilter(OrderFilter::class, properties={"id","name","secteur.id","parent.name"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -46,6 +53,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     "normalization_context"={"groups"={"get-from-sous-secteur"},
  *     "enable_max_depth"=true},
  *     "pagination_items_per_page"=10,
+ *     "pagination_client_enabled"=true
  *     },
  *     subresourceOperations={
  *          "api_secteurs_sous_secteurs_get_subresource"={
@@ -62,13 +70,13 @@ class SousSecteur
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get-from-sous-secteur","get-from-secteur","get","get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"visit:get-item","get-from-sous-secteur","get-from-secteur","get","get-from-demande","get-from-acheteur_demandes"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Groups({"get-from-sous-secteur","get-from-secteur","get","put","post","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-item","produit:get-item","produit:get-all","produit:get-from-fournisseur","get-from-sous-secteur","get-from-secteur","get","put","post","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
@@ -105,6 +113,14 @@ class SousSecteur
      * @ApiSubresource(maxDepth=1)
      */
     private $demandes;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="SousSecteur")
+     * @Groups({"get-from-sous-secteur","post","put"})
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id" , nullable=true)
+     */
+    private $parent;
 
 
     /*
@@ -175,6 +191,24 @@ class SousSecteur
     {
         return $this->demandes;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param mixed $parent
+     */
+    public function setParent($parent): void
+    {
+        $this->parent = $parent;
+    }
+
+
 
    /* public function getAcheteurs() : Collection
     {

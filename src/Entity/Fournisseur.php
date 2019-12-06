@@ -97,6 +97,11 @@ class Fournisseur extends User
      * @Groups({"get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
+     * @Assert\Regex(
+     *     pattern="/[a-zA-Z0-9]{3,}/",
+     *     message="Raison social (minimum de 3 caractères alphanumériques)",
+     *     groups={"postValidation","putValidation"}
+     * )
      */
     private $societe;
 
@@ -141,6 +146,13 @@ class Fournisseur extends User
      * @Assert\Length(min=6,groups={"postValidation","putValidation"})
      */
     private $description;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="Produit", mappedBy="fournisseur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $produits;
 
 
 
@@ -287,6 +299,15 @@ class Fournisseur extends User
     {
         $this->description = $description;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProduits()
+    {
+        return $this->produits;
+    }
+
 
 
 

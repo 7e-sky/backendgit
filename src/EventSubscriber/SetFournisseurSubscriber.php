@@ -9,8 +9,8 @@
 namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use App\Entity\Acheteur;
-use App\Interfaces\SetAcheteurInterface;
+use App\Entity\Fournisseur;
+use App\Interfaces\SetFournisseurInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class SetAcheteurSubscriber implements EventSubscriberInterface
+class SetFournisseurSubscriber implements EventSubscriberInterface
 {
 
     /**
@@ -39,26 +39,26 @@ class SetAcheteurSubscriber implements EventSubscriberInterface
     {
        return [
            KernelEvents::VIEW => [
-               'SetAcheteur',EventPriorities::PRE_WRITE
+               'SetFournisseur',EventPriorities::PRE_WRITE
            ]
        ];
     }
-    public function SetAcheteur(GetResponseForControllerResultEvent $event){
+    public function SetFournisseur(GetResponseForControllerResultEvent $event){
 
         $entity = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
         /**
-         * @var UserInterface $acheteur
+         * @var UserInterface $founrisseur
          */
-        $acheteur = $this->tokenStorage->getToken()->getUser();
+        $founrisseur = $this->tokenStorage->getToken()->getUser();
 
-        if(!$entity instanceof  SetAcheteurInterface  || $method !== Request::METHOD_POST ){
+        if(!$entity instanceof  SetFournisseurInterface  || $method !== Request::METHOD_POST ){
             return;
         }
 
-        if($acheteur instanceof Acheteur){
-            $entity->setAcheteur($acheteur);
+        if($founrisseur instanceof Fournisseur){
+            $entity->setFournisseur($founrisseur);
         }
 
     }

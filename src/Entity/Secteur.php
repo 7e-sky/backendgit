@@ -10,8 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 /**
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
  * @ApiResource(
  *    collectionOperations={
  *          "post"={
@@ -55,7 +58,7 @@ class Secteur
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
-     * @Groups({"visit:get-all","get-from-secteur","get-from-sous-secteur","get","post","put","get-from-demande"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","visit:get-all","get-from-secteur","get-from-sous-secteur","get","post","put","get-from-demande"})
      */
     private $name;
 

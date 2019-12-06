@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
@@ -91,20 +90,20 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
-     * @Groups({"visit:get-all","get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"visit:get-item","visit:get-all","get-from-demande","get-from-acheteur_demandes"})
      */
     private $acheteur;
 
     /**
      * @ORM\Column(type="smallint",length=1)
-     * @Groups({"get-from-demande","put-admin","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-all","get-from-demande","put-admin","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      *
      */
     private $statut;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-item","visit:get-all","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank(groups={"postValidation"})
      */
     private $reference;
@@ -112,7 +111,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank(groups={"postValidation"})
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-item","visit:get-all","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $description;
 
@@ -120,7 +119,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\DateTime(groups={"postValidation","putValidation"})
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-item","visit:get-all","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $dateExpiration;
 
@@ -144,7 +143,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-item","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $created;
 
@@ -191,7 +190,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\ManyToMany(targetEntity="Attachement")
      * @ORM\JoinTable()
-     * @Groups({"get-from-demande","put","post","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-item","get-from-demande","put","post","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank()
      * @ApiSubresource(maxDepth=1)
      */
@@ -199,9 +198,9 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur")
+     * @ORM\ManyToMany(targetEntity="SousSecteur", mappedBy="demandes")
      * @ORM\JoinTable(name="demande_ha_sous_secteur")
-     * @Groups({"get-from-demande","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-item","get-from-demande","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank()
      * @ApiSubresource(maxDepth=1)
      */
@@ -226,7 +225,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\Column(type="decimal")
      * @Assert\NotBlank()
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-item","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $budget ;
 
