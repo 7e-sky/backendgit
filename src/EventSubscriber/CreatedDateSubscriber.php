@@ -25,8 +25,10 @@ class CreatedDateSubscriber implements EventSubscriberInterface
        ];
     }
     public function setCreatedDate(GetResponseForControllerResultEvent $event){
+
         $entity = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
+
         if(!$entity instanceof  CreatedEntityInterface || $method !== Request::METHOD_POST ){
             return;
         }

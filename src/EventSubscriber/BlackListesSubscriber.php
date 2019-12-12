@@ -55,7 +55,7 @@ class BlackListesSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::VIEW => [
-                ['AccessControll',EventPriorities::PRE_WRITE],
+             //   ['AccessControll',EventPriorities::PRE_WRITE],
                 ['postBlackListe',EventPriorities::PRE_WRITE],
                 ]
         ];
@@ -123,6 +123,11 @@ class BlackListesSubscriber implements EventSubscriberInterface
         elseif($entities && $method === Request::METHOD_POST){
                 throw new Exception('Cette société déjà black listé');
         }
+
+        if(!$entity->getEtat()){
+            $entity->setDeblacklister(new \DateTime());
+        }
+
 
     }
 }

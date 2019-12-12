@@ -102,9 +102,9 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     private $statut;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     * @Groups({"visit:get-item","visit:get-all","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
-     * @Assert\NotBlank(groups={"postValidation"})
+     * @ORM\Column(type="string", length=50,nullable=true)
+     * @Groups({"visit:get-item","visit:get-all","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     *
      */
     private $reference;
 
@@ -169,23 +169,6 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      */
     private $isAnonyme;
 
-    /**
-     * @ORM\Column(type="string", length=4,nullable=true)
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
-     */
-    private $langueP;
-
-    /**
-     * @ORM\Column(type="text",nullable=true)
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
-     */
-    private $descriptionEn;
-
-    /**
-     * @ORM\Column(type="text",nullable=true)
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes"})
-     */
-    private $descriptionEs;
 
     /**
      * @ORM\ManyToMany(targetEntity="Attachement")
@@ -198,9 +181,9 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur", mappedBy="demandes")
+     * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="demandes")
      * @ORM\JoinTable(name="demande_ha_sous_secteur")
-     * @Groups({"visit:get-item","get-from-demande","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-item","get-from-demande","put-admin","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank()
      * @ApiSubresource(maxDepth=1)
      */
@@ -216,14 +199,14 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
 
     /**
-     * @ORM\Column(type="string", length=255,nullable=true)
-     * @Groups({"get-from-demande","put-admin","get-from-acheteur_demandes"})
+     * @ORM\ManyToOne(targetEntity="Motif")
+     * @Groups({"get-from-demande","put","get-from-acheteur_demandes"})
      */
     private $motifRejet;
 
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="float")
      * @Assert\NotBlank()
      * @Groups({"visit:get-item","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
@@ -394,22 +377,6 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
         return $this;
     }
 
-    public function getDescriptionEn(): ?string
-    {
-        return $this->descriptionEn;
-    }
-
-    public function setDescriptionEn(string $descriptionEn): self
-    {
-        $this->descriptionEn = $descriptionEn;
-
-        return $this;
-    }
-
-    public function getDescriptionEs(): ?string
-    {
-        return $this->descriptionEs;
-    }
 
     public function setDescriptionEs(string $descriptionEs): self
     {
@@ -479,23 +446,6 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
         $this->diffusionsdemandes->add($diffusionDemande);
 
-    }
-
-
-    /**
-     * @return mixed
-     */
-    public function getLangueP()
-    {
-        return $this->langueP;
-    }
-
-    /**
-     * @param mixed $langueP
-     */
-    public function setLangueP($langueP): void
-    {
-        $this->langueP = $langueP;
     }
 
     /**

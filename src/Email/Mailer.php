@@ -99,6 +99,7 @@ class Mailer
 
         $fournisseurs_blacklists = $this->blackListesRepository->createQueryBuilder('b')
             ->where('b.acheteur = :acheteur')
+            ->where('b.etat = 1')
             ->select('b')
             ->setParameter('acheteur', $demande->getAcheteur())
             ->getQuery()

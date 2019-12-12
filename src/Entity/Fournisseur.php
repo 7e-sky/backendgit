@@ -80,10 +80,16 @@ class Fournisseur extends User
      */
     private $ville;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Personnel",mappedBy="fournisseur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $personnels;
+
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur")
+     * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="fournisseurs")
      * @ORM\JoinTable(name="fournisseur_sous_secteur")
      * @Groups({"get","put","post"})
      * @Assert\NotBlank(groups={"putValidation"})
@@ -155,11 +161,20 @@ class Fournisseur extends User
     private $produits;
 
 
+    /**
+     * @ORM\OneToMany(targetEntity="DemandeJeton", mappedBy="fournisseur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $commandes;
+
+
 
     public function __construct()
     {
         parent::__construct();
         $this->sousSecteurs = new ArrayCollection();
+        $this->personnels = new ArrayCollection();
+        $this->commandes = new ArrayCollection();
     }
 
 
@@ -186,6 +201,15 @@ class Fournisseur extends User
         $this->ville = $ville;
     }
 
+    public function getPersonnels() : Collection
+    {
+        return $this->personnels;
+    }
+
+    public function getCommandes() : Collection
+    {
+        return $this->commandes;
+    }
 
     public function getSousSecteurs() : Collection
     {

@@ -11,10 +11,12 @@ namespace App\Controller;
 
 use App\Entity\DemandeAchat;
 use App\Entity\Fournisseur;
+use App\Entity\Produit;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -73,6 +75,56 @@ class FournisseurController extends AbstractController
 
         return 0;
 
+
+    }
+
+    /**
+     * @Route("/fournisseur/widgets")
+     */
+    public function getFournisseurWidgets()
+    {
+
+        if ($this->tokenStorage->getToken() instanceof TokenInterface) {
+
+            $user = $this->tokenStorage->getToken()->getUser();
+
+            $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
+
+            //En attentes
+            $qb = $em->createQueryBuilder('p')
+                ->where('p.isValid = :searchTerm')
+                ->andWhere('p.del = 0')
+                ->andWhere('p.fournisseur = :fournisseur')
+                ->setParameter('searchTerm', 0)
+                ->setParameter('fournisseur', $user)
+                ->select('count(p.id)');
+            $query = $qb->getQuery();
+            $en_attentes = $query->getSingleScalarResult();
+
+            //En cours
+            $qb = $em->createQueryBuilder('p')
+                ->where('p.isValid = :searchTerm')
+                ->andWhere('p.del = 0')
+                ->andWhere('p.fournisseur = :fournisseur')
+                ->setParameter('searchTerm', 1)
+                ->setParameter('fournisseur', $user)
+                ->select('count(p.id)');
+            $query = $qb->getQuery();
+            $en_cours = $query->getSingleScalarResult();
+
+            $data = [
+                'widget1' => $en_cours,
+                'widget3' => $en_attentes,
+            ];
+
+        } else {
+            $data = [
+                'widget1' => 0,
+                'widget3' => 0,
+            ];
+        }
+
+        return $this->json($data);
 
     }
 

@@ -37,7 +37,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          },
  *          "put"={
  *              "denormalization_context"={"groups"={"visit:put"}},
- *
+ *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_FOURNISSEUR') and object.getFournisseur() == user)",
  *              "validation_groups"={"visit:putValidation"}
  *          },
  *     },
@@ -67,10 +67,7 @@ class DetailVisite implements CreatedEntityInterface
      */
     private $dateRec;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $etatValidation;
+
 
     /**
      * @ORM\Column(type="boolean")
@@ -88,6 +85,19 @@ class DetailVisite implements CreatedEntityInterface
      * @Groups({"visit:get-all"})
      */
     private $demande;
+
+
+    /**
+     * @ORM\Column(type="smallint",length=1)
+     * @Groups({"visit:get-all"})
+     */
+    private $statut;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Groups({"visit:get-all"})
+     */
+    private $budget;
 
     public function getId(): ?int
     {
@@ -118,18 +128,6 @@ class DetailVisite implements CreatedEntityInterface
         return $this;
     }
 
-    public function getEtatValidation(): ?bool
-    {
-        return $this->etatValidation;
-    }
-
-    public function setEtatValidation(bool $etatValidation): self
-    {
-        $this->etatValidation = $etatValidation;
-
-        return $this;
-    }
-
     public function getIsSend(): ?bool
     {
         return $this->is_send;
@@ -142,37 +140,46 @@ class DetailVisite implements CreatedEntityInterface
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFournisseur()
     {
         return $this->fournisseur;
     }
 
-    /**
-     * @param mixed $fournisseur
-     */
     public function setFournisseur($fournisseur): void
     {
         $this->fournisseur = $fournisseur;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDemande()
     {
         return $this->demande;
     }
 
-    /**
-     * @param mixed $demande
-     */
     public function setDemande($demande): void
     {
         $this->demande = $demande;
     }
+
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    public function setStatut($statut): void
+    {
+        $this->statut = $statut;
+    }
+
+    public function getBudget()
+    {
+        return $this->budget;
+    }
+
+    public function setBudget($budget): void
+    {
+        $this->budget = $budget;
+    }
+
 
 
 }

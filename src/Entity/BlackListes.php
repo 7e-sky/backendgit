@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  *          },
  *          "get"={
- *              "access_control"="is_granted('ROLE_ADMIN')",
+ *              "access_control"="is_granted('ROLE_ACHETEUR')",
  *
  *
  *          }
@@ -37,10 +37,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "delete"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"}
  *     },
+ *     attributes={
+ *     "pagination_enabled"=false
+ *     },
  *     subresourceOperations={
  *
  *          "api_acheteurs_blacklistes_get_subresource"={
- *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') )",
+ *              "access_control"="is_granted('ROLE_ACHETEUR')",
  *              "method"="GET",
  *              "normalization_context"={"groups"={"get-from-acheteurs_blacklistes"}}
  *
@@ -86,6 +89,27 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
      * @Groups({"get-from-acheteurs_blacklistes"})
      */
     private $created;
+
+    /**
+     * @ORM\Column(type="datetime",nullable=true)
+     * @Groups({"get-from-acheteurs_blacklistes"})
+     */
+    private $deblacklister;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"put","get-from-acheteurs_blacklistes"})
+     */
+    private $etat;
+
+
+    public function __construct()
+    {
+        $this->etat=true;
+    }
+
+
 
     public function getId(): ?int
     {
@@ -141,4 +165,38 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDeblacklister()
+    {
+        return $this->deblacklister;
+    }
+
+    /**
+     * @param mixed $deblacklister
+     */
+    public function setDeblacklister($deblacklister): void
+    {
+        $this->deblacklister = $deblacklister;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEtat()
+    {
+        return $this->etat;
+    }
+
+    /**
+     * @param mixed $etat
+     */
+    public function setEtat($etat): void
+    {
+        $this->etat = $etat;
+    }
+
+
 }

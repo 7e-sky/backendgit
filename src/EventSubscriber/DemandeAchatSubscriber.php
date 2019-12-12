@@ -14,6 +14,7 @@ use App\Entity\Acheteur;
 use App\Entity\DemandeAchat;
 use App\Entity\User;
 use App\Exception\DisableToDelete;
+use App\Repository\DemandeAchatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,19 +37,19 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
      */
     private $entityManager;
     /**
-     * @var Mailer
+     * @var DemandeAchatRepository
      */
-    private $mailer;
+    private $repository;
 
     public  function  __construct(
         TokenStorageInterface $tokenStorage,
         EntityManagerInterface $entityManager,
-        Mailer $mailer
+        DemandeAchatRepository $repository
         )
     {
         $this->tokenStorage = $tokenStorage;
         $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
+        $this->repository = $repository;
     }
 
     public static function getSubscribedEvents()
@@ -85,15 +86,38 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
             $demande->setStatut(0);
         }
 
+        if($user->getRoles()[0] === 'ROLE_ADMIN'){
+            if(!$demande->getReference() || is_null($demande->getReference())){
+                if($demande->getStatut() === 1){
+                    $demande->setReference($this->getRfq());
+                }
+            }
+        }
+
 //        if($demande->getStatut() === 1 && $demande->sendEmail){
 //            $demande->setNbrShare($this->mailer->alerterFournisseurs($demande));
 //        }
-        if($demande->getStatut() === 1 ){
-            $demande->setMotifRejet('');
+        if($demande->getStatut() !== 2 ){
+            $demande->setMotifRejet(null);
         }
         if($demande->sendEmail){
             $demande->setIsAlerted(true);
         }
+
+    }
+
+    public function getRfq(){
+
+        $qb =$this->repository->createQueryBuilder('d')
+            ->where('d.statut = :searchTerm')
+            ->andWhere('year(d.created) = :year')
+            ->setParameter('searchTerm', 1)
+            ->setParameter('year', date("Y"))
+            ->select('count(d.id)');
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+        $result++;
+        return date("Y").'-'.$result;
 
     }
 
