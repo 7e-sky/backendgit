@@ -63,7 +63,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"visit:get-all","get","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville","get-from-acheteur_demandes"})
+     * @Groups({"jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville","get-from-acheteur_demandes"})
      */
     protected $id;
 

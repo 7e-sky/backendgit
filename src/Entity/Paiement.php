@@ -40,14 +40,14 @@ class Paiement
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"paiement:get-item","paiement:get-all"})
+     * @Groups({"jeton:get-item","jeton:get-all","paiement:get-item","paiement:get-all"})
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"paiement:put","paiement:post","paiement:get-item","paiement:get-all"})
+     * @Groups({"jeton:get-item","jeton:get-all","paiement:put","paiement:post","paiement:get-item","paiement:get-all"})
      */
     private $name;
 

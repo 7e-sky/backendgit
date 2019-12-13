@@ -8,8 +8,22 @@ use App\Interfaces\SetFournisseurInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 /**
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *     "id":"exact",
+ *     "isUse":"exact",
+ *      }
+ * )
+ * @ApiFilter(
+ *     BooleanFilter::class,properties={"isUse"}
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"id","nbrJeton","fournisseur.societe","isUse","created"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -33,7 +47,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "validation_groups"={"d-jeton:putValidation"}
  *          },
  *          "delete"={
- *              "access_control"="is_granted('ROLE_ADMIN')"
+ *              "access_control"="is_granted('ROLE_ADMIN') or(is_granted('ROLE_FOURNISSEUR') and object.getFournisseur() == user)"
  *          }
  *     },
  *
@@ -41,6 +55,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "pagination_items_per_page"=10,
  *     "pagination_client_enabled"=true
  *     },
+ *     subresourceOperations={
+ *          "api_fournisseurs_commandes_get_subresource"={
+ *               "security"="is_granted('ROLE_FOURNISSEUR')",
+ *          }
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\DemandeJetonRepository")
  */
@@ -49,13 +68,14 @@ class DemandeJeton implements CreatedEntityInterface,SetFournisseurInterface
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"d-jeton:get-all","d-jeton:get-item"})
+     * @Groups({"jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item"})
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur",inversedBy="commandes")
+     * @Groups({"d-jeton:get-all","d-jeton:get-item"})
      */
     private $fournisseur;
 
@@ -71,7 +91,7 @@ class DemandeJeton implements CreatedEntityInterface,SetFournisseurInterface
      * @ORM\Column(type="boolean")
      * @Groups({"d-jeton:get-all","d-jeton:get-item"})
      */
-    private $is_use;
+    private $isUse;
 
     /**
      * @ORM\Column(type="datetime")
@@ -81,7 +101,7 @@ class DemandeJeton implements CreatedEntityInterface,SetFournisseurInterface
 
     public function __construct()
     {
-        $this->is_use=false;
+        $this->isUse=false;
     }
 
     public function getId(): ?int
@@ -103,12 +123,12 @@ class DemandeJeton implements CreatedEntityInterface,SetFournisseurInterface
 
     public function getIsUse()
     {
-        return $this->is_use;
+        return $this->isUse;
     }
 
-    public function setIsUse(bool $is_use): self
+    public function setIsUse(bool $isUse): self
     {
-        $this->is_use = $is_use;
+        $this->isUse = $isUse;
 
         return $this;
     }

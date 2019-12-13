@@ -10,7 +10,9 @@ namespace App\Controller;
 
 
 use App\Entity\DemandeAchat;
+use App\Entity\DetailVisite;
 use App\Entity\Fournisseur;
+use App\Entity\Jeton;
 use App\Entity\Produit;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -71,6 +73,49 @@ class FournisseurController extends AbstractController
 
             }
 
+        }
+
+        return 0;
+
+
+    }
+
+
+    /**
+     * @Route("/jetons/founrisseur")
+     */
+    public function getJetonsByFournisseur(){
+
+        /**
+         * @var UserInterface $fournisseur
+         */
+        $fournisseur = $this->tokenStorage->getToken()->getUser();
+        $repoJeton = $this->getDoctrine()->getManager()->getRepository(Jeton::class);
+        $repoVisite = $this->getDoctrine()->getManager()->getRepository(DetailVisite::class);
+        if($fournisseur instanceof Fournisseur){
+
+                $qb = $repoJeton->createQueryBuilder('j')
+                                ->where('j.isPayed = true')
+                                ->andWhere('j.del = 0')
+                                ->andWhere('j.fournisseur = :founrisseur')
+                                ->setParameter('founrisseur', $fournisseur)
+                                ->select('sum(j.nbrJeton)');
+                $query = $qb->getQuery();
+
+                $sommeJetons = $query->getSingleScalarResult();
+
+
+                $qb = $repoVisite->createQueryBuilder('v')
+                    ->where('v.fournisseur = :founrisseur')
+                    ->setParameter('founrisseur', $fournisseur)
+                    ->select('count(v.id)');
+                $query = $qb->getQuery();
+
+                $countVisite = $query->getSingleScalarResult();
+
+                $result = $sommeJetons-$countVisite;
+
+                return $this->json($result);
         }
 
         return 0;

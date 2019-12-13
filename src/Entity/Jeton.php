@@ -7,12 +7,27 @@ use App\Interfaces\CreatedEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *     "id":"exact",
+ *     "del":"exact",
+ *      }
+ * )
+ * @ApiFilter(
+ *     BooleanFilter::class,properties={"del"}
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"id","nbrJeton","fournisseur.societe","paiement.name","demande.id","isPayed","prix","created"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
- *              "access_control"="is_granted('ROLE ADMIN')",
+ *              "access_control"="is_granted('ROLE_ADMIN')",
  *              "denormalization_context"={"groups"={"jeton:post"}},
  *              "validation_groups"={"jeton:postValidation"},
  *              "normalization_context"={"groups"={"jeton:get-item"}}
@@ -33,7 +48,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          }
  *     },
  *
- *     attributes={"pagination_items_per_page"=10},
+ *     attributes={
+ *     "pagination_items_per_page"=10,
+ *     },
  * )
  * @ORM\Entity(repositoryClass="App\Repository\JetonRepository")
  */
@@ -64,7 +81,6 @@ class Jeton implements CreatedEntityInterface
     /**
      * @ORM\OneToOne(targetEntity="DemandeJeton")
      * @Groups({"jeton:get-item","jeton:get-all","jeton:post"})
-     * @Assert\NotBlank(groups={"jeton:postValidation"})
      */
     private $demande;
 
@@ -95,9 +111,17 @@ class Jeton implements CreatedEntityInterface
      */
     private $created;
 
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"jeton:get-item","jeton:get-all","jeton:put"})
+     */
+    private $del;
+
+
     public function __construct()
     {
         $this->isPayed=false;
+        $this->del=false;
     }
 
     public function getId(): ?int
@@ -204,5 +228,22 @@ class Jeton implements CreatedEntityInterface
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDel()
+    {
+        return $this->del;
+    }
+
+    /**
+     * @param mixed $del
+     */
+    public function setDel($del): void
+    {
+        $this->del = $del;
+    }
+
 
 }
