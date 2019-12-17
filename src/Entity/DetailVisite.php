@@ -4,10 +4,14 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Interfaces\CreatedEntityInterface;
+use App\Interfaces\SetFournisseurInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+
 /**
  * @ApiFilter(
  *     SearchFilter::class,
@@ -16,6 +20,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     "demande": "exact",
  *      }
  * )
+ * @ApiFilter(OrderFilter::class, properties={"fournisseur.societe","demande.reference","demande.description","demande.dateExpiration","created","budget","statut"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -45,7 +50,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\DetailVisiteRepository")
  */
-class DetailVisite implements CreatedEntityInterface
+class DetailVisite implements CreatedEntityInterface,SetFournisseurInterface
 {
     /**
      * @ORM\Id()
@@ -68,7 +73,6 @@ class DetailVisite implements CreatedEntityInterface
     private $dateRec;
 
 
-
     /**
      * @ORM\Column(type="boolean")
      */
@@ -82,7 +86,8 @@ class DetailVisite implements CreatedEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="DemandeAchat")
-     * @Groups({"visit:get-all"})
+     * @Groups({"visit:get-all","visit:post"})
+     * @Assert\NotBlank(groups={"visit:postValidation"})
      */
     private $demande;
 
@@ -95,9 +100,16 @@ class DetailVisite implements CreatedEntityInterface
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"visit:get-all"})
+     * @Groups({"visit:get-all","visit:post"})
+     * @Assert\NotBlank(groups={"visit:postValidation"})
      */
     private $budget;
+
+    public function __construct()
+    {
+        $this->statut=0;
+        $this->is_send=0;
+    }
 
     public function getId(): ?int
     {
@@ -145,9 +157,10 @@ class DetailVisite implements CreatedEntityInterface
         return $this->fournisseur;
     }
 
-    public function setFournisseur($fournisseur): void
+    public function setFournisseur(Fournisseur $fournisseur): SetFournisseurInterface
     {
         $this->fournisseur = $fournisseur;
+        return $this;
     }
 
     public function getDemande()

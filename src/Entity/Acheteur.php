@@ -62,6 +62,12 @@ class Acheteur extends User
     private $ville;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Currency")
+     * @Groups({"get-from-acheteur_demandes","get-from-demande","visit:get-all","get","post","put"})
+     */
+    private $currency;
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"visit:get-all","get","put","post","get-from-demande"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
@@ -193,6 +199,23 @@ class Acheteur extends User
     {
         $this->ville = $ville;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param mixed $currency
+     */
+    public function setCurrency($currency): void
+    {
+        $this->currency = $currency;
+    }
+
 
     /**
      * @return mixed

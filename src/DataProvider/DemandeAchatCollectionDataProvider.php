@@ -7,7 +7,6 @@ use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Entity\DemandeAchat;
 use App\Entity\Fournisseur;
-use App\Entity\Admin;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGenerator;
@@ -97,7 +96,7 @@ final class DemandeAchatCollectionDataProvider implements CollectionDataProvider
             }
         }
 
-
+/*
         if($operationName === 'get_by_fournisseur'){
 //            $queryBuilder->innerJoin('o.sousSecteurs','s')
 //                ->where('s.id in (:sous_secteurs_id)')
@@ -111,7 +110,7 @@ final class DemandeAchatCollectionDataProvider implements CollectionDataProvider
                 ->where("o.description = 'tyu' ");
 
         }
-
+*/
 
         return $queryBuilder->getQuery()->getResult();
 

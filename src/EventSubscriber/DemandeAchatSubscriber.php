@@ -9,7 +9,6 @@
 namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use App\Email\Mailer;
 use App\Entity\Acheteur;
 use App\Entity\DemandeAchat;
 use App\Entity\User;
@@ -21,8 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class DemandeAchatSubscriber implements EventSubscriberInterface
@@ -59,11 +56,35 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
                ['visiteDemandeAchat',EventPriorities::PRE_WRITE ],
                ['deleteDemeandeAchat',EventPriorities::PRE_WRITE ],
             //   ['AccessControll',EventPriorities::PRE_WRITE ],
+               ['postDemandeAchat',EventPriorities::PRE_WRITE ],
                ['putDemandeAchat',EventPriorities::PRE_WRITE ],
               // ['sendEmails',EventPriorities::POST_WRITE ]
            ]
        ];
     }
+
+    public function postDemandeAchat(GetResponseForControllerResultEvent $event){
+
+        $demande = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        if(!$demande instanceof  DemandeAchat  || $method !== Request::METHOD_POST ){
+            return;
+        }
+
+        /**
+         * @var UserInterface $acheteur
+         */
+        $acheteur = $this->tokenStorage->getToken()->getUser();
+        if($acheteur instanceof Acheteur){
+            if($acheteur->getCurrency()){
+                $demande->setCurrency($acheteur->getCurrency());
+            }
+        }
+
+
+    }
+
 
     public function putDemandeAchat(GetResponseForControllerResultEvent $event){
 
@@ -105,6 +126,8 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
         }
 
     }
+
+    /** GENERETE RFQ TO VALID DEMANDE BY ADMIN **/
 
     public function getRfq(){
 

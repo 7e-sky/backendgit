@@ -83,7 +83,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande"})
+     * @Groups({"fournisseur:get-item-from-demande","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande"})
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -93,6 +93,12 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      * @Groups({"visit:get-item","visit:get-all","get-from-demande","get-from-acheteur_demandes"})
      */
     private $acheteur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Currency")
+     * @Groups({"fournisseur:get-from-demande","visit:get-item","visit:get-all","get-from-demande","get-from-acheteur_demandes"})
+     */
+    private $currency;
 
     /**
      * @ORM\Column(type="smallint",length=1)
@@ -181,7 +187,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="demandes")
+     * @ORM\ManyToMany(targetEntity="SousSecteur")
      * @ORM\JoinTable(name="demande_ha_sous_secteur")
      * @Groups({"visit:get-item","get-from-demande","put-admin","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank()
@@ -253,6 +259,22 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     {
         $this->acheteur = $acheteur;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param mixed $currency
+     */
+    public function setCurrency($currency): void
+    {
+        $this->currency = $currency;
     }
 
 
