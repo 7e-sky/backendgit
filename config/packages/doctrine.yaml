@@ -26,3 +26,5 @@ doctrine:
             string_functions:
                 DATE: DoctrineExtensions\Query\Mysql\Date
                 YEAR: DoctrineExtensions\Query\Mysql\Year
+                NOW: DoctrineExtensions\Query\Mysql\Now
+                MONTH: DoctrineExtensions\Query\Mysql\Month

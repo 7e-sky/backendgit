@@ -131,7 +131,6 @@ class AcheteurController extends AbstractController
 
 
 
-
             $em = $this->getDoctrine()->getManager()->getRepository(DemandeAchat::class);
 
             /* ACHETEUR CONNECTEE */

@@ -3,6 +3,8 @@
 namespace App\EventListener;
 
 
+use App\Entity\Acheteur;
+use App\Entity\Fournisseur;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -22,6 +24,12 @@ class AuthenticationSuccessListener{
         }
 
 
+        $currency = '';
+
+        if($user instanceof Fournisseur || $user instanceof Acheteur){
+            $currency = $user->getCurrency()?$user->getCurrency()->getName() : '';
+        }
+
 
         $data['user']=[
             'id'=>$user->getId(),
@@ -31,6 +39,7 @@ class AuthenticationSuccessListener{
                 'photoURL'=> $user->getAvatar() ? $user->getAvatar()->getUrl() : '',
                 'email'=>$user->getEmail(),
                 'redirect'=>$user->getRedirect(),
+                'currency'=>$currency,
             ]
         ];
 

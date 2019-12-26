@@ -85,6 +85,12 @@ class DetailVisite implements CreatedEntityInterface,SetFournisseurInterface
     private $fournisseur;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Personnel")
+     * @Groups({"visit:put","visit:get-all"})
+     */
+    private $personnel;
+
+    /**
      * @ORM\ManyToOne(targetEntity="DemandeAchat")
      * @Groups({"visit:get-all","visit:post"})
      * @Assert\NotBlank(groups={"visit:postValidation"})
@@ -94,16 +100,21 @@ class DetailVisite implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\Column(type="smallint",length=1)
-     * @Groups({"visit:get-all"})
+     * @Groups({"visit:get-all","visit:put"})
      */
     private $statut;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"visit:get-all","visit:post"})
-     * @Assert\NotBlank(groups={"visit:postValidation"})
+     * @Groups({"visit:post","visit:get-all","visit:put"})
+     * @Assert\NotBlank(groups={"visit:putValidation"})
      */
     private $budget;
+
+    /**
+     * @Groups({"visit:put"})
+     */
+    public $sendEmail;
 
     public function __construct()
     {
@@ -162,6 +173,24 @@ class DetailVisite implements CreatedEntityInterface,SetFournisseurInterface
         $this->fournisseur = $fournisseur;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPersonnel()
+    {
+        return $this->personnel;
+    }
+
+    /**
+     * @param mixed $personnel
+     */
+    public function setPersonnel($personnel): void
+    {
+        $this->personnel = $personnel;
+    }
+
+
 
     public function getDemande()
     {

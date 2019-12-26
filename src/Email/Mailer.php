@@ -11,8 +11,9 @@ namespace App\Email;
 
 use App\Entity\DemandeAchat;
 use App\Entity\DiffusionDemande;
+use App\Entity\Fournisseur;
+use App\Entity\Personnel;
 use App\Entity\User;
-use App\Repository\AcheteurRepository;
 use App\Repository\BlackListesRepository;
 use App\Repository\FournisseurRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -97,19 +98,14 @@ class Mailer
             ->getResult();
 
 
-        $fournisseurs_blacklists = $this->blackListesRepository->createQueryBuilder('b')
-            ->where('b.acheteur = :acheteur')
-            ->where('b.etat = 1')
-            ->select('b')
-            ->setParameter('acheteur', $demande->getAcheteur())
-            ->getQuery()
-            ->getResult();
+        $fournisseurs_blacklists = $this->blackListesRepository->findBy(['acheteur'=>$demande->getAcheteur()->getId(),'etat'=>1]);
 
 
         $nbrshare = 0;
         foreach ($fournisseurs as $fournisseur){
 
             $trouve = false;
+
             foreach ($fournisseurs_blacklists as $blacklist){
                 if($blacklist->getFournisseur() == $fournisseur){
                     $trouve=true;
@@ -122,6 +118,12 @@ class Mailer
                     ->setFrom('youness.arbouh1@gmail.com')
                     ->setTo($fournisseur->getEmail())
                     ->setBody($body, 'text/html');
+
+                if($demande->getAttachements()){
+                    foreach($demande->getAttachements()as $item) {
+                        $message->attach(\Swift_Attachment::fromPath(ltrim($item->getUrl(), '/')));
+                    }
+                }
                 $this->mailer->send($message);
 
                 $diffusionDemande = new DiffusionDemande();
@@ -135,6 +137,29 @@ class Mailer
 
         }
         $this->entityManager->flush();
+        //return $nbrshare;
+
+    }
+
+    public function alerterPersonnels(Personnel $personnel,DemandeAchat $demande,Fournisseur $fournisseur){
+
+        $body = $this->twig->render(
+            'email/affectation.html.twig',['demande'=>$demande,'personnel'=>$personnel,'fournisseur'=>$fournisseur]
+        );
+
+
+        $message = ( new \Swift_Message('Affectation Email'))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($personnel->getEmail())
+            ->setCc($fournisseur->getEmail())
+            ->setBody($body, 'text/html');
+
+        if($demande->getAttachements()){
+            foreach($demande->getAttachements()as $item) {
+                $message->attach(\Swift_Attachment::fromPath(ltrim($item->getUrl(), '/')));
+            }
+        }
+        $this->mailer->send($message);
         //return $nbrshare;
 
     }

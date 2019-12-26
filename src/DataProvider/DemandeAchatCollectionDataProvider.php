@@ -35,7 +35,7 @@ final class DemandeAchatCollectionDataProvider implements CollectionDataProvider
     private $tokenStorage;
 
 
-    public function __construct( TokenStorageInterface $tokenStorage,ManagerRegistry $managerRegistry, iterable $collectionExtensions,  LoggerInterface $logger)
+    public function __construct(TokenStorageInterface $tokenStorage, ManagerRegistry $managerRegistry, iterable $collectionExtensions, LoggerInterface $logger)
     {
 
         $this->logger = $logger;
@@ -43,6 +43,7 @@ final class DemandeAchatCollectionDataProvider implements CollectionDataProvider
         $this->collectionExtensions = $collectionExtensions;
         $this->tokenStorage = $tokenStorage;
     }
+
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
         return DemandeAchat::class === $resourceClass;
@@ -56,28 +57,28 @@ final class DemandeAchatCollectionDataProvider implements CollectionDataProvider
         $queryBuilder = $repository->createQueryBuilder('o');
         $queryNameGenerator = new QueryNameGenerator();
 
-        if($operationName === 'get_by_fournisseur'){
+        if ($operationName === 'get_by_fournisseur') {
 
             /**
-            * @var UserInterface $fournisseur
-            */
+             * @var UserInterface $fournisseur
+             */
             $fournisseur = $this->tokenStorage->getToken()->getUser();
 
-            if($fournisseur instanceof Fournisseur){
+            if ($fournisseur instanceof Fournisseur) {
 
                 $sous_secteurs = $fournisseur->getSousSecteurs();
-                $sous_secteurs_id=[];
-                foreach ($sous_secteurs as $secteur){
-                    if($secteur)
-                        array_push($sous_secteurs_id,$secteur->getId());
+                $sous_secteurs_id = [];
+                foreach ($sous_secteurs as $secteur) {
+                    if ($secteur)
+                        array_push($sous_secteurs_id, $secteur->getId());
                 }
                 if (!empty($sous_secteurs_id)) {
-                    $queryBuilder->innerJoin('o.sousSecteurs','s')
+                    $queryBuilder->innerJoin('o.sousSecteurs', 's')
                         ->where('s.id in (:sous_secteurs_id)')
                         ->andWhere('o.statut = 1')
                         ->andWhere('s.del = 0')
                         ->setParameter('sous_secteurs_id', $sous_secteurs_id);
-                }else{
+                } else {
                     throw new NotFoundHttpException();
                 }
 
@@ -96,21 +97,6 @@ final class DemandeAchatCollectionDataProvider implements CollectionDataProvider
             }
         }
 
-/*
-        if($operationName === 'get_by_fournisseur'){
-//            $queryBuilder->innerJoin('o.sousSecteurs','s')
-//                ->where('s.id in (:sous_secteurs_id)')
-//                ->andWhere('s.del = 0')
-//                ->andWhere('o.del = 0')
-//                ->andWhere('o.isactif = 1')
-//                ->setParameter('sous_secteurs_id', [6,8]);
-            $this->logger->info("*****************HHHHHHHHHHHHHHHHHHHHHHHHHHHHH******************");
-
-            $queryBuilder
-                ->where("o.description = 'tyu' ");
-
-        }
-*/
 
         return $queryBuilder->getQuery()->getResult();
 

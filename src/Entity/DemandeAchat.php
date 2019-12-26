@@ -96,7 +96,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Currency")
-     * @Groups({"fournisseur:get-from-demande","visit:get-item","visit:get-all","get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"fournisseur:get-item-from-demande","fournisseur:get-from-demande","visit:get-item","visit:get-all","get-from-demande","get-from-acheteur_demandes"})
      */
     private $currency;
 
@@ -226,6 +226,12 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      */
     private $del;
 
+    /**
+     * @ORM\OneToMany(targetEntity="HistoriqueVisite", mappedBy="demande",cascade={"persist"})
+     * @Groups({"fournisseur:get-from-demande"})
+     */
+    private $historiques;
+
 
     public function __construct()
     {
@@ -237,6 +243,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
         $this->nbrVisite=0;
         $this->nbrShare=0;
         $this->attachements = new ArrayCollection();
+        $this->historiques = new ArrayCollection();
         $this->diffusionsdemandes = new ArrayCollection();
         $this->sousSecteurs = new ArrayCollection();
         $this->dateModification = new \DateTime();
@@ -276,8 +283,6 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     {
         $this->currency = $currency;
     }
-
-
 
     public function getStatut():? int
     {
@@ -519,6 +524,16 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     }
 
 
+    public function getHistoriques() : Collection
+    {
+        return $this->historiques;
+    }
+
+    public function addHistorique(HistoriqueVisite $historiqueVisite){
+
+        $this->historiques->add($historiqueVisite);
+
+    }
 
 
 

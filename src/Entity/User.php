@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Controller\ResetPasswordAction;
-use App\Validator\Constraints as AcmeAssert;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 
 /**
@@ -63,7 +62,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville","get-from-acheteur_demandes"})
+     * @Groups({"fournisseur:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville","get-from-acheteur_demandes"})
      */
     protected $id;
 
@@ -131,7 +130,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @Assert\NotBlank(groups={"postValidation"})
      * @Assert\Email(groups={"postValidation"})
      * @Assert\Length(min=10,max=255,groups={"postValidation"})
-     * @Groups({"visit:get-all","get-admin","get-owner","post","put-admin"})
+     * @Groups({"visit:get-all","get-admin","post","put-admin"})
      */
     protected $email;
 
@@ -191,7 +190,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="simple_array",length=200)
-     * @Groups({"get-admin","get-owner","put"})
+     * @Groups({"get-admin","put"})
      */
     protected $roles;
 
@@ -249,7 +248,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get-admin","get-owner","put","post"})
+     * @Groups({"get-admin","put","post"})
      */
     protected $redirect;
 

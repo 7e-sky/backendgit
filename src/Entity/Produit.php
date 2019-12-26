@@ -164,6 +164,12 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
      */
     private $videos;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="ImageProduit")
+     * @Groups({"produit:get-from-fournisseur","produit:get-item","produit:post","produit:put"})
+     */
+    private $featuredImageId;
+
 
     public function __construct()
     {
@@ -402,6 +408,23 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     {
         $this->videos = $videos;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFeaturedImageId()
+    {
+        return $this->featuredImageId;
+    }
+
+    /**
+     * @param mixed $featuredImageId
+     */
+    public function setFeaturedImageId($featuredImageId): void
+    {
+        $this->featuredImageId = $featuredImageId;
+    }
+
 
 
 

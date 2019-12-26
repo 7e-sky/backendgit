@@ -168,6 +168,12 @@ class Fournisseur extends User
      */
     private $commandes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Currency")
+     * @Groups({"get","post","put"})
+     */
+    private $currency;
+
 
 
     public function __construct()
@@ -332,6 +338,23 @@ class Fournisseur extends User
     {
         return $this->produits;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param mixed $currency
+     */
+    public function setCurrency($currency): void
+    {
+        $this->currency = $currency;
+    }
+
 
 
 

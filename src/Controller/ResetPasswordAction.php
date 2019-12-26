@@ -9,6 +9,8 @@
 namespace App\Controller;
 
 use ApiPlatform\Core\Validator\ValidatorInterface;
+use App\Entity\Acheteur;
+use App\Entity\Fournisseur;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
@@ -61,6 +63,12 @@ class ResetPasswordAction
         $this->entityManager->flush();
         $token = $this->tokenManager->create($data);
 
+        $currency = '';
+
+        if($data instanceof Fournisseur || $data instanceof Acheteur){
+            $currency = $data->getCurrency()?$data->getCurrency()->getName() : '';
+        }
+
         $dataa['token']=$token;
         $dataa['user']=[
             'id'=>$data->getId(),
@@ -70,6 +78,7 @@ class ResetPasswordAction
                 'photoURL'=> $data->getAvatar() ? $data->getAvatar()->getUrl() : '',
                 'email'=>$data->getEmail(),
                 'redirect'=>$data->getRedirect(),
+                'currency'=>$currency,
 
             ]
         ];

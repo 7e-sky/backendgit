@@ -9,6 +9,7 @@
 namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Email\Mailer;
 use App\Entity\DetailVisite;
 use App\Repository\BlackListesRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -30,22 +31,29 @@ class DetailVisiteSubscriber implements EventSubscriberInterface
      * @var TokenStorageInterface
      */
     private $tokenStorage;
+    /**
+     * @var Mailer
+     */
+    private $mailer;
 
 
     public  function  __construct(
+        Mailer $mailer,
         BlackListesRepository $blackListesRepository,
         TokenStorageInterface $tokenStorage
         )
     {
         $this->blackListesRepository = $blackListesRepository;
         $this->tokenStorage = $tokenStorage;
+        $this->mailer = $mailer;
     }
 
     public static function getSubscribedEvents()
     {
        return [
            KernelEvents::VIEW => [
-               'AddDetailVisiteCheck',EventPriorities::PRE_VALIDATE
+               ['AddDetailVisiteCheck',EventPriorities::PRE_VALIDATE],
+               ['PutDetailVisite',EventPriorities::PRE_VALIDATE],
            ]
        ];
     }
@@ -66,7 +74,7 @@ class DetailVisiteSubscriber implements EventSubscriberInterface
         $fournisseur = $this->tokenStorage->getToken()->getUser();
 
         if(!$acheteur || !$fournisseur){
-           return;
+            return;
         }
 
         $blacklist = $this->blackListesRepository->findOneBy(['fournisseur'=>$fournisseur,'acheteur'=>$acheteur,'etat'=>1]);
@@ -77,6 +85,21 @@ class DetailVisiteSubscriber implements EventSubscriberInterface
 
         $entity->setDateRec(new \DateTime('+1 week'));
 
+
+    }
+
+    public function PutDetailVisite(GetResponseForControllerResultEvent $event){
+
+        $entity = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        if(!$entity instanceof  DetailVisite  || $method !== Request::METHOD_PUT ){
+            return;
+        }
+
+        if($entity->getPersonnel() && $entity->getDemande() && $entity->sendEmail && !$entity->getStatut()){
+            $this->mailer->alerterPersonnels($entity->getPersonnel(), $entity->getDemande(),$entity->getFournisseur());
+        }
 
     }
 

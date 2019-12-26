@@ -11,9 +11,11 @@ namespace App\EventSubscriber;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Acheteur;
 use App\Entity\DemandeAchat;
-use App\Entity\User;
+use App\Entity\Fournisseur;
+use App\Entity\HistoriqueVisite;
 use App\Exception\DisableToDelete;
 use App\Repository\DemandeAchatRepository;
+use App\Repository\HistoriqueVisiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,16 +39,22 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
      * @var DemandeAchatRepository
      */
     private $repository;
+    /**
+     * @var HistoriqueVisiteRepository
+     */
+    private $visiteRepository;
 
     public  function  __construct(
         TokenStorageInterface $tokenStorage,
         EntityManagerInterface $entityManager,
-        DemandeAchatRepository $repository
+        DemandeAchatRepository $repository,
+        HistoriqueVisiteRepository $visiteRepository
         )
     {
         $this->tokenStorage = $tokenStorage;
         $this->entityManager = $entityManager;
         $this->repository = $repository;
+        $this->visiteRepository = $visiteRepository;
     }
 
     public static function getSubscribedEvents()
@@ -143,7 +151,7 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
         return date("Y").'-'.$result;
 
     }
-
+/*
     public function sendEmails(GetResponseForControllerResultEvent $event){
 
         $demande = $event->getControllerResult();
@@ -165,6 +173,7 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
 
 
     }
+*/
     public function visiteDemandeAchat(GetResponseForControllerResultEvent $event){
 
         $demande = $event->getControllerResult();
@@ -179,18 +188,27 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if(!$user instanceof User){
-            $nbrVisite = $demande->getNbrVisite();
+        if($user instanceof Fournisseur){
 
-            $nbrVisite +=1;
 
-            $demande->setNbrVisite($nbrVisite);
+            $visite = $this->visiteRepository->findBy(['demande'=>$demande,'fournisseur'=>$user]);
+            if(!$visite){
+                $historique = new HistoriqueVisite();
+                $historique->setFournisseur($user);
+                $historique->setDemande($demande);
+                $historique->setCreated(new \DateTime());
+                $demande->addHistorique($historique);
+                $this->entityManager->flush();
 
-            $this->entityManager->flush();
+            }
+
+
+
         }
 
 
     }
+
     public function deleteDemeandeAchat(GetResponseForControllerResultEvent $event){
 
         $demande = $event->getControllerResult();

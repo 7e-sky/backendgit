@@ -9,6 +9,8 @@
 namespace App\Controller;
 
 
+use App\Entity\Acheteur;
+use App\Entity\Fournisseur;
 use App\Entity\User;
 use App\Services\UserConfirmationService;
 use App\Services\UserService;
@@ -18,7 +20,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/")
@@ -86,6 +87,13 @@ class DefaultController extends  AbstractController
             $tokenupdate = $this->jwtManager->create($user);
 
 
+
+            $currency = '';
+
+            if($user instanceof Fournisseur || $user instanceof Acheteur){
+                $currency = $user->getCurrency()?$user->getCurrency()->getName() : '';
+            }
+
             $dataa['token']=$tokenupdate;
             $dataa['user']=[
                 'id'=>$user->getId(),
@@ -95,6 +103,7 @@ class DefaultController extends  AbstractController
                     'photoURL'=> $user->getAvatar() ? $user->getAvatar()->getUrl() : '',
                     'email'=>$user->getEmail(),
                     'redirect'=>$user->getRedirect(),
+                    'currency'=>$currency,
                 ]
             ];
         }else{

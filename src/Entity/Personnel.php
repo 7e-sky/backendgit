@@ -56,20 +56,14 @@ class Personnel implements CreatedEntityInterface,SetFournisseurInterface
     private $fournisseur;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=150,name="fullName")
      * @Assert\NotBlank(groups={"personnel:postValidation","personnel:putValidation"})
      * @Assert\Length(min=6,max=255,groups={"personnel:postValidation","personnel:putValidation"})
-     * @Groups({"personnel:get-all","personnel:post","personnel:put"})
+     * @Groups({"personnel:get-all","personnel:post","personnel:put","visit:get-all"})
      */
-    private $firstName;
+    private $name;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank(groups={"personnel:postValidation","personnel:putValidation"})
-     * @Assert\Length(min=6,max=255,groups={"personnel:postValidation","personnel:putValidation"})
-     * @Groups({"personnel:get-all","personnel:post","personnel:put"})
-     */
-    private $lastName;
+
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -131,29 +125,23 @@ class Personnel implements CreatedEntityInterface,SetFournisseurInterface
         return $this;
     }
 
-    public function getFirstName()
+    /**
+     * @return mixed
+     */
+    public function getName()
     {
-        return $this->firstName;
+        return $this->name;
     }
 
-    public function setFirstName(string $firstName): self
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
     {
-        $this->firstName = $firstName;
-
-        return $this;
+        $this->name = $name;
     }
 
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
 
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
 
     public function getEmail(): ?string
     {
