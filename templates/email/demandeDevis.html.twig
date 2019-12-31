@@ -1,0 +1,13 @@
+<h3>Bonjour {{ demandeDevis.fournisseur.firstName~' '~demandeDevis.fournisseur.lastName }}</h3>
+<p>Demande de devis, date : {{ demandeDevis.created|date("d/m/Y") }}</p>
+<h4>Les informations du demandeur</h4>
+<ul>
+    <li><strong>NOM & Prénom : </strong>{{ demandeDevis.contact}}</li>
+    <li><strong>Société : </strong>{{ demandeDevis.societe}}</li>
+    <li><strong>Adresse : </strong>{{ demandeDevis.adresse}}</li>
+    <li><strong>Email : </strong>{{ demandeDevis.email}}</li>
+    <li><strong>Téléphone : </strong>{{ demandeDevis.phone}}</li>
+    <li><strong>Message : </strong>{{ demandeDevis.message}}</li>
+</ul>
+<h4>La référence du produit : {{ demandeDevis.produit.reference }}</h4>
+

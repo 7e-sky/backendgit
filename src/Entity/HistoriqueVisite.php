@@ -36,7 +36,6 @@ class HistoriqueVisite
     private $created;
 
 
-
     public function getId(): ?int
     {
         return $this->id;

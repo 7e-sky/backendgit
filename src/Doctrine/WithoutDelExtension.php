@@ -10,16 +10,15 @@ use App\Entity\Acheteur;
 use App\Entity\Admin;
 use App\Entity\Commercial;
 use App\Entity\DemandeAchat;
+use App\Entity\DemandeDevis;
 use App\Entity\Fournisseur;
 use App\Entity\Pays;
 use App\Entity\Personnel;
 use App\Entity\Secteur;
 use App\Entity\SousSecteur;
-use App\Entity\User;
 use App\Entity\Ville;
 use App\Entity\ZoneCommercial;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 final class WithoutDelExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
@@ -49,6 +48,7 @@ final class WithoutDelExtension implements QueryCollectionExtensionInterface, Qu
             Acheteur::class !== $resourceClass &&
             Fournisseur::class !== $resourceClass &&
             DemandeAchat::class !== $resourceClass &&
+            DemandeDevis::class !== $resourceClass &&
             Personnel::class !== $resourceClass &&
             Admin::class !== $resourceClass
         )

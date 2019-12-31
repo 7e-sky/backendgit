@@ -10,9 +10,11 @@ namespace App\Email;
 
 
 use App\Entity\DemandeAchat;
+use App\Entity\DemandeDevis;
 use App\Entity\DiffusionDemande;
 use App\Entity\Fournisseur;
 use App\Entity\Personnel;
+use App\Entity\Produit;
 use App\Entity\User;
 use App\Repository\BlackListesRepository;
 use App\Repository\FournisseurRepository;
@@ -159,6 +161,27 @@ class Mailer
                 $message->attach(\Swift_Attachment::fromPath(ltrim($item->getUrl(), '/')));
             }
         }
+        $this->mailer->send($message);
+        //return $nbrshare;
+
+    }
+
+
+    //Alerter le fournisseur quand un visiteurs public demande un devis
+
+    public function alerteFournisseurDemandeDevisPublic(DemandeDevis $demandeDevis){
+
+        $body = $this->twig->render(
+            'email/demandeDevis.html.twig',['demandeDevis'=>$demandeDevis]
+        );
+
+
+        $message = ( new \Swift_Message('Demande de devis'))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($demandeDevis->getFournisseur()->getEmail())
+            ->setBody($body, 'text/html');
+
+
         $this->mailer->send($message);
         //return $nbrshare;
 

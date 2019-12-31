@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\DemandeAchat;
+use App\Entity\DemandeDevis;
 use App\Entity\DetailVisite;
 use App\Entity\Fournisseur;
 use App\Entity\Jeton;
@@ -39,6 +40,25 @@ class FournisseurController extends AbstractController
     {
 
         $this->tokenStorage = $tokenStorage;
+    }
+
+
+    /**
+     * @Route("/product-devis")
+     */
+    public function getCountDemandesDevisEnCours()
+    {
+
+        /**
+         * @var UserInterface $fournisseur
+         */
+        $fournisseur = $this->tokenStorage->getToken()->getUser();
+
+        $result = $this->getDoctrine()->getManager()->getRepository(DemandeDevis::class)->count(['del'=>false,'statut'=>true,"fournisseur"=>$fournisseur,"isRead"=>false]);
+
+        return $this->json($result);
+
+
     }
 
     /**
@@ -573,6 +593,49 @@ class FournisseurController extends AbstractController
                 $query = $qb->getQuery();
                 $result = $query->getOneOrNullResult();
                 $personnelDatas['demandePerdue']=$result;
+
+                $budget_gagner_par_mois= [];
+                $potentiel_par_mois= [];
+
+                for ($i=1;$i<=12;$i++){
+
+                    //Budget Gagnée
+                    $qb = $em->createQueryBuilder('d')
+                        ->where('d.statut = :searchTerm')
+                        ->andWhere('d.fournisseur = :fournisseur')
+                        ->andWhere('d.personnel = :personnel')
+                        ->andWhere('year(d.created) = :year')
+                        ->andWhere('month(d.created) = :month')
+                        ->setParameter('searchTerm', 1)
+                        ->setParameter('fournisseur', $user)
+                        ->setParameter('personnel', $personnel)
+                        ->setParameter('year', $year)
+                        ->setParameter('month', $i)
+                        ->select('sum(d.budget)');
+                    $query = $qb->getQuery();
+                    $result = $query->getSingleScalarResult();
+                    $result = $result?$result:0;
+                    array_push($budget_gagner_par_mois,$result);
+
+                    //Potentiel
+                    $qb = $em->createQueryBuilder('d')
+                        ->where('d.fournisseur = :fournisseur')
+                        ->andWhere('d.personnel = :personnel')
+                        ->andWhere('year(d.created) = :year')
+                        ->andWhere('month(d.created) = :month')
+                        ->setParameter('fournisseur', $user)
+                        ->setParameter('personnel', $personnel)
+                        ->setParameter('year', $year)
+                        ->setParameter('month', $i)
+                        ->select('sum(d.budget)');
+                    $query = $qb->getQuery();
+                    $result = $query->getSingleScalarResult();
+                    $result = $result?$result:0;
+
+                    array_push($potentiel_par_mois,$result);
+                }
+                $personnelDatas['gagnerParMois']=$budget_gagner_par_mois;
+                $personnelDatas['potentielParMois']=$potentiel_par_mois;
 
                 array_push($data,$personnelDatas);
 

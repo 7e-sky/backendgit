@@ -90,7 +90,7 @@ class Fournisseur extends User
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur")
+     * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="fournisseurs")
      * @ORM\JoinTable(name="fournisseur_sous_secteur")
      * @Groups({"get","put","post"})
      * @Assert\NotBlank(groups={"putValidation"})
@@ -101,7 +101,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
+     * @Groups({"demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      * @Assert\Regex(
@@ -161,6 +161,12 @@ class Fournisseur extends User
      */
     private $produits;
 
+    /**
+     * @ORM\OneToMany(targetEntity="DemandeDevis", mappedBy="fournisseur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $demandes;
+
 
     /**
      * @ORM\OneToMany(targetEntity="DemandeJeton", mappedBy="fournisseur")
@@ -182,6 +188,7 @@ class Fournisseur extends User
         $this->sousSecteurs = new ArrayCollection();
         $this->personnels = new ArrayCollection();
         $this->commandes = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
     }
 
 
@@ -338,6 +345,16 @@ class Fournisseur extends User
     {
         return $this->produits;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDemandes() : Collection
+    {
+        return $this->demandes;
+    }
+
+
 
     /**
      * @return mixed

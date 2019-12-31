@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\DemandeAchat;
+use App\Entity\DemandeDevis;
 use App\Entity\DemandeJeton;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,6 +32,23 @@ class AdminController extends AbstractController
         $qb = $em->createQueryBuilder('d')
             ->where('d.statut = :searchTerm')
             ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
+            ->andWhere('d.del = 0')
+            ->setParameter('searchTerm', 0)
+            ->select('count(d.id)');
+        $query = $qb->getQuery();
+
+        return $this->json($query->getSingleScalarResult());
+
+    }
+
+    /**
+     * @Route("/demandes-devis")
+     */
+    public function getCountDemandesDevisEnAttentes(){
+
+        $em = $this->getDoctrine()->getManager()->getRepository(DemandeDevis::class);
+        $qb = $em->createQueryBuilder('d')
+            ->where('d.statut = :searchTerm')
             ->andWhere('d.del = 0')
             ->setParameter('searchTerm', 0)
             ->select('count(d.id)');

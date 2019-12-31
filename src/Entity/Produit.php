@@ -64,60 +64,68 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","demandeDevis:get-all"})
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-all"})
      * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
      */
     private $reference;
 
     /**
+     * @ORM\Column(type="string", length=100)
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-all"})
+     * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
+     * @Assert\Length(min=6,max=100,groups={"produit:postValidation","produit:putValidation"})
+     */
+    private $titre;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Secteur")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
      */
     private $secteur;
 
     /**
      * @ORM\ManyToOne(targetEntity="SousSecteur")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
      */
     private $sousSecteurs;
 
     /**
      * @ORM\ManyToOne(targetEntity="SousSecteur")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $categorie;
 
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
-     * @Groups({"get-admin"})
+     * @Groups({"produit:get-item","produit:get-all"})
      */
     private $fournisseur;
 
     /**
      * @ORM\ManyToOne(targetEntity="Fiche")
-     * @Groups({"produit:get-item","produit:post","produit:put"})
+     * @Groups({"produit:get-item","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $ficheTechnique;
 
     /**
      * @ORM\ManyToMany(targetEntity="ImageProduit")
-     * @Groups({"produit:get-item","produit:post","produit:put"})
+     * @Groups({"produit:get-item","produit:post","produit:put","demandeDevis:get-item"})
      * @ORM\JoinTable()
      */
     private $images;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      * @Assert\NotBlank(groups={"produit:postValidation"})
      * @Assert\Length(min=10,groups={"produit:postValidation","produit:putValidation"})
      * @Assert\Regex(
@@ -130,13 +138,13 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $pu;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","get-admin"})
      */
     private $del;
 
@@ -154,21 +162,23 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","demandeDevis:get-item"})
      */
     private $created;
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
-     * @Groups({"produit:get-item","produit:post","produit:put"})
+     * @Groups({"produit:get-item","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $videos;
 
     /**
      * @ORM\ManyToOne(targetEntity="ImageProduit")
-     * @Groups({"produit:get-from-fournisseur","produit:get-item","produit:post","produit:put"})
+     * @Groups({"produit:get-from-fournisseur","produit:get-item","produit:get-all","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $featuredImageId;
+
+
 
 
     public function __construct()
@@ -200,6 +210,22 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     public function setReference($reference): void
     {
         $this->reference = $reference;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitre()
+    {
+        return $this->titre;
+    }
+
+    /**
+     * @param mixed $titre
+     */
+    public function setTitre($titre): void
+    {
+        $this->titre = $titre;
     }
 
     /**

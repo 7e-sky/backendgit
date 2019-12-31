@@ -187,7 +187,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur")
+     * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="demandes")
      * @ORM\JoinTable(name="demande_ha_sous_secteur")
      * @Groups({"visit:get-item","get-from-demande","put-admin","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank()

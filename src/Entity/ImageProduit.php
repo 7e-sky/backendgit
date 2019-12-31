@@ -42,13 +42,13 @@ class ImageProduit
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get","produit:get-item","produit:get-from-fournisseur","produit:post"})
+     * @Groups({"get","produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post"})
      */
     private $id;
 
     /**
      * @ORM\Column(nullable=true)
-     * @Groups({"get","produit:get-item","produit:get-from-fournisseur","produit:post"})
+     * @Groups({"get","produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post"})
      */
     private $url;
 

@@ -14,7 +14,9 @@ use App\Entity\Acheteur;
 use App\Entity\Admin;
 use App\Entity\Commercial;
 use App\Entity\DemandeAchat;
+use App\Entity\DemandeDevis;
 use App\Entity\Fournisseur;
+use App\Entity\Produit;
 use App\Entity\User;
 use App\Entity\ZoneCommercial;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +67,7 @@ class UserContextBuilder implements SerializerContextBuilderInterface
                 Acheteur::class === $resourceClass ||
                 Fournisseur::class === $resourceClass ||
                 Commercial::class === $resourceClass ||
+                DemandeDevis::class === $resourceClass ||
                 ZoneCommercial::class === $resourceClass
             ) &&
             isset($context['groups']) &&
@@ -82,7 +85,9 @@ class UserContextBuilder implements SerializerContextBuilderInterface
                 Acheteur::class === $resourceClass ||
                 Fournisseur::class === $resourceClass ||
                 Commercial::class === $resourceClass ||
+                DemandeDevis::class === $resourceClass ||
                 ZoneCommercial::class === $resourceClass ||
+                Produit::class === $resourceClass ||
                 DemandeAchat::class === $resourceClass
             ) &&
             isset($context['groups']) &&
