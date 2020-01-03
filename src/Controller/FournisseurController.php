@@ -42,7 +42,6 @@ class FournisseurController extends AbstractController
         $this->tokenStorage = $tokenStorage;
     }
 
-
     /**
      * @Route("/product-devis")
      */
@@ -337,6 +336,14 @@ class FournisseurController extends AbstractController
 
     }
 
+    function random_color_part() {
+        return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+    }
+
+    function random_color() {
+        return $this->random_color_part() . $this->random_color_part() . $this->random_color_part();
+    }
+
     /**
      * Demande devis par produits
      * @Route("/fournisseur/demandeDevisByProduct")
@@ -346,19 +353,34 @@ class FournisseurController extends AbstractController
 
         if ($this->tokenStorage->getToken() instanceof TokenInterface) {
 
+            $user = $this->tokenStorage->getToken()->getUser();
+            $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
+            $products = $em->findBy(['fournisseur'=>$user]);
+
+            $em2 = $this->getDoctrine()->getManager()->getRepository(DemandeDevis::class);
+
+            $dataDevis=[];
+            $labels=[];
+            $colors=[];
+            $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+            foreach ($products as $produit){
+                $count = $em2->count(['produit'=>$produit]);
+                if($count){
+                    array_push($dataDevis,$count);
+                    array_push($labels,$produit->getReference());
+                    $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)];
+                    array_push($colors,$color);
+                }
+
+
+            }
 
             $data = [
-                'labels' => ['Produit 1', 'Produit 2', 'Produit 3', 'Produit 4', 'Produit 5'],
+                'labels' => $labels,
                 'datasets' => [
                     [
-                        'data' => [10,20,30,5,26],
-                        'backgroundColor' => [
-                            '#1976d2' ,
-                            '#009688',
-                            '#cddc39',
-                            '#ff3d00',
-                            '#5e35b1'
-                        ],
+                        'data' => $dataDevis,
+                        'backgroundColor' => $colors,
 
                     ]
 

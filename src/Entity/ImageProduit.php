@@ -27,7 +27,7 @@ use App\Controller\ImageProduit\UploadImageProduitAction;
  *           "path"="/image_produits",
  *           "controller"=UploadImageProduitAction::class,
  *           "defaults"={"_api_receive"=false}
- *     }
+ *           }
  * },
  *     itemOperations={"put","get","delete"},
  *     normalizationContext={
@@ -58,7 +58,6 @@ class ImageProduit
      * @Assert\File(maxSize="1M")
      */
     private $file;
-
 
 
     public function getId()
@@ -106,7 +105,5 @@ class ImageProduit
             ;
         }
     }
-
-
 
 }

@@ -28,13 +28,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *              "denormalization_context"={"groups"={"post"}},
  *              "validation_groups"={"postValidation"}
  *          },
- *          "get",
- *          "api_pays_villes_get_subresource"={
- *               "normalization_context"={"groups"={"get"}}
- *          }
+ *          "get"={ "normalization_context"={"groups"={"get-from-ville"}} }
  *     },
  *     itemOperations={
- *          "get",
+ *          "get"={"normalization_context"={"groups"={"get-from-ville"}}},
  *          "put"={
  *              "access_control"="is_granted('ROLE_ADMIN')",
  *              "denormalization_context"={"groups"={"put"}},
@@ -43,12 +40,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     subresourceOperations={
  *          "api_pays_villes_get_subresource "={
- *              "method"="GET",
  *              "normalization_context"={"groups"={"get-from-pays"}}
  *          }
- *     },
- *     normalizationContext={
- *      "groups"={"get-from-ville"}
  *     },
  *     attributes={
  *     "pagination_items_per_page"=10
@@ -71,7 +64,7 @@ class Ville
     /**
      * @ORM\Column(type="string",length=50)
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Groups({"visit:get-all","get-from-ville","get-from-pays","get","post","put"})
+     * @Groups({"visit:get-all","get-from-ville","get","post","put"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      */
     private $name;
@@ -107,7 +100,7 @@ class Ville
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get","put","get-from-pays"})
+     * @Groups({"get","put"})
      * @Assert\NotNull()
      */
     protected $del;

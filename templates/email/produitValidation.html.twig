@@ -1,0 +1,14 @@
+<h3>Bonjour {{ produit.fournisseur.firstName~' '~produit.fournisseur.lastName }}</h3>
+<br>
+<p>Nous vous prions de bien vouloir vous informer que le produit référence <strong> {{ produit.reference }} </strong> est validé à la date : {{ produit.dateValidation|date("d/m/Y") }}</p>
+<h4>Les informations du produit :</h4>
+<ul>
+    <li><strong>Référence : </strong>{{ produit.reference}}</li>
+    <li><strong>Titre : </strong>{{ produit.titre}}</li>
+    <li><strong>Secteur : </strong>{{ produit.secteur.name}}</li>
+    <li><strong>Sous-Secteur : </strong>{{ produit.sousSecteurs.name}}</li>
+    <li><strong>Catégorie : </strong>{{ produit.categorie.name}}</li>
+    <li><strong>Date de création : </strong>{{ produit.created|date("d/m/Y")}}</li>
+    <li><strong>Description : </strong>{{ produit.description}}</li>
+</ul>
+

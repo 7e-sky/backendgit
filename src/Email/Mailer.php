@@ -139,16 +139,16 @@ class Mailer
 
         }
         $this->entityManager->flush();
-        //return $nbrshare;
 
     }
+
+    // Alerter le personnel
 
     public function alerterPersonnels(Personnel $personnel,DemandeAchat $demande,Fournisseur $fournisseur){
 
         $body = $this->twig->render(
             'email/affectation.html.twig',['demande'=>$demande,'personnel'=>$personnel,'fournisseur'=>$fournisseur]
         );
-
 
         $message = ( new \Swift_Message('Affectation Email'))
             ->setFrom('youness.arbouh1@gmail.com')
@@ -161,13 +161,13 @@ class Mailer
                 $message->attach(\Swift_Attachment::fromPath(ltrim($item->getUrl(), '/')));
             }
         }
+
         $this->mailer->send($message);
-        //return $nbrshare;
 
     }
 
 
-    //Alerter le fournisseur quand un visiteurs public demande un devis
+    // Alerter le fournisseur quand un visiteurs public demande un devis
 
     public function alerteFournisseurDemandeDevisPublic(DemandeDevis $demandeDevis){
 
@@ -175,16 +175,29 @@ class Mailer
             'email/demandeDevis.html.twig',['demandeDevis'=>$demandeDevis]
         );
 
-
         $message = ( new \Swift_Message('Demande de devis'))
             ->setFrom('youness.arbouh1@gmail.com')
             ->setTo($demandeDevis->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
-
         $this->mailer->send($message);
-        //return $nbrshare;
 
     }
 
+    // Alerter le fournisseur quand son produit et valider par l'admin
+
+    public function alerteFournisseurValidationProduit(Produit $produit){
+
+        $body = $this->twig->render(
+            'email/produitValidation.html.twig',['produit'=>$produit]
+        );
+
+        $message = ( new \Swift_Message('Validation du produit Réf. '.$produit->getReference()))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($produit->getFournisseur()->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
 }

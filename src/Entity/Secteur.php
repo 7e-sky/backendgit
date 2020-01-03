@@ -37,7 +37,8 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     attributes={
  *     "force_eager"=false,
  *     "normalization_context"={"groups"={"get-from-secteur"},"enable_max_depth"=true},
- *     "pagination_enabled"=false
+ *     "pagination_enabled"=false,
+ *     "pagination_client_enabled"=true
  *     }
  *
  * )

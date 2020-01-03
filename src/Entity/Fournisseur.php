@@ -180,6 +180,18 @@ class Fournisseur extends User
      */
     private $currency;
 
+    /**
+     * @ORM\OneToMany(targetEntity="DemandeAbonnement",mappedBy="fournisseur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $demandeAbonnement;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Abonnement",mappedBy="fournisseur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $abonnements;
+
 
 
     public function __construct()
@@ -189,6 +201,8 @@ class Fournisseur extends User
         $this->personnels = new ArrayCollection();
         $this->commandes = new ArrayCollection();
         $this->demandes = new ArrayCollection();
+        $this->demandeAbonnement = new ArrayCollection();
+        $this->abonnements = new ArrayCollection();
     }
 
 
@@ -371,6 +385,24 @@ class Fournisseur extends User
     {
         $this->currency = $currency;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDemandeAbonnement() : Collection
+    {
+        return $this->demandeAbonnement;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAbonnements() : Collection
+    {
+        return $this->abonnements;
+    }
+
+
 
 
 

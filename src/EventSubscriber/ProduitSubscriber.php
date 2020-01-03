@@ -10,9 +10,9 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Email\Mailer;
-use App\Entity\DemandeDevis;
 use App\Entity\Admin;
 use App\Entity\Fournisseur;
+use App\Entity\Produit;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class DemandeDevisSubscriber implements EventSubscriberInterface
+class ProduitSubscriber implements EventSubscriberInterface
 {
 
 
@@ -55,64 +55,39 @@ class DemandeDevisSubscriber implements EventSubscriberInterface
     {
        return [
            KernelEvents::VIEW => [
-               ['postDemandeDevis',EventPriorities::PRE_WRITE],
-               ['PutDemandeDevis',EventPriorities::PRE_WRITE],
-               ['GetDemandeDevis',EventPriorities::PRE_WRITE],
+               ['PostProduit',EventPriorities::PRE_WRITE],
+               ['PutProduit',EventPriorities::PRE_WRITE],
            ]
        ];
     }
 
-    public function GetDemandeDevis(GetResponseForControllerResultEvent $event){
+    public function PostProduit(GetResponseForControllerResultEvent $event){
 
         $entity = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
 
-        if(!$entity instanceof  DemandeDevis  || $method !== Request::METHOD_GET ){
+        if(!$entity instanceof  Produit  || $method !== Request::METHOD_POST ){
             return;
         }
 
         /**
-         * @var UserInterface $fournisseur
+         * @var UserInterface $user
          */
-        $fournisseur = $this->tokenStorage->getToken()->getUser();
-
-        if($fournisseur instanceof Fournisseur){
-
-            if(is_null($entity->getDateRead()) && !$entity->getisRead()){
-                $entity->setDateRead(new \DateTime());
-                $entity->setIsRead(true);
-                $this->entityManager->flush();
-            }
-
+        $user = $this->tokenStorage->getToken()->getUser();
+        if($user instanceof Fournisseur){
+            $entity->setCurrency($user->getCurrency());
         }
 
     }
 
 
-    public function postDemandeDevis(GetResponseForControllerResultEvent $event){
+    public function PutProduit(GetResponseForControllerResultEvent $event){
 
         $entity = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-
-        if(!$entity instanceof  DemandeDevis  || $method !== Request::METHOD_POST ){
-            return;
-        }
-
-        $fournisseur = $entity->getProduit()->getFournisseur();
-        if($fournisseur){
-            $entity->setFournisseur($fournisseur);
-        }
-
-    }
-
-    public function PutDemandeDevis(GetResponseForControllerResultEvent $event){
-
-        $entity = $event->getControllerResult();
-        $method = $event->getRequest()->getMethod();
-
-        if(!$entity instanceof  DemandeDevis  || $method !== Request::METHOD_PUT ){
+        if(!$entity instanceof  Produit  || $method !== Request::METHOD_PUT ){
             return;
         }
 
@@ -122,9 +97,9 @@ class DemandeDevisSubscriber implements EventSubscriberInterface
         $user = $this->tokenStorage->getToken()->getUser();
 
         if($user instanceof Admin) {
-            if ($entity->getStatut() && is_null($entity->getDateValidation())) {
+            if ($entity->getisValid() && is_null($entity->getDateValidation())) {
                 $entity->setDateValidation(new \DateTime());
-                $this->mailer->alerteFournisseurDemandeDevisPublic($entity);
+                $this->mailer->alerteFournisseurValidationProduit($entity);
             }
         }
 

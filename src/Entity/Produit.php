@@ -144,7 +144,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","get-admin"})
+     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:put"})
      */
     private $del;
 
@@ -167,6 +167,11 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     private $created;
 
     /**
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    private $dateValidation;
+
+    /**
      * @ORM\Column(type="string", length=255,nullable=true)
      * @Groups({"produit:get-item","produit:post","produit:put","demandeDevis:get-item"})
      */
@@ -177,6 +182,13 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
      * @Groups({"produit:get-from-fournisseur","produit:get-item","produit:get-all","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $featuredImageId;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Currency")
+     * @Groups({"produit:get-all","demandeDevis:get-item"})
+     */
+    private $currency;
 
 
 
@@ -450,6 +462,41 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     {
         $this->featuredImageId = $featuredImageId;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDateValidation()
+    {
+        return $this->dateValidation;
+    }
+
+    /**
+     * @param mixed $dateValidation
+     */
+    public function setDateValidation($dateValidation): void
+    {
+        $this->dateValidation = $dateValidation;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param mixed $currency
+     */
+    public function setCurrency($currency): void
+    {
+        $this->currency = $currency;
+    }
+
+
+
 
 
 

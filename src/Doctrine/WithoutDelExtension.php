@@ -14,6 +14,7 @@ use App\Entity\DemandeDevis;
 use App\Entity\Fournisseur;
 use App\Entity\Pays;
 use App\Entity\Personnel;
+use App\Entity\Produit;
 use App\Entity\Secteur;
 use App\Entity\SousSecteur;
 use App\Entity\Ville;
@@ -50,6 +51,7 @@ final class WithoutDelExtension implements QueryCollectionExtensionInterface, Qu
             DemandeAchat::class !== $resourceClass &&
             DemandeDevis::class !== $resourceClass &&
             Personnel::class !== $resourceClass &&
+            Produit::class !== $resourceClass &&
             Admin::class !== $resourceClass
         )
         {

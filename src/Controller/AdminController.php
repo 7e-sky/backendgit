@@ -12,6 +12,7 @@ namespace App\Controller;
 use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
 use App\Entity\DemandeJeton;
+use App\Entity\Produit;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,6 +23,23 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+
+    /**
+     * @Route("/validation_produits")
+     */
+    public function getCountProduitsEnAttentes(){
+
+        $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
+        $qb = $em->createQueryBuilder('p')
+            ->where('p.isValid = :searchTerm')
+            ->andWhere('p.del = 0')
+            ->setParameter('searchTerm', 0)
+            ->select('count(p.id)');
+        $query = $qb->getQuery();
+
+        return $this->json($query->getSingleScalarResult());
+
+    }
 
     /**
      * @Route("/demandes-admin")

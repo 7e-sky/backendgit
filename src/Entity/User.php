@@ -62,7 +62,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"fournisseur:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville","get-from-acheteur_demandes"})
+     * @Groups({"fournisseur:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","get-from-demande","get-from-sous-secteur","get-from-ville","get-from-acheteur_demandes"})
      */
     protected $id;
 
@@ -75,7 +75,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"visit:get-all","get","put","post","get-from-demande","get-from-sous-secteur","get-from-pays","get-from-ville","get-from-acheteurs_blacklistes"})
+     * @Groups({"visit:get-all","get","put","post","get-from-demande","get-from-sous-secteur","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -83,7 +83,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"visit:get-all","get","put","post","get-from-sous-secteur","get-from-pays","get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
+     * @Groups({"visit:get-all","get","put","post","get-from-sous-secteur","get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -162,7 +162,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get","put","get-from-sous-secteur","get-from-pays","get-from-ville"})
+     * @Groups({"get","put","get-from-sous-secteur","get-from-ville"})
      * @Assert\NotNull()
      */
     protected $del;
