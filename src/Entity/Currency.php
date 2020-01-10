@@ -51,7 +51,7 @@ class Currency
 
     /**
      * @ORM\Column(type="string",name="currency", length=5)
-     * @Groups({"fournisseur:get-item-from-demande","visit:get-all","fournisseur:get-from-demande","currency:get-all","produit:get-all","demandeDevis:get-item","get-from-acheteur_demandes","get-from-demande"})
+     * @Groups({"dmdAbonnement:get-item","get","fournisseur:get-item-from-demande","visit:get-all","fournisseur:get-from-demande","currency:get-all","produit:get-all","demandeDevis:get-item","get-from-acheteur_demandes","get-from-demande"})
      * @Assert\NotBlank(groups={"currency:postValidation","currency:putValidation"})
      * @Assert\Length(min=2,max=5,groups={"currency:postValidation","currency:putValidation"})
      */

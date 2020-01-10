@@ -9,6 +9,7 @@
 namespace App\Email;
 
 
+use App\Entity\DemandeAbonnement;
 use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
 use App\Entity\DiffusionDemande;
@@ -71,6 +72,26 @@ class Mailer
         $message = ( new \Swift_Message('Vérifiez votre adresse email'))
             ->setFrom('youness.arbouh1@gmail.com')
             ->setTo($user->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
+
+    /* Send email notification to Zone & Commercial lors d'une commande offre d'abonnement d'un fournisseur */
+
+    public function sendEmailNotification(DemandeAbonnement $demandeAbonnement){
+
+        $body = $this->twig->render(
+            'email/notificationAbonnement.html.twig',['demande'=>$demandeAbonnement,'commercial'=>$demandeAbonnement->getCommercial()]
+        );
+
+
+        //send e-mail
+        $message = ( new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($demandeAbonnement->getCommercial()->getEmail())
+            ->setCc($demandeAbonnement->getZone()->getEmail())
             ->setBody($body, 'text/html');
 
         $this->mailer->send($message);

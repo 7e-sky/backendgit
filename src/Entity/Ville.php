@@ -64,7 +64,7 @@ class Ville
     /**
      * @ORM\Column(type="string",length=50)
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Groups({"visit:get-all","get-from-ville","get","post","put"})
+     * @Groups({"dmdAbonnement:get-item","visit:get-all","get-from-ville","get","post","put"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      */
     private $name;

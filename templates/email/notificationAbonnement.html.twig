@@ -1,0 +1,33 @@
+<h3>Bonjour {{ commercial.firstName~' '~commercial.lastName }}</h3>
+<p>
+    Un fournisseur dans votre zone vient de faire une commande pour l'offre "<strong>{{ demande.offre.name }}</strong>",
+    prière de bien vouloir le contacter dans les plus brefs délais.
+</p>
+<h4>Les informations du fournisseur :</h4>
+<ul>
+    <li><strong>Raison sociale : </strong>{{ demande.fournisseur.societe }}</li>
+    <li><strong>Nom complet : </strong>{{ demande.fournisseur.civilite~' '~demande.fournisseur.firstName~' '~demande.fournisseur.lastName }}
+    </li>
+    <li><strong>Téléphone : </strong>{{ demande.fournisseur.phone }}</li>
+    <li><strong>Fixe : </strong>{{ demande.fournisseur.fix }}</li>
+    <li><strong>Email : </strong>{{ demande.fournisseur.email }}</li>
+    <li><strong>Pays : </strong>{{ demande.fournisseur.pays ? demande.fournisseur.pays.name : '' }}</li>
+    <li><strong>Ville : </strong>{{ demande.fournisseur.ville ? demande.fournisseur.ville.name:'' }}</li>
+    <li><strong>Adresse : </strong>{{ demande.fournisseur.adresse1 }}</li>
+
+</ul>
+
+<br>
+<h4>Les informations de la commande :</h4>
+<ul>
+    <li><strong>Offre : </strong>{{ demande.offre.name }}</li>
+    <li><strong>Mode de paiement : </strong>{{ demande.mode.name }}</li>
+    <li><strong>Durée : </strong>{{ demande.duree.name }} mois <span style="color: red;">{{ demande.duree.remise ? '(Remise '~demande.duree.remise~' %)' : '' }}</span></li>
+    <li><strong>Date de création : </strong>{{ demande.created|date("d/m/Y")}}</li>
+    <li><strong>Activités: </strong>
+        {% for sousSecteur in demande.sousSecteurs %}
+            {{ sousSecteur.name~' ' }}
+        {% endfor %}
+    </li>
+</ul>
+

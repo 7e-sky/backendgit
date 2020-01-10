@@ -87,7 +87,7 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
         $user = $this->tokenStorage->getToken()->getUser();
         if ($user instanceof Fournisseur) {
 
-
+            $entity->setFournisseur($user);
             $parent1 = $user->getParent1();
             $parent2 = null;
             if ($parent1) {
@@ -95,8 +95,10 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             }
             if ($parent2 instanceof ZoneCommercial) {
                 $entity->setZone($parent2);
-                if ($parent1 instanceof Commercial)
+                if ($parent1 instanceof Commercial){
                     $entity->setCommercial($parent1);
+                    $this->mailer->sendEmailNotification($entity);
+                }
 
             } else {
                 if ($parent1 instanceof ZoneCommercial) {

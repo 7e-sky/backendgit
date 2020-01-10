@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Interfaces\CreatedEntityInterface;
@@ -9,8 +10,17 @@ use App\Interfaces\SetFournisseurInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *      "reference": "partial"
+ *      }
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"reference","created","statut","sousSecteurs.name"})
  * @ApiResource(
  *      collectionOperations={
  *          "post"={
@@ -26,13 +36,20 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     itemOperations={
  *          "get"={
- *              "access_control"="is_granted('ROLE_FOURNISSEUR')",
+ *              "access_control"="is_granted('ROLE_FOURNISSEUR') or ( is_granted('ROLE_FOURNISSEUR') && object.getFournisseur() == user )",
  *              "normalization_context"={"groups"={"dmdAbonnement:get-item","dmdAbonnement:get-all"}}
  *          },
  *          "put"={
  *              "denormalization_context"={"groups"={"dmdAbonnement:put"}},
- *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_FOURNISSEUR') and object.getFournisseur() == user)",
+ *              "access_control"="is_granted('ROLE_ADMIN') or ( is_granted('ROLE_FOURNISSEUR') and object.getFournisseur() == user )",
  *              "validation_groups"={"dmdAbonnement:putValidation"}
+ *          }
+ *     },
+ *     subresourceOperations={
+ *          "api_fournisseurs_demande_abonnements_get_subresource"={
+ *              "security"="is_granted('ROLE_FOURNISSEUR'))",
+ *              "method"="GET",
+ *              "normalization_context"={"groups"={"dmdAbonnement:get-all"}}
  *          }
  *     },
  *     attributes={
@@ -60,7 +77,7 @@ class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterfac
 
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
-     * @Groups({"dmdAbonnement:get-all"})
+     * @Groups({"dmdAbonnement:get-all","dmdAbonnement:get-item"})
      */
     private $fournisseur;
 
@@ -78,11 +95,18 @@ class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterfac
 
     /**
      * @ORM\ManyToMany(targetEntity="SousSecteur")
-     * @ORM\JoinTable(name="demande_abonnement_sous_secteur")
+     * @ORM\JoinTable(name="demande_dmdAbonnement_sous_secteur")
      * @Groups({"dmdAbonnement:get-all","dmdAbonnement:post","dmdAbonnement:put"})
      * @Assert\NotBlank(groups={"dmdAbonnement:postValidation","dmdAbonnement:putValidation"})
      */
     private $sousSecteurs;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Duree")
+     * @Groups({"dmdAbonnement:get-all","dmdAbonnement:post","dmdAbonnement:put"})
+     * @Assert\NotBlank(groups={"dmdAbonnement:postValidation","dmdAbonnement:putValidation"})
+     */
+    private $duree;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -101,6 +125,13 @@ class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterfac
      * @Groups({"dmdAbonnement:get-all"})
      */
     private $created;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Paiement")
+     * @Groups({"dmdAbonnement:get-all","dmdAbonnement:post","dmdAbonnement:put"})
+     * @Assert\NotBlank(groups={"dmdAbonnement:postValidation","dmdAbonnement:putValidation"})
+     */
+    private $mode;
 
     public function __construct()
     {
@@ -226,6 +257,41 @@ class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterfac
     {
         $this->sousSecteurs = $sousSecteurs;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDuree()
+    {
+        return $this->duree;
+    }
+
+    /**
+     * @param mixed $duree
+     */
+    public function setDuree($duree): void
+    {
+        $this->duree = $duree;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getMode()
+    {
+        return $this->mode;
+    }
+
+    /**
+     * @param mixed $mode
+     */
+    public function setMode($mode): void
+    {
+        $this->mode = $mode;
+    }
+
+
 
 
 }

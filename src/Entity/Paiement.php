@@ -47,7 +47,7 @@ class Paiement
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"jeton:get-item","jeton:get-all","paiement:put","paiement:post","paiement:get-item","paiement:get-all"})
+     * @Groups({"dmdAbonnement:get-all","jeton:get-item","jeton:get-all","paiement:put","paiement:post","paiement:get-item","paiement:get-all"})
      */
     private $name;
 

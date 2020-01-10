@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "normalization_context"={"groups"={"offre:get-all"}}
  *          },
  *          "get"={
- *              "access_control"="is_granted('ROLE_ADMIN')",
+ *              "access_control"="is_granted('ROLE_FOURNISSEUR')",
  *              "normalization_context"={"groups"={"offre:get-all"}}
  *          }
  *     },
@@ -41,27 +41,33 @@ class Offre
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"offre:get-all"})
+     * @Groups({"dmdAbonnement:get-all","offre:get-all"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"offre:get-all","offre:post","offre:put"})
+     * @Groups({"dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
      * @Assert\NotBlank(groups={"offre:putValidation","offre:postValidation"})
      */
-    private $nom;
+    private $name;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
+     * @Assert\NotBlank(groups={"offre:putValidation","offre:postValidation"})
+     */
+    private $description;
+    /**
      * @ORM\Column(type="float")
-     * @Groups({"offre:get-all","offre:post","offre:put"})
+     * @Groups({"dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
      * @Assert\NotBlank(groups={"offre:putValidation","offre:postValidation"})
      */
     private $prixMad;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"offre:get-all","offre:post","offre:put"})
+     * @Groups({"dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
      * @Assert\NotBlank(groups={"offre:putValidation","offre:postValidation"})
      */
     private $prixEur;
@@ -73,23 +79,52 @@ class Offre
      */
     private $imageOffre;
 
+    /**
+     * @ORM\Column(type="smallint")
+     * @Groups({"offre:get-all","offre:post","offre:put"})
+     *
+     */
+    private $nbActivite;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom()
+    /**
+     * @return mixed
+     */
+    public function getName()
     {
-        return $this->nom;
+        return $this->name;
     }
 
-    public function setNom($nom): self
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
     {
-        $this->nom = $nom;
-
-        return $this;
+        $this->name = $name;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
+    }
+
+
 
     public function getPrixMad()
     {
@@ -126,4 +161,23 @@ class Offre
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNbActivite()
+    {
+        return $this->nbActivite;
+    }
+
+    /**
+     * @param mixed $nbActivite
+     */
+    public function setNbActivite($nbActivite): void
+    {
+        $this->nbActivite = $nbActivite;
+    }
+
+
+
 }
