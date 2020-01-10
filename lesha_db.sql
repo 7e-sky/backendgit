@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 06 déc. 2019 à 18:03
+-- Généré le :  ven. 10 jan. 2020 à 18:02
 -- Version du serveur :  10.1.31-MariaDB
 -- Version de PHP :  7.2.4
 
@@ -25,6 +25,39 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `abonnement`
+--
+
+CREATE TABLE `abonnement` (
+  `id` int(11) NOT NULL,
+  `offre_id` int(11) DEFAULT NULL,
+  `demande_id` int(11) DEFAULT NULL,
+  `fournisseur_id` int(11) DEFAULT NULL,
+  `zone_id` int(11) DEFAULT NULL,
+  `commercial_id` int(11) DEFAULT NULL,
+  `mode_id` int(11) DEFAULT NULL,
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `statut` tinyint(1) NOT NULL,
+  `prix` double NOT NULL,
+  `created` datetime NOT NULL,
+  `expired` datetime NOT NULL,
+  `date_peiment` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `abonnement_sous_secteur`
+--
+
+CREATE TABLE `abonnement_sous_secteur` (
+  `abonnement_id` int(11) NOT NULL,
+  `sous_secteur_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `acheteur`
 --
 
@@ -39,47 +72,50 @@ CREATE TABLE `acheteur` (
   `fix` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `website` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
-  `secteur_id` int(11) DEFAULT NULL
+  `secteur_id` int(11) DEFAULT NULL,
+  `currency_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `acheteur`
 --
 
-INSERT INTO `acheteur` (`id`, `pays_id`, `ville_id`, `societe`, `parent2`, `civilite`, `ice`, `fix`, `website`, `description`, `secteur_id`) VALUES
-(2, 1, 1, '', NULL, '', '', '', '', '', NULL),
-(18, 1, 1, 'ArasElect', NULL, '', '', '', '', '', NULL),
-(28, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
-(29, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
-(30, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
-(31, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
-(32, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
-(33, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
-(34, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL),
-(35, NULL, NULL, 'Testi', NULL, 'M', NULL, NULL, NULL, NULL, NULL),
-(36, NULL, NULL, 'Testi', NULL, 'M', NULL, NULL, NULL, NULL, NULL),
-(37, NULL, NULL, 'Testi', NULL, 'M', NULL, NULL, NULL, NULL, NULL),
-(38, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(39, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(40, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(41, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(42, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(43, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(44, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(45, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(46, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(47, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(48, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(49, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(50, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL),
-(68, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
-(69, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
-(70, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
-(71, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
-(72, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
-(73, 1, 2, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1),
-(74, 2, 33, '3f industrie', NULL, 'M.', NULL, '', '', '', 1),
-(76, 1, 1, '3f industrie23', NULL, 'M.', '124554474445612', '0622201475', 'https://www.d.fr0', 'skkkkkkkkkkk2', 3);
+INSERT INTO `acheteur` (`id`, `pays_id`, `ville_id`, `societe`, `parent2`, `civilite`, `ice`, `fix`, `website`, `description`, `secteur_id`, `currency_id`) VALUES
+(2, 1, 1, '', NULL, '', '', '', '', '', NULL, NULL),
+(18, 1, 1, 'ArasElect', NULL, '', '', '', '', '', NULL, NULL),
+(28, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL, NULL),
+(29, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL, NULL),
+(30, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL, NULL),
+(31, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL, NULL),
+(32, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL, NULL),
+(33, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL, NULL),
+(34, 1, 1, 'Testi', NULL, 'M', '123456789101254', '0696318521', 'www.aaaaaaaa.fr', 'string', NULL, NULL),
+(35, NULL, NULL, 'Testi', NULL, 'M', NULL, NULL, NULL, NULL, NULL, NULL),
+(36, NULL, NULL, 'Testi', NULL, 'M', NULL, NULL, NULL, NULL, NULL, NULL),
+(37, NULL, NULL, 'Testi', NULL, 'M', NULL, NULL, NULL, NULL, NULL, NULL),
+(38, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(39, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(40, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(41, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(42, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(43, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(44, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(45, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(46, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(47, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(48, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(49, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(50, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
+(68, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
+(69, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
+(70, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
+(71, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
+(72, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
+(73, 1, 2, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
+(74, 2, 33, '3f industrie', NULL, 'M.', NULL, '', '', '', 1, NULL),
+(76, 1, 1, '1244n', NULL, 'M.', '123456676102145', '0622201475', 'https://www.d.fr0', 'skkkkkkkkkkk2', 3, NULL),
+(77, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', 'https://www.d.com', '', 1, NULL),
+(80, 1, 1, '7e-sky', NULL, 'M.', '123456789123456', '', '', '', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -177,7 +213,9 @@ INSERT INTO `attachement` (`id`, `url`, `file_size`, `type`) VALUES
 (94, '5de5359013251332921903.png', 38731, 'image/png'),
 (95, '5de53e446ccae223568061.jpg', 8864, 'image/jpeg'),
 (96, '5de54252e58e5216591597.jpg', 119505, 'image/jpeg'),
-(97, '5de617c114ee1045765045.jpg', 8864, 'image/jpeg');
+(97, '5de617c114ee1045765045.jpg', 8864, 'image/jpeg'),
+(98, '5defcfc15ca5a335415375.jpg', 8864, 'image/jpeg'),
+(99, '5dfb2dd925054548052461.pdf', 143935, 'application/pdf');
 
 -- --------------------------------------------------------
 
@@ -232,7 +270,9 @@ INSERT INTO `avatar` (`id`, `url`) VALUES
 (35, '5dd7fcfa722c7806280573.png'),
 (36, '5dd7fd413f5d6763820939.jpg'),
 (37, '5de7b82c30b16184376461.jpg'),
-(38, '5dea1b68181f5676822270.png');
+(38, '5dea1b68181f5676822270.png'),
+(39, '5df88e2de0727067647954.PNG'),
+(40, '5e01ce4eaa860033725161.png');
 
 -- --------------------------------------------------------
 
@@ -245,15 +285,20 @@ CREATE TABLE `black_listes` (
   `fournisseur_id` int(11) DEFAULT NULL,
   `raison` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
-  `acheteur_id` int(11) DEFAULT NULL
+  `acheteur_id` int(11) DEFAULT NULL,
+  `deblacklister` datetime DEFAULT NULL,
+  `etat` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `black_listes`
 --
 
-INSERT INTO `black_listes` (`id`, `fournisseur_id`, `raison`, `created`, `acheteur_id`) VALUES
-(51, 75, 'makantfahmouch ', '2019-11-21 09:23:05', 76);
+INSERT INTO `black_listes` (`id`, `fournisseur_id`, `raison`, `created`, `acheteur_id`, `deblacklister`, `etat`) VALUES
+(51, 75, '1-makantfahmouch \n2-its okey', '2019-11-21 09:23:05', 76, '2019-12-11 10:09:42', 0),
+(53, 64, 'okey okey', '2019-12-09 11:24:23', 76, '2019-12-11 10:16:19', 0),
+(54, 65, '000000000', '2019-12-11 10:25:22', 76, NULL, 1),
+(55, 63, 'aaaaaaaaaaaa', '2019-12-13 11:11:11', 76, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -300,6 +345,71 @@ INSERT INTO `commercial_ville` (`commercial_id`, `ville_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `currency`
+--
+
+CREATE TABLE `currency` (
+  `id` int(11) NOT NULL,
+  `currency` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `del` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `currency`
+--
+
+INSERT INTO `currency` (`id`, `currency`, `del`) VALUES
+(1, 'EUR', 0),
+(2, 'USD', 0),
+(3, 'JPY', 0),
+(4, 'GPB', 0),
+(5, 'CAD', 0),
+(6, 'AUD', 0),
+(7, 'INR', 0),
+(8, 'NZD', 0),
+(9, 'CHF', 0),
+(10, 'ZAR', 0),
+(11, 'DHS', 0),
+(12, '.', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `demande_abonnement`
+--
+
+CREATE TABLE `demande_abonnement` (
+  `id` int(11) NOT NULL,
+  `offre_id` int(11) DEFAULT NULL,
+  `fournisseur_id` int(11) DEFAULT NULL,
+  `zone_id` int(11) DEFAULT NULL,
+  `commercial_id` int(11) DEFAULT NULL,
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `statut` tinyint(1) NOT NULL,
+  `created` datetime NOT NULL,
+  `mode_id` int(11) DEFAULT NULL,
+  `duree_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `demande_abonnement`
+--
+
+INSERT INTO `demande_abonnement` (`id`, `offre_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `reference`, `statut`, `created`, `mode_id`, `duree_id`) VALUES
+(14, 1, 75, 5, 9, '2020-14', 0, '2020-01-08 11:01:39', 1, NULL),
+(15, 1, 75, 5, 9, '2020-2', 0, '2020-01-08 11:58:59', 1, NULL),
+(16, 1, 75, 5, 9, '2020-3', 0, '2020-01-08 12:09:53', 1, NULL),
+(17, 1, 75, 5, 9, '2020-4', 0, '2020-01-08 17:11:02', 1, NULL),
+(18, 1, 75, 5, 9, '2020-5', 0, '2020-01-08 17:13:46', 1, NULL),
+(19, 1, 75, 5, 9, '2020-6', 0, '2020-01-08 17:14:32', 1, NULL),
+(20, 3, 75, 5, 9, '2020-7', 1, '2020-01-08 17:39:38', 1, NULL),
+(21, 1, 75, 5, 9, '2020-8', 0, '2020-01-10 11:22:55', 1, 2),
+(22, 2, 75, 5, 9, '2020-9', 0, '2020-01-10 11:24:23', 1, 2),
+(23, 3, 75, 5, 9, '2020-10', 0, '2020-01-10 11:28:09', 2, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `demande_achat`
 --
 
@@ -307,7 +417,7 @@ CREATE TABLE `demande_achat` (
   `id` int(11) NOT NULL,
   `acheteur_id` int(11) DEFAULT NULL,
   `statut` smallint(6) NOT NULL,
-  `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reference` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_expiration` datetime NOT NULL,
   `is_public` tinyint(1) NOT NULL,
@@ -317,30 +427,34 @@ CREATE TABLE `demande_achat` (
   `date_modification` datetime NOT NULL,
   `is_alerted` tinyint(1) NOT NULL,
   `is_anonyme` tinyint(1) NOT NULL,
-  `langue_p` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description_en` longtext COLLATE utf8mb4_unicode_ci,
-  `description_es` longtext COLLATE utf8mb4_unicode_ci,
-  `motif_rejet` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `budget` decimal(10,0) NOT NULL,
-  `del` tinyint(1) NOT NULL
+  `budget` double NOT NULL,
+  `del` tinyint(1) NOT NULL,
+  `motif_rejet_id` int(11) DEFAULT NULL,
+  `currency_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `demande_achat`
 --
 
-INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `langue_p`, `description_en`, `description_es`, `motif_rejet`, `budget`, `del`) VALUES
-(2, 76, 1, 'aaaaa0q', 'azertyuioppok', '2019-11-30 23:03:00', 1, 0, 5, '2019-11-25 08:03:25', '2019-11-28 14:00:30', 1, 0, NULL, NULL, NULL, '', '25132', 0),
-(3, 76, 0, 'qdqdsqsd', 'azqsdazeqd', '2019-11-26 08:03:00', 1, 0, 0, '2019-11-26 17:04:17', '2019-11-14 17:10:38', 0, 0, NULL, NULL, NULL, NULL, '11555', 0),
-(4, 76, 0, 'test', 'aji tfhel achno fhemt', '2019-11-30 12:20:00', 1, 0, 0, '2019-11-28 12:21:21', '2019-11-28 12:21:21', 0, 0, NULL, NULL, NULL, NULL, '5000', 0),
-(5, 76, 0, 'test2', 'mmmmmmmmmm', '2019-11-30 12:21:00', 1, 0, 0, '2019-11-28 12:22:21', '2019-11-28 12:22:21', 0, 0, NULL, NULL, NULL, NULL, '1', 0),
-(6, 76, 1, 'aaaaa0', 'testtttttt', '2019-12-25 16:53:00', 1, 0, 0, '2019-12-02 16:53:55', '2019-12-02 16:53:55', 0, 0, NULL, NULL, NULL, NULL, '251101', 0),
-(7, 76, 1, 'aaaaa0sqd', 'azazeaqsdqq', '2019-12-24 17:01:00', 1, 0, 0, '2019-12-02 17:01:26', '2019-12-02 17:11:10', 0, 0, NULL, NULL, NULL, '', '10001', 0),
-(8, 76, 1, 'abcde', 'qsqdqsdqqqa', '2019-12-31 17:01:00', 1, 0, 0, '2019-12-02 17:01:50', '2019-12-02 17:11:27', 0, 1, NULL, NULL, NULL, '', '20199', 0),
-(9, 76, 1, 'qqqqqq', 'azertyuuuuu', '2019-12-25 17:02:00', 1, 0, 0, '2019-12-02 17:02:29', '2019-12-02 18:05:53', 0, 0, NULL, NULL, NULL, '', '5000', 0),
-(10, 76, 0, '10224', 'azertyuopa', '2019-12-25 09:06:00', 1, 0, 0, '2019-12-03 09:07:34', '2019-12-03 09:07:33', 0, 0, NULL, NULL, NULL, NULL, '500000', 0),
-(11, 76, 1, 'aaaaa', 'aaaaaaaaaaaaaaaa', '2019-12-09 09:07:00', 1, 0, 0, '2019-12-03 09:08:03', '2019-12-06 17:35:52', 1, 0, NULL, NULL, NULL, '', '8888886', 0),
-(12, 76, 1, 'azqs', 'azertyuiuu', '2019-12-18 09:08:00', 1, 0, 0, '2019-12-03 09:08:27', '2019-12-03 09:25:41', 0, 0, NULL, NULL, NULL, '', '12447', 0);
+INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `budget`, `del`, `motif_rejet_id`, `currency_id`) VALUES
+(2, 76, 1, 'aaaaa0q', 'azertyuioppok', '2019-11-30 23:03:00', 1, 0, 5, '2019-11-25 08:03:25', '2019-11-28 14:00:30', 1, 0, 25132, 0, NULL, 1),
+(3, 76, 0, 'qdqdsqsd', 'azqsdazeqd', '2019-11-26 08:03:00', 1, 0, 0, '2019-11-26 17:04:17', '2019-11-14 17:10:38', 0, 0, 11555, 0, NULL, 11),
+(4, 76, 0, 'test', 'aji tfhel achno fhemt', '2019-11-30 12:20:00', 1, 0, 0, '2019-11-28 12:21:21', '2019-11-28 12:21:21', 0, 0, 5000, 0, NULL, 5),
+(5, 76, 0, 'test2', 'mmmmmmmmmm', '2019-11-30 12:21:00', 1, 0, 0, '2019-11-28 12:22:21', '2019-11-28 12:22:21', 0, 0, 1, 0, NULL, 5),
+(6, 76, 1, 'aaaaa0', 'testtttttt', '2019-12-25 16:53:00', 1, 0, 0, '2019-12-02 16:53:55', '2019-12-02 16:53:55', 0, 0, 251101, 0, NULL, 9),
+(7, 76, 1, 'aaaaa0sqd', 'azazeaqsdqq', '2019-12-24 17:01:00', 1, 0, 0, '2019-12-02 17:01:26', '2019-12-02 17:11:10', 0, 0, 10001, 0, NULL, 5),
+(8, 76, 0, 'abcde5', 'qsqdqsdqqqaq5', '2020-01-09 17:01:00', 1, 0, 0, '2019-12-02 17:01:50', '2019-12-10 18:05:29', 0, 1, 20199.5025, 1, NULL, 5),
+(9, 76, 1, 'qqqqqq', 'azertyuuuuu', '2019-12-25 17:02:00', 1, 0, 0, '2019-12-02 17:02:29', '2019-12-02 18:05:53', 0, 0, 5000, 0, NULL, 1),
+(10, 76, 1, '102454', 'azertyuopaja', '2019-12-25 09:06:00', 1, 0, 0, '2019-12-03 09:07:34', '2019-12-10 11:45:15', 0, 1, 500000.55, 0, NULL, 11),
+(11, 76, 1, 'aaaaa', 'aaaaaaaaaaaaaaaa', '2019-12-09 09:07:00', 1, 0, 0, '2019-12-03 09:08:03', '2019-12-06 17:35:52', 1, 0, 8888886, 0, NULL, 6),
+(12, 76, 1, 'azqs', 'azertyuiuu', '2019-12-18 09:08:00', 1, 0, 0, '2019-12-03 09:08:27', '2019-12-03 09:25:41', 0, 0, 12447, 0, NULL, 4),
+(13, 76, 0, 'En attente', 'azertyuuuuuu', '2019-12-31 16:35:00', 1, 0, 0, '2019-12-10 16:36:25', '2019-12-10 18:03:17', 0, 0, 201588.55, 1, NULL, 9),
+(14, 76, 1, '2019-8', 'azerty yyyyy', '2019-12-29 17:06:00', 1, 0, 0, '2019-12-10 17:07:28', '2019-12-10 18:01:56', 0, 0, 250.55, 0, NULL, 5),
+(15, 76, 1, '2019-10', 'teeeeeeeeeeeeeeestj', '2019-12-30 18:02:00', 1, 0, 0, '2019-12-10 18:03:05', '2019-12-19 08:59:36', 1, 0, 5000.51, 0, NULL, 11),
+(16, 76, 0, '2019-9', 'aaaaaaaaaaaaa', '2019-12-31 18:03:00', 0, 0, 0, '2019-12-10 18:04:03', '2020-01-08 20:09:01', 0, 0, 255.25, 0, NULL, 11),
+(17, 80, 1, '2019-11', 'teeeeeeeeeeeeest', '2019-12-25 11:39:00', 1, 0, 0, '2019-12-17 11:40:50', '2019-12-17 12:01:38', 0, 0, 20000.5, 0, NULL, 9),
+(18, 80, 1, '2019-12', 'c\'est tjrs pour le test222', '2019-12-27 18:17:00', 1, 1, 0, '2019-12-17 12:19:49', '2019-12-19 08:58:16', 1, 0, 25000, 0, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -363,7 +477,85 @@ INSERT INTO `demande_achat_attachement` (`demande_achat_id`, `attachement_id`) V
 (9, 94),
 (9, 95),
 (9, 96),
-(10, 97);
+(10, 97),
+(15, 98),
+(15, 99);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `demande_devis`
+--
+
+CREATE TABLE `demande_devis` (
+  `id` int(11) NOT NULL,
+  `produit_id` int(11) DEFAULT NULL,
+  `contact` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `societe` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created` datetime NOT NULL,
+  `adresse` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `statut` tinyint(1) NOT NULL,
+  `del` tinyint(1) NOT NULL,
+  `date_validation` datetime DEFAULT NULL,
+  `quantity` smallint(6) NOT NULL,
+  `fournisseur_id` int(11) DEFAULT NULL,
+  `is_read` tinyint(1) NOT NULL,
+  `date_read` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `demande_devis`
+--
+
+INSERT INTO `demande_devis` (`id`, `produit_id`, `contact`, `societe`, `phone`, `email`, `message`, `created`, `adresse`, `statut`, `del`, `date_validation`, `quantity`, `fournisseur_id`, `is_read`, `date_read`) VALUES
+(9, 1, 'Mehdi', 'Sergh', '+212696318010', 'yon@gmail.com', 'i want this product', '2019-12-30 11:31:38', 'Hay hassani n18 casablanca', 1, 1, '2019-12-31 15:16:28', 0, 75, 1, '2019-12-31 15:10:16'),
+(10, 8, 'Mehdi', 'Sergh', '+212696318010', 'yon@gmail.com', 'i want this product', '2019-12-30 11:48:52', 'Hay hassani n18 casablanca', 1, 0, '2019-12-30 11:58:09', 0, 57, 0, NULL),
+(11, 1, 'Mehdi', 'Sergh', '+212696318010', 'yon@gmail.com', 'i want this product', '2019-12-30 12:06:19', 'Hay hassani n18 casablanca', 1, 1, '2019-12-30 12:08:57', 0, 75, 0, NULL),
+(12, 1, 'Me3d', 'Se3d', '+212696318010', 'yon@gmail.com', 'i want this product', '2019-12-30 12:16:20', 'Hay hassani n18 casablanca', 0, 1, NULL, 0, 75, 0, NULL),
+(13, 1, 'Me3ss', 'Se3ss', '+212696318010', 'yoness@gmail.com', 'i want this productrrrrrrrrs', '2019-12-30 12:22:22', 'Hay hassani n18 casablancas', 1, 0, '2019-12-31 08:52:51', 4, 75, 1, '2019-12-31 15:00:56');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `demande_dmdabonnement_sous_secteur`
+--
+
+CREATE TABLE `demande_dmdabonnement_sous_secteur` (
+  `demande_abonnement_id` int(11) NOT NULL,
+  `sous_secteur_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `demande_dmdabonnement_sous_secteur`
+--
+
+INSERT INTO `demande_dmdabonnement_sous_secteur` (`demande_abonnement_id`, `sous_secteur_id`) VALUES
+(14, 6),
+(14, 9),
+(15, 6),
+(16, 6),
+(16, 7),
+(17, 6),
+(18, 6),
+(18, 7),
+(18, 8),
+(18, 9),
+(18, 10),
+(19, 6),
+(19, 7),
+(19, 8),
+(19, 9),
+(20, 6),
+(20, 7),
+(21, 6),
+(21, 7),
+(22, 6),
+(22, 7),
+(23, 6),
+(23, 9);
 
 -- --------------------------------------------------------
 
@@ -385,14 +577,72 @@ INSERT INTO `demande_ha_sous_secteur` (`sous_secteur_id`, `demande_achat_id`) VA
 (6, 4),
 (6, 6),
 (6, 8),
+(6, 10),
+(6, 13),
+(6, 14),
+(6, 16),
+(6, 17),
+(6, 18),
 (7, 3),
 (7, 5),
 (7, 7),
 (7, 9),
+(7, 15),
+(7, 18),
 (8, 4),
 (8, 10),
+(8, 14),
+(8, 15),
 (9, 11),
 (10, 12);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `demande_jeton`
+--
+
+CREATE TABLE `demande_jeton` (
+  `id` int(11) NOT NULL,
+  `fournisseur_id` int(11) DEFAULT NULL,
+  `nbr_jeton` smallint(6) NOT NULL,
+  `is_use` tinyint(1) NOT NULL,
+  `created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `demande_jeton`
+--
+
+INSERT INTO `demande_jeton` (`id`, `fournisseur_id`, `nbr_jeton`, `is_use`, `created`) VALUES
+(1, 75, 10, 1, '2019-12-11 15:48:03'),
+(2, 75, 20, 1, '2019-12-11 15:58:37'),
+(3, 75, 20, 1, '2019-12-11 15:58:37'),
+(4, 75, 20, 1, '2019-12-11 15:58:37'),
+(5, 75, 20, 1, '2019-12-11 15:58:37'),
+(10, 75, 20, 1, '2019-12-11 15:58:37'),
+(11, 75, 20, 1, '2019-12-11 15:58:37'),
+(12, 75, 20, 1, '2019-12-11 15:58:37'),
+(13, 75, 20, 1, '2019-12-11 15:58:37'),
+(14, 75, 20, 1, '2019-12-11 15:58:37'),
+(15, 75, 20, 1, '2019-12-11 15:58:37'),
+(16, 75, 20, 1, '2019-12-11 15:58:37'),
+(17, 75, 20, 1, '2019-12-11 15:58:37'),
+(19, 75, 20, 1, '2019-12-11 15:58:37'),
+(20, 75, 10, 0, '2019-12-11 15:58:37'),
+(21, 75, 20, 0, '2019-12-11 15:58:37'),
+(22, 75, 20, 0, '2019-12-11 15:58:37'),
+(23, 75, 20, 0, '2019-12-11 15:58:37'),
+(24, 75, 20, 0, '2019-12-11 15:58:37'),
+(25, 75, 20, 0, '2019-12-11 15:58:37'),
+(26, 75, 20, 0, '2019-12-11 15:58:37'),
+(27, 75, 20, 0, '2019-12-11 15:58:37'),
+(28, 75, 20, 0, '2019-12-11 15:58:37'),
+(29, 75, 20, 0, '2019-12-11 15:58:37'),
+(30, 75, 20, 1, '2019-12-12 15:58:37'),
+(31, 53, 20, 1, '2019-12-12 16:58:37'),
+(32, 75, 20, 1, '2019-12-16 10:22:33'),
+(33, 78, 20, 0, '2019-12-17 09:20:30');
 
 -- --------------------------------------------------------
 
@@ -406,17 +656,23 @@ CREATE TABLE `detail_visite` (
   `demande_id` int(11) DEFAULT NULL,
   `created` datetime NOT NULL,
   `date_rec` datetime NOT NULL,
-  `etat_validation` tinyint(1) NOT NULL,
-  `is_send` tinyint(1) NOT NULL
+  `is_send` tinyint(1) NOT NULL,
+  `budget` double NOT NULL,
+  `statut` smallint(6) NOT NULL,
+  `personnel_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `detail_visite`
 --
 
-INSERT INTO `detail_visite` (`id`, `fournisseur_id`, `demande_id`, `created`, `date_rec`, `etat_validation`, `is_send`) VALUES
-(1, 75, 3, '2019-12-02 10:50:01', '2019-12-02 10:50:02', 1, 1),
-(2, 75, 2, '2019-12-02 10:50:23', '2019-12-02 10:50:24', 1, 1);
+INSERT INTO `detail_visite` (`id`, `fournisseur_id`, `demande_id`, `created`, `date_rec`, `is_send`, `budget`, `statut`, `personnel_id`) VALUES
+(1, 75, 3, '2019-12-02 10:50:01', '2019-12-02 10:50:02', 1, 7000000, 2, NULL),
+(2, 75, 2, '2019-12-02 10:50:23', '2019-12-02 10:50:24', 1, 289018, 2, NULL),
+(3, 75, 16, '2019-11-16 17:11:40', '2019-12-23 17:11:40', 0, 255.25, 1, 3),
+(4, 75, 15, '2019-12-16 17:14:50', '2019-12-23 17:14:50', 0, 5000.54, 1, 3),
+(8, 75, 9, '2019-12-16 17:30:16', '2019-12-23 17:30:16', 0, 122200.5, 1, 3),
+(9, 75, 18, '2019-12-24 15:51:00', '2019-12-31 15:51:00', 0, 257300, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -444,7 +700,54 @@ INSERT INTO `diffusion_demande` (`id`, `fournisseur_id`, `demande_id`, `date_dif
 (91, 64, 11, '2019-12-06 17:35:52'),
 (92, 65, 11, '2019-12-06 17:35:52'),
 (93, 66, 11, '2019-12-06 17:35:52'),
-(94, 67, 11, '2019-12-06 17:35:52');
+(94, 67, 11, '2019-12-06 17:35:52'),
+(95, 61, 18, '2019-12-19 08:50:12'),
+(96, 64, 18, '2019-12-19 08:50:12'),
+(97, 65, 18, '2019-12-19 08:50:12'),
+(98, 66, 18, '2019-12-19 08:50:12'),
+(99, 67, 18, '2019-12-19 08:50:12'),
+(100, 75, 18, '2019-12-19 08:50:12'),
+(101, 78, 18, '2019-12-19 08:50:12'),
+(102, 61, 18, '2019-12-19 08:56:33'),
+(103, 64, 18, '2019-12-19 08:56:33'),
+(104, 65, 18, '2019-12-19 08:56:33'),
+(105, 66, 18, '2019-12-19 08:56:33'),
+(106, 67, 18, '2019-12-19 08:56:33'),
+(107, 75, 18, '2019-12-19 08:56:33'),
+(108, 78, 18, '2019-12-19 08:56:33'),
+(109, 61, 18, '2019-12-19 08:58:17'),
+(110, 64, 18, '2019-12-19 08:58:17'),
+(111, 65, 18, '2019-12-19 08:58:17'),
+(112, 66, 18, '2019-12-19 08:58:17'),
+(113, 67, 18, '2019-12-19 08:58:17'),
+(114, 75, 18, '2019-12-19 08:58:17'),
+(115, 78, 18, '2019-12-19 08:58:17'),
+(116, 61, 15, '2019-12-19 08:59:36'),
+(117, 64, 15, '2019-12-19 08:59:36'),
+(118, 75, 15, '2019-12-19 08:59:36'),
+(119, 78, 15, '2019-12-19 08:59:36'),
+(120, 67, 15, '2019-12-19 08:59:36');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `duree`
+--
+
+CREATE TABLE `duree` (
+  `id` int(11) NOT NULL,
+  `name` smallint(6) NOT NULL,
+  `remise` smallint(6) NOT NULL,
+  `created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `duree`
+--
+
+INSERT INTO `duree` (`id`, `name`, `remise`, `created`) VALUES
+(1, 12, 0, '2020-01-10 09:43:41'),
+(2, 24, 20, '2020-01-10 09:43:51');
 
 -- --------------------------------------------------------
 
@@ -475,7 +778,8 @@ INSERT INTO `fiche` (`id`, `url`, `file_size`, `type`) VALUES
 (11, '5de91079f31b9803979874.pdf', 143935, 'application/pdf'),
 (12, '5de910c6cccfd865714410.pdf', 143935, 'application/pdf'),
 (13, '5de91538cf3a1775715736.pdf', 143935, 'application/pdf'),
-(14, '5de91f17c1bbc561116568.pdf', 143935, 'application/pdf');
+(14, '5de91f17c1bbc561116568.pdf', 143935, 'application/pdf'),
+(15, '5e0b6b417db6f728632627.pdf', 143935, 'application/pdf');
 
 -- --------------------------------------------------------
 
@@ -492,36 +796,40 @@ CREATE TABLE `fournisseur` (
   `ice` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fix` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `website` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `currency_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `fournisseur`
 --
 
-INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `ice`, `fix`, `website`, `description`) VALUES
-(3, 2, 1, '', '', '', '', '', ''),
-(8, 2, 2, '', '', '', '', '', ''),
-(13, 1, 1, '', '', '', '', '', ''),
-(17, 1, 1, '', '', '', '', '', ''),
-(51, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
-(52, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
-(53, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
-(54, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
-(55, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
-(56, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
-(57, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
-(58, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
-(59, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
-(60, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL),
-(61, 1, 1, '3f industriee', 'M.', '123456789123456', '', '', ''),
-(62, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', ''),
-(63, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', ''),
-(64, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', 'aaaaaaaaaaaaaaaaaaaaaaaaa'),
-(65, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', ''),
-(66, 1, 2, '3f industrie', 'M.', '123456789123456', '', '', ''),
-(67, 1, 15, '3F Industrie', 'M.', '001531606000066', '0696318051', '', ''),
-(75, 1, 2, '3f industrie2', 'M.', '123456789123456', '0523547812', 'http://www.3fi.com', '');
+INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `ice`, `fix`, `website`, `description`, `currency_id`) VALUES
+(3, 2, 1, '', '', '', '', '', '', NULL),
+(8, 2, 2, '', '', '', '', '', '', NULL),
+(13, 1, 1, '', '', '', '', '', '', NULL),
+(17, 1, 1, '', '', '', '', '', '', NULL),
+(51, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
+(52, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
+(53, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
+(54, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
+(55, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
+(56, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
+(57, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
+(58, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
+(59, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
+(60, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
+(61, 1, 1, '3f industriee', 'M.', '123456789123456', '', '', '', NULL),
+(62, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', '', NULL),
+(63, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', '', NULL),
+(64, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', 'aaaaaaaaaaaaaaaaaaaaaaaaa', NULL),
+(65, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', '', NULL),
+(66, 1, 2, '3f industrie', 'M.', '123456789123456', '', '', '', NULL),
+(67, 1, 15, '3F Industrie', 'M.', '001531606000066', '0696318051', '', '', NULL),
+(75, 1, 1, '3f industrie2', 'M.', '123456789123456', '0523547812', 'http://www.3fi.com', '', 11),
+(78, 1, 2, '7e-sky', 'M.', '123456789123456', '', 'https://www.d.com', '', NULL),
+(79, NULL, NULL, '7e-sky', 'M.', NULL, NULL, NULL, NULL, NULL),
+(81, 1, 1, '3f industrie', 'M.', '123456789123456', '', '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -545,20 +853,90 @@ INSERT INTO `fournisseur_sous_secteur` (`fournisseur_id`, `sous_secteur_id`) VAL
 (66, 6),
 (67, 6),
 (75, 6),
+(78, 6),
+(81, 6),
 (61, 7),
 (64, 7),
 (75, 7),
+(78, 7),
+(81, 7),
 (61, 8),
 (65, 8),
 (67, 8),
+(75, 8),
+(81, 8),
 (64, 9),
 (65, 9),
 (66, 9),
 (67, 9),
 (75, 9),
+(75, 10),
+(75, 11),
+(75, 12),
+(75, 13),
+(75, 14),
+(75, 15),
+(75, 16),
+(75, 18),
+(75, 19),
+(75, 20),
+(75, 21),
+(75, 22),
+(75, 23),
+(75, 24),
 (67, 142),
-(75, 142),
-(67, 270);
+(67, 270),
+(81, 270);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `historique_visite`
+--
+
+CREATE TABLE `historique_visite` (
+  `id` int(11) NOT NULL,
+  `fournisseur_id` int(11) DEFAULT NULL,
+  `demande_id` int(11) DEFAULT NULL,
+  `created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `historique_visite`
+--
+
+INSERT INTO `historique_visite` (`id`, `fournisseur_id`, `demande_id`, `created`) VALUES
+(1, 75, 18, '2019-12-23 10:22:00'),
+(2, 56, 17, '2019-12-23 10:47:57'),
+(3, 75, 16, '2019-12-23 10:48:34'),
+(5, 67, 15, '2019-12-23 11:08:27'),
+(7, 52, 15, '2019-12-23 11:08:27'),
+(8, 75, 15, '2019-12-23 14:45:46'),
+(9, 51, 10, '2019-12-23 11:08:27'),
+(10, 3, 15, '0000-00-00 00:00:00'),
+(11, 8, 15, '0000-00-00 00:00:00'),
+(12, 13, 15, '0000-00-00 00:00:00'),
+(13, 17, 15, '0000-00-00 00:00:00'),
+(14, 51, 15, '0000-00-00 00:00:00'),
+(15, 3, 18, '2019-12-23 10:22:00'),
+(16, 8, 18, '2019-12-23 10:22:00'),
+(17, 13, 18, '2019-12-23 10:22:00'),
+(18, 17, 18, '2019-12-23 10:22:00'),
+(19, 51, 18, '2019-12-23 10:22:00'),
+(20, 52, 18, '2019-12-23 10:22:00'),
+(21, 55, 18, '2019-12-23 10:22:00'),
+(22, 54, 18, '2019-12-23 10:22:00'),
+(23, 55, 18, '2019-12-23 10:22:00'),
+(24, 75, 17, '2019-12-23 10:47:57'),
+(25, 75, 14, '2019-12-23 15:11:13'),
+(26, 75, 11, '2019-12-23 15:11:21'),
+(27, 75, 10, '2019-12-23 15:11:36'),
+(28, 75, 9, '2019-12-23 15:14:55'),
+(30, 75, 6, '2019-12-23 15:48:39'),
+(31, 78, 17, '2019-12-24 08:57:15'),
+(32, 81, 18, '2019-12-24 09:36:36'),
+(33, 81, 17, '2019-12-24 10:12:25'),
+(34, 75, 7, '2019-12-24 17:24:14');
 
 -- --------------------------------------------------------
 
@@ -617,7 +995,35 @@ INSERT INTO `image_produit` (`id`, `url`) VALUES
 (44, '5de90fb9bcd5d524573955.jpg'),
 (45, '5de91082ec613433490143.jpg'),
 (46, '5de910caa3dcd273411931.jpg'),
-(47, '5de91531d04d2181711964.jpg');
+(47, '5de91531d04d2181711964.jpg'),
+(48, '5dfcadf848ab3447082428.png'),
+(49, '5e0b6b38551e1055853678.jpg'),
+(50, '5e0b6b3bcbe81174258244.png');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `jeton`
+--
+
+CREATE TABLE `jeton` (
+  `id` int(11) NOT NULL,
+  `fournisseur_id` int(11) DEFAULT NULL,
+  `paiement_id` int(11) DEFAULT NULL,
+  `demande_id` int(11) DEFAULT NULL,
+  `nbr_jeton` smallint(6) NOT NULL,
+  `prix` double NOT NULL,
+  `is_payed` tinyint(1) NOT NULL,
+  `created` datetime NOT NULL,
+  `del` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `jeton`
+--
+
+INSERT INTO `jeton` (`id`, `fournisseur_id`, `paiement_id`, `demande_id`, `nbr_jeton`, `prix`, `is_payed`, `created`, `del`) VALUES
+(18, 75, 1, 32, 6, 2000, 1, '2019-12-16 10:38:50', 0);
 
 -- --------------------------------------------------------
 
@@ -644,7 +1050,115 @@ INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
 ('20191205084551', '2019-12-05 08:45:57'),
 ('20191205100305', '2019-12-05 10:03:10'),
 ('20191205114029', '2019-12-05 11:40:35'),
-('20191205135951', '2019-12-05 13:59:59');
+('20191205135951', '2019-12-05 13:59:59'),
+('20191209093107', '2019-12-09 09:31:23'),
+('20191209133716', '2019-12-09 13:37:21'),
+('20191209133851', '2019-12-09 13:38:56'),
+('20191209135255', '2019-12-09 13:53:00'),
+('20191209144353', '2019-12-09 14:43:58'),
+('20191210084603', '2019-12-10 08:46:09'),
+('20191210094646', '2019-12-10 09:46:56'),
+('20191210095429', '2019-12-10 09:54:33'),
+('20191210153813', '2019-12-10 15:38:18'),
+('20191211084148', '2019-12-11 08:42:03'),
+('20191211084940', '2019-12-11 08:49:44'),
+('20191211141704', '2019-12-11 14:17:08'),
+('20191211143624', '2019-12-11 14:36:29'),
+('20191211143645', '2019-12-11 14:36:49'),
+('20191212160720', '2019-12-12 16:07:24'),
+('20191217085831', '2019-12-17 08:58:39'),
+('20191217102537', '2019-12-17 10:25:41'),
+('20191217111512', '2019-12-17 11:15:18'),
+('20191217151121', '2019-12-17 15:11:27'),
+('20191217170431', '2019-12-17 17:04:36'),
+('20191220105911', '2019-12-20 10:59:16'),
+('20191220110046', '2019-12-20 11:00:50'),
+('20191223085832', '2019-12-23 08:58:36'),
+('20191224082455', '2019-12-24 08:25:02'),
+('20191227083845', '2019-12-27 08:38:50'),
+('20191230094233', '2019-12-30 09:42:43'),
+('20191230105314', '2019-12-30 10:53:19'),
+('20191230112148', '2019-12-30 11:21:52'),
+('20191230113232', '2019-12-30 11:32:36'),
+('20191230160125', '2019-12-30 16:01:57'),
+('20191230162736', '2019-12-30 16:27:56'),
+('20191231135256', '2019-12-31 13:53:01'),
+('20200102085806', '2020-01-02 08:58:12'),
+('20200103135655', '2020-01-03 13:57:13'),
+('20200103152217', '2020-01-03 15:22:23'),
+('20200106101416', '2020-01-06 10:14:36'),
+('20200106141612', '2020-01-06 14:16:17'),
+('20200107084827', '2020-01-07 08:48:35'),
+('20200107162511', '2020-01-07 16:25:18'),
+('20200107164400', '2020-01-07 16:44:08'),
+('20200107172319', '2020-01-07 17:23:26'),
+('20200108095841', '2020-01-08 09:58:48'),
+('20200109165349', '2020-01-09 16:53:55'),
+('20200109165527', '2020-01-09 16:55:46'),
+('20200110101037', '2020-01-10 10:10:44');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `motif`
+--
+
+CREATE TABLE `motif` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `motif`
+--
+
+INSERT INTO `motif` (`id`, `name`) VALUES
+(1, 'Motif de description2'),
+(3, 'Designation');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `offre`
+--
+
+CREATE TABLE `offre` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `prix_mad` double NOT NULL,
+  `prix_eur` double NOT NULL,
+  `image_offre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nb_activite` smallint(6) NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `offre`
+--
+
+INSERT INTO `offre` (`id`, `name`, `prix_mad`, `prix_eur`, `image_offre`, `nb_activite`, `description`) VALUES
+(1, 'Pack Classique', 100, 10, 'string', 5, '5 Activités à choisir'),
+(2, 'Pack Business', 200, 20, 'string', 10, '10 Activités à choisir'),
+(3, 'Pack Gold', 300, 30, 'string', 20, '20 Activités à choisir');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `paiement`
+--
+
+CREATE TABLE `paiement` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `paiement`
+--
+
+INSERT INTO `paiement` (`id`, `name`) VALUES
+(1, 'Virement Bancaire'),
+(2, 'Chèque');
 
 -- --------------------------------------------------------
 
@@ -737,7 +1251,34 @@ INSERT INTO `pays` (`id`, `name`, `del`) VALUES
 (88, 'Béni', 0),
 (90, 'Luxembourg', 0),
 (91, 'Guinée', 0),
-(92, 'teeeeeeest_deleted-92', 1);
+(92, 'teeeeeeest_deleted-92', 1),
+(93, 'test_deleted-93', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `personnel`
+--
+
+CREATE TABLE `personnel` (
+  `id` int(11) NOT NULL,
+  `fournisseur_id` int(11) DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `del` tinyint(1) NOT NULL,
+  `created` datetime NOT NULL,
+  `fullName` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `personnel`
+--
+
+INSERT INTO `personnel` (`id`, `fournisseur_id`, `email`, `phone`, `del`, `created`, `fullName`) VALUES
+(1, 75, 'string@gmail.com', '0678451220', 1, '2019-12-09 15:03:33', 'aaaaaaa'),
+(2, 75, 'webmaster@3findustrie.com', '0696318051', 1, '2019-12-09 15:30:03', 'aaaaaa'),
+(3, 75, 'youness.arbouh@gmail.com', '0696318051', 0, '2019-12-09 15:38:02', 'Youness ARBOUH'),
+(4, 75, 'youness.arbouhssscq@gmail.com', '0696318051', 0, '2019-12-26 14:57:29', 'GHADBAN Said');
 
 -- --------------------------------------------------------
 
@@ -759,27 +1300,34 @@ CREATE TABLE `produit` (
   `is_valid` tinyint(1) NOT NULL,
   `created` datetime NOT NULL,
   `videos` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `categorie_id` int(11) DEFAULT NULL
+  `categorie_id` int(11) DEFAULT NULL,
+  `featured_image_id_id` int(11) DEFAULT NULL,
+  `titre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `currency_id` int(11) DEFAULT NULL,
+  `date_validation` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `produit`
 --
 
-INSERT INTO `produit` (`id`, `secteur_id`, `sous_secteurs_id`, `fournisseur_id`, `fiche_technique_id`, `reference`, `description`, `pu`, `del`, `is_select`, `is_valid`, `created`, `videos`, `categorie_id`) VALUES
-(1, 2, 6, 75, 1, 'P10024', 'ddd155jkjg', 0, 0, 0, 0, '2019-12-04 15:02:22', NULL, 424),
-(2, 1, 51, 75, NULL, 'aaaaa0', 'asidi merhba biko2', 1003.5, 0, 0, 0, '2019-12-05 10:57:14', NULL, NULL),
-(3, 1, 52, 75, NULL, 'ddddd', 'aaji tfhmel', 15542.255, 0, 0, 0, '2019-12-05 11:05:58', NULL, NULL),
-(4, 1, 50, 75, NULL, 'aaaaa0', 'BOn to ej e', 15.25, 0, 0, 0, '2019-12-05 11:32:46', NULL, NULL),
-(5, 1, 51, 75, NULL, 'abcde', '10005ggv ddd', 0, 0, 0, 0, '2019-12-05 11:58:21', NULL, NULL),
-(6, 1, 50, 75, NULL, 'aaaaa0', 'vvvvvvvvvvvvvv', 0, 0, 0, 0, '2019-12-05 11:59:06', NULL, NULL),
-(7, 2, 63, 75, NULL, 'aaaaa0', 'vccccccccc', 0, 0, 0, 0, '2019-12-05 11:59:28', NULL, NULL),
-(8, 1, 50, 75, NULL, 'aaaaa0', '144lll jjm', 0, 0, 0, 0, '2019-12-05 15:08:59', NULL, 424),
-(9, 1, 50, 75, NULL, 'wwwww', 'wwwwwwwwwww', 0, 0, 0, 0, '2019-12-05 15:10:21', NULL, NULL),
-(10, 1, 50, 75, NULL, 'aaaaa0s', 'sqsqsqsqsqs', 0, 0, 0, 0, '2019-12-05 15:13:35', NULL, NULL),
-(11, 1, 50, 75, 12, 'aaaaa0sdssd00', 'sfsfsfsfsfsfsfsfssssssdddddd00', 0, 0, 0, 0, '2019-12-05 15:14:49', NULL, 424),
-(12, 1, 51, 75, 13, 'aaaaa0', 'aaaaaaaaaa', 0, 0, 0, 0, '2019-12-05 15:33:33', NULL, NULL),
-(13, 2, 6, 75, 1, 'P10024', 'ddd155jkjg', 0, 0, 0, 0, '2019-12-06 16:02:34', NULL, NULL);
+INSERT INTO `produit` (`id`, `secteur_id`, `sous_secteurs_id`, `fournisseur_id`, `fiche_technique_id`, `reference`, `description`, `pu`, `del`, `is_select`, `is_valid`, `created`, `videos`, `categorie_id`, `featured_image_id_id`, `titre`, `currency_id`, `date_validation`) VALUES
+(1, 2, 6, 75, 1, 'P10024', 'ddd155jkjg', 0, 0, 0, 0, '2019-12-04 15:02:22', NULL, 424, NULL, '949fd73e', NULL, NULL),
+(2, 1, 51, 75, NULL, 'aaaaa0', 'asidi merhba biko2', 1003.5, 0, 0, 0, '2019-12-05 10:57:14', NULL, NULL, NULL, '7f9747b2', NULL, NULL),
+(3, 1, 52, 75, NULL, 'ddddd', 'aaji tfhmel', 15542.255, 0, 0, 0, '2019-12-05 11:05:58', NULL, NULL, NULL, '2a0cccf6', NULL, NULL),
+(4, 1, 50, 75, NULL, 'aaaaa0', 'BOn to ej e', 15.25, 0, 0, 0, '2019-12-05 11:32:46', NULL, NULL, NULL, 'd346dd0c', NULL, NULL),
+(5, 1, 51, 75, NULL, 'abcde', '10005ggv ddd', 0, 0, 0, 0, '2019-12-05 11:58:21', NULL, NULL, NULL, '87a97c37', NULL, NULL),
+(6, 1, 50, 75, NULL, 'aaaaa0', 'vvvvvvvvvvvvvv', 0, 0, 0, 1, '2019-12-05 11:59:06', NULL, 50, NULL, 'a3d9a35b', NULL, '2020-01-02 10:58:15'),
+(7, 2, 63, 75, NULL, 'aaaaa0', 'vccccccccc', 0, 0, 0, 0, '2019-12-05 11:59:28', NULL, NULL, NULL, '6f64c792', NULL, NULL),
+(8, 1, 50, 58, NULL, 'aaaaa0', '144lll jjm', 0, 0, 0, 0, '2019-12-05 15:08:59', NULL, 424, NULL, 'cb139c17', NULL, NULL),
+(9, 1, 50, 75, NULL, 'wwwww', 'wwwwwwwwwww', 0, 0, 0, 0, '2019-12-05 15:10:21', NULL, NULL, NULL, 'a2f02a19', NULL, NULL),
+(10, 1, 50, 75, NULL, 'aaaaa0s', 'sqsqsqsqsqs', 0, 0, 0, 0, '2019-12-05 15:13:35', NULL, NULL, NULL, '4140ab28', NULL, NULL),
+(11, 1, 50, 75, 12, 'aaaaa0sdssd00', 'sfsfsfsfsfsfsfsfssssssdddddd00', 0, 0, 0, 0, '2019-12-05 15:14:49', NULL, 424, NULL, '12f7d763', NULL, NULL),
+(12, 1, 51, 75, 13, 'aaaaa0', 'aaaaaaaaaa', 0, 1, 0, 0, '2019-12-05 15:33:33', NULL, NULL, 47, '3f916abb', NULL, NULL),
+(13, 2, 6, 75, 1, 'P10024', 'ddd155jkjg', 0, 1, 0, 0, '2019-12-06 16:02:34', NULL, NULL, 48, 'ce51d2fc', NULL, NULL),
+(14, 1, 50, 75, NULL, 'Incidunt in repudia', 'Ea nostrum quas haru', 74, 0, 0, 0, '2019-12-31 16:36:01', NULL, 424, NULL, 'Aliquid in assumenda', NULL, NULL),
+(15, 1, 50, 75, NULL, 'Suscipit est nostru', 'Unde temporibus temp', 42, 0, 0, 1, '2019-12-31 16:36:23', NULL, 50, NULL, 'Quo dolore ipsum eiu', NULL, '2020-01-02 10:01:38'),
+(16, 1, 50, 75, 15, 'Voluptas commodo qua', 'Consequatur fugiat ', 28, 0, 0, 1, '2019-12-31 16:37:42', NULL, 50, 49, 'Iure enim voluptas v', 11, NULL);
 
 -- --------------------------------------------------------
 
@@ -805,7 +1353,10 @@ INSERT INTO `produit_image_produit` (`produit_id`, `image_produit_id`) VALUES
 (10, 45),
 (11, 46),
 (12, 47),
-(13, 1);
+(13, 1),
+(13, 48),
+(16, 49),
+(16, 50);
 
 -- --------------------------------------------------------
 
@@ -1301,6 +1852,35 @@ INSERT INTO `sous_secteur` (`id`, `name`, `del`, `secteur_id`, `parent`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `suggestion_secteur`
+--
+
+CREATE TABLE `suggestion_secteur` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `secteur` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sous_secteur` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `categorie` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `page_suggestion` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `etat` tinyint(1) NOT NULL,
+  `created` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `suggestion_secteur`
+--
+
+INSERT INTO `suggestion_secteur` (`id`, `user_id`, `secteur`, `sous_secteur`, `categorie`, `page_suggestion`, `etat`, `created`) VALUES
+(1, 75, 'ccc', 'cccc', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 16:56:14'),
+(2, 75, 'ccc', 'cccc', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 17:22:17'),
+(3, 75, 'sss', 'sss', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 17:23:02'),
+(4, 75, 'sss', 'sssq', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 17:23:12'),
+(5, 75, 'gggg', 'ggggg', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 17:43:15'),
+(6, 75, 'kkk', 'kkkk', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 17:46:35');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `user`
 --
 
@@ -1335,7 +1915,7 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (1, '36, rue imam al boukhari maarif', 'HAY EL KHAIR_2', 20370, '+212696318051', 'webmasster@3findustrie.com', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 1, 1, '2019-08-05 17:01:48', 'YOUNESS', 'ARBOUH', 'unessami', 'Admin', 'ROLE_ADMIN', 1565020062, NULL, 'ljmRxc&Jmrgox3ZYugIYQiSzqheC4N', 1, '/dashboard'),
 (2, 'HAY EL KHAIRàà', 'HAY EL KHAIR', 26000, '+212696318051', 'youness.arbouh1s@gmail.com', '$2y$13$uXkilBRFzlnwOFN7VHPkXucJ1Iz3R1IoLSvAsec3pnJlitBXcpYee', 0, 1, '2019-08-05 17:16:12', 'firstAcheteur', 'lastAcheteur', 'acheteur', 'Acheteur', 'ROLE_ACHETEUR', 1565020457, NULL, 'E.4rYgkSwxyIdaEBZpeXHmS&WON44t', 1, '/dashboard_ac'),
 (3, 'HAY EL KHAIRoo', 'HAY EL KHAIRoo', 2600, '+212696318051', 'youness.arbouh1@gmail.com', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 0, 1, '2019-08-05 17:21:18', 'firstFournisseur', 'lastfrns', 'frsnora', 'Fournisseur', 'ROLE_FOURNISSEUR', 1565021174, NULL, 'mpTGWY.Z9OjHTGSgCwV7apEqapombk', 1, '/dashboard_fr'),
-(4, 'HAY EL KHA22IR', 'cmrsoia cmrsoi2a', 2622820, '+212696318051', 'youness.arbouh4@gmail.com', '$2y$13$D5ucNPg0F4x3NASOS4VYgOPcbK.jT6aW4nmMn42ZBadntqFSZFM1W', 0, 1, '2019-08-05 17:30:47', 'cmrsoia2222', 'cmrsoi2a2223', 'cmrsoia22222d', 'ZoneCommercial', 'ROLE_ZONE', 1565078960, 1, 'HnmaGHUOcAiIecY01yyGKTw@pDugWR', 1, ''),
+(4, 'HAY EL KHA22IR', 'cmrsoia cmrsoi2a', 2622820, '+212696318051', 'youness.arbouh4@gmail.com', '$2y$13$D5ucNPg0F4x3NASOS4VYgOPcbK.jT6aW4nmMn42ZBadntqFSZFM1W', 0, 1, '2019-08-05 17:30:47', 'cmrsoia2222', 'cmrsoi2a2223', 'cmrsoia22222d', 'ZoneCommercial', 'ROLE_ZONE', 1565078960, NULL, 'HnmaGHUOcAiIecY01yyGKTw@pDugWR', 1, ''),
 (5, 'HAY EL 00', 'HAY EL 11', 26400, '+212696318051', 'youness.arbouh5@gmail.com_deleted-5', '$2y$13$MavlmpQGslmov1KUOE1kMejriI6dW9botMR2bPgmdXoF2aE14.S6S', 1, 0, '2019-08-05 17:32:07', 'Commerc_107', 'Commerciale_107', 'cmrciale_107_deleted-5', 'ZoneCommercial', 'ROLE_ZONE', 1565079056, 1, 'mZiQL@&239srr1aa95P&EuJwWCNZfP', 1, ''),
 (6, 'HAY EL KHAIRqqq1', 'HAY EL qqqqqqqqq1', 26600, '+212696318051', 'youness.arbouh6@gmail.com', '$2y$13$.kjXEmyAnYvRpqhuqKC7te0B2PKlt7aCKkwgIt.IhJbUKnkXbIBHe', 0, 1, '2019-08-05 17:38:54', 'Commerc_2', 'Commerciale_2', 'cmrciale_2', 'Commercial', 'ROLE_COMMERCIAL', NULL, 1, 'MPsPbG9uMXgReM4P66K0zBgW7cxW&g', 31, ''),
 (7, 'HAY EL KHAIRqsdfsdfsdfsdqq1', 'HAY EL qqqqqsdfqqqq1', 266100, '+212696318051', 'youness.arbouh7@gmail.com', '$2y$13$sRp0FwPwQD5Y6zCCp5IQjOQzOXvvrP5UgP8r4wfB2/cU8EXYiJfmW', 0, 0, '2019-08-05 17:40:05', 'Commerciale', 'Commerciale_ok', 'cmrciale_chaalali', 'Commercial', 'ROLE_COMMERCIAL', NULL, 1, 'Q8GJ@OVh@&7F.q5EjZ02Yp7wPb9HBp', 1, ''),
@@ -1402,8 +1982,13 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (72, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhdfg@gmail.com', '$2y$13$Rs/FDPO.vKtbYKE5gzNdl.R1ANygr/23DkGQuuLDIaUqhb5RibHVm', 0, 1, '2019-11-05 11:09:13', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (73, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arboullllllllllh@gmail.com', '$2y$13$uCucAmjImgBX7VNOVHBfWuXsAgDra9E7Spg2h.o0zjlSxlMUBXcke', 0, 1, '2019-11-05 11:11:44', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (74, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouhjikjlkl@gmail.com', '$2y$13$gG.Dj.Lpn/m9JPNKtUpcbeZDjA2HCecBOAJaRnqCNDoEaD0MLxAYe', 0, 1, '2019-11-05 12:40:28', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard'),
-(75, '36, rue imam al boukhari maarif', '', 26000, '0696318051', 'youness.arbouhssscq@gmail.com', '$2y$13$H./PWBuS/z5G4Zb2vnhUUeecSGafd4WpT6HOKJdB2aLajgV2sV57q', 0, 1, '2019-11-05 15:38:55', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, 38, '/dashboard'),
-(76, '36, rue i25', 'adresse ee 2323', 26000, '0696318054', 'youness.arbouh@gmail.com', '$2y$13$T7KXkmI59DJgTD0yBavZq.z/1zBtMRSTTAP62O9XbXhrI4qczjJhm', 0, 1, '2019-11-07 09:30:02', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', 1574433080, NULL, NULL, 36, '/dashboard');
+(75, '36, rue imam al boukhari maarif', 'kkkkkkkkkkkk', 26000, '0696318051', 'youness.arbouhssscq@gmail.com', '$2y$13$H./PWBuS/z5G4Zb2vnhUUeecSGafd4WpT6HOKJdB2aLajgV2sV57q', 0, 1, '2019-11-05 15:38:55', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 9, NULL, 38, '/dashboard'),
+(76, '36, rue i25', 'adresse ee 2323', 26000, '0696318054', 'youness.arbouh@gmail.com', '$2y$13$T7KXkmI59DJgTD0yBavZq.z/1zBtMRSTTAP62O9XbXhrI4qczjJhm', 0, 1, '2019-11-07 09:30:02', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', 1574433080, NULL, NULL, 36, '/dashboard'),
+(77, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'bounce@3findustrie.com', '$2y$13$e59DVr1U7h7OfEoFQXY/UeNuudwndof38YYM/bXpiSSlPos508ULC', 0, 1, '2019-12-17 09:08:46', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, 39, '/dashboard'),
+(78, '36, rue imam al boukhari maarif', '', 26000, '0696318051', 'bouncee@3findustrie.ma', '$2y$13$r3E1Hv6tfRWcbQlySkLXUOkIHlh.KUalxRXZO7cr.wV4looBkNHHq', 0, 1, '2019-12-17 09:16:53', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
+(79, NULL, NULL, NULL, '0696318051', 'webmaster@7e-ky.ma', '$2y$13$J2npEYkTNYeArf8J4YPso.HH6BdZ4DK4ez0uGoLFC6a/YNwFXcknm', 0, 1, '2019-12-17 11:27:08', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, NULL, NULL, '/register/fournisseur'),
+(80, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'webmaster@7e-sky.ma', '$2y$13$COqDwD53EBeEpYbz.pajtO7UfBLX8w11QI02KVCsN0e0kKwEz0Hr2', 0, 1, '2019-12-17 11:31:32', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac'),
+(81, '36, rue imam al boukhari maarif', 'youness.arbouh55@gmail.com', NULL, '0696318051', 'bounce@3findustrie.ma', '$2y$13$bYoEpEPrFt7.eUdhzPiG1ueeGdhXes7RC/wWXIE2Z9Dkn7WWwwZpi', 0, 1, '2019-12-24 09:20:37', 'ARBOUH', 'Youness', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, 40, '/dashboard');
 
 -- --------------------------------------------------------
 
@@ -1568,6 +2153,26 @@ INSERT INTO `zone_commercial_pays` (`zone_commercial_id`, `pays_id`) VALUES
 --
 
 --
+-- Index pour la table `abonnement`
+--
+ALTER TABLE `abonnement`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_351268BB4CC8505A` (`offre_id`),
+  ADD KEY `IDX_351268BB80E95E18` (`demande_id`),
+  ADD KEY `IDX_351268BB670C757F` (`fournisseur_id`),
+  ADD KEY `IDX_351268BB9F2C3FAB` (`zone_id`),
+  ADD KEY `IDX_351268BB7854071C` (`commercial_id`),
+  ADD KEY `IDX_351268BB77E5854A` (`mode_id`);
+
+--
+-- Index pour la table `abonnement_sous_secteur`
+--
+ALTER TABLE `abonnement_sous_secteur`
+  ADD PRIMARY KEY (`abonnement_id`,`sous_secteur_id`),
+  ADD KEY `IDX_EFD366E0F1D74413` (`abonnement_id`),
+  ADD KEY `IDX_EFD366E0790611EF` (`sous_secteur_id`);
+
+--
 -- Index pour la table `acheteur`
 --
 ALTER TABLE `acheteur`
@@ -1575,7 +2180,8 @@ ALTER TABLE `acheteur`
   ADD KEY `IDX_304AFF9DA6E44244` (`pays_id`),
   ADD KEY `IDX_304AFF9DA73F0036` (`ville_id`),
   ADD KEY `IDX_304AFF9DFC8B6C6C` (`parent2`),
-  ADD KEY `IDX_304AFF9D9F7E4405` (`secteur_id`);
+  ADD KEY `IDX_304AFF9D9F7E4405` (`secteur_id`),
+  ADD KEY `IDX_304AFF9D38248176` (`currency_id`);
 
 --
 -- Index pour la table `admin`
@@ -1618,12 +2224,32 @@ ALTER TABLE `commercial_ville`
   ADD KEY `IDX_6CBDDBE2A73F0036` (`ville_id`);
 
 --
+-- Index pour la table `currency`
+--
+ALTER TABLE `currency`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `demande_abonnement`
+--
+ALTER TABLE `demande_abonnement`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_C3DE621A4CC8505A` (`offre_id`),
+  ADD KEY `IDX_C3DE621A670C757F` (`fournisseur_id`),
+  ADD KEY `IDX_C3DE621A9F2C3FAB` (`zone_id`),
+  ADD KEY `IDX_C3DE621A7854071C` (`commercial_id`),
+  ADD KEY `IDX_C3DE621A77E5854A` (`mode_id`),
+  ADD KEY `IDX_C3DE621AD13C140` (`duree_id`);
+
+--
 -- Index pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_D077077F96A7BB5F` (`acheteur_id`),
-  ADD KEY `search_idx` (`statut`,`del`);
+  ADD KEY `search_idx` (`statut`,`del`),
+  ADD KEY `IDX_D077077FCC36B3F` (`motif_rejet_id`),
+  ADD KEY `IDX_D077077F38248176` (`currency_id`);
 
 --
 -- Index pour la table `demande_achat_attachement`
@@ -1634,6 +2260,22 @@ ALTER TABLE `demande_achat_attachement`
   ADD KEY `IDX_B1D67F41A05591E0` (`attachement_id`);
 
 --
+-- Index pour la table `demande_devis`
+--
+ALTER TABLE `demande_devis`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_7DF94602F347EFB` (`produit_id`),
+  ADD KEY `IDX_7DF94602670C757F` (`fournisseur_id`);
+
+--
+-- Index pour la table `demande_dmdabonnement_sous_secteur`
+--
+ALTER TABLE `demande_dmdabonnement_sous_secteur`
+  ADD PRIMARY KEY (`demande_abonnement_id`,`sous_secteur_id`),
+  ADD KEY `IDX_4932C2CB415015A3` (`demande_abonnement_id`),
+  ADD KEY `IDX_4932C2CB790611EF` (`sous_secteur_id`);
+
+--
 -- Index pour la table `demande_ha_sous_secteur`
 --
 ALTER TABLE `demande_ha_sous_secteur`
@@ -1642,12 +2284,20 @@ ALTER TABLE `demande_ha_sous_secteur`
   ADD KEY `IDX_457CE2F8B8CC98D5` (`demande_achat_id`);
 
 --
+-- Index pour la table `demande_jeton`
+--
+ALTER TABLE `demande_jeton`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_F411E752670C757F` (`fournisseur_id`);
+
+--
 -- Index pour la table `detail_visite`
 --
 ALTER TABLE `detail_visite`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_A2569520670C757F` (`fournisseur_id`),
-  ADD KEY `IDX_A256952080E95E18` (`demande_id`);
+  ADD KEY `IDX_A256952080E95E18` (`demande_id`),
+  ADD KEY `IDX_A25695201C109075` (`personnel_id`);
 
 --
 -- Index pour la table `diffusion_demande`
@@ -1656,6 +2306,12 @@ ALTER TABLE `diffusion_demande`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_65C68FFF670C757F` (`fournisseur_id`),
   ADD KEY `IDX_65C68FFF80E95E18` (`demande_id`);
+
+--
+-- Index pour la table `duree`
+--
+ALTER TABLE `duree`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `fiche`
@@ -1669,7 +2325,8 @@ ALTER TABLE `fiche`
 ALTER TABLE `fournisseur`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_369ECA32A6E44244` (`pays_id`),
-  ADD KEY `IDX_369ECA32A73F0036` (`ville_id`);
+  ADD KEY `IDX_369ECA32A73F0036` (`ville_id`),
+  ADD KEY `IDX_369ECA3238248176` (`currency_id`);
 
 --
 -- Index pour la table `fournisseur_sous_secteur`
@@ -1680,10 +2337,27 @@ ALTER TABLE `fournisseur_sous_secteur`
   ADD KEY `IDX_CA2D7FC3790611EF` (`sous_secteur_id`);
 
 --
+-- Index pour la table `historique_visite`
+--
+ALTER TABLE `historique_visite`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_79DE2CE7670C757F` (`fournisseur_id`),
+  ADD KEY `IDX_79DE2CE780E95E18` (`demande_id`);
+
+--
 -- Index pour la table `image_produit`
 --
 ALTER TABLE `image_produit`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `jeton`
+--
+ALTER TABLE `jeton`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_2CF647B80E95E18` (`demande_id`),
+  ADD KEY `IDX_2CF647B670C757F` (`fournisseur_id`),
+  ADD KEY `IDX_2CF647B2A4C4478` (`paiement_id`);
 
 --
 -- Index pour la table `migration_versions`
@@ -1692,10 +2366,35 @@ ALTER TABLE `migration_versions`
   ADD PRIMARY KEY (`version`);
 
 --
+-- Index pour la table `motif`
+--
+ALTER TABLE `motif`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `offre`
+--
+ALTER TABLE `offre`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `paiement`
+--
+ALTER TABLE `paiement`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `pays`
 --
 ALTER TABLE `pays`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `personnel`
+--
+ALTER TABLE `personnel`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_A6BCF3DE670C757F` (`fournisseur_id`);
 
 --
 -- Index pour la table `produit`
@@ -1706,7 +2405,9 @@ ALTER TABLE `produit`
   ADD KEY `IDX_29A5EC27D7BD44DD` (`sous_secteurs_id`),
   ADD KEY `IDX_29A5EC27670C757F` (`fournisseur_id`),
   ADD KEY `IDX_29A5EC27431AD613` (`fiche_technique_id`),
-  ADD KEY `IDX_29A5EC27BCF5E72D` (`categorie_id`);
+  ADD KEY `IDX_29A5EC27BCF5E72D` (`categorie_id`),
+  ADD KEY `IDX_29A5EC276E694C1F` (`featured_image_id_id`),
+  ADD KEY `IDX_29A5EC2738248176` (`currency_id`);
 
 --
 -- Index pour la table `produit_image_produit`
@@ -1729,6 +2430,13 @@ ALTER TABLE `sous_secteur`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_A34C5D529F7E4405` (`secteur_id`),
   ADD KEY `IDX_A34C5D523D8E604F` (`parent`);
+
+--
+-- Index pour la table `suggestion_secteur`
+--
+ALTER TABLE `suggestion_secteur`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_EF9F666BA76ED395` (`user_id`);
 
 --
 -- Index pour la table `user`
@@ -1764,64 +2472,136 @@ ALTER TABLE `zone_commercial_pays`
 --
 
 --
+-- AUTO_INCREMENT pour la table `abonnement`
+--
+ALTER TABLE `abonnement`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `attachement`
 --
 ALTER TABLE `attachement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT pour la table `avatar`
 --
 ALTER TABLE `avatar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT pour la table `black_listes`
 --
 ALTER TABLE `black_listes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+
+--
+-- AUTO_INCREMENT pour la table `currency`
+--
+ALTER TABLE `currency`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT pour la table `demande_abonnement`
+--
+ALTER TABLE `demande_abonnement`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT pour la table `demande_devis`
+--
+ALTER TABLE `demande_devis`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT pour la table `demande_jeton`
+--
+ALTER TABLE `demande_jeton`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT pour la table `detail_visite`
 --
 ALTER TABLE `detail_visite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+
+--
+-- AUTO_INCREMENT pour la table `duree`
+--
+ALTER TABLE `duree`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `fiche`
 --
 ALTER TABLE `fiche`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT pour la table `historique_visite`
+--
+ALTER TABLE `historique_visite`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT pour la table `image_produit`
 --
 ALTER TABLE `image_produit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT pour la table `jeton`
+--
+ALTER TABLE `jeton`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT pour la table `motif`
+--
+ALTER TABLE `motif`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `offre`
+--
+ALTER TABLE `offre`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `paiement`
+--
+ALTER TABLE `paiement`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `pays`
 --
 ALTER TABLE `pays`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+
+--
+-- AUTO_INCREMENT pour la table `personnel`
+--
+ALTER TABLE `personnel`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `produit`
 --
 ALTER TABLE `produit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT pour la table `secteur`
@@ -1836,10 +2616,16 @@ ALTER TABLE `sous_secteur`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=425;
 
 --
+-- AUTO_INCREMENT pour la table `suggestion_secteur`
+--
+ALTER TABLE `suggestion_secteur`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT pour la table `ville`
@@ -1852,9 +2638,28 @@ ALTER TABLE `ville`
 --
 
 --
+-- Contraintes pour la table `abonnement`
+--
+ALTER TABLE `abonnement`
+  ADD CONSTRAINT `FK_351268BB4CC8505A` FOREIGN KEY (`offre_id`) REFERENCES `offre` (`id`),
+  ADD CONSTRAINT `FK_351268BB670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
+  ADD CONSTRAINT `FK_351268BB77E5854A` FOREIGN KEY (`mode_id`) REFERENCES `paiement` (`id`),
+  ADD CONSTRAINT `FK_351268BB7854071C` FOREIGN KEY (`commercial_id`) REFERENCES `commercial` (`id`),
+  ADD CONSTRAINT `FK_351268BB80E95E18` FOREIGN KEY (`demande_id`) REFERENCES `demande_abonnement` (`id`),
+  ADD CONSTRAINT `FK_351268BB9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `zone_commercial` (`id`);
+
+--
+-- Contraintes pour la table `abonnement_sous_secteur`
+--
+ALTER TABLE `abonnement_sous_secteur`
+  ADD CONSTRAINT `FK_EFD366E0790611EF` FOREIGN KEY (`sous_secteur_id`) REFERENCES `sous_secteur` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_EFD366E0F1D74413` FOREIGN KEY (`abonnement_id`) REFERENCES `abonnement` (`id`) ON DELETE CASCADE;
+
+--
 -- Contraintes pour la table `acheteur`
 --
 ALTER TABLE `acheteur`
+  ADD CONSTRAINT `FK_304AFF9D38248176` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`),
   ADD CONSTRAINT `FK_304AFF9D9F7E4405` FOREIGN KEY (`secteur_id`) REFERENCES `secteur` (`id`),
   ADD CONSTRAINT `FK_304AFF9DA6E44244` FOREIGN KEY (`pays_id`) REFERENCES `pays` (`id`),
   ADD CONSTRAINT `FK_304AFF9DA73F0036` FOREIGN KEY (`ville_id`) REFERENCES `ville` (`id`),
@@ -1888,10 +2693,23 @@ ALTER TABLE `commercial_ville`
   ADD CONSTRAINT `FK_6CBDDBE2A73F0036` FOREIGN KEY (`ville_id`) REFERENCES `ville` (`id`) ON DELETE CASCADE;
 
 --
+-- Contraintes pour la table `demande_abonnement`
+--
+ALTER TABLE `demande_abonnement`
+  ADD CONSTRAINT `FK_C3DE621A4CC8505A` FOREIGN KEY (`offre_id`) REFERENCES `offre` (`id`),
+  ADD CONSTRAINT `FK_C3DE621A670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
+  ADD CONSTRAINT `FK_C3DE621A77E5854A` FOREIGN KEY (`mode_id`) REFERENCES `paiement` (`id`),
+  ADD CONSTRAINT `FK_C3DE621A7854071C` FOREIGN KEY (`commercial_id`) REFERENCES `commercial` (`id`),
+  ADD CONSTRAINT `FK_C3DE621A9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `zone_commercial` (`id`),
+  ADD CONSTRAINT `FK_C3DE621AD13C140` FOREIGN KEY (`duree_id`) REFERENCES `duree` (`id`);
+
+--
 -- Contraintes pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
-  ADD CONSTRAINT `FK_D077077F96A7BB5F` FOREIGN KEY (`acheteur_id`) REFERENCES `acheteur` (`id`);
+  ADD CONSTRAINT `FK_D077077F38248176` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`),
+  ADD CONSTRAINT `FK_D077077F96A7BB5F` FOREIGN KEY (`acheteur_id`) REFERENCES `acheteur` (`id`),
+  ADD CONSTRAINT `FK_D077077FCC36B3F` FOREIGN KEY (`motif_rejet_id`) REFERENCES `motif` (`id`);
 
 --
 -- Contraintes pour la table `demande_achat_attachement`
@@ -1901,6 +2719,20 @@ ALTER TABLE `demande_achat_attachement`
   ADD CONSTRAINT `FK_B1D67F41B8CC98D5` FOREIGN KEY (`demande_achat_id`) REFERENCES `demande_achat` (`id`) ON DELETE CASCADE;
 
 --
+-- Contraintes pour la table `demande_devis`
+--
+ALTER TABLE `demande_devis`
+  ADD CONSTRAINT `FK_7DF94602670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
+  ADD CONSTRAINT `FK_7DF94602F347EFB` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`id`);
+
+--
+-- Contraintes pour la table `demande_dmdabonnement_sous_secteur`
+--
+ALTER TABLE `demande_dmdabonnement_sous_secteur`
+  ADD CONSTRAINT `FK_4932C2CB415015A3` FOREIGN KEY (`demande_abonnement_id`) REFERENCES `demande_abonnement` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_4932C2CB790611EF` FOREIGN KEY (`sous_secteur_id`) REFERENCES `sous_secteur` (`id`) ON DELETE CASCADE;
+
+--
 -- Contraintes pour la table `demande_ha_sous_secteur`
 --
 ALTER TABLE `demande_ha_sous_secteur`
@@ -1908,9 +2740,16 @@ ALTER TABLE `demande_ha_sous_secteur`
   ADD CONSTRAINT `FK_457CE2F8B8CC98D5` FOREIGN KEY (`demande_achat_id`) REFERENCES `demande_achat` (`id`) ON DELETE CASCADE;
 
 --
+-- Contraintes pour la table `demande_jeton`
+--
+ALTER TABLE `demande_jeton`
+  ADD CONSTRAINT `FK_F411E752670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`);
+
+--
 -- Contraintes pour la table `detail_visite`
 --
 ALTER TABLE `detail_visite`
+  ADD CONSTRAINT `FK_A25695201C109075` FOREIGN KEY (`personnel_id`) REFERENCES `personnel` (`id`),
   ADD CONSTRAINT `FK_A2569520670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
   ADD CONSTRAINT `FK_A256952080E95E18` FOREIGN KEY (`demande_id`) REFERENCES `demande_achat` (`id`);
 
@@ -1925,6 +2764,7 @@ ALTER TABLE `diffusion_demande`
 -- Contraintes pour la table `fournisseur`
 --
 ALTER TABLE `fournisseur`
+  ADD CONSTRAINT `FK_369ECA3238248176` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`),
   ADD CONSTRAINT `FK_369ECA32A6E44244` FOREIGN KEY (`pays_id`) REFERENCES `pays` (`id`),
   ADD CONSTRAINT `FK_369ECA32A73F0036` FOREIGN KEY (`ville_id`) REFERENCES `ville` (`id`),
   ADD CONSTRAINT `FK_369ECA32BF396750` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
@@ -1937,11 +2777,34 @@ ALTER TABLE `fournisseur_sous_secteur`
   ADD CONSTRAINT `FK_CA2D7FC3790611EF` FOREIGN KEY (`sous_secteur_id`) REFERENCES `sous_secteur` (`id`) ON DELETE CASCADE;
 
 --
+-- Contraintes pour la table `historique_visite`
+--
+ALTER TABLE `historique_visite`
+  ADD CONSTRAINT `FK_79DE2CE7670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
+  ADD CONSTRAINT `FK_79DE2CE780E95E18` FOREIGN KEY (`demande_id`) REFERENCES `demande_achat` (`id`);
+
+--
+-- Contraintes pour la table `jeton`
+--
+ALTER TABLE `jeton`
+  ADD CONSTRAINT `FK_2CF647B2A4C4478` FOREIGN KEY (`paiement_id`) REFERENCES `paiement` (`id`),
+  ADD CONSTRAINT `FK_2CF647B670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
+  ADD CONSTRAINT `FK_2CF647B80E95E18` FOREIGN KEY (`demande_id`) REFERENCES `demande_jeton` (`id`);
+
+--
+-- Contraintes pour la table `personnel`
+--
+ALTER TABLE `personnel`
+  ADD CONSTRAINT `FK_A6BCF3DE670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`);
+
+--
 -- Contraintes pour la table `produit`
 --
 ALTER TABLE `produit`
+  ADD CONSTRAINT `FK_29A5EC2738248176` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`),
   ADD CONSTRAINT `FK_29A5EC27431AD613` FOREIGN KEY (`fiche_technique_id`) REFERENCES `fiche` (`id`),
   ADD CONSTRAINT `FK_29A5EC27670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
+  ADD CONSTRAINT `FK_29A5EC276E694C1F` FOREIGN KEY (`featured_image_id_id`) REFERENCES `image_produit` (`id`),
   ADD CONSTRAINT `FK_29A5EC279F7E4405` FOREIGN KEY (`secteur_id`) REFERENCES `secteur` (`id`),
   ADD CONSTRAINT `FK_29A5EC27BCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `sous_secteur` (`id`),
   ADD CONSTRAINT `FK_29A5EC27D7BD44DD` FOREIGN KEY (`sous_secteurs_id`) REFERENCES `sous_secteur` (`id`);
@@ -1959,6 +2822,12 @@ ALTER TABLE `produit_image_produit`
 ALTER TABLE `sous_secteur`
   ADD CONSTRAINT `FK_A34C5D523D8E604F` FOREIGN KEY (`parent`) REFERENCES `sous_secteur` (`id`),
   ADD CONSTRAINT `FK_A34C5D529F7E4405` FOREIGN KEY (`secteur_id`) REFERENCES `secteur` (`id`);
+
+--
+-- Contraintes pour la table `suggestion_secteur`
+--
+ALTER TABLE `suggestion_secteur`
+  ADD CONSTRAINT `FK_EF9F666BA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Contraintes pour la table `user`
