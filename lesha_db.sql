@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 10 jan. 2020 à 18:02
+-- Généré le :  mer. 15 jan. 2020 à 18:17
 -- Version du serveur :  10.1.31-MariaDB
 -- Version de PHP :  7.2.4
 
@@ -40,9 +40,46 @@ CREATE TABLE `abonnement` (
   `statut` tinyint(1) NOT NULL,
   `prix` double NOT NULL,
   `created` datetime NOT NULL,
-  `expired` datetime NOT NULL,
-  `date_peiment` datetime DEFAULT NULL
+  `expired` datetime DEFAULT NULL,
+  `date_peiment` datetime DEFAULT NULL,
+  `duree_id` int(11) DEFAULT NULL,
+  `remise` smallint(6) NOT NULL,
+  `currency_id` int(11) DEFAULT NULL,
+  `commentaire` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `abonnement`
+--
+
+INSERT INTO `abonnement` (`id`, `offre_id`, `demande_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `mode_id`, `reference`, `statut`, `prix`, `created`, `expired`, `date_peiment`, `duree_id`, `remise`, `currency_id`, `commentaire`) VALUES
+(1, 2, 22, 75, NULL, NULL, 1, '2020-1', 1, 4596, '2020-01-13 12:03:16', '2022-01-13 12:03:16', '2020-01-13 12:03:16', 2, 10, NULL, NULL),
+(2, 3, 23, 75, NULL, NULL, 2, '2020-2', 1, 4296, '2020-01-13 12:05:15', '2021-01-13 12:05:15', '2020-01-13 12:05:15', 1, 20, NULL, NULL),
+(3, 3, 23, 75, NULL, NULL, 2, '2020-3', 1, 4320, '2020-01-13 12:05:47', '2021-01-13 12:05:47', '2020-01-13 12:05:47', 1, 0, NULL, NULL),
+(4, 3, 23, 75, NULL, NULL, 2, '2020-4', 1, 6912, '2020-01-13 12:06:17', '2022-01-13 12:06:17', '2020-01-13 12:06:17', 2, 0, NULL, NULL),
+(5, 3, 23, 75, NULL, NULL, 2, '2020-5', 1, 6792, '2020-01-13 15:02:21', '2022-01-13 15:02:22', '2020-01-13 15:02:22', 2, 100, NULL, NULL),
+(6, 1, 24, 75, NULL, NULL, 1, '2020-6', 1, 2304, '2020-01-13 16:21:23', '2022-01-13 16:21:23', '2020-01-13 16:21:23', 2, 0, NULL, NULL),
+(7, 3, NULL, 81, NULL, NULL, 1, '2020-7', 0, 432, '2020-01-14 15:32:09', NULL, NULL, 1, 0, 1, NULL),
+(8, 3, NULL, 81, NULL, NULL, 1, '2020-8', 0, 432, '2020-01-14 15:33:28', NULL, NULL, 1, 0, 1, NULL),
+(9, 3, NULL, 81, NULL, NULL, 1, '2020-9', 1, 432, '2020-01-14 15:34:26', '2021-01-14 15:34:26', '2020-01-14 15:34:26', 1, 0, 1, NULL),
+(10, 1, NULL, 81, NULL, NULL, 1, '2020-10', 1, 144, '2020-01-14 15:38:57', '2021-01-14 15:38:57', '2020-01-14 15:38:57', 1, 0, 1, NULL),
+(11, 1, NULL, 81, NULL, NULL, 1, '2020-11', 0, 144, '2020-01-14 15:39:57', NULL, NULL, 1, 0, 1, NULL),
+(12, 1, NULL, 75, NULL, NULL, 1, '2020-12', 0, 1440, '2020-01-14 15:40:44', NULL, NULL, 1, 0, 11, NULL),
+(13, 3, NULL, 81, NULL, NULL, 2, '2020-13', 1, 691.2, '2020-01-14 15:41:45', '2022-01-14 15:41:45', '2020-01-14 15:41:45', 2, 0, 1, NULL),
+(14, 1, NULL, 78, NULL, NULL, 1, '2020-14', 0, 1440, '2020-01-14 18:23:37', NULL, NULL, 1, 0, NULL, NULL),
+(15, 2, 29, 75, NULL, NULL, 1, '2020-15', 1, 4608, '2020-01-15 12:41:17', '2022-01-15 12:41:17', '2020-01-15 12:41:17', 2, 0, 11, NULL),
+(16, 3, 28, 75, NULL, NULL, 1, '2020-16', 1, 6912, '2020-01-15 12:43:33', '2022-01-15 12:43:33', '2020-01-15 12:43:33', 2, 0, 11, NULL),
+(17, 2, 27, 75, NULL, NULL, 1, '2020-17', 1, 4608, '2020-01-15 12:45:54', '2022-01-15 12:45:54', '2020-01-15 12:45:54', 2, 0, 11, NULL),
+(19, 1, 30, 75, NULL, NULL, 1, '2020-18', 1, 1440, '2020-01-15 15:08:39', '2021-01-15 15:08:39', '2020-01-15 15:08:39', 1, 0, 11, NULL),
+(20, 1, NULL, 75, NULL, NULL, 1, '2020-19', 1, 144, '2020-01-15 15:13:36', '2021-01-15 15:13:36', '2020-01-15 15:13:36', 1, 0, 1, NULL),
+(21, 3, NULL, 75, NULL, NULL, 1, '2020-20', 1, 691.2, '2020-01-15 15:14:31', '2022-01-15 15:14:31', '2020-01-15 15:14:31', 2, 0, 1, NULL),
+(22, 1, NULL, 81, NULL, NULL, 1, '2020-21', 0, 144, '2020-01-15 16:20:34', '2021-01-15 16:20:34', '2020-01-15 16:20:34', 1, 0, 1, 'fggggg'),
+(23, 1, NULL, 81, NULL, NULL, 1, '2020-22', 1, 144, '2020-01-15 17:05:47', '2021-01-15 17:05:47', '2020-01-15 17:05:47', 1, 0, 1, ''),
+(24, 1, NULL, 81, NULL, NULL, 1, '2020-23', 0, 144, '2020-01-15 17:06:45', NULL, NULL, 1, 0, 1, ''),
+(25, 1, NULL, 81, NULL, NULL, 1, '2020-24', 0, 144, '2020-01-15 18:01:07', NULL, NULL, 1, 0, 1, ''),
+(26, 1, NULL, 81, NULL, NULL, 1, '2020-25', 0, 144, '2020-01-15 18:04:21', NULL, NULL, 1, 0, 1, ''),
+(27, 1, NULL, 81, NULL, NULL, 1, '2020-26', 0, 144, '2020-01-15 18:05:21', NULL, NULL, 1, 0, 1, ''),
+(28, 1, NULL, 81, NULL, NULL, 1, '2020-27', 0, 144, '2020-01-15 18:06:26', NULL, NULL, 1, 0, 1, '');
 
 -- --------------------------------------------------------
 
@@ -54,6 +91,62 @@ CREATE TABLE `abonnement_sous_secteur` (
   `abonnement_id` int(11) NOT NULL,
   `sous_secteur_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `abonnement_sous_secteur`
+--
+
+INSERT INTO `abonnement_sous_secteur` (`abonnement_id`, `sous_secteur_id`) VALUES
+(1, 6),
+(1, 7),
+(2, 6),
+(2, 9),
+(3, 6),
+(3, 9),
+(4, 6),
+(4, 9),
+(5, 6),
+(5, 9),
+(6, 6),
+(6, 7),
+(6, 9),
+(7, 6),
+(7, 7),
+(8, 6),
+(8, 7),
+(9, 8),
+(9, 270),
+(10, 6),
+(10, 8),
+(11, 7),
+(11, 270),
+(12, 7),
+(12, 8),
+(12, 18),
+(13, 6),
+(13, 7),
+(14, 7),
+(15, 6),
+(15, 7),
+(16, 6),
+(16, 7),
+(16, 9),
+(17, 6),
+(17, 8),
+(17, 9),
+(17, 11),
+(19, 6),
+(19, 7),
+(20, 6),
+(21, 6),
+(21, 7),
+(22, 6),
+(23, 6),
+(24, 6),
+(25, 6),
+(26, 6),
+(27, 6),
+(28, 6);
 
 -- --------------------------------------------------------
 
@@ -388,24 +481,34 @@ CREATE TABLE `demande_abonnement` (
   `statut` tinyint(1) NOT NULL,
   `created` datetime NOT NULL,
   `mode_id` int(11) DEFAULT NULL,
-  `duree_id` int(11) DEFAULT NULL
+  `duree_id` int(11) DEFAULT NULL,
+  `prix` double NOT NULL,
+  `currency` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `demande_abonnement`
 --
 
-INSERT INTO `demande_abonnement` (`id`, `offre_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `reference`, `statut`, `created`, `mode_id`, `duree_id`) VALUES
-(14, 1, 75, 5, 9, '2020-14', 0, '2020-01-08 11:01:39', 1, NULL),
-(15, 1, 75, 5, 9, '2020-2', 0, '2020-01-08 11:58:59', 1, NULL),
-(16, 1, 75, 5, 9, '2020-3', 0, '2020-01-08 12:09:53', 1, NULL),
-(17, 1, 75, 5, 9, '2020-4', 0, '2020-01-08 17:11:02', 1, NULL),
-(18, 1, 75, 5, 9, '2020-5', 0, '2020-01-08 17:13:46', 1, NULL),
-(19, 1, 75, 5, 9, '2020-6', 0, '2020-01-08 17:14:32', 1, NULL),
-(20, 3, 75, 5, 9, '2020-7', 1, '2020-01-08 17:39:38', 1, NULL),
-(21, 1, 75, 5, 9, '2020-8', 0, '2020-01-10 11:22:55', 1, 2),
-(22, 2, 75, 5, 9, '2020-9', 0, '2020-01-10 11:24:23', 1, 2),
-(23, 3, 75, 5, 9, '2020-10', 0, '2020-01-10 11:28:09', 2, 1);
+INSERT INTO `demande_abonnement` (`id`, `offre_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `reference`, `statut`, `created`, `mode_id`, `duree_id`, `prix`, `currency`) VALUES
+(14, 1, 75, 5, 9, '2020-14', 0, '2020-01-08 11:01:39', 1, NULL, 0, ''),
+(15, 1, 75, 5, 9, '2020-2', 0, '2020-01-08 11:58:59', 1, NULL, 0, ''),
+(16, 1, 75, 5, 9, '2020-3', 0, '2020-01-08 12:09:53', 1, NULL, 0, ''),
+(17, 1, 75, 5, 9, '2020-4', 0, '2020-01-08 17:11:02', 1, NULL, 0, ''),
+(18, 1, 75, 5, 9, '2020-5', 0, '2020-01-08 17:13:46', 1, NULL, 0, ''),
+(19, 1, 75, 5, 9, '2020-6', 0, '2020-01-08 17:14:32', 1, NULL, 0, ''),
+(20, 3, 75, 5, 9, '2020-7', 1, '2020-01-08 17:39:38', 1, NULL, 0, ''),
+(21, 1, 75, 5, 9, '2020-8', 0, '2020-01-10 11:22:55', 1, 2, 0, ''),
+(22, 2, 75, 5, 9, '2020-9', 1, '2020-01-10 11:24:23', 1, 2, 0, ''),
+(23, 3, 75, 5, 9, '2020-10', 1, '2020-01-10 11:28:09', 2, 2, 0, ''),
+(24, 1, 75, 5, 9, '2020-11', 1, '2020-01-13 16:09:07', 1, 2, 0, ''),
+(25, 3, 75, 5, 9, '2020-12', 0, '2020-01-15 12:02:33', 1, 2, 0, ''),
+(26, 2, 75, 5, 9, '2020-13', 0, '2020-01-15 12:13:46', 1, 2, 4608, 'DHS'),
+(27, 2, 75, 5, 9, '2020-14', 1, '2020-01-15 12:17:05', 1, 2, 4608, 'DHS'),
+(28, 3, 75, 5, 9, '2020-15', 1, '2020-01-15 12:19:38', 1, 2, 6912, 'DHS'),
+(29, 2, 75, 5, 9, '2020-16', 1, '2020-01-15 12:22:56', 1, 2, 4608, 'DHS'),
+(30, 1, 75, 5, 9, '2020-17', 1, '2020-01-15 15:04:56', 1, 1, 1440, 'DHS'),
+(31, 1, 75, 5, 9, '2020-18', 0, '2020-01-15 18:11:44', 1, 2, 1440, 'DHS');
 
 -- --------------------------------------------------------
 
@@ -555,7 +658,27 @@ INSERT INTO `demande_dmdabonnement_sous_secteur` (`demande_abonnement_id`, `sous
 (22, 6),
 (22, 7),
 (23, 6),
-(23, 9);
+(23, 9),
+(24, 6),
+(24, 7),
+(24, 9),
+(25, 6),
+(25, 8),
+(26, 6),
+(26, 7),
+(27, 6),
+(27, 8),
+(27, 9),
+(27, 11),
+(28, 6),
+(28, 7),
+(28, 9),
+(29, 6),
+(29, 7),
+(30, 6),
+(30, 7),
+(31, 7),
+(31, 8);
 
 -- --------------------------------------------------------
 
@@ -1095,7 +1218,13 @@ INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
 ('20200108095841', '2020-01-08 09:58:48'),
 ('20200109165349', '2020-01-09 16:53:55'),
 ('20200109165527', '2020-01-09 16:55:46'),
-('20200110101037', '2020-01-10 10:10:44');
+('20200110101037', '2020-01-10 10:10:44'),
+('20200113102135', '2020-01-13 10:21:42'),
+('20200114104432', '2020-01-14 10:44:40'),
+('20200114143059', '2020-01-14 14:31:05'),
+('20200115110114', '2020-01-15 11:01:19'),
+('20200115110859', '2020-01-15 11:09:06'),
+('20200115110942', '2020-01-15 11:09:47');
 
 -- --------------------------------------------------------
 
@@ -2162,7 +2291,9 @@ ALTER TABLE `abonnement`
   ADD KEY `IDX_351268BB670C757F` (`fournisseur_id`),
   ADD KEY `IDX_351268BB9F2C3FAB` (`zone_id`),
   ADD KEY `IDX_351268BB7854071C` (`commercial_id`),
-  ADD KEY `IDX_351268BB77E5854A` (`mode_id`);
+  ADD KEY `IDX_351268BB77E5854A` (`mode_id`),
+  ADD KEY `IDX_351268BBD13C140` (`duree_id`),
+  ADD KEY `IDX_351268BB38248176` (`currency_id`);
 
 --
 -- Index pour la table `abonnement_sous_secteur`
@@ -2475,7 +2606,7 @@ ALTER TABLE `zone_commercial_pays`
 -- AUTO_INCREMENT pour la table `abonnement`
 --
 ALTER TABLE `abonnement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT pour la table `attachement`
@@ -2505,7 +2636,7 @@ ALTER TABLE `currency`
 -- AUTO_INCREMENT pour la table `demande_abonnement`
 --
 ALTER TABLE `demande_abonnement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT pour la table `demande_achat`
@@ -2641,12 +2772,14 @@ ALTER TABLE `ville`
 -- Contraintes pour la table `abonnement`
 --
 ALTER TABLE `abonnement`
+  ADD CONSTRAINT `FK_351268BB38248176` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`),
   ADD CONSTRAINT `FK_351268BB4CC8505A` FOREIGN KEY (`offre_id`) REFERENCES `offre` (`id`),
   ADD CONSTRAINT `FK_351268BB670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
   ADD CONSTRAINT `FK_351268BB77E5854A` FOREIGN KEY (`mode_id`) REFERENCES `paiement` (`id`),
   ADD CONSTRAINT `FK_351268BB7854071C` FOREIGN KEY (`commercial_id`) REFERENCES `commercial` (`id`),
   ADD CONSTRAINT `FK_351268BB80E95E18` FOREIGN KEY (`demande_id`) REFERENCES `demande_abonnement` (`id`),
-  ADD CONSTRAINT `FK_351268BB9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `zone_commercial` (`id`);
+  ADD CONSTRAINT `FK_351268BB9F2C3FAB` FOREIGN KEY (`zone_id`) REFERENCES `zone_commercial` (`id`),
+  ADD CONSTRAINT `FK_351268BBD13C140` FOREIGN KEY (`duree_id`) REFERENCES `duree` (`id`);
 
 --
 -- Contraintes pour la table `abonnement_sous_secteur`
