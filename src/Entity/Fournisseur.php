@@ -41,7 +41,11 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     },
  *     attributes={
  *     "force_eager"=false,
- *     "normalization_context"={"groups"={"get"},"enable_max_depth"=true},
+ *     "normalization_context"={"groups"={"get"},
+ *     "enable_max_depth"=true,
+ *     "pagination_client_enabled"=true,
+ *     "pagination_items_per_page"=10
+ *     },
  *     "order"={"id":"desc"}
  *     }
  * )
@@ -71,13 +75,13 @@ class Fournisseur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays",inversedBy="fournisseurs")
-     * @Groups({"dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
      */
     private $ville;
 
@@ -92,7 +96,7 @@ class Fournisseur extends User
      * add mapped by if you want to miggrate
      * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="fournisseurs")
      * @ORM\JoinTable(name="fournisseur_sous_secteur")
-     * @Groups({"dmdAbonnement:get-item","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @Assert\NotBlank(groups={"putValidation"})
      * @ApiSubresource(maxDepth=1)
      */
@@ -101,7 +105,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
+     * @Groups({"abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      * @Assert\Regex(
@@ -114,7 +118,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=5)
-     * @Groups({"dmdAbonnement:get-item","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=1,max=5,groups={"postValidation","putValidation"})
      */
@@ -123,14 +127,14 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=15,nullable=true)
-     * @Groups({"dmdAbonnement:get-item","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @Assert\Length(min=15,max=15,groups={"postValidation","putValidation"})
      */
     private $ice;
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
-     * @Groups({"dmdAbonnement:get-item","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @AssertPhoneNumber(
      *     type="fix",
      *     defaultRegion="MA",
@@ -143,13 +147,13 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
-     * @Groups({"dmdAbonnement:get-item","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      */
     private $website;
 
     /**
      * @ORM\Column(type="text",nullable=true)
-     * @Groups({"dmdAbonnement:get-item","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @Assert\Length(min=6,groups={"postValidation","putValidation"})
      */
     private $description;
@@ -176,7 +180,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Currency")
-     * @Groups({"dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
      */
     private $currency;
 

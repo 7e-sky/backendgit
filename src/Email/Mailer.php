@@ -9,6 +9,7 @@
 namespace App\Email;
 
 
+use App\Entity\Abonnement;
 use App\Entity\DemandeAbonnement;
 use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
@@ -62,14 +63,19 @@ class Mailer
         $this->blackListesRepository = $blackListesRepository;
     }
 
-    public function sendConfirmationEmail(User $user){
+    //======================================================================
+    // CONFIRMATION EMAIL ACCOUNT
+    //======================================================================
+
+    public function sendConfirmationEmail(User $user)
+    {
 
         $body = $this->twig->render(
-            'email/confirmation.html.twig',['user'=>$user]
+            'email/confirmation.html.twig', ['user' => $user]
         );
 
         //send e-mail
-        $message = ( new \Swift_Message('Vérifiez votre adresse email'))
+        $message = (new \Swift_Message('Vérifiez votre adresse email'))
             ->setFrom('youness.arbouh1@gmail.com')
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
@@ -78,39 +84,26 @@ class Mailer
 
     }
 
-    /* Send email notification to Zone & Commercial lors d'une commande offre d'abonnement d'un fournisseur */
-
-    public function sendEmailNotification(DemandeAbonnement $demandeAbonnement){
-
-        $body = $this->twig->render(
-            'email/notificationAbonnement.html.twig',['demande'=>$demandeAbonnement,'commercial'=>$demandeAbonnement->getCommercial()]
-        );
 
 
-        //send e-mail
-        $message = ( new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
-            ->setFrom('youness.arbouh1@gmail.com')
-            ->setTo($demandeAbonnement->getCommercial()->getEmail())
-            ->setCc($demandeAbonnement->getZone()->getEmail())
-            ->setBody($body, 'text/html');
+    //======================================================================
+    // DIFFUSER RFQ => FOURNISSEURS CONSERNEES
+    //======================================================================
 
-        $this->mailer->send($message);
-
-    }
-
-    public function alerterFournisseurs(DemandeAchat $demande){
+    public function alerterFournisseurs(DemandeAchat $demande)
+    {
 
         $body = $this->twig->render(
-            'email/alertClients.html.twig',['demande'=>$demande]
+            'email/alertClients.html.twig', ['demande' => $demande]
         );
 
         $ids_sous_secteurs = [];
 
-        foreach ($demande->getSousSecteurs() as $sousSecteur){
-            array_push($ids_sous_secteurs,$sousSecteur->getId());
+        foreach ($demande->getSousSecteurs() as $sousSecteur) {
+            array_push($ids_sous_secteurs, $sousSecteur->getId());
         }
         $fournisseurs = $this->fournisseurRepository->createQueryBuilder('f')
-            ->innerJoin('f.sousSecteurs','s')
+            ->innerJoin('f.sousSecteurs', 's')
             ->where('s.id in (:sous_secteurs_id)')
             ->andWhere('s.del = 0')
             ->andWhere('f.del = 0')
@@ -121,29 +114,29 @@ class Mailer
             ->getResult();
 
 
-        $fournisseurs_blacklists = $this->blackListesRepository->findBy(['acheteur'=>$demande->getAcheteur()->getId(),'etat'=>1]);
+        $fournisseurs_blacklists = $this->blackListesRepository->findBy(['acheteur' => $demande->getAcheteur()->getId(), 'etat' => 1]);
 
 
         $nbrshare = 0;
-        foreach ($fournisseurs as $fournisseur){
+        foreach ($fournisseurs as $fournisseur) {
 
             $trouve = false;
 
-            foreach ($fournisseurs_blacklists as $blacklist){
-                if($blacklist->getFournisseur() == $fournisseur){
-                    $trouve=true;
+            foreach ($fournisseurs_blacklists as $blacklist) {
+                if ($blacklist->getFournisseur() == $fournisseur) {
+                    $trouve = true;
                     break;
                 }
             }
 
-            if(!$trouve){
-                $message = ( new \Swift_Message('Demande de devis'))
+            if (!$trouve) {
+                $message = (new \Swift_Message('Demande de devis'))
                     ->setFrom('youness.arbouh1@gmail.com')
                     ->setTo($fournisseur->getEmail())
                     ->setBody($body, 'text/html');
 
-                if($demande->getAttachements()){
-                    foreach($demande->getAttachements()as $item) {
+                if ($demande->getAttachements()) {
+                    foreach ($demande->getAttachements() as $item) {
                         $message->attach(\Swift_Attachment::fromPath(ltrim($item->getUrl(), '/')));
                     }
                 }
@@ -163,22 +156,27 @@ class Mailer
 
     }
 
+    //======================================================================
+    // AFFECTATION RFQ => PERSONNEL
+    //======================================================================
+
     // Alerter le personnel
 
-    public function alerterPersonnels(Personnel $personnel,DemandeAchat $demande,Fournisseur $fournisseur){
+    public function alerterPersonnels(Personnel $personnel, DemandeAchat $demande, Fournisseur $fournisseur)
+    {
 
         $body = $this->twig->render(
-            'email/affectation.html.twig',['demande'=>$demande,'personnel'=>$personnel,'fournisseur'=>$fournisseur]
+            'email/affectation.html.twig', ['demande' => $demande, 'personnel' => $personnel, 'fournisseur' => $fournisseur]
         );
 
-        $message = ( new \Swift_Message('Affectation Email'))
+        $message = (new \Swift_Message('Affectation Email'))
             ->setFrom('youness.arbouh1@gmail.com')
             ->setTo($personnel->getEmail())
             ->setCc($fournisseur->getEmail())
             ->setBody($body, 'text/html');
 
-        if($demande->getAttachements()){
-            foreach($demande->getAttachements()as $item) {
+        if ($demande->getAttachements()) {
+            foreach ($demande->getAttachements() as $item) {
                 $message->attach(\Swift_Attachment::fromPath(ltrim($item->getUrl(), '/')));
             }
         }
@@ -187,16 +185,21 @@ class Mailer
 
     }
 
+    //======================================================================
+    // PRODUIT & DEMANDE DEVIS PAR PRODUIT
+    //======================================================================
+
 
     // Alerter le fournisseur quand un visiteurs public demande un devis
 
-    public function alerteFournisseurDemandeDevisPublic(DemandeDevis $demandeDevis){
+    public function alerteFournisseurDemandeDevisPublic(DemandeDevis $demandeDevis)
+    {
 
         $body = $this->twig->render(
-            'email/demandeDevis.html.twig',['demandeDevis'=>$demandeDevis]
+            'email/demandeDevis.html.twig', ['demandeDevis' => $demandeDevis]
         );
 
-        $message = ( new \Swift_Message('Demande de devis'))
+        $message = (new \Swift_Message('Demande de devis'))
             ->setFrom('youness.arbouh1@gmail.com')
             ->setTo($demandeDevis->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
@@ -207,15 +210,79 @@ class Mailer
 
     // Alerter le fournisseur quand son produit et valider par l'admin
 
-    public function alerteFournisseurValidationProduit(Produit $produit){
+    public function alerteFournisseurValidationProduit(Produit $produit)
+    {
 
         $body = $this->twig->render(
-            'email/produitValidation.html.twig',['produit'=>$produit]
+            'email/produitValidation.html.twig', ['produit' => $produit]
         );
 
-        $message = ( new \Swift_Message('Validation du produit Réf. '.$produit->getReference()))
+        $message = (new \Swift_Message('Validation du produit Réf. ' . $produit->getReference()))
             ->setFrom('youness.arbouh1@gmail.com')
             ->setTo($produit->getFournisseur()->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
+
+
+    //======================================================================
+    // ABONNENET & COMMANDE
+    //======================================================================
+
+
+    // Alerter le fournisseur quand son commande d'abonnement et traité ou une activation d'une abonnement par l'admin
+
+    public function alerteFournisseurValidationAbonnement(Abonnement $abonnement)
+    {
+
+        $body = $this->twig->render(
+            'email/validationAbonnement.html.twig', ['abonnement' => $abonnement]
+        );
+
+        $message = (new \Swift_Message('Activation de l\'abonnement  ' . $abonnement->getOffre()->getName()))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($abonnement->getFournisseur()->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
+
+    // Accusé de reception de la commande d'abonnement
+
+    public function alerteFournisseurAccuseeReception(DemandeAbonnement $demande)
+    {
+
+        $body = $this->twig->render(
+            'email/receptionDmdAbonnement.html.twig', ['demande' => $demande]
+        );
+
+        $message = (new \Swift_Message('Commande Réf. ' . $demande->getReference()))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($demande->getFournisseur()->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
+
+    // Send email notification to Zone & Commercial lors d'une commande offre d'abonnement d'un fournisseur
+
+    public function sendEmailNotification(DemandeAbonnement $demandeAbonnement)
+    {
+
+        $body = $this->twig->render(
+            'email/notificationAbonnement.html.twig', ['demande' => $demandeAbonnement, 'commercial' => $demandeAbonnement->getCommercial()]
+        );
+
+
+        //send e-mail
+        $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($demandeAbonnement->getCommercial()->getEmail())
+            ->setCc($demandeAbonnement->getZone()->getEmail())
             ->setBody($body, 'text/html');
 
         $this->mailer->send($message);

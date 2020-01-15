@@ -75,7 +75,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"dmdAbonnement:get-all","visit:get-all","get","put","post","get-from-demande","get-from-sous-secteur","get-from-ville","get-from-acheteurs_blacklistes"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","get-from-demande","get-from-sous-secteur","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -83,7 +83,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"dmdAbonnement:get-all","visit:get-all","get","put","post","get-from-sous-secteur","get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","get-from-sous-secteur","get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -91,21 +91,21 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
-     * @Groups({"dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $adresse1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $adresse2;
 
     /**
      * @ORM\Column(type="integer",nullable=true)
-     * @Groups({"dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      * @Assert\Length(min=4,max=255,groups={"postValidation","putValidation"})
      *
      */
@@ -113,7 +113,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=35)
-     * @Groups({"dmdAbonnement:get-item","visit:get-all","get","put","post","get-from-demande"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post","get-from-demande"})
      * @AssertPhoneNumber(
      *     type="mobile",
      *     defaultRegion="MA",
@@ -130,7 +130,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @Assert\NotBlank(groups={"postValidation"})
      * @Assert\Email(groups={"postValidation"})
      * @Assert\Length(min=10,max=255,groups={"postValidation"})
-     * @Groups({"dmdAbonnement:get-item","visit:get-all","get-admin","post","put-admin"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get-admin","post","put-admin"})
      */
     protected $email;
 
@@ -197,7 +197,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Avatar")
-     * @Groups({"dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      */
     protected $avatar;
 

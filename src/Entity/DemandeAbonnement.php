@@ -110,7 +110,7 @@ class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterfac
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"dmdAbonnement:get-all"})
+     * @Groups({"abonnement:get-all","dmdAbonnement:get-all"})
      */
     private $reference;
 
@@ -132,6 +132,29 @@ class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterfac
      * @Assert\NotBlank(groups={"dmdAbonnement:postValidation","dmdAbonnement:putValidation"})
      */
     private $mode;
+
+    /**
+     * @Groups({"put-admin"})
+     */
+    public $paiement;
+
+    /**
+     * @Groups({"put-admin"})
+     */
+    public $remise;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Groups({"dmdAbonnement:get-all"})
+     */
+    private $prix;
+
+    /**
+     * @ORM\Column(type="string",length=5)
+     * @Groups({"dmdAbonnement:get-all"})
+     */
+    private $currency;
+
 
     public function __construct()
     {
@@ -290,6 +313,39 @@ class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterfac
     {
         $this->mode = $mode;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPrix()
+    {
+        return $this->prix;
+    }
+
+    /**
+     * @param mixed $prix
+     */
+    public function setPrix($prix): void
+    {
+        $this->prix = $prix;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param mixed $currency
+     */
+    public function setCurrency($currency): void
+    {
+        $this->currency = $currency;
+    }
+
 
 
 

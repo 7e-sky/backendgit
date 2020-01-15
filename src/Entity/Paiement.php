@@ -37,6 +37,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class Paiement
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -47,7 +48,7 @@ class Paiement
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"dmdAbonnement:get-all","jeton:get-item","jeton:get-all","paiement:put","paiement:post","paiement:get-item","paiement:get-all"})
+     * @Groups({"abonnement:get-all","dmdAbonnement:get-all","jeton:get-item","jeton:get-all","paiement:put","paiement:post","paiement:get-item","paiement:get-all"})
      */
     private $name;
 

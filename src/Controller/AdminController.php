@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\DemandeAbonnement;
 use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
 use App\Entity\DemandeJeton;
@@ -110,6 +111,21 @@ class AdminController extends AbstractController
 
     }
 
+    /**
+     * @Route("/commandes-abonnements")
+     */
+    public function getCountCommandeAbonnementEnAttente(){
+
+        $em = $this->getDoctrine()->getManager()->getRepository(DemandeAbonnement::class);
+        $qb = $em->createQueryBuilder('d')
+            ->where('d.statut = :searchTerm')
+            ->setParameter('searchTerm', 0)
+            ->select('count(d.id)');
+        $query = $qb->getQuery();
+
+        return $this->json($query->getSingleScalarResult());
+
+    }
 
     /**
      * @Route("/abonnement-fournisseur")
@@ -122,8 +138,17 @@ class AdminController extends AbstractController
             ->setParameter('searchTerm', 0)
             ->select('count(d.id)');
         $query = $qb->getQuery();
+        $demadeJetons= $query->getSingleScalarResult();
 
-        return $this->json($query->getSingleScalarResult());
+        $em = $this->getDoctrine()->getManager()->getRepository(DemandeAbonnement::class);
+        $qb = $em->createQueryBuilder('d')
+            ->where('d.statut = :searchTerm')
+            ->setParameter('searchTerm', 0)
+            ->select('count(d.id)');
+        $query = $qb->getQuery();
+        $demadeAbonnement= $query->getSingleScalarResult();
+
+        return $this->json($demadeJetons+$demadeAbonnement);
 
     }
 

@@ -13,6 +13,7 @@ use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
 use App\Entity\Acheteur;
 use App\Entity\Admin;
 use App\Entity\Commercial;
+use App\Entity\DemandeAbonnement;
 use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
 use App\Entity\Fournisseur;
@@ -88,6 +89,7 @@ class UserContextBuilder implements SerializerContextBuilderInterface
                 DemandeDevis::class === $resourceClass ||
                 ZoneCommercial::class === $resourceClass ||
                 Produit::class === $resourceClass ||
+                DemandeAbonnement::class === $resourceClass ||
                 DemandeAchat::class === $resourceClass
             ) &&
             isset($context['groups']) &&

@@ -46,21 +46,21 @@ class Duree implements CreatedEntityInterface
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"dmdAbonnement:get-all","duree:get-all"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","duree:get-all"})
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"dmdAbonnement:get-all","duree:get-all","duree:put","duree:post"})
+     * @Groups({"abonnement:get-all","dmdAbonnement:get-all","duree:get-all","duree:put","duree:post"})
      * @Assert\NotBlank(groups={"duree:postValidation","duree:putValidation"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"dmdAbonnement:get-all","duree:get-all","duree:put","duree:post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","duree:get-all","duree:put","duree:post"})
      * @Assert\NotBlank(groups={"duree:postValidation","duree:putValidation"})
      */
     private $remise;

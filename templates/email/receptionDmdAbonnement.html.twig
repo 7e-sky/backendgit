@@ -1,0 +1,48 @@
+<h3>Madame, Monsieur,</h3>
+
+
+<p>
+    Nous accusons réception de votre commande numéro <strong>{{ demande.reference }}</strong> du {{ demande.created|date("d/m/Y h:i:s")}} et vous remercions de la confiance que vous nous témoignez.
+    <br>
+
+    Nous vous rappelons, cependant, qu'il s'agit d'une commande seulement. L'activation de l'abonnement commandée sera effective à réception du règlement.
+    <br>
+
+    Vous trouverez plus bas dans ce courriel un rappel détaillé de l'abonnement commandée ainsi que les modes de paiement que nous acceptons.
+    <br>
+
+    Nous restons à votre disposition pour toute information complémentaire. <br>
+    <br>
+    Cordialement,
+</p>
+<h3>Rappel de l'abonnement commandée :</h3>
+<ul>
+    <li><strong>Référence : </strong>{{ demande.reference}}</li>
+    <li><strong>Offre : </strong>{{ demande.offre.name}}</li>
+    <li><strong>Activités : </strong>{{ demande.offre.nbActivite}} activités</li>
+    <li><strong>Durée : </strong>{{ demande.duree.name}} mois</li>
+</ul>
+
+<h3>Modes de paiement acceptés :</h3>
+
+<strong style="color: #0F83E8; text-decoration: underline">Paiement par versement ou virement bancaire :</strong>
+
+<p>Prière d'effectuer un versement en espèces ou un virement bancaire, de la somme de <strong>{{ demande.prix~' '~demande.currency }}</strong>  sur le
+    compte ci-dessous <br> sans oublier de nous faxer l'ordre dudit virement/versement au 05 22 36 57 94.
+</p>
+<ul>
+    <li><strong>Banque : </strong>ATTIJARIWAFA BANK</li>
+    <li><strong>Bénéficiaire : </strong>3F industrie</li>
+    <li><strong>RIB : </strong>007 780 000 4095 00000 254 292</li>
+</ul>
+<br>
+<strong style="color: #0F83E8; text-decoration: underline">Paiement en espèces ou chèque :</strong>
+
+<p>
+    Veuillez vous présenter à notre agence 3F Industrie située :
+</p>
+<address>
+    36, Rue Imam Al BOUKHARI,<br />
+    20370 Maarif Extension Casablanca <br />
+    Maroc
+</address>

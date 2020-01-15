@@ -8,8 +8,12 @@
     <li><strong>Raison sociale : </strong>{{ demande.fournisseur.societe }}</li>
     <li><strong>Nom complet : </strong>{{ demande.fournisseur.civilite~' '~demande.fournisseur.firstName~' '~demande.fournisseur.lastName }}
     </li>
-    <li><strong>Téléphone : </strong>{{ demande.fournisseur.phone }}</li>
-    <li><strong>Fixe : </strong>{{ demande.fournisseur.fix }}</li>
+    <li><strong>Téléphone : </strong>
+        <a href="tel:{{ demande.fournisseur.phone }}">{{ demande.fournisseur.phone }}</a>
+    </li>
+    <li><strong>Fixe : </strong>
+        <a href="tel:{{ demande.fournisseur.fix }}">{{ demande.fournisseur.fix }}</a>
+    </li>
     <li><strong>Email : </strong>{{ demande.fournisseur.email }}</li>
     <li><strong>Pays : </strong>{{ demande.fournisseur.pays ? demande.fournisseur.pays.name : '' }}</li>
     <li><strong>Ville : </strong>{{ demande.fournisseur.ville ? demande.fournisseur.ville.name:'' }}</li>
@@ -21,6 +25,7 @@
 <h4>Les informations de la commande :</h4>
 <ul>
     <li><strong>Offre : </strong>{{ demande.offre.name }}</li>
+    <li><strong>Prix : </strong>{{ demande.prix~' '~demande.currency }}</li>
     <li><strong>Mode de paiement : </strong>{{ demande.mode.name }}</li>
     <li><strong>Durée : </strong>{{ demande.duree.name }} mois <span style="color: red;">{{ demande.duree.remise ? '(Remise '~demande.duree.remise~' %)' : '' }}</span></li>
     <li><strong>Date de création : </strong>{{ demande.created|date("d/m/Y")}}</li>

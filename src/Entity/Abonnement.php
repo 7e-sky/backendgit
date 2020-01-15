@@ -2,13 +2,23 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Interfaces\CreatedEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *      "reference": "partial"
+ *      }
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"reference","created","expired","statut","sousSecteurs.name"})
  * @ApiResource(
  *      collectionOperations={
  *          "post"={
@@ -45,12 +55,13 @@ class Abonnement implements CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"abonnement:get-all"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="Offre")
-     * @Groups({"abonnement:get-all","abonnement:post","abonnement:put"})
+     * @Groups({"abonnement:get-item","abonnement:get-all","abonnement:post","abonnement:put"})
      * @Assert\NotBlank(groups={"abonnement:postValidation","abonnement:putValidation"})
      */
     private $offre;
@@ -64,8 +75,8 @@ class Abonnement implements CreatedEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
-     * @Groups({"abonnement:get-all","abonnement:post","abonnement:put"})
-     * @Assert\NotBlank(groups={"abonnement:postValidation","abonnement:putValidation"})
+     * @Groups({"abonnement:get-item","abonnement:get-all","abonnement:post"})
+     * @Assert\NotBlank(groups={"abonnement:postValidation"})
      */
     private $fournisseur;
 
@@ -98,14 +109,13 @@ class Abonnement implements CreatedEntityInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"abonnement:get-all"})
+     * @Groups({"abonnement:get-all","abonnement:post","abonnement:put"})
      */
     private $statut;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"abonnement:get-all","abonnement:post","abonnement:put"})
-     * @Assert\NotBlank(groups={"abonnement:postValidation","abonnement:putValidation"})
+     * @Groups({"abonnement:get-all"})
      */
     private $prix;
 
@@ -123,7 +133,7 @@ class Abonnement implements CreatedEntityInterface
     private $created;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",nullable=true)
      * @Groups({"abonnement:get-all"})
      */
     private $expired;
@@ -134,9 +144,35 @@ class Abonnement implements CreatedEntityInterface
      */
     private $datePeiment;
 
+    /**
+     * @ORM\Column(type="smallint")
+     * @Groups({"abonnement:get-all","abonnement:put","abonnement:post"})
+     */
+    private $remise;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Duree")
+     * @Groups({"abonnement:get-item","abonnement:get-all","abonnement:post","abonnement:put"})
+     * @Assert\NotBlank(groups={"abonnement:postValidation","abonnement:putValidation"})
+     */
+    private $duree;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Currency")
+     * @Groups({"abonnement:get-all","abonnement:post"})
+     */
+    private $currency;
+
+    /**
+     * @ORM\Column(type="string",length=1000,nullable=true)
+     * @Groups({"abonnement:get-all","abonnement:post","abonnement:put"})
+     */
+    private $commentaire;
+
     public function __construct()
     {
         $this->statut=false;
+        $this->remise=0;
     }
 
     public function getId(): ?int
@@ -350,6 +386,74 @@ class Abonnement implements CreatedEntityInterface
     {
         $this->datePeiment = $datePeiment;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getRemise()
+    {
+        return $this->remise;
+    }
+
+    /**
+     * @param mixed $remise
+     */
+    public function setRemise($remise): void
+    {
+        $this->remise = $remise;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDuree()
+    {
+        return $this->duree;
+    }
+
+    /**
+     * @param mixed $duree
+     */
+    public function setDuree($duree): void
+    {
+        $this->duree = $duree;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param mixed $currency
+     */
+    public function setCurrency($currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommentaire()
+    {
+        return $this->commentaire;
+    }
+
+    /**
+     * @param mixed $commentaire
+     */
+    public function setCommentaire($commentaire): void
+    {
+        $this->commentaire = $commentaire;
+    }
+
+
+
+
 
 
 }

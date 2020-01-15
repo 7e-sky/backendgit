@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class DemandeAbonnementSubscriber implements EventSubscriberInterface
+class AbonnementSubscriber implements EventSubscriberInterface
 {
 
 
@@ -79,20 +79,20 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::VIEW => [
-                ['PostDemandeAbonnement', EventPriorities::PRE_WRITE],
-                ['PutDemandeAbonnement', EventPriorities::PRE_WRITE],
+                ['PostAbonnement', EventPriorities::PRE_WRITE],
+                ['PutAbonnement', EventPriorities::PRE_WRITE],
             ]
         ];
     }
 
-    public function PostDemandeAbonnement(GetResponseForControllerResultEvent $event)
+    public function PostAbonnement(GetResponseForControllerResultEvent $event)
     {
 
         $entity = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
 
-        if (!$entity instanceof DemandeAbonnement || $method !== Request::METHOD_POST) {
+        if (!$entity instanceof Abonnement || $method !== Request::METHOD_POST) {
             return;
         }
 
@@ -100,118 +100,20 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
          * @var UserInterface $user
          */
         $user = $this->tokenStorage->getToken()->getUser();
-        if ($user instanceof Fournisseur) {
-
-            $entity->setFournisseur($user);
-
-            $entity->setReference($this->getRef());
-            $prixOffre = $entity->getOffre()->getPrixMad();
-
-            $entity->setCurrency('DHS');
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS'){
-                $prixOffre = $entity->getOffre()->getPrixEur();
-                $entity->setCurrency('EUR');
-            }
-
-            $remiseOffre=0;
-            if($entity->getDuree()->getRemise()){
-                $remiseOffre=$entity->getDuree()->getRemise();
-            }
-
-            $prixHT = $prixOffre * $entity->getDuree()->getName();
-
-            //Remise par offre
-            if($remiseOffre){
-                $prixHT = $prixHT - ($prixHT*$remiseOffre/100);
-            }
-
-            //HT + TVA = TTC
-            $ttc = $prixHT+ ($prixHT*0.2);
-
-            $entity->setPrix($ttc);
-
-            //Set Commercial && zone Commercial
-            $parent1 = $user->getParent1();
-            $parent2 = null;
-            if ($parent1) {
-                $parent2 = $parent1->getParent1();
-            }
-            if ($parent2 instanceof ZoneCommercial) {
-                $entity->setZone($parent2);
-                if ($parent1 instanceof Commercial) {
-                    $entity->setCommercial($parent1);
-                    //Alerter La zone & commercial
-                    $this->mailer->sendEmailNotification($entity);
-                }
-
-            } else {
-                if ($parent1 instanceof ZoneCommercial) {
-                    $entity->setZone($parent1);
-                }
-            }
-            //Accuser de réception
-            $this->mailer->alerteFournisseurAccuseeReception($entity);
-
-
-        }
-
-    }
-
-    /** GENERETE REFERENCE DEMANDE ABONNEMENT **/
-
-    public function getRef()
-    {
-
-        $qb = $this->repository->createQueryBuilder('d')
-            ->andWhere('year(d.created) = :year')
-            ->setParameter('year', date("Y"))
-            ->select('count(d.id)');
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-        $result++;
-        return date("Y") . '-' . $result;
-
-    }
-
-    public function PutDemandeAbonnement(GetResponseForControllerResultEvent $event)
-    {
-
-        $entity = $event->getControllerResult();
-        $method = $event->getRequest()->getMethod();
-
-        if (!$entity instanceof DemandeAbonnement || $method !== Request::METHOD_PUT) {
-            return;
-        }
-
-        /**
-         * @var UserInterface $user
-         */
-        $user = $this->tokenStorage->getToken()->getUser();
-
         if ($user instanceof Admin) {
 
-            $abonnement = new Abonnement();
-            $abonnement->setFournisseur($entity->getFournisseur());
-            $abonnement->setDemande($entity);
-            $abonnement->setOffre($entity->getOffre());
-            $abonnement->setMode($entity->getMode());
-            $abonnement->setDuree($entity->getDuree());
-            $abonnement->setSousSecteurs($entity->getSousSecteurs());
-            $abonnement->setCreated(new \DateTime());
 
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS')
-                $abonnement->setCurrency($this->currencyRepository->findOneBy(['name'=>'EUR']));
-            else
-                $abonnement->setCurrency($this->currencyRepository->findOneBy(['name'=>'DHS']));
-
-
-            if($entity->getFournisseur()->getCurrency())
-            $abonnement->setCurrency($entity->getFournisseur()->getCurrency());
+            $entity->setReference($this->getRefAbonnement());
 
             $prixOffre = $entity->getOffre()->getPrixMad();
 
             if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS')
+            {
+                $entity->setCurrency($this->currencyRepository->findOneBy(['name'=>'EUR']));
                 $prixOffre = $entity->getOffre()->getPrixEur();
+            }
+            else
+                $entity->setCurrency($this->currencyRepository->findOneBy(['name'=>'DHS']));
 
             $remiseOffre=0;
             if($entity->getDuree()->getRemise()){
@@ -226,29 +128,89 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             }
 
             //Remise par admin
-            if($entity->remise){
-                $abonnement->setRemise($entity->remise);
-                $prixHT = $prixHT - ($entity->remise);
+            if($entity->getRemise()){
+                $entity->setRemise($entity->getRemise());
+                $prixHT = $prixHT - ($entity->getRemise());
             }
 
             //HT + TVA = TTC
             $ttc = $prixHT+ ($prixHT*0.2);
 
 
-            $abonnement->setPrix($ttc);
-            $abonnement->setReference($this->getRefAbonnement());
+            $entity->setPrix($ttc);
 
 
-            if ($entity->paiement && is_null($abonnement->getDatePeiment())) {
-                $abonnement->setDatePeiment(new \DateTime());
-                $abonnement->setStatut(true);
-                $abonnement->setExpired(new \DateTime('+' . $entity->getDuree()->getName() . ' months'));
-                $this->mailer->alerteFournisseurValidationAbonnement($abonnement);
+            if ($entity->getStatut()) {
+                $entity->setDatePeiment(new \DateTime());
+                $entity->setExpired(new \DateTime('+' . $entity->getDuree()->getName() . ' months'));
+                $this->mailer->alerteFournisseurValidationAbonnement($entity);
             }
 
-            $this->entityManager->persist($abonnement);
+        }
 
-            $entity->setStatut(true);
+    }
+
+
+
+    public function PutAbonnement(GetResponseForControllerResultEvent $event)
+    {
+
+        $abonnement = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        if (!$abonnement instanceof Abonnement || $method !== Request::METHOD_PUT) {
+            return;
+        }
+
+        /**
+         * @var UserInterface $user
+         */
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        if ($user instanceof Admin) {
+
+
+            $abonnement->setOffre($abonnement->getOffre());
+            $abonnement->setMode($abonnement->getMode());
+            $abonnement->setDuree($abonnement->getDuree());
+            $abonnement->setSousSecteurs($abonnement->getSousSecteurs());
+
+
+            $prixOffre = $abonnement->getOffre()->getPrixMad();
+            if ($abonnement->getCurrency() && $abonnement->getCurrency()->getName() !== 'DHS')
+                $prixOffre = $abonnement->getOffre()->getPrixEur();
+
+            $remiseOffre=0;
+            if($abonnement->getDuree()->getRemise()){
+                $remiseOffre=$abonnement->getDuree()->getRemise();
+            }
+
+            $prixHT = $prixOffre * $abonnement->getDuree()->getName();
+
+            //Remise par offre
+            if($remiseOffre){
+                $prixHT = $prixHT - ($prixHT*$remiseOffre/100);
+            }
+
+            //Remise par admin
+            if($abonnement->getRemise()){
+                $abonnement->setRemise($abonnement->getRemise());
+                $prixHT = $prixHT - ($abonnement->getRemise());
+            }
+
+            //HT + TVA = TTC
+            $ttc = $prixHT+ ($prixHT*0.2);
+
+            $abonnement->setPrix($ttc);
+
+
+            if ($abonnement->getStatut() &&  is_null($abonnement->getDatePeiment())) {
+                $abonnement->setDatePeiment(new \DateTime());
+                $abonnement->setExpired(new \DateTime('+' . $abonnement->getDuree()->getName() . ' months'));
+                $this->mailer->alerteFournisseurValidationAbonnement($abonnement);
+
+            }
+
         }
 
     }

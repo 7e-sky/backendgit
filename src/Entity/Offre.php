@@ -41,13 +41,13 @@ class Offre
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"dmdAbonnement:get-all","offre:get-all"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","offre:get-all"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
+     * @Groups({"abonnement:get-all","dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
      * @Assert\NotBlank(groups={"offre:putValidation","offre:postValidation"})
      */
     private $name;
@@ -60,14 +60,14 @@ class Offre
     private $description;
     /**
      * @ORM\Column(type="float")
-     * @Groups({"dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
      * @Assert\NotBlank(groups={"offre:putValidation","offre:postValidation"})
      */
     private $prixMad;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
      * @Assert\NotBlank(groups={"offre:putValidation","offre:postValidation"})
      */
     private $prixEur;
