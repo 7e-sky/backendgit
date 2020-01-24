@@ -169,7 +169,7 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
         $result++;
-        return date("Y") . '-' . $result;
+        return 'D-'.date("Y") . '-' . $result;
 
     }
 
@@ -265,7 +265,7 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
         $result++;
-        return date("Y") . '-' . $result;
+        return 'A-'.date("Y") . '-' . $result;
 
     }
 

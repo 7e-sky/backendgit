@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Abonnement;
 use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
 use App\Entity\DetailVisite;
@@ -40,6 +41,27 @@ class FournisseurController extends AbstractController
     {
 
         $this->tokenStorage = $tokenStorage;
+    }
+    /**
+     * @Route("/abonnement/founrisseur")
+     */
+    public function getAbonnementByFournisseur()
+    {
+
+        /**
+         * @var UserInterface $fournisseur
+         */
+        $fournisseur = $this->tokenStorage->getToken()->getUser();
+        $repoAbonnement = $this->getDoctrine()->getManager()->getRepository(Abonnement::class);
+
+        if ($fournisseur instanceof Fournisseur) {
+            $abonnement = $repoAbonnement->findBy(['fournisseur'=>$fournisseur],['expired'=>'desc'],1);
+            return $this->json($abonnement);
+        }
+
+        return null;
+
+
     }
 
     /**

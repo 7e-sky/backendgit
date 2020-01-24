@@ -54,7 +54,7 @@ class DefaultController extends  AbstractController
     }
 
     /**
-     * @Route("/all",name="defaultIndex",methods={"GET"})
+     * @Route("/",name="defaultIndex",methods={"GET"})
      */
     public function index()
     {
@@ -62,7 +62,7 @@ class DefaultController extends  AbstractController
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository(User::class)->find(14);
 
-        return $this->json($users->getCodePostal());
+        return $this->json('');
     }
 
     /**

@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 
 /**
  * @ApiFilter(
@@ -18,6 +19,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *      "reference": "partial"
  *      }
  * )
+ * @ApiFilter(ExistsFilter::class, properties={"expired"})
  * @ApiFilter(OrderFilter::class, properties={"reference","created","expired","statut","sousSecteurs.name"})
  * @ApiResource(
  *      collectionOperations={
@@ -43,8 +45,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "validation_groups"={"abonnement:putValidation"}
  *          }
  *     },
+ *     subresourceOperations={
+ *          "api_fournisseurs_abonnements_get_subresource"={
+ *               "normalization_context"={"groups"={"abonnement:get-all"}}
+ *          }
+ *     },
  *     attributes={
- *     "pagination_items_per_page"=10
+ *     "pagination_items_per_page"=10,
+ *
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\AbonnementRepository")

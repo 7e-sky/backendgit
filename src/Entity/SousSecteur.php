@@ -86,7 +86,7 @@ class SousSecteur
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="sousSecteurs")
-     * @Groups({"get-from-sous-secteur","post","put"})
+     * @Groups({"abonnement:get-all","get-from-sous-secteur","post","put"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $secteur;
