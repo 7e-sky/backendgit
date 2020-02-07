@@ -25,7 +25,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *              "validation_groups"={"postValidation"},
  *
  *     },
- *     "get"={"access_control"="is_granted('ROLE_ADMIN') or is_granted('ROLE_ACHETEUR')"}
+ *     "get"={}
  *      },
  *     itemOperations={
  *     "get"={
@@ -105,7 +105,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
+     * @Groups({"selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      * @Assert\Regex(

@@ -17,6 +17,7 @@ use App\Entity\Produit;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/api")
@@ -24,6 +25,47 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+
+    /**
+     * @Route("/fournisseurselected")
+     */
+    public function GetAllFournisseurPublierProduit(){
+
+        $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
+        $qb = $em->createQueryBuilder('p')
+            ->innerJoin('p.fournisseur','f')
+            ->groupBy('p.fournisseur')
+            ->select('f.id,f.societe');
+        $query = $qb->getQuery();
+
+        return $this->json($query->getResult());
+
+    }
+
+    /**
+     * @Route("/fournisseurcategories")
+     */
+    public function GetAllCategorieByFournisseur(Request $request){
+
+        $data = $request->query->all();
+        // id
+        $id = $data['id'];
+
+
+        $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
+        $qb = $em->createQueryBuilder('p')
+            ->innerJoin('p.categorie','c')
+            ->innerJoin('p.fournisseur','f')
+            ->where('f.id  = :searchTerm')
+            ->groupBy('p.categorie')
+            ->setParameter('searchTerm', $id)
+            ->select('c.id,c.name');
+        $query = $qb->getQuery();
+
+        return $this->json($query->getResult());
+
+    }
+
 
     /**
      * @Route("/validation_produits")

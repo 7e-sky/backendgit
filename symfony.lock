@@ -107,6 +107,9 @@
     "fig/link-util": {
         "version": "1.0.0"
     },
+    "gedmo/doctrine-extensions": {
+        "version": "v2.4.39"
+    },
     "giggsey/libphonenumber-for-php": {
         "version": "8.10.21"
     },

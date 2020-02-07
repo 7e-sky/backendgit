@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * @ApiFilter(
@@ -22,9 +23,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     properties={
  *     "description": "partial",
  *     "reference": "partial",
+ *     "statut": "exact",
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"reference","description","dateExpiration","created","budget","isPublic","sousSecteurs.name"})
+ * @ApiFilter(DateFilter::class, properties={"dateExpiration"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -34,7 +37,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "normalization_context"={"groups"={"get-from-demande"}}
  *          },
  *          "get"={
- *              "access_control"="is_granted('ROLE_ADMIN')",
  *              "normalization_context"={"groups"={"get-from-demande"}}
  *           },
  *          "get_by_fournisseur"={
@@ -54,7 +56,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "get"={
  *                  "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
- *                  "normalization_context"={"groups"={"get-from-demande"}}
+ *                  "normalization_context"={"groups"={"get-from-demande","item:get-from-demande"}}
  *                },
  *          "put"={
  *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
@@ -64,7 +66,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "delete"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"}
  *     },
  *
- *     attributes={"pagination_items_per_page"=10},
+ *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true},
  *     subresourceOperations={
  *          "api_acheteurs_demandes_get_subresource"={
  *              "security"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
@@ -90,7 +92,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
-     * @Groups({"visit:get-item","visit:get-all","get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"visit:get-item","visit:get-all","get-from-acheteur_demandes"})
      */
     private $acheteur;
 
@@ -137,13 +139,13 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="integer",nullable=true)
-     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"item:get-from-demande","get-from-acheteur_demandes"})
      */
     private $nbrVisite;
 
     /**
      * @ORM\Column(type="integer",nullable=true)
-     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"get-from-acheteur_demandes"})
      */
     private $nbrShare;
 
@@ -155,7 +157,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"item:get-from-demande","get-from-acheteur_demandes"})
      */
     private $dateModification;
 
@@ -171,7 +173,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-item-from-demande"})
+     * @Groups({"item:get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-item-from-demande"})
      */
     private $isAnonyme;
 
@@ -179,7 +181,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     /**
      * @ORM\ManyToMany(targetEntity="Attachement")
      * @ORM\JoinTable()
-     * @Groups({"visit:get-item","get-from-demande","put","post","fournisseur:get-item-from-demande"})
+     * @Groups({"item:get-from-demande","visit:get-item","put","post","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank()
      * @ApiSubresource(maxDepth=1)
      */
@@ -198,7 +200,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\OneToMany(targetEntity="DiffusionDemande", mappedBy="demande",cascade={"persist"})
-     * @Groups({"get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"item:get-from-demande","get-from-acheteur_demandes"})
      * @ApiSubresource(maxDepth=1)
      */
     private $diffusionsdemandes;
@@ -231,6 +233,19 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      * @Groups({"fournisseur:get-from-demande"})
      */
     private $historiques;
+
+
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     * @Groups({"visit:get-item","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     */
+    private $pays ;
+
+    /**
+     * @ORM\Column(type="string",nullable=true)
+     * @Groups({"visit:get-item","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     */
+    private $ville ;
 
 
     public function __construct()
@@ -533,6 +548,38 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
         $this->historiques->add($historiqueVisite);
 
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPays()
+    {
+        return $this->pays;
+    }
+
+    /**
+     * @param mixed $pays
+     */
+    public function setPays($pays): void
+    {
+        $this->pays = $pays;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVille()
+    {
+        return $this->ville;
+    }
+
+    /**
+     * @param mixed $ville
+     */
+    public function setVille($ville): void
+    {
+        $this->ville = $ville;
     }
 
 

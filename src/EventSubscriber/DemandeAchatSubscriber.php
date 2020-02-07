@@ -88,6 +88,12 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
             if($acheteur->getCurrency()){
                 $demande->setCurrency($acheteur->getCurrency());
             }
+            if($acheteur->getPays()){
+                $demande->setPays($acheteur->getPays()->getName());
+            }
+            if($acheteur->getVille()){
+                $demande->setVille($acheteur->getVille()->getName());
+            }
         }
 
 

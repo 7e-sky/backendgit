@@ -49,11 +49,10 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *          }
  *     },
  *      attributes={
- *     "force_eager"=false,
- *     "normalization_context"={"groups"={"get-from-sous-secteur"},
- *     "enable_max_depth"=true},
- *     "pagination_items_per_page"=10,
- *     "pagination_client_enabled"=true
+ *              "force_eager"=false,
+ *              "normalization_context"={"groups"={"get-from-sous-secteur"}},
+ *              "pagination_items_per_page"=10,
+ *              "pagination_client_enabled"=true,
  *     },
  *     subresourceOperations={
  *          "api_secteurs_sous_secteurs_get_subresource"={
@@ -70,13 +69,13 @@ class SousSecteur
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"visit:get-item","get-from-sous-secteur","get-from-secteur","get","get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"selectProduit:get-all","visit:get-item","get-from-sous-secteur","get-from-secteur","get","get-from-demande","get-from-acheteur_demandes"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Groups({"abonnement:get-item","abonnement:get-all","dmdAbonnement:get-item","dmdAbonnement:get-all","visit:get-item","produit:get-item","produit:get-all","produit:get-from-fournisseur","get-from-sous-secteur","get-from-secteur","get","put","post","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-item","dmdAbonnement:get-all","visit:get-item","produit:get-item","produit:get-all","produit:get-from-fournisseur","get-from-sous-secteur","get-from-secteur","get","put","post","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *

@@ -29,7 +29,7 @@ use App\Controller\ImageProduit\UploadImageProduitAction;
  *           "defaults"={"_api_receive"=false}
  *           }
  * },
- *     itemOperations={"put","get","delete"},
+ *     itemOperations={"get"},
  *     normalizationContext={
  *      "groups"={"get"}
  *     }
@@ -42,13 +42,13 @@ class ImageProduit
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get","produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post"})
+     * @Groups({"get","produit:get-item","produit:get-from-fournisseur","produit:post"})
      */
     private $id;
 
     /**
      * @ORM\Column(nullable=true)
-     * @Groups({"get","produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post"})
+     * @Groups({"selectProduit:get-all","get","produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post"})
      */
     private $url;
 
