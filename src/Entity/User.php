@@ -36,6 +36,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 
  * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Table(name="user",indexes={@ORM\Index(name="indexes_user", columns={"del"}),@ORM\Index(name="indexes_user2", columns={"isactif"})})
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"User" = "User","Admin" = "Admin","Acheteur" = "Acheteur","Fournisseur"="Fournisseur","Commercial"="Commercial","ZoneCommercial"="ZoneCommercial"})
@@ -62,7 +63,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"selectProduit:get-all","fournisseur:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","get-from-demande","get-from-sous-secteur","get-from-ville","get-from-acheteur_demandes"})
+     * @Groups({"selectProduit:get-all","produit:get-all","fournisseur:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","get-from-demande","sous-secteur:get-all","get-from-ville","get-from-acheteur_demandes"})
      */
     protected $id;
 
@@ -75,7 +76,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","get-from-demande","get-from-sous-secteur","get-from-ville","get-from-acheteurs_blacklistes"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","get-from-demande","sous-secteur:get-all","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -83,7 +84,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","get-from-sous-secteur","get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","sous-secteur:get-all","get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
@@ -162,7 +163,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get","put","get-from-sous-secteur","get-from-ville"})
+     * @Groups({"get","put","sous-secteur:get-all","get-from-ville"})
      * @Assert\NotNull()
      */
     protected $del;
@@ -197,7 +198,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Avatar")
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"abonnement:get-item","produit:get-all","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      */
     protected $avatar;
 

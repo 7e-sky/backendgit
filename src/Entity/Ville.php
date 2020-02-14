@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 /**
  * @ApiFilter(
@@ -20,6 +21,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     "name":"partial"
  *      }
  * )
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
  * @ApiFilter(OrderFilter::class, properties={"id","name","pays.id"})
  * @ApiResource(
  *     collectionOperations={
@@ -44,7 +46,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          }
  *     },
  *     attributes={
- *     "pagination_items_per_page"=10
+ *     "pagination_items_per_page"=10,
+ *     "pagination_client_enabled"=true
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\VilleRepository")
@@ -64,7 +67,7 @@ class Ville
     /**
      * @ORM\Column(type="string",length=50)
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get-from-ville","get","post","put"})
+     * @Groups({"abonnement:get-item","produit:get-all","dmdAbonnement:get-item","visit:get-all","get-from-ville","get","post","put"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      */
     private $name;

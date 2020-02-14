@@ -12,9 +12,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
  * @ApiResource(
  *    collectionOperations={
  *          "post"={
@@ -36,7 +37,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     },
  *     attributes={
  *     "force_eager"=false,
- *     "normalization_context"={"groups"={"get-from-secteur"},"enable_max_depth"=true},
+ *     "normalization_context"={"groups"={"secteur:get-all"},"enable_max_depth"=true},
  *     "pagination_enabled"=false,
  *     "pagination_client_enabled"=true
  *     }
@@ -51,7 +52,7 @@ class Secteur
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get-from-secteur","get-from-sous-secteur","get","get-from-demande"})
+     * @Groups({"secteur:get-all","sous-secteur:get-all","get","get-from-demande"})
      */
     private $id;
 
@@ -59,23 +60,29 @@ class Secteur
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
-     * @Groups({"abonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","visit:get-all","get-from-secteur","get-from-sous-secteur","get","post","put","get-from-demande"})
+     * @Groups({"abonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","visit:get-all","secteur:get-all","sous-secteur:get-all","get","post","put","get-from-demande"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get-from-secteur","put"})
+     * @Groups({"secteur:get-all","put"})
      */
     private $del;
 
     /**
      * @ORM\OneToMany(targetEntity="SousSecteur", mappedBy="secteur")
-     * @Groups({"get-from-secteur","post","put"})
+     * @Groups({"secteur:get-all","post","put"})
      * @ApiSubresource(maxDepth=1)
      */
     private $sousSecteurs;
 
+    /**
+     * @Gedmo\Slug(fields={"name", "id"})
+     * @ORM\Column(length=128, unique=true)
+     * @Groups({"secteur:get-all"})
+     */
+    private $slug;
 
 
     public function __construct()
@@ -118,6 +125,10 @@ class Secteur
         return $this->sousSecteurs;
     }
 
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 
 
 

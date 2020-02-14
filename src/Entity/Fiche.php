@@ -50,7 +50,7 @@ class Fiche
 
     /**
      * @ORM\Column(nullable=true)
-     * @Groups({"get","produit:get-item"})
+     * @Groups({"get","produit:get-item","produit:get-all"})
      */
     private $url;
 

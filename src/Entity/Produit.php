@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiFilter(
@@ -24,6 +25,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     "description": "partial",
  *     "reference": "partial",
  *     "fournisseur": "exact",
+ *     "slug": "exact",
  *     "categorie": "exact",
  *      }
  * )
@@ -61,7 +63,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *          }
  *     },
  *
- *     attributes={"pagination_items_per_page"=10,"pagination_client_enabled"=true,"pagination_client_items_per_page"=true},
+ *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true},
  *     subresourceOperations={
  *          "api_fournisseurs_produits_get_subresource"={
  *              "security"="is_granted('ROLE_FOURNISSEUR')",
@@ -70,6 +72,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *          }
  *     }
  * )
+ * @ORM\Table(name="produit",indexes={@ORM\Index(name="indexes_produit", columns={"titre"}),@ORM\Index(name="indexes_produit2", columns={"is_valid"}),@ORM\Index(name="indexes_produit3", columns={"del"})})
  * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository")
  */
 class Produit implements CreatedEntityInterface,SetFournisseurInterface
@@ -106,7 +109,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="SousSecteur")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
+     * @Groups({"produit:get-item","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
      */
     private $sousSecteurs;
@@ -204,6 +207,12 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
      */
     private $currency;
 
+    /**
+     * @Gedmo\Slug(fields={"titre", "id"})
+     * @ORM\Column(length=128, unique=true)
+     * @Groups({"produit:get-all","selectProduit:get-all"})
+     */
+    private $slug;
 
 
 
@@ -509,9 +518,10 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
         $this->currency = $currency;
     }
 
-
-
-
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 
 
 

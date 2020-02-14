@@ -26,7 +26,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * @ApiFilter(
  *     BooleanFilter::class,properties={"del"}
  * )
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
  * @ApiFilter(OrderFilter::class, properties={"id","name"})
  * @ApiResource(
  *     collectionOperations={
@@ -69,7 +69,7 @@ class Pays
     /**
      * @ORM\Column(type="string",length=50)
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get-from-pays","get-from-ville","get","post","put"})
+     * @Groups({"abonnement:get-item","produit:get-all","dmdAbonnement:get-item","visit:get-all","get-from-pays","get-from-ville","get","post","put"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      */
     private $name;

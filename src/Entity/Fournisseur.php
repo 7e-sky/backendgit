@@ -14,6 +14,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiResource(
@@ -41,13 +42,13 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     },
  *     attributes={
  *     "force_eager"=false,
- *     "normalization_context"={"groups"={"get"},
+ *     "normalization_context"={"groups"={"get"}},
  *     "enable_max_depth"=true,
  *     "pagination_client_enabled"=true,
- *     "pagination_items_per_page"=10
- *     },
+ *     "pagination_items_per_page"=10,
+ *     "pagination_client_items_per_page"=true,
  *     "order"={"id":"desc"}
- *     }
+ *     },
  * )
  * @ApiFilter(
  *     BooleanFilter::class,properties={"del","isactif"}
@@ -67,6 +68,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     "whitelist": {"id","societe","sousSecteurs"},
  *      }
  * )
+ * @ORM\Table(name="fournisseur",indexes={@ORM\Index(name="indexe_fournisseur", columns={"societe"})})
  * @ORM\Entity(repositoryClass="App\Repository\FournisseurRepository")
  *
  */
@@ -75,13 +77,13 @@ class Fournisseur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays",inversedBy="fournisseurs")
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"abonnement:get-item","produit:get-all","dmdAbonnement:get-item","get","post","put"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"abonnement:get-item","produit:get-all","dmdAbonnement:get-item","get","post","put"})
      */
     private $ville;
 
@@ -105,7 +107,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
+     * @Groups({"selectProduit:get-all","produit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      * @Assert\Regex(
@@ -134,7 +136,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
+     * @Groups({"abonnement:get-item","produit:get-all","dmdAbonnement:get-item","get","put","post"})
      * @AssertPhoneNumber(
      *     type="fix",
      *     defaultRegion="MA",
@@ -195,6 +197,13 @@ class Fournisseur extends User
      * @ApiSubresource(maxDepth=1)
      */
     private $abonnements;
+
+    /**
+     * @Gedmo\Slug(fields={"societe", "id"})
+     * @ORM\Column(length=128, unique=true)
+     * @Groups({"get","produit:get-all"})
+     */
+    private $slug;
 
 
 
@@ -405,13 +414,10 @@ class Fournisseur extends User
     {
         return $this->abonnements;
     }
-
-
-
-
-
-
-
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 
 
 }
