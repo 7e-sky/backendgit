@@ -27,6 +27,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     "fournisseur": "exact",
  *     "slug": "exact",
  *     "categorie": "exact",
+ *     "categorie.slug": "exact",
+ *     "secteur.slug": "exact",
+ *     "sousSecteurs.slug": "exact",
+ *
  *      }
  * )
  * @ApiFilter(BooleanFilter::class, properties={"isValid"})
@@ -50,11 +54,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *          "get"={
  *              "normalization_context"={"groups"={"produit:get-all"}}
  *           }
+ *
  *     },
  *     itemOperations={
  *
  *          "get"={
- *                  "normalization_context"={"groups"={"produit:get-item"}}
+ *                  "normalization_context"={"groups"={"produit:get-item","produit:get-all"}}
  *                },
  *          "put"={
  *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_FOURNISSEUR') and object.getFournisseur() == user)",
@@ -200,7 +205,10 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     private $featuredImageId;
 
 
-
+    /**
+     * @ORM\ManyToOne(targetEntity="Pays")
+     */
+    private $pays;
     /**
      * @ORM\ManyToOne(targetEntity="Currency")
      * @Groups({"produit:get-all","selectProduit:get-all","demandeDevis:get-item"})
@@ -214,7 +222,10 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
      */
     private $slug;
 
-
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $phone_vu=0;
 
     public function __construct()
     {
@@ -505,6 +516,24 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     /**
      * @return mixed
      */
+    public function getPays()
+    {
+        return $this->pays;
+    }
+
+    /**
+     * @param mixed $pays
+     */
+    public function setPays($pays): void
+    {
+        $this->pays = $pays;
+    }
+
+
+
+    /**
+     * @return mixed
+     */
     public function getCurrency()
     {
         return $this->currency;
@@ -521,6 +550,22 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhoneVu()
+    {
+        return $this->phone_vu;
+    }
+
+    /**
+     * @param mixed $phone_vu
+     */
+    public function setPhoneVu($phone_vu): void
+    {
+        $this->phone_vu = $phone_vu;
     }
 
 

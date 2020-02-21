@@ -25,7 +25,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
- *
  *              "denormalization_context"={"groups"={"demandeDevis:post"}},
  *              "validation_groups"={"demandeDevis:postValidation"},
  *              "normalization_context"={"groups"={"demandeDevis:get-all"}}
@@ -36,7 +35,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          }
  *     },
  *     itemOperations={
- *
  *          "get"={
  *              "access_control"="is_granted('ROLE_FOURNISSEUR')",
  *              "normalization_context"={"groups"={"demandeDevis:get-item","demandeDevis:get-all"}}
@@ -77,9 +75,8 @@ class DemandeDevis implements CreatedEntityInterface
     private $contact;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50,nullable=true)
      * @Groups({"demandeDevis:post","demandeDevis:get-all","demandeDevis:put"})
-     * @Assert\NotBlank(groups={"demandeDevis:postValidation"})
      * @Assert\Length(min=3,max=60,groups={"demandeDevis:postValidation"})
      * @Assert\Regex(
      *     pattern="/[a-zA-Z0-9]{3,}/",
@@ -117,9 +114,8 @@ class DemandeDevis implements CreatedEntityInterface
     private $message;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint",nullable=true)
      * @Groups({"demandeDevis:post","demandeDevis:get-all"})
-     * @Assert\NotBlank(groups={"demandeDevis:postValidation"})
      */
     private $quantity;
 
@@ -138,6 +134,7 @@ class DemandeDevis implements CreatedEntityInterface
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"demandeDevis:post","demandeDevis:get-all","demandeDevis:put"})
+     * @Assert\NotBlank(groups={"demandeDevis:postValidation"})
      * @Assert\Length(min=10,max=100,groups={"demandeDevis:postValidation"})
      *
      */

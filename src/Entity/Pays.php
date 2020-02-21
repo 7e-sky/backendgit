@@ -15,6 +15,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiFilter(
@@ -108,6 +109,13 @@ class Pays
      */
     protected $del;
 
+    /**
+     * @Gedmo\Slug(fields={"name", "id"})
+     * @ORM\Column(length=128, unique=true)
+     * @Groups({"get-from-pays"})
+     */
+    private $slug;
+
 
     public function __construct()
     {
@@ -177,5 +185,8 @@ class Pays
         return $this->zones;
     }
 
-
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 }

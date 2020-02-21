@@ -43,7 +43,7 @@ class Fiche
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"get","produit:get-item"})
+     * @Groups({"get","produit:get-item","produit:get-all"})
      * @ORM\Column(type="integer")
      */
     private $id;
