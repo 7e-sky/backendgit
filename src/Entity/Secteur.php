@@ -80,7 +80,7 @@ class Secteur
     /**
      * @Gedmo\Slug(fields={"name", "id"})
      * @ORM\Column(length=128, unique=true)
-     * @Groups({"secteur:get-all"})
+     * @Groups({"produit:get-from-fournisseur","sous-secteur:get-all","produit:get-all","secteur:get-all"})
      */
     private $slug;
 

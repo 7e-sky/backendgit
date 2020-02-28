@@ -28,6 +28,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     "slug": "exact",
  *     "categorie": "exact",
  *     "categorie.slug": "exact",
+ *     "pays.slug": "exact",
  *     "secteur.slug": "exact",
  *     "sousSecteurs.slug": "exact",
  *
@@ -40,7 +41,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     arguments={
  *     "parameterName": "props",
  *     "overrideDefaultProperties": false,
- *     "whitelist": {"id","categorie","fournisseur","reference","titre","description","pu","currency","featuredImageId"},
+ *     "whitelist": {"id","slug","categorie","sousSecteurs","secteur","fournisseur","reference","titre","description","pu","currency","featuredImageId"},
  *      }
  * )
  * @ApiResource(
@@ -68,7 +69,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *          }
  *     },
  *
- *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true},
+ *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true,"maximum_items_per_page"=100},
  *     subresourceOperations={
  *          "api_fournisseurs_produits_get_subresource"={
  *              "security"="is_granted('ROLE_FOURNISSEUR')",
@@ -127,7 +128,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
-     * @Groups({"selectProduit:get-all","produit:get-item","produit:get-all"})
+     * @Groups({"selectProduit:get-all","produit:get-item"})
      */
     private $fournisseur;
 
@@ -171,13 +172,13 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","put-admin"})
+     * @Groups({"produit:get-item","get-admin","produit:get-from-fournisseur","put-admin"})
      */
     private $isSelect;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","put-admin"})
+     * @Groups({"produit:get-item","get-admin","produit:get-from-fournisseur","put-admin"})
      */
     private $isValid;
 
@@ -218,7 +219,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     /**
      * @Gedmo\Slug(fields={"titre", "id"})
      * @ORM\Column(length=128, unique=true)
-     * @Groups({"produit:get-all","selectProduit:get-all"})
+     * @Groups({"produit:get-from-fournisseur","produit:get-all","selectProduit:get-all"})
      */
     private $slug;
 

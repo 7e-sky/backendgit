@@ -69,6 +69,7 @@ class UserContextBuilder implements SerializerContextBuilderInterface
                 Fournisseur::class === $resourceClass ||
                 Commercial::class === $resourceClass ||
                 DemandeDevis::class === $resourceClass ||
+                Produit::class === $resourceClass ||
                 ZoneCommercial::class === $resourceClass
             ) &&
             isset($context['groups']) &&

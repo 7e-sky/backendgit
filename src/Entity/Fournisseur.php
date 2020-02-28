@@ -30,8 +30,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *      },
  *     itemOperations={
  *     "get"={
- *          "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_FOURNISSEUR') and object == user)",
- *           "normalization_context"={"groups"={"get"}},
+ *          "normalization_context"={"groups"={"get"}},
  *          "defaults"={"del"="false"}
  *          },
  *     "put"={
@@ -47,6 +46,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     "pagination_client_enabled"=true,
  *     "pagination_items_per_page"=10,
  *     "pagination_client_items_per_page"=true,
+ *     "maximum_items_per_page"=100,
  *     "order"={"id":"desc"}
  *     },
  * )
@@ -56,7 +56,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
- *     "societe": "partial"
+ *     "societe": "partial",
+ *     "sousSecteurs.slug": "exact",
+ *     "pays.slug": "exact",
+ *     "sousSecteurs.secteur.slug": "exact",
  *
  *      }
  * )
@@ -77,13 +80,13 @@ class Fournisseur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays",inversedBy="fournisseurs")
-     * @Groups({"abonnement:get-item","produit:get-all","dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"abonnement:get-item","produit:get-all","dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
      */
     private $ville;
 
@@ -107,7 +110,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"selectProduit:get-all","produit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
+     * @Groups({"selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      * @Assert\Regex(
@@ -136,7 +139,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
-     * @Groups({"abonnement:get-item","produit:get-all","dmdAbonnement:get-item","get","put","post"})
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @AssertPhoneNumber(
      *     type="fix",
      *     defaultRegion="MA",
@@ -201,7 +204,7 @@ class Fournisseur extends User
     /**
      * @Gedmo\Slug(fields={"societe", "id"})
      * @ORM\Column(length=128, unique=true)
-     * @Groups({"get","produit:get-all"})
+     * @Groups({"get"})
      */
     private $slug;
 

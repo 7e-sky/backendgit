@@ -25,7 +25,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     "parent":"exact"
  *      }
  * )
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","secteur","slug"}})
  * @ApiFilter(ExistsFilter::class, properties={"parent"})
  * @ApiFilter(OrderFilter::class, properties={"id","name","secteur.id","parent.name"})
  * @ApiResource(
@@ -126,7 +126,7 @@ class SousSecteur
     /**
      * @Gedmo\Slug(fields={"name", "id"})
      * @ORM\Column(length=128, unique=true)
-     * @Groups({"sous-secteur:get-all","produit:get-all","selectProduit:get-all"})
+     * @Groups({"produit:get-from-fournisseur","sous-secteur:get-all","produit:get-all","selectProduit:get-all"})
      */
     private $slug;
 

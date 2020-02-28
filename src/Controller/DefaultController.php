@@ -149,42 +149,13 @@ class DefaultController extends AbstractController
 
 
     /**
-     * @Route("/count_produit_secteurs")
-     */
-    public function getCountProduitParSecteur()
-    {
-
-        $result = null;
-
-        $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
-
-        // Jointures
-        $qb = $em->createQueryBuilder('p')
-            ->join('p.secteur', 'secteur');
-
-
-        // Where condition
-        $qb->where('p.del=0');
-        $qb->andWhere('p.isValid=1');
-
-        $qb->groupBy('p.secteur');
-
-
-        $qb->select('secteur.name,secteur.slug,count(p.id) as count');
-
-        $query = $qb->getQuery();
-
-        $result = $query->getResult();
-
-
-        return $this->json($result);
-    }
-
-    /**
      * @Route("/count_produit_pays")
      */
-    public function getCountProduitParPays()
+    public function getCountProduitParPays(Request $request)
     {
+        $secteur = $request->query->get('secteur', null);
+        $sousSecteur = $request->query->get('sousSecteur', null);
+        $categorie = $request->query->get('categorie', null);
 
         $result = null;
 
@@ -194,12 +165,42 @@ class DefaultController extends AbstractController
         $qb = $em->createQueryBuilder('p')
             ->join('p.pays', 'pays');
 
+        if ($secteur) {
+            $qb->join('p.secteur', 'secteur');
+        }
+        if ($sousSecteur) {
+            $qb->join('p.sousSecteurs', 'sousSecteurs');
+        }
+        if ($categorie) {
+            $qb->join('p.categorie', 'categorie');
+        }
 
         // Where condition
         $qb->where('p.del=0');
         $qb->andWhere('p.isValid=1');
+
+
+        if ($sousSecteur) {
+            $qb->andWhere('sousSecteurs.slug = :slug_activite');
+        }
+        if ($secteur) {
+            $qb->andWhere('secteur.slug = :slug_secteur');
+        }
+        if ($categorie) {
+            $qb->andWhere('categorie.slug = :slug_cat');
+        }
+
         $qb->groupBy('p.pays');
 
+        if ($sousSecteur) {
+            $qb->setParameter('slug_activite', $sousSecteur);
+        }
+        if ($secteur) {
+            $qb->setParameter('slug_secteur', $secteur);
+        }
+        if ($categorie) {
+            $qb->setParameter('slug_cat', $categorie);
+        }
 
         $qb->select('pays.name,pays.slug,count(p.id) as count');
 
@@ -219,11 +220,8 @@ class DefaultController extends AbstractController
     {
         $secteur = $request->query->get('secteur', null);
         $sousSecteur = $request->query->get('sousSecteur', null);
-        $categorie = $request->query->get('categorie', null);
         $pays = $request->query->get('pays', null);
 
-        $resultSousSecteur = null;
-        $result = null;
 
         $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
 
@@ -231,12 +229,13 @@ class DefaultController extends AbstractController
         $qb = $em->createQueryBuilder('p')
             ->join('p.secteur', 'secteur');
 
-        if ($sousSecteur) {
+        if ($secteur) {
             $qb->join('p.sousSecteurs', 'sousSecteurs');
         }
-        if ($categorie) {
+        if ($sousSecteur) {
             $qb->join('p.categorie', 'categorie');
         }
+
         if ($pays) {
             $qb->join('p.pays', 'pays');
         }
@@ -245,54 +244,28 @@ class DefaultController extends AbstractController
         $qb->where('p.del=0');
         $qb->andWhere('p.isValid=1');
 
-        if ($categorie) {
-            $qb->andWhere('categorie.slug = :slug_cat');
-        }
+
         if ($sousSecteur) {
             $qb->andWhere('sousSecteurs.slug = :slug_activite');
         }
         if ($secteur) {
             $qb->andWhere('secteur.slug = :slug_secteur');
-            if (!$sousSecteur) {
-                $qb2 = $em->createQueryBuilder('p')
-                    ->join('p.secteur', 'secteur')
-                    ->join('p.sousSecteurs', 'sousSecteurs');
-                if ($pays) {
-                    $qb2->join('p.pays', 'pays');
-                }
-
-                $qb2->where('p.del=0')
-                    ->andWhere('p.isValid=1');
-
-                if ($pays) {
-                    $qb2->andWhere('pays.slug=:p_slug')
-                        ->setParameter('p_slug', $pays);
-                }
-                $qb2->andWhere('secteur.slug=:s_slug')
-                    ->setParameter('s_slug', $secteur)
-                    ->groupBy('p.sousSecteurs')
-                    ->select('sousSecteurs.name,sousSecteurs.slug,count(p.id)');
-                $query2 = $qb2->getQuery();
-                $resultSousSecteur = $query2->getResult();
-            }
         }
         if ($pays) {
             $qb->andWhere('pays.slug = :slug_pays');
         }
 
         // Group by
-        if ($categorie) {
+        if ($sousSecteur) {
             $qb->groupBy('p.categorie');
-        } else if ($sousSecteur) {
+        } else if ($secteur) {
             $qb->groupBy('p.sousSecteurs');
         } else {
             $qb->groupBy('p.secteur');
         }
 
         //set Parametres
-        if ($categorie) {
-            $qb->setParameter('slug_cat', $categorie);
-        }
+
         if ($sousSecteur) {
             $qb->setParameter('slug_activite', $sousSecteur);
         }
@@ -303,10 +276,10 @@ class DefaultController extends AbstractController
             $qb->setParameter('slug_pays', $pays);
         }
 
-        if ($categorie) {
-            $qb->select('categorie.name,categorie.slug,count(p.id)');
-        } else if ($sousSecteur) {
-            $qb->select('sousSecteurs.name,sousSecteurs.slug,count(p.id)');
+        if ($sousSecteur) {
+            $qb->select('categorie.name,categorie.slug,count(p.id) as count');
+        } else if ($secteur) {
+            $qb->select('sousSecteurs.name,sousSecteurs.slug,count(p.id) as count');
         } else {
             $qb->select('secteur.name,secteur.slug,count(p.id) as count');
         }
@@ -314,14 +287,131 @@ class DefaultController extends AbstractController
         $query = $qb->getQuery();
 
         $result = $query->getResult();
-        if ($result) {
-            if ($resultSousSecteur) {
-                $result['sousSecteurs'] = $resultSousSecteur;
-            }
-        }
 
 
         return $this->json($result);
     }
+
+
+    /**
+     * @Route("/count_fournisseur_pays")
+     */
+    public function getCountFournisseurParPays(Request $request)
+    {
+        $secteur = $request->query->get('secteur', null);
+        $sousSecteur = $request->query->get('sousSecteur', null);
+
+        $result = null;
+
+        $em = $this->getDoctrine()->getManager()->getRepository(Fournisseur::class);
+
+        // Jointures
+        $qb = $em->createQueryBuilder('p')
+            ->join('p.pays', 'pays');
+
+        if ($secteur) {
+            $qb->join('p.sousSecteurs', 'sousSecteurs');
+            $qb->join('sousSecteurs.secteur', 'secteur');
+        }
+
+
+        // Where condition
+        $qb->where('p.del=0');
+        $qb->andWhere('p.isactif=1');
+
+
+        if ($sousSecteur) {
+            $qb->andWhere('sousSecteurs.slug = :slug_activite');
+        }
+        if ($secteur) {
+            $qb->andWhere('secteur.slug = :slug_secteur');
+        }
+
+        $qb->groupBy('p.pays');
+
+        if ($sousSecteur) {
+            $qb->setParameter('slug_activite', $sousSecteur);
+        }
+        if ($secteur) {
+            $qb->setParameter('slug_secteur', $secteur);
+        }
+
+
+        $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
+
+        $query = $qb->getQuery();
+
+        $result = $query->getResult();
+
+
+        return $this->json($result);
+        //  return $this->json($query->getSQL());
+    }
+
+    /**
+     * @Route("/count_fournisseur_categorie")
+     */
+    public function getCountFournisseurParCategorie(Request $request)
+    {
+        $secteur = $request->query->get('secteur', null);
+        $sousSecteur = $request->query->get('sousSecteur', null);
+        $pays = $request->query->get('pays', null);
+
+
+        $em = $this->getDoctrine()->getManager()->getRepository(Fournisseur::class);
+
+        // Jointures
+        $qb = $em->createQueryBuilder('p')
+            ->join('p.sousSecteurs', 'sousSecteurs')
+            ->join('sousSecteurs.secteur', 'secteur');
+
+        if ($pays) {
+            $qb->join('p.pays', 'pays');
+        }
+
+        // Where condition
+        $qb->where('p.del=0');
+        $qb->andWhere('p.isactif=1');
+
+
+
+        if ($secteur) {
+            $qb->andWhere('secteur.slug = :slug_secteur');
+        }
+        if ($pays) {
+            $qb->andWhere('pays.slug = :slug_pays');
+        }
+
+        // Group by
+        if($secteur) {
+            $qb->groupBy('sousSecteurs');
+        } else {
+            $qb->groupBy('secteur');
+        }
+
+        //set Parametres
+
+
+        if ($secteur) {
+            $qb->setParameter('slug_secteur', $secteur);
+        }
+        if ($pays) {
+            $qb->setParameter('slug_pays', $pays);
+        }
+
+        if ($secteur) {
+            $qb->select('sousSecteurs.name,sousSecteurs.slug,count(distinct p.id) as count');
+        } else {
+            $qb->select('secteur.name,secteur.slug,count(distinct p.id) as count');
+        }
+
+        $query = $qb->getQuery();
+
+        $result = $query->getResult();
+
+
+        return $this->json($result);
+    }
+
 
 }
