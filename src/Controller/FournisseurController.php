@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\Abonnement;
+use App\Entity\ContactFournisseur;
 use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
 use App\Entity\DetailVisite;
@@ -60,6 +61,24 @@ class FournisseurController extends AbstractController
         }
 
         return null;
+
+
+    }
+
+    /**
+     * @Route("/messages")
+     */
+    public function getCountMessageNonVu()
+    {
+
+        /**
+         * @var UserInterface $fournisseur
+         */
+        $fournisseur = $this->tokenStorage->getToken()->getUser();
+
+        $result = $this->getDoctrine()->getManager()->getRepository(ContactFournisseur::class)->count(['del'=>false,'statut'=>true,"fournisseur"=>$fournisseur,"isRead"=>false]);
+
+        return $this->json($result);
 
 
     }

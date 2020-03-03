@@ -19,7 +19,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     SearchFilter::class,
  *     properties={
  *     "contact": "partial",
- *     "message":"partial"
+ *     "message":"partial",
+ *     "statut":"exact",
  *      }
  * )
  * @ApiResource(

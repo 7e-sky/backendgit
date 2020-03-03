@@ -10,6 +10,7 @@ namespace App\Email;
 
 
 use App\Entity\Abonnement;
+use App\Entity\ContactFournisseur;
 use App\Entity\DemandeAbonnement;
 use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
@@ -186,11 +187,34 @@ class Mailer
     }
 
     //======================================================================
+    // FOURNISSEUR MESSAGE FICHE ENTREPRISE
+    //======================================================================
+
+
+    // Alerter le fournisseur quand un visiteur public lui envoyé un message
+
+    public function alerteFournisseurMessagePublic(ContactFournisseur $message)
+    {
+
+        $body = $this->twig->render(
+            'email/messageFournisseur.html.twig', ['message' => $message]
+        );
+
+        $message = (new \Swift_Message('Demande d\'information | Les Achats Industriels'))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($message->getFournisseur()->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
+
+    //======================================================================
     // PRODUIT & DEMANDE DEVIS PAR PRODUIT
     //======================================================================
 
 
-    // Alerter le fournisseur quand un visiteurs public demande un devis
+    // Alerter le fournisseur quand un visiteur public a demandé un devis
 
     public function alerteFournisseurDemandeDevisPublic(DemandeDevis $demandeDevis)
     {
@@ -199,7 +223,7 @@ class Mailer
             'email/demandeDevis.html.twig', ['demandeDevis' => $demandeDevis]
         );
 
-        $message = (new \Swift_Message('Demande de devis'))
+        $message = (new \Swift_Message('Demande de devis | Les Achats Industriels'))
             ->setFrom('youness.arbouh1@gmail.com')
             ->setTo($demandeDevis->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');

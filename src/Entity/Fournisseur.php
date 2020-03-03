@@ -68,7 +68,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     arguments={
  *     "parameterName": "props",
  *     "overrideDefaultProperties": false,
- *     "whitelist": {"id","societe","sousSecteurs"},
+ *     "whitelist": {"id","societe","sousSecteurs","slug"},
  *      }
  * )
  * @ORM\Table(name="fournisseur",indexes={@ORM\Index(name="indexe_fournisseur", columns={"societe"})})
@@ -80,13 +80,13 @@ class Fournisseur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays",inversedBy="fournisseurs")
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"produit:get-item","abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"produit:get-item","abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
      */
     private $ville;
 
@@ -110,7 +110,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
+     * @Groups({"produit:get-item","contactFournisseur:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-demande","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      * @Assert\Regex(
@@ -176,6 +176,12 @@ class Fournisseur extends User
      */
     private $demandes;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ContactFournisseur", mappedBy="fournisseur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $messages;
+
 
     /**
      * @ORM\OneToMany(targetEntity="DemandeJeton", mappedBy="fournisseur")
@@ -204,10 +210,14 @@ class Fournisseur extends User
     /**
      * @Gedmo\Slug(fields={"societe", "id"})
      * @ORM\Column(length=128, unique=true)
-     * @Groups({"get"})
+     * @Groups({"produit:get-item","get"})
      */
     private $slug;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $phone_vu=0;
 
 
     public function __construct()
@@ -271,6 +281,7 @@ class Fournisseur extends User
         $this->sousSecteurs->removeElement($sousSecteur);
 
     }
+
 
     /**
      * @return mixed
@@ -421,6 +432,31 @@ class Fournisseur extends User
     {
         return $this->slug;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPhoneVu()
+    {
+        return $this->phone_vu;
+    }
+
+    /**
+     * @param mixed $phone_vu
+     */
+    public function setPhoneVu($phone_vu): void
+    {
+        $this->phone_vu = $phone_vu;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
 
 
 }

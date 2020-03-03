@@ -1,0 +1,10 @@
+<h3>Bonjour {{ message.fournisseur.firstName~' '~message.fournisseur.lastName }}</h3>
+<p>Demande d'information, date : {{ message.created|date("d/m/Y") }}</p>
+<h4>Les informations du demandeur</h4>
+<ul>
+    <li><strong>NOM & Prénom : </strong>{{ message.contact}}</li>
+    <li><strong>Email : </strong>{{ message.email}}</li>
+    <li><strong>Téléphone : </strong>{{ message.phone}}</li>
+    <li><strong>Message : </strong>{{ message.message}}</li>
+</ul>
+

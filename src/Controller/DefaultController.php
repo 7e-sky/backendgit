@@ -414,4 +414,25 @@ class DefaultController extends AbstractController
     }
 
 
+
+    /**
+     * @Route("/custom/update_fournisseur/{id}")
+     */
+    public function UpdatePhoneVu(Fournisseur $fournisseur)
+    {
+        // Generate response
+        $response = new JsonResponse();
+        if (!$fournisseur) {
+            return $response->setStatusCode(404);
+        }
+        $fournisseur->setPhoneVu($fournisseur->getPhoneVu()+1);
+        $this->getDoctrine()->getManager()->flush();
+        // Set headers
+        $response->headers->set('Cache-Control', 'private');
+        $response->setContent($fournisseur->getFix()?$fournisseur->getFix():$fournisseur->getPhone());
+        return $response;
+
+    }
+
+
 }

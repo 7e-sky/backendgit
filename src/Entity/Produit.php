@@ -86,21 +86,21 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"selectProduit:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","demandeDevis:get-all"})
+     * @Groups({"selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","demandeDevis:get-all"})
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"selectProduit:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-all"})
+     * @Groups({"selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-all"})
      * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
      */
     private $reference;
 
     /**
      * @ORM\Column(type="string", length=100)
-     * @Groups({"selectProduit:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-all"})
+     * @Groups({"selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-all"})
      * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
      * @Assert\Length(min=6,max=100,groups={"produit:postValidation","produit:putValidation"})
      */
@@ -108,21 +108,21 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
+     * @Groups({"produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
      */
     private $secteur;
 
     /**
      * @ORM\ManyToOne(targetEntity="SousSecteur")
-     * @Groups({"produit:get-item","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
+     * @Groups({"selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
      */
     private $sousSecteurs;
 
     /**
      * @ORM\ManyToOne(targetEntity="SousSecteur")
-     * @Groups({"selectProduit:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
+     * @Groups({"selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $categorie;
 
@@ -134,20 +134,20 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Fiche")
-     * @Groups({"produit:get-item","produit:post","produit:put","demandeDevis:get-item","produit:get-all","selectProduit:get-all"})
+     * @Groups({"produit:post","produit:put","demandeDevis:get-item","produit:get-all","selectProduit:get-all"})
      */
     private $ficheTechnique;
 
     /**
      * @ORM\ManyToMany(targetEntity="ImageProduit")
-     * @Groups({"produit:get-item","produit:post","produit:put","demandeDevis:get-item","produit:get-all","selectProduit:get-all"})
+     * @Groups({"produit:post","produit:put","demandeDevis:get-item","produit:get-all","selectProduit:get-all"})
      * @ORM\JoinTable()
      */
     private $images;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","selectProduit:get-all","produit:post","produit:put","demandeDevis:get-item"})
+     * @Groups({"produit:get-all","produit:get-from-fournisseur","selectProduit:get-all","produit:post","produit:put","demandeDevis:get-item"})
      * @Assert\NotBlank(groups={"produit:postValidation"})
      * @Assert\Length(min=10,groups={"produit:postValidation","produit:putValidation"})
      * @Assert\Regex(
@@ -160,31 +160,31 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"produit:get-item","produit:get-all","selectProduit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
+     * @Groups({"produit:get-all","selectProduit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $pu;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","produit:put"})
+     * @Groups({"get-owner","produit:get-from-fournisseur","produit:put"})
      */
     private $del;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"produit:get-item","get-admin","produit:get-from-fournisseur","put-admin"})
+     * @Groups({"get-owner","get-admin","put-admin"})
      */
     private $isSelect;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"produit:get-item","get-admin","produit:get-from-fournisseur","put-admin"})
+     * @Groups({"get-owner","get-admin","produit:get-from-fournisseur","put-admin"})
      */
     private $isValid;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"produit:get-item","produit:get-all","produit:get-from-fournisseur","demandeDevis:get-item"})
+     * @Groups({"get-owner","produit:get-from-fournisseur","demandeDevis:get-item"})
      */
     private $created;
 
@@ -195,13 +195,13 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
-     * @Groups({"produit:get-item","selectProduit:get-all","produit:post","produit:put","demandeDevis:get-item","produit:get-all"})
+     * @Groups({"selectProduit:get-all","produit:post","produit:put","demandeDevis:get-item","produit:get-all"})
      */
     private $videos;
 
     /**
      * @ORM\ManyToOne(targetEntity="ImageProduit")
-     * @Groups({"selectProduit:get-all","produit:get-from-fournisseur","produit:get-item","produit:get-all","produit:post","produit:put","demandeDevis:get-item"})
+     * @Groups({"selectProduit:get-all","produit:get-from-fournisseur","produit:get-all","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $featuredImageId;
 
@@ -225,6 +225,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"get-owner"})
      */
     private $phone_vu=0;
 
