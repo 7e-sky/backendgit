@@ -16,6 +16,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+
 
 /**
  * @ApiFilter(
@@ -24,6 +27,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     "description": "partial",
  *     "reference": "partial",
  *     "statut": "exact",
+ *      }
+ * )
+ * @ApiFilter(
+ *     PropertyFilter::class,
+ *     arguments={
+ *     "parameterName": "props",
+ *     "overrideDefaultProperties": false,
+ *     "whitelist": {"id","slug","reference","titre","description","pays","ville","dateExpiration","created"},
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"reference","description","dateExpiration","created","budget","isPublic","sousSecteurs.name"})
@@ -90,6 +101,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      */
     private $id;
 
+
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
      * @Groups({"visit:get-item","visit:get-all","get-from-acheteur_demandes"})
@@ -115,6 +127,14 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      *
      */
     private $reference;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * Assert\NotBlank(groups={"postValidation"})
+     * @Groups({"visit:get-item","visit:get-all","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     *
+     */
+    private $titre;
 
     /**
      * @ORM\Column(type="text")
@@ -245,7 +265,14 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      * @ORM\Column(type="string",nullable=true)
      * @Groups({"visit:get-item","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
-    private $ville ;
+    private $ville;
+
+    /**
+     * @Gedmo\Slug(fields={"titre"})
+     * @ORM\Column(length=128, unique=true)
+     * @Groups({"get-from-demande"})
+     */
+    private $slug;
 
 
     public function __construct()
@@ -582,9 +609,29 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
         $this->ville = $ville;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTitre()
+    {
+        return $this->titre;
+    }
 
+    /**
+     * @param mixed $titre
+     */
+    public function setTitre($titre): void
+    {
+        $this->titre = $titre;
+    }
 
-
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 
 
 
