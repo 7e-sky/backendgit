@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  mer. 15 jan. 2020 à 18:17
+-- Généré le :  jeu. 05 mars 2020 à 17:25
 -- Version du serveur :  10.1.31-MariaDB
 -- Version de PHP :  7.2.4
 
@@ -48,39 +48,6 @@ CREATE TABLE `abonnement` (
   `commentaire` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `abonnement`
---
-
-INSERT INTO `abonnement` (`id`, `offre_id`, `demande_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `mode_id`, `reference`, `statut`, `prix`, `created`, `expired`, `date_peiment`, `duree_id`, `remise`, `currency_id`, `commentaire`) VALUES
-(1, 2, 22, 75, NULL, NULL, 1, '2020-1', 1, 4596, '2020-01-13 12:03:16', '2022-01-13 12:03:16', '2020-01-13 12:03:16', 2, 10, NULL, NULL),
-(2, 3, 23, 75, NULL, NULL, 2, '2020-2', 1, 4296, '2020-01-13 12:05:15', '2021-01-13 12:05:15', '2020-01-13 12:05:15', 1, 20, NULL, NULL),
-(3, 3, 23, 75, NULL, NULL, 2, '2020-3', 1, 4320, '2020-01-13 12:05:47', '2021-01-13 12:05:47', '2020-01-13 12:05:47', 1, 0, NULL, NULL),
-(4, 3, 23, 75, NULL, NULL, 2, '2020-4', 1, 6912, '2020-01-13 12:06:17', '2022-01-13 12:06:17', '2020-01-13 12:06:17', 2, 0, NULL, NULL),
-(5, 3, 23, 75, NULL, NULL, 2, '2020-5', 1, 6792, '2020-01-13 15:02:21', '2022-01-13 15:02:22', '2020-01-13 15:02:22', 2, 100, NULL, NULL),
-(6, 1, 24, 75, NULL, NULL, 1, '2020-6', 1, 2304, '2020-01-13 16:21:23', '2022-01-13 16:21:23', '2020-01-13 16:21:23', 2, 0, NULL, NULL),
-(7, 3, NULL, 81, NULL, NULL, 1, '2020-7', 0, 432, '2020-01-14 15:32:09', NULL, NULL, 1, 0, 1, NULL),
-(8, 3, NULL, 81, NULL, NULL, 1, '2020-8', 0, 432, '2020-01-14 15:33:28', NULL, NULL, 1, 0, 1, NULL),
-(9, 3, NULL, 81, NULL, NULL, 1, '2020-9', 1, 432, '2020-01-14 15:34:26', '2021-01-14 15:34:26', '2020-01-14 15:34:26', 1, 0, 1, NULL),
-(10, 1, NULL, 81, NULL, NULL, 1, '2020-10', 1, 144, '2020-01-14 15:38:57', '2021-01-14 15:38:57', '2020-01-14 15:38:57', 1, 0, 1, NULL),
-(11, 1, NULL, 81, NULL, NULL, 1, '2020-11', 0, 144, '2020-01-14 15:39:57', NULL, NULL, 1, 0, 1, NULL),
-(12, 1, NULL, 75, NULL, NULL, 1, '2020-12', 0, 1440, '2020-01-14 15:40:44', NULL, NULL, 1, 0, 11, NULL),
-(13, 3, NULL, 81, NULL, NULL, 2, '2020-13', 1, 691.2, '2020-01-14 15:41:45', '2022-01-14 15:41:45', '2020-01-14 15:41:45', 2, 0, 1, NULL),
-(14, 1, NULL, 78, NULL, NULL, 1, '2020-14', 0, 1440, '2020-01-14 18:23:37', NULL, NULL, 1, 0, NULL, NULL),
-(15, 2, 29, 75, NULL, NULL, 1, '2020-15', 1, 4608, '2020-01-15 12:41:17', '2022-01-15 12:41:17', '2020-01-15 12:41:17', 2, 0, 11, NULL),
-(16, 3, 28, 75, NULL, NULL, 1, '2020-16', 1, 6912, '2020-01-15 12:43:33', '2022-01-15 12:43:33', '2020-01-15 12:43:33', 2, 0, 11, NULL),
-(17, 2, 27, 75, NULL, NULL, 1, '2020-17', 1, 4608, '2020-01-15 12:45:54', '2022-01-15 12:45:54', '2020-01-15 12:45:54', 2, 0, 11, NULL),
-(19, 1, 30, 75, NULL, NULL, 1, '2020-18', 1, 1440, '2020-01-15 15:08:39', '2021-01-15 15:08:39', '2020-01-15 15:08:39', 1, 0, 11, NULL),
-(20, 1, NULL, 75, NULL, NULL, 1, '2020-19', 1, 144, '2020-01-15 15:13:36', '2021-01-15 15:13:36', '2020-01-15 15:13:36', 1, 0, 1, NULL),
-(21, 3, NULL, 75, NULL, NULL, 1, '2020-20', 1, 691.2, '2020-01-15 15:14:31', '2022-01-15 15:14:31', '2020-01-15 15:14:31', 2, 0, 1, NULL),
-(22, 1, NULL, 81, NULL, NULL, 1, '2020-21', 0, 144, '2020-01-15 16:20:34', '2021-01-15 16:20:34', '2020-01-15 16:20:34', 1, 0, 1, 'fggggg'),
-(23, 1, NULL, 81, NULL, NULL, 1, '2020-22', 1, 144, '2020-01-15 17:05:47', '2021-01-15 17:05:47', '2020-01-15 17:05:47', 1, 0, 1, ''),
-(24, 1, NULL, 81, NULL, NULL, 1, '2020-23', 0, 144, '2020-01-15 17:06:45', NULL, NULL, 1, 0, 1, ''),
-(25, 1, NULL, 81, NULL, NULL, 1, '2020-24', 0, 144, '2020-01-15 18:01:07', NULL, NULL, 1, 0, 1, ''),
-(26, 1, NULL, 81, NULL, NULL, 1, '2020-25', 0, 144, '2020-01-15 18:04:21', NULL, NULL, 1, 0, 1, ''),
-(27, 1, NULL, 81, NULL, NULL, 1, '2020-26', 0, 144, '2020-01-15 18:05:21', NULL, NULL, 1, 0, 1, ''),
-(28, 1, NULL, 81, NULL, NULL, 1, '2020-27', 0, 144, '2020-01-15 18:06:26', NULL, NULL, 1, 0, 1, '');
-
 -- --------------------------------------------------------
 
 --
@@ -91,62 +58,6 @@ CREATE TABLE `abonnement_sous_secteur` (
   `abonnement_id` int(11) NOT NULL,
   `sous_secteur_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `abonnement_sous_secteur`
---
-
-INSERT INTO `abonnement_sous_secteur` (`abonnement_id`, `sous_secteur_id`) VALUES
-(1, 6),
-(1, 7),
-(2, 6),
-(2, 9),
-(3, 6),
-(3, 9),
-(4, 6),
-(4, 9),
-(5, 6),
-(5, 9),
-(6, 6),
-(6, 7),
-(6, 9),
-(7, 6),
-(7, 7),
-(8, 6),
-(8, 7),
-(9, 8),
-(9, 270),
-(10, 6),
-(10, 8),
-(11, 7),
-(11, 270),
-(12, 7),
-(12, 8),
-(12, 18),
-(13, 6),
-(13, 7),
-(14, 7),
-(15, 6),
-(15, 7),
-(16, 6),
-(16, 7),
-(16, 9),
-(17, 6),
-(17, 8),
-(17, 9),
-(17, 11),
-(19, 6),
-(19, 7),
-(20, 6),
-(21, 6),
-(21, 7),
-(22, 6),
-(23, 6),
-(24, 6),
-(25, 6),
-(26, 6),
-(27, 6),
-(28, 6);
 
 -- --------------------------------------------------------
 
@@ -199,16 +110,86 @@ INSERT INTO `acheteur` (`id`, `pays_id`, `ville_id`, `societe`, `parent2`, `civi
 (48, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
 (49, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
 (50, NULL, NULL, '3f industrie', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL),
-(68, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
-(69, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
-(70, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
-(71, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
-(72, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
-(73, 1, 2, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 1, NULL),
-(74, 2, 33, '3f industrie', NULL, 'M.', NULL, '', '', '', 1, NULL),
-(76, 1, 1, '1244n', NULL, 'M.', '123456676102145', '0622201475', 'https://www.d.fr0', 'skkkkkkkkkkk2', 3, NULL),
-(77, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', 'https://www.d.com', '', 1, NULL),
-(80, 1, 1, '7e-sky', NULL, 'M.', '123456789123456', '', '', '', 1, 1);
+(68, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', NULL, NULL),
+(69, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', NULL, NULL),
+(70, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', NULL, NULL),
+(71, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', NULL, NULL),
+(72, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', NULL, NULL),
+(73, 1, 2, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', NULL, NULL),
+(74, 2, 33, '3f industrie', NULL, 'M.', NULL, '', '', '', NULL, NULL),
+(76, 1, 1, '1244n', NULL, 'M.', '123456676102145', '0622201475', 'https://www.d.fr0', 'skkkkkkkkkkk2', NULL, NULL),
+(77, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', 'https://www.d.com', '', NULL, NULL),
+(80, 1, 1, '7e-sky', NULL, 'M.', '123456789123456', '', '', '', NULL, 1),
+(84, 1, 1, '3f industrie', NULL, 'M.', '123456789123456', '', '', '', 81, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `actualite`
+--
+
+CREATE TABLE `actualite` (
+  `id` int(11) NOT NULL,
+  `image_id` int(11) DEFAULT NULL,
+  `titre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created` datetime NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `keywords` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `actualite`
+--
+
+INSERT INTO `actualite` (`id`, `image_id`, `titre`, `description`, `created`, `is_active`, `keywords`, `source`, `slug`) VALUES
+(1, 3, 'string', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 10:13:29', 1, NULL, 'string', ''),
+(2, 3, 'string', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 11:58:36', 1, NULL, 'string', 'string'),
+(3, 3, 'string', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 11:59:18', 1, NULL, 'string', 'string-1'),
+(4, 3, 'string', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 11:59:36', 1, NULL, 'string', 'string-2'),
+(5, 3, 'string string string', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 12:01:36', 1, NULL, 'string', 'string-string-string'),
+(6, 3, 'Title OF TJE RIGHT', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 12:02:05', 1, NULL, 'string', 'title-of-tje-right'),
+(7, 3, 'Title OF TJE RIGHT', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 12:02:09', 1, NULL, 'string', 'title-of-tje-right-1'),
+(8, 3, 'Title OF TJE RIGHT', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 12:04:09', 1, NULL, 'string', 'title-of-tje-right-2'),
+(9, 3, 'Title OF TJE RIGHT', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 12:04:12', 1, NULL, 'string', 'title-of-tje-right-3'),
+(10, 3, 'Title OF TJE RIGHT Title OF TJE RIGHT Title OF TJE RIGHT', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 12:05:51', 1, NULL, 'string', 'title-of-tje-right-title-of-tje-right-title-of-tje-right'),
+(11, 3, 'Title OF TJE RIGHT Title OF TJE RIGHT Title OF TJE RIGHT', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 12:05:57', 1, NULL, 'string', 'title-of-tje-right-title-of-tje-right-title-of-tje-right-1'),
+(12, 3, 'Title OF TJE RIGHT Title OF TJE RIGHT Title OF TJE RIGHT Title OF TJE RIGHT Title OF TJE RIGHT', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 12:06:05', 1, NULL, 'string', 'title-of-tje-right-title-of-tje-right-title-of-tje-right-title-of-tje-right-title-of-tje-right'),
+(13, 3, 'Title OF TJE RIGHT Title OF TJE RIGHT Title OF TJE RIGHT Title OF TJE RIGHT Title OF TJE RIGHT', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 12:06:10', 1, NULL, 'string', 'title-of-tje-right-title-of-tje-right-title-of-tje-right-title-of-tje-right-title-of-tje-right-1'),
+(14, 3, 'Electrical wiring / interconnextion system ( EWIS )', 'stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring', '2020-02-04 15:29:11', 1, NULL, 'string', 'electrical-wiring-interconnextion-system-ewis'),
+(15, 3, 'Electrical wiring / interconnextion system ( EWIS )', '<p>stringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstringstring</p>', '2020-02-04 15:29:42', 1, NULL, 'string', 'electrical-wiring-interconnextion-system-ewis-1'),
+(16, 8, 'Blanditiis consectet', '<p>Blanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectetBlanditiis consectet</p>', '2020-02-04 15:45:26', 1, NULL, 'http://www.exemple.com', 'blanditiis-consectet'),
+(17, 9, 'Electrical wiring / interconnextion system ( EWIS )', '<p><i><strong>Electrical wiring / interconnextion system ( EWIS )</strong></i></p><ol><li>Electrical wiring / interconnextion system ( EWIS )</li></ol><ul><li>Electrical wiring / interconnextion system ( EWIS )</li><li>Electrical wiring / interconnextion system ( EWIS&nbsp;</li><li>Electrical wiring / interconnextion system ( EWIS )</li></ul>', '2020-02-04 16:02:22', 1, NULL, 'http://www.exemple.com', 'electrical-wiring-interconnextion-system-ewis-2'),
+(18, 10, 'Placeat ut error au', '<h2>azsssssss</h2><p>&nbsp;</p><p><strong>sddddd</strong><i>sdsdsdsdsd</i><a href=\"http://www.exemple.com\"><i>http://www.exemple.com&nbsp;</i></a></p><ul><li><i>ddddd</i></li><li><i>dddd</i></li><li><i>dddd</i></li></ul><ol><li><i>ddd</i></li><li><i>dfff</i></li><li><i>dfd</i></li></ol><blockquote><p><i>ghggggggggggggg</i></p><p>&nbsp;</p></blockquote>', '2020-03-03 11:43:01', 1, NULL, 'http://www.exemple.com', 'placeat-ut-error-au');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `actualite_image`
+--
+
+CREATE TABLE `actualite_image` (
+  `id` int(11) NOT NULL,
+  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `actualite_image`
+--
+
+INSERT INTO `actualite_image` (`id`, `url`) VALUES
+(1, NULL),
+(2, NULL),
+(3, '5e3934e22f787033202560.png'),
+(4, '5e3981e9627b6889523704.png'),
+(5, '5e39822ace553428216011.jpg'),
+(6, '5e39825c498cf610893695.png'),
+(7, '5e3983173c78d919786687.png'),
+(8, '5e3983815fabb550144947.png'),
+(9, '5e39877988cea738555613.jpg'),
+(10, '5e5e34b077c4b394597086.png');
 
 -- --------------------------------------------------------
 
@@ -308,7 +289,12 @@ INSERT INTO `attachement` (`id`, `url`, `file_size`, `type`) VALUES
 (96, '5de54252e58e5216591597.jpg', 119505, 'image/jpeg'),
 (97, '5de617c114ee1045765045.jpg', 8864, 'image/jpeg'),
 (98, '5defcfc15ca5a335415375.jpg', 8864, 'image/jpeg'),
-(99, '5dfb2dd925054548052461.pdf', 143935, 'application/pdf');
+(99, '5dfb2dd925054548052461.pdf', 143935, 'application/pdf'),
+(100, '5e5fdcb47e8c2546747869.png', 169239, 'image/jpeg'),
+(101, '5e5fdcc63772e864745313.png', 60753, 'image/png'),
+(102, '5e5fddaed6b49880270100.png', 172940, 'image/jpeg'),
+(103, '5e5fddf17ed7b858588296.png', 316801, 'image/png'),
+(104, '5e5fe0504b451551020842.jpg', 806975, 'image/jpeg');
 
 -- --------------------------------------------------------
 
@@ -383,16 +369,6 @@ CREATE TABLE `black_listes` (
   `etat` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `black_listes`
---
-
-INSERT INTO `black_listes` (`id`, `fournisseur_id`, `raison`, `created`, `acheteur_id`, `deblacklister`, `etat`) VALUES
-(51, 75, '1-makantfahmouch \n2-its okey', '2019-11-21 09:23:05', 76, '2019-12-11 10:09:42', 0),
-(53, 64, 'okey okey', '2019-12-09 11:24:23', 76, '2019-12-11 10:16:19', 0),
-(54, 65, '000000000', '2019-12-11 10:25:22', 76, NULL, 1),
-(55, 63, 'aaaaaaaaaaaa', '2019-12-13 11:11:11', 76, NULL, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -434,6 +410,42 @@ INSERT INTO `commercial_ville` (`commercial_id`, `ville_id`) VALUES
 (6, 2),
 (7, 2),
 (6, 6);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `contact_fournisseur`
+--
+
+CREATE TABLE `contact_fournisseur` (
+  `id` int(11) NOT NULL,
+  `fournisseur_id` int(11) DEFAULT NULL,
+  `contact` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created` datetime NOT NULL,
+  `date_validation` datetime DEFAULT NULL,
+  `statut` tinyint(1) NOT NULL,
+  `is_read` tinyint(1) NOT NULL,
+  `date_read` datetime DEFAULT NULL,
+  `del` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `contact_fournisseur`
+--
+
+INSERT INTO `contact_fournisseur` (`id`, `fournisseur_id`, `contact`, `phone`, `email`, `message`, `created`, `date_validation`, `statut`, `is_read`, `date_read`, `del`) VALUES
+(1, NULL, 'YOUNESS ARBOUH', '+212696318051', 'webmaster@3findustrie.com', 'sssssssssssssss', '2020-03-02 14:47:46', NULL, 0, 0, NULL, 1),
+(2, 82, 'YOUNESS ARBOUH', '+212696318051', 'webmaster@3findustrie.com', 'azazazazazaz', '2020-03-02 14:52:00', '2020-03-03 12:08:23', 1, 1, '2020-03-05 12:02:52', 0),
+(3, 82, 'YOUNESS ARBOUH', '+212696318051', 'webmaster@3findustrie.com', 'SDSDSDSSDSS', '2020-03-02 15:02:06', NULL, 1, 1, '2020-03-03 11:01:25', 0),
+(4, 82, 'YOUNESS ARBOUH', '+212696318051', 'webmaster@3findustrie.com', 'azazazazaza', '2020-03-02 15:02:36', NULL, 1, 1, '2020-03-03 11:01:56', 0),
+(5, 83, 'YOUNESS ARBOUH', '+212696318051', 'webmaster@3findustrie.com', 'aji ntfahmo', '2020-03-04 09:18:36', NULL, 0, 0, NULL, 0),
+(6, 83, 'YOUNESS ARBOUH', '+33696318051', 'webmaster@3findustrie.com', 'aaaaaaaaaaa', '2020-03-04 09:19:12', NULL, 0, 0, NULL, 0),
+(7, 83, 'YOUNESS ARBOUH', '+212696318051', 'webmaster@3findustrie.com', 'sdsdsdsdsds', '2020-03-04 09:44:34', NULL, 0, 0, NULL, 0),
+(8, 83, 'YOUNESS ARBOUH', '+212696318051', 'webmaster@3findustrie.com', 'ggggggggggg', '2020-03-04 09:56:13', NULL, 0, 0, NULL, 0),
+(9, 82, 'YOUNESS ARBOUH', '+212696318051', 'webmaster@3findustrie.com', 'hghghghghgh', '2020-03-04 09:56:27', NULL, 0, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -486,30 +498,6 @@ CREATE TABLE `demande_abonnement` (
   `currency` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `demande_abonnement`
---
-
-INSERT INTO `demande_abonnement` (`id`, `offre_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `reference`, `statut`, `created`, `mode_id`, `duree_id`, `prix`, `currency`) VALUES
-(14, 1, 75, 5, 9, '2020-14', 0, '2020-01-08 11:01:39', 1, NULL, 0, ''),
-(15, 1, 75, 5, 9, '2020-2', 0, '2020-01-08 11:58:59', 1, NULL, 0, ''),
-(16, 1, 75, 5, 9, '2020-3', 0, '2020-01-08 12:09:53', 1, NULL, 0, ''),
-(17, 1, 75, 5, 9, '2020-4', 0, '2020-01-08 17:11:02', 1, NULL, 0, ''),
-(18, 1, 75, 5, 9, '2020-5', 0, '2020-01-08 17:13:46', 1, NULL, 0, ''),
-(19, 1, 75, 5, 9, '2020-6', 0, '2020-01-08 17:14:32', 1, NULL, 0, ''),
-(20, 3, 75, 5, 9, '2020-7', 1, '2020-01-08 17:39:38', 1, NULL, 0, ''),
-(21, 1, 75, 5, 9, '2020-8', 0, '2020-01-10 11:22:55', 1, 2, 0, ''),
-(22, 2, 75, 5, 9, '2020-9', 1, '2020-01-10 11:24:23', 1, 2, 0, ''),
-(23, 3, 75, 5, 9, '2020-10', 1, '2020-01-10 11:28:09', 2, 2, 0, ''),
-(24, 1, 75, 5, 9, '2020-11', 1, '2020-01-13 16:09:07', 1, 2, 0, ''),
-(25, 3, 75, 5, 9, '2020-12', 0, '2020-01-15 12:02:33', 1, 2, 0, ''),
-(26, 2, 75, 5, 9, '2020-13', 0, '2020-01-15 12:13:46', 1, 2, 4608, 'DHS'),
-(27, 2, 75, 5, 9, '2020-14', 1, '2020-01-15 12:17:05', 1, 2, 4608, 'DHS'),
-(28, 3, 75, 5, 9, '2020-15', 1, '2020-01-15 12:19:38', 1, 2, 6912, 'DHS'),
-(29, 2, 75, 5, 9, '2020-16', 1, '2020-01-15 12:22:56', 1, 2, 4608, 'DHS'),
-(30, 1, 75, 5, 9, '2020-17', 1, '2020-01-15 15:04:56', 1, 1, 1440, 'DHS'),
-(31, 1, 75, 5, 9, '2020-18', 0, '2020-01-15 18:11:44', 1, 2, 1440, 'DHS');
-
 -- --------------------------------------------------------
 
 --
@@ -533,31 +521,43 @@ CREATE TABLE `demande_achat` (
   `budget` double NOT NULL,
   `del` tinyint(1) NOT NULL,
   `motif_rejet_id` int(11) DEFAULT NULL,
-  `currency_id` int(11) DEFAULT NULL
+  `currency_id` int(11) DEFAULT NULL,
+  `pays` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ville` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `titre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `demande_achat`
 --
 
-INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `budget`, `del`, `motif_rejet_id`, `currency_id`) VALUES
-(2, 76, 1, 'aaaaa0q', 'azertyuioppok', '2019-11-30 23:03:00', 1, 0, 5, '2019-11-25 08:03:25', '2019-11-28 14:00:30', 1, 0, 25132, 0, NULL, 1),
-(3, 76, 0, 'qdqdsqsd', 'azqsdazeqd', '2019-11-26 08:03:00', 1, 0, 0, '2019-11-26 17:04:17', '2019-11-14 17:10:38', 0, 0, 11555, 0, NULL, 11),
-(4, 76, 0, 'test', 'aji tfhel achno fhemt', '2019-11-30 12:20:00', 1, 0, 0, '2019-11-28 12:21:21', '2019-11-28 12:21:21', 0, 0, 5000, 0, NULL, 5),
-(5, 76, 0, 'test2', 'mmmmmmmmmm', '2019-11-30 12:21:00', 1, 0, 0, '2019-11-28 12:22:21', '2019-11-28 12:22:21', 0, 0, 1, 0, NULL, 5),
-(6, 76, 1, 'aaaaa0', 'testtttttt', '2019-12-25 16:53:00', 1, 0, 0, '2019-12-02 16:53:55', '2019-12-02 16:53:55', 0, 0, 251101, 0, NULL, 9),
-(7, 76, 1, 'aaaaa0sqd', 'azazeaqsdqq', '2019-12-24 17:01:00', 1, 0, 0, '2019-12-02 17:01:26', '2019-12-02 17:11:10', 0, 0, 10001, 0, NULL, 5),
-(8, 76, 0, 'abcde5', 'qsqdqsdqqqaq5', '2020-01-09 17:01:00', 1, 0, 0, '2019-12-02 17:01:50', '2019-12-10 18:05:29', 0, 1, 20199.5025, 1, NULL, 5),
-(9, 76, 1, 'qqqqqq', 'azertyuuuuu', '2019-12-25 17:02:00', 1, 0, 0, '2019-12-02 17:02:29', '2019-12-02 18:05:53', 0, 0, 5000, 0, NULL, 1),
-(10, 76, 1, '102454', 'azertyuopaja', '2019-12-25 09:06:00', 1, 0, 0, '2019-12-03 09:07:34', '2019-12-10 11:45:15', 0, 1, 500000.55, 0, NULL, 11),
-(11, 76, 1, 'aaaaa', 'aaaaaaaaaaaaaaaa', '2019-12-09 09:07:00', 1, 0, 0, '2019-12-03 09:08:03', '2019-12-06 17:35:52', 1, 0, 8888886, 0, NULL, 6),
-(12, 76, 1, 'azqs', 'azertyuiuu', '2019-12-18 09:08:00', 1, 0, 0, '2019-12-03 09:08:27', '2019-12-03 09:25:41', 0, 0, 12447, 0, NULL, 4),
-(13, 76, 0, 'En attente', 'azertyuuuuuu', '2019-12-31 16:35:00', 1, 0, 0, '2019-12-10 16:36:25', '2019-12-10 18:03:17', 0, 0, 201588.55, 1, NULL, 9),
-(14, 76, 1, '2019-8', 'azerty yyyyy', '2019-12-29 17:06:00', 1, 0, 0, '2019-12-10 17:07:28', '2019-12-10 18:01:56', 0, 0, 250.55, 0, NULL, 5),
-(15, 76, 1, '2019-10', 'teeeeeeeeeeeeeeestj', '2019-12-30 18:02:00', 1, 0, 0, '2019-12-10 18:03:05', '2019-12-19 08:59:36', 1, 0, 5000.51, 0, NULL, 11),
-(16, 76, 0, '2019-9', 'aaaaaaaaaaaaa', '2019-12-31 18:03:00', 0, 0, 0, '2019-12-10 18:04:03', '2020-01-08 20:09:01', 0, 0, 255.25, 0, NULL, 11),
-(17, 80, 1, '2019-11', 'teeeeeeeeeeeeest', '2019-12-25 11:39:00', 1, 0, 0, '2019-12-17 11:40:50', '2019-12-17 12:01:38', 0, 0, 20000.5, 0, NULL, 9),
-(18, 80, 1, '2019-12', 'c\'est tjrs pour le test222', '2019-12-27 18:17:00', 1, 1, 0, '2019-12-17 12:19:49', '2019-12-19 08:58:16', 1, 0, 25000, 0, NULL, 1);
+INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `budget`, `del`, `motif_rejet_id`, `currency_id`, `pays`, `ville`, `titre`, `slug`) VALUES
+(2, 76, 1, 'aaaaa0q', 'azertyuioppok', '2019-11-30 23:03:00', 1, 0, 5, '2019-11-25 08:03:25', '2019-11-28 14:00:30', 1, 0, 25132, 0, NULL, 1, NULL, NULL, 'titre-2', 'titre-2'),
+(3, 76, 0, 'qdqdsqsd', 'azqsdazeqd', '2019-11-26 08:03:00', 1, 0, 0, '2019-11-26 17:04:17', '2019-11-14 17:10:38', 0, 0, 11555, 0, NULL, 11, NULL, NULL, 'titre-3', 'titre-3'),
+(4, 76, 0, 'test', 'aji tfhel achno fhemt', '2019-11-30 12:20:00', 1, 0, 0, '2019-11-28 12:21:21', '2019-11-28 12:21:21', 0, 0, 5000, 0, NULL, 5, NULL, NULL, 'titre-4', 'titre-4'),
+(5, 76, 0, 'test2', 'mmmmmmmmmm', '2019-11-30 12:21:00', 1, 0, 0, '2019-11-28 12:22:21', '2019-11-28 12:22:21', 0, 0, 1, 0, NULL, 5, NULL, NULL, 'titre-5', 'titre-5'),
+(6, 76, 1, 'aaaaa0', 'testtttttt', '2019-12-25 16:53:00', 1, 0, 0, '2019-12-02 16:53:55', '2019-12-02 16:53:55', 0, 0, 251101, 0, NULL, 9, NULL, NULL, 'titre-6', 'titre-6'),
+(7, 76, 1, 'aaaaa0sqd', 'azazeaqsdqq', '2019-12-24 17:01:00', 1, 0, 0, '2019-12-02 17:01:26', '2019-12-02 17:11:10', 0, 0, 10001, 0, NULL, 5, NULL, NULL, 'titre-7', 'titre-7'),
+(8, 76, 0, 'abcde5', 'qsqdqsdqqqaq5', '2020-01-09 17:01:00', 1, 0, 0, '2019-12-02 17:01:50', '2019-12-10 18:05:29', 0, 1, 20199.5025, 1, NULL, 5, NULL, NULL, 'titre-8', 'titre-8'),
+(9, 76, 1, 'qqqqqq', 'azertyuuuuu', '2019-12-25 17:02:00', 1, 0, 0, '2019-12-02 17:02:29', '2019-12-02 18:05:53', 0, 0, 5000, 0, NULL, 1, NULL, NULL, 'titre-9', 'titre-9'),
+(10, 76, 1, '102454', 'azertyuopaja', '2019-12-25 09:06:00', 1, 0, 0, '2019-12-03 09:07:34', '2019-12-10 11:45:15', 0, 1, 500000.55, 0, NULL, 11, NULL, NULL, 'titre-10', 'titre-10'),
+(11, 76, 1, 'aaaaa', 'aaaaaaaaaaaaaaaa', '2019-12-09 09:07:00', 1, 0, 0, '2019-12-03 09:08:03', '2019-12-06 17:35:52', 1, 0, 8888886, 0, NULL, 6, NULL, NULL, 'titre-11', 'titre-11'),
+(12, 76, 1, 'azqs', 'azertyuiuu', '2019-12-18 09:08:00', 1, 0, 0, '2019-12-03 09:08:27', '2019-12-03 09:25:41', 0, 0, 12447, 0, NULL, 4, NULL, NULL, 'titre-12', 'titre-12'),
+(13, 76, 0, 'En attente', 'azertyuuuuuu', '2019-12-31 16:35:00', 1, 0, 0, '2019-12-10 16:36:25', '2019-12-10 18:03:17', 0, 0, 201588.55, 1, NULL, 9, NULL, NULL, 'titre-13', 'titre-13'),
+(14, 76, 1, '2019-8', 'azerty yyyyy', '2019-12-29 17:06:00', 1, 0, 0, '2019-12-10 17:07:28', '2019-12-10 18:01:56', 0, 0, 250.55, 0, NULL, 5, NULL, NULL, 'titre-14', 'titre-14'),
+(15, 76, 1, '2019-10', 'teeeeeeeeeeeeeeestj', '2019-12-30 18:02:00', 1, 0, 0, '2019-12-10 18:03:05', '2019-12-19 08:59:36', 1, 0, 5000.51, 0, NULL, 11, NULL, NULL, 'titre-15', 'titre-15'),
+(16, 76, 0, '2019-9', 'aaaaaaaaaaaaa', '2019-12-31 18:03:00', 0, 0, 0, '2019-12-10 18:04:03', '2020-01-08 20:09:01', 0, 0, 255.25, 0, NULL, 11, NULL, NULL, 'titre-16', 'titre-16'),
+(17, 80, 1, '2019-11', 'teeeeeeeeeeeeest', '2019-12-25 11:39:00', 1, 0, 0, '2019-12-17 11:40:50', '2019-12-17 12:01:38', 0, 0, 20000.5, 0, NULL, 9, NULL, NULL, 'titre-17', 'titre-17'),
+(18, 80, 1, '2019-12', 'c\'est tjrs pour le test222', '2019-12-27 18:17:00', 1, 1, 0, '2019-12-17 12:19:49', '2019-12-19 08:58:16', 1, 0, 25000, 0, NULL, 1, NULL, NULL, 'titre-18', 'titre-18'),
+(19, 76, 0, '2020-1', 'aaaaaaaaaaaaaaaaa', '2020-01-31 16:58:00', 1, 0, 0, '2020-01-20 16:58:54', '2020-01-20 17:01:09', 1, 0, 20000, 0, NULL, NULL, NULL, NULL, 'titre-19', 'titre-19'),
+(20, 76, 1, '2020-1', 'Sed perferendis Nam ', '2020-02-19 16:34:00', 1, 0, 0, '2020-02-03 16:34:46', '2020-02-03 16:39:43', 0, 0, 22, 0, NULL, NULL, 'Maroc', 'Casablanca', 'titre-20', 'titre-20'),
+(21, 76, 0, NULL, 'azazazazazaz', '2020-03-04 17:43:27', 0, 0, 0, '2020-03-04 17:43:40', '2020-03-04 18:07:30', 0, 0, 5000, 0, NULL, NULL, 'Maroc', 'Casablanca', 'Electrical wiring / interconnextion system ( EWIS )', 'electrical-wiring-interconnextion-system-ewis-21'),
+(22, 76, 1, '2020-2', 'sdfsdfsfdsfsdf', '2020-03-04 17:46:45', 1, 0, 0, '2020-03-04 17:46:57', '2020-03-05 11:11:32', 0, 0, 88855588, 0, NULL, NULL, 'Maroc', 'Casablanca', 'Electrical wiring / interconnextion system ( EWIS )', 'electrical-wiring-interconnextion-system-ewis'),
+(23, 76, 0, NULL, ' loading: true, loading: true, loading: true, loading: true,', '2020-03-29 18:10:00', 0, 0, 0, '2020-03-04 18:11:15', '2020-03-04 18:11:14', 0, 0, 1552, 0, NULL, NULL, 'Maroc', 'Casablanca', 'Familliarisation avion ( M & H )', 'familliarisation-avion-m-h'),
+(24, 76, 0, NULL, 'Corrupti voluptate ', '2020-03-28 18:11:00', 0, 0, 0, '2020-03-04 18:12:06', '2020-03-04 18:12:06', 0, 0, 88, 0, NULL, NULL, 'Maroc', 'Casablanca', 'Dolorem temporibus p', 'dolorem-temporibus-p'),
+(25, 76, 0, NULL, 'Accusantium aut tene', '2020-03-20 16:14:00', 1, 0, 0, '2020-03-04 18:14:39', '2020-03-04 18:14:39', 0, 0, 22, 0, NULL, NULL, 'Maroc', 'Casablanca', 'Dolore sit aut amet', 'dolore-sit-aut-amet'),
+(26, 76, 1, '2020-3', 'Rem quos obcaecati q', '2020-03-31 18:14:00', 1, 0, 0, '2020-03-04 18:14:59', '2020-03-05 11:11:51', 0, 0, 18, 0, NULL, NULL, 'Maroc', 'Casablanca', 'Qui aliquip ducimus', 'qui-aliquip-ducimus');
 
 -- --------------------------------------------------------
 
@@ -582,7 +582,11 @@ INSERT INTO `demande_achat_attachement` (`demande_achat_id`, `attachement_id`) V
 (9, 96),
 (10, 97),
 (15, 98),
-(15, 99);
+(15, 99),
+(21, 102),
+(21, 103),
+(21, 104),
+(22, 101);
 
 -- --------------------------------------------------------
 
@@ -594,7 +598,7 @@ CREATE TABLE `demande_devis` (
   `id` int(11) NOT NULL,
   `produit_id` int(11) DEFAULT NULL,
   `contact` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `societe` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `societe` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `message` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -603,7 +607,7 @@ CREATE TABLE `demande_devis` (
   `statut` tinyint(1) NOT NULL,
   `del` tinyint(1) NOT NULL,
   `date_validation` datetime DEFAULT NULL,
-  `quantity` smallint(6) NOT NULL,
+  `quantity` smallint(6) DEFAULT NULL,
   `fournisseur_id` int(11) DEFAULT NULL,
   `is_read` tinyint(1) NOT NULL,
   `date_read` datetime DEFAULT NULL
@@ -614,11 +618,14 @@ CREATE TABLE `demande_devis` (
 --
 
 INSERT INTO `demande_devis` (`id`, `produit_id`, `contact`, `societe`, `phone`, `email`, `message`, `created`, `adresse`, `statut`, `del`, `date_validation`, `quantity`, `fournisseur_id`, `is_read`, `date_read`) VALUES
-(9, 1, 'Mehdi', 'Sergh', '+212696318010', 'yon@gmail.com', 'i want this product', '2019-12-30 11:31:38', 'Hay hassani n18 casablanca', 1, 1, '2019-12-31 15:16:28', 0, 75, 1, '2019-12-31 15:10:16'),
-(10, 8, 'Mehdi', 'Sergh', '+212696318010', 'yon@gmail.com', 'i want this product', '2019-12-30 11:48:52', 'Hay hassani n18 casablanca', 1, 0, '2019-12-30 11:58:09', 0, 57, 0, NULL),
-(11, 1, 'Mehdi', 'Sergh', '+212696318010', 'yon@gmail.com', 'i want this product', '2019-12-30 12:06:19', 'Hay hassani n18 casablanca', 1, 1, '2019-12-30 12:08:57', 0, 75, 0, NULL),
-(12, 1, 'Me3d', 'Se3d', '+212696318010', 'yon@gmail.com', 'i want this product', '2019-12-30 12:16:20', 'Hay hassani n18 casablanca', 0, 1, NULL, 0, 75, 0, NULL),
-(13, 1, 'Me3ss', 'Se3ss', '+212696318010', 'yoness@gmail.com', 'i want this productrrrrrrrrs', '2019-12-30 12:22:22', 'Hay hassani n18 casablancas', 1, 0, '2019-12-31 08:52:51', 4, 75, 1, '2019-12-31 15:00:56');
+(1, 19, 'ARBOUH Youness', NULL, '+212696318051', 'webmaster@3findustrie.com', 'aaaaaaaaaaaaaaa', '2020-02-18 15:49:05', 'aaaaaaaaaaaaaaaaaa', 0, 0, NULL, NULL, 82, 0, NULL),
+(2, 19, 'ARBOUH Youness', '3f industrie', '0696318051', 'webmaster@3findustrie.com', 'azazadazdazdadz', '2020-02-18 15:51:41', 'azazazazazaza', 1, 0, '2020-02-18 15:59:32', NULL, 82, 1, '2020-03-03 09:56:31'),
+(3, 19, 'YOUNESS ARBOUH', 'aazazaaaa', '+212696318051', 'webmaster@3findustrie.com', 'sqsqsqsqsqsq', '2020-03-04 11:01:11', 'azazazazaza', 0, 0, NULL, 52, 82, 0, NULL),
+(4, 19, 'YOUNESS ARBOUH', 'azazzazaz', '+33696318051', 'webmaster@3findustrie.com', 'azazeaeaze aze', '2020-03-04 11:06:32', 'azazazaz azeaz', 0, 0, NULL, 100, 82, 0, NULL),
+(5, 50, 'YOUNESS ARBOUH', '3f industrie', '+212696318051', 'webmaster@3findustrie.com', 'ssdfsdfsdfsf', '2020-03-04 11:23:31', 'azazazazazaza', 0, 0, NULL, 50, 82, 0, NULL),
+(6, 19, 'YOUNESS ARBOUH', '3f industrie', '+212696318051', 'webmaster@3findustrie.com', 'sdfsdfsdfsdfsdfsfdsf', '2020-03-04 11:23:49', 'dsdfsdfsdfsdf', 0, 0, NULL, 51, 82, 0, NULL),
+(7, 30, 'YOUNESS ARBOUH', '3f industrie', '+212696318051', 'webmaster@3findustrie.com', 'sdfsdfsdfsfsdfsdf', '2020-03-04 11:24:07', 'qsdqsdqsdqsdqs', 0, 0, NULL, 55, 82, 0, NULL),
+(8, 32, 'YOUNESS ARBOUH', '3f industrie', '+212696318051', 'webmaster@3findustrie.com', 'sdfsfsdfsdfsf', '2020-03-04 11:24:44', 'sdfsdfsdfsdfsdfs', 0, 0, NULL, NULL, 82, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -630,55 +637,6 @@ CREATE TABLE `demande_dmdabonnement_sous_secteur` (
   `demande_abonnement_id` int(11) NOT NULL,
   `sous_secteur_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `demande_dmdabonnement_sous_secteur`
---
-
-INSERT INTO `demande_dmdabonnement_sous_secteur` (`demande_abonnement_id`, `sous_secteur_id`) VALUES
-(14, 6),
-(14, 9),
-(15, 6),
-(16, 6),
-(16, 7),
-(17, 6),
-(18, 6),
-(18, 7),
-(18, 8),
-(18, 9),
-(18, 10),
-(19, 6),
-(19, 7),
-(19, 8),
-(19, 9),
-(20, 6),
-(20, 7),
-(21, 6),
-(21, 7),
-(22, 6),
-(22, 7),
-(23, 6),
-(23, 9),
-(24, 6),
-(24, 7),
-(24, 9),
-(25, 6),
-(25, 8),
-(26, 6),
-(26, 7),
-(27, 6),
-(27, 8),
-(27, 9),
-(27, 11),
-(28, 6),
-(28, 7),
-(28, 9),
-(29, 6),
-(29, 7),
-(30, 6),
-(30, 7),
-(31, 7),
-(31, 8);
 
 -- --------------------------------------------------------
 
@@ -696,28 +654,7 @@ CREATE TABLE `demande_ha_sous_secteur` (
 --
 
 INSERT INTO `demande_ha_sous_secteur` (`sous_secteur_id`, `demande_achat_id`) VALUES
-(6, 2),
-(6, 4),
-(6, 6),
-(6, 8),
-(6, 10),
-(6, 13),
-(6, 14),
-(6, 16),
-(6, 17),
-(6, 18),
-(7, 3),
-(7, 5),
-(7, 7),
-(7, 9),
-(7, 15),
-(7, 18),
-(8, 4),
-(8, 10),
-(8, 14),
-(8, 15),
-(9, 11),
-(10, 12);
+(427, 26);
 
 -- --------------------------------------------------------
 
@@ -732,40 +669,6 @@ CREATE TABLE `demande_jeton` (
   `is_use` tinyint(1) NOT NULL,
   `created` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `demande_jeton`
---
-
-INSERT INTO `demande_jeton` (`id`, `fournisseur_id`, `nbr_jeton`, `is_use`, `created`) VALUES
-(1, 75, 10, 1, '2019-12-11 15:48:03'),
-(2, 75, 20, 1, '2019-12-11 15:58:37'),
-(3, 75, 20, 1, '2019-12-11 15:58:37'),
-(4, 75, 20, 1, '2019-12-11 15:58:37'),
-(5, 75, 20, 1, '2019-12-11 15:58:37'),
-(10, 75, 20, 1, '2019-12-11 15:58:37'),
-(11, 75, 20, 1, '2019-12-11 15:58:37'),
-(12, 75, 20, 1, '2019-12-11 15:58:37'),
-(13, 75, 20, 1, '2019-12-11 15:58:37'),
-(14, 75, 20, 1, '2019-12-11 15:58:37'),
-(15, 75, 20, 1, '2019-12-11 15:58:37'),
-(16, 75, 20, 1, '2019-12-11 15:58:37'),
-(17, 75, 20, 1, '2019-12-11 15:58:37'),
-(19, 75, 20, 1, '2019-12-11 15:58:37'),
-(20, 75, 10, 0, '2019-12-11 15:58:37'),
-(21, 75, 20, 0, '2019-12-11 15:58:37'),
-(22, 75, 20, 0, '2019-12-11 15:58:37'),
-(23, 75, 20, 0, '2019-12-11 15:58:37'),
-(24, 75, 20, 0, '2019-12-11 15:58:37'),
-(25, 75, 20, 0, '2019-12-11 15:58:37'),
-(26, 75, 20, 0, '2019-12-11 15:58:37'),
-(27, 75, 20, 0, '2019-12-11 15:58:37'),
-(28, 75, 20, 0, '2019-12-11 15:58:37'),
-(29, 75, 20, 0, '2019-12-11 15:58:37'),
-(30, 75, 20, 1, '2019-12-12 15:58:37'),
-(31, 53, 20, 1, '2019-12-12 16:58:37'),
-(32, 75, 20, 1, '2019-12-16 10:22:33'),
-(33, 78, 20, 0, '2019-12-17 09:20:30');
 
 -- --------------------------------------------------------
 
@@ -785,18 +688,6 @@ CREATE TABLE `detail_visite` (
   `personnel_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `detail_visite`
---
-
-INSERT INTO `detail_visite` (`id`, `fournisseur_id`, `demande_id`, `created`, `date_rec`, `is_send`, `budget`, `statut`, `personnel_id`) VALUES
-(1, 75, 3, '2019-12-02 10:50:01', '2019-12-02 10:50:02', 1, 7000000, 2, NULL),
-(2, 75, 2, '2019-12-02 10:50:23', '2019-12-02 10:50:24', 1, 289018, 2, NULL),
-(3, 75, 16, '2019-11-16 17:11:40', '2019-12-23 17:11:40', 0, 255.25, 1, 3),
-(4, 75, 15, '2019-12-16 17:14:50', '2019-12-23 17:14:50', 0, 5000.54, 1, 3),
-(8, 75, 9, '2019-12-16 17:30:16', '2019-12-23 17:30:16', 0, 122200.5, 1, 3),
-(9, 75, 18, '2019-12-24 15:51:00', '2019-12-31 15:51:00', 0, 257300, 1, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -809,47 +700,6 @@ CREATE TABLE `diffusion_demande` (
   `demande_id` int(11) DEFAULT NULL,
   `date_diffusion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `diffusion_demande`
---
-
-INSERT INTO `diffusion_demande` (`id`, `fournisseur_id`, `demande_id`, `date_diffusion`) VALUES
-(86, 61, 2, '2019-11-15 16:49:35'),
-(87, 64, 2, '2019-11-15 16:49:35'),
-(88, 65, 2, '2019-11-15 16:49:35'),
-(89, 66, 2, '2019-11-15 16:49:35'),
-(90, 67, 2, '2019-11-15 16:49:35'),
-(91, 64, 11, '2019-12-06 17:35:52'),
-(92, 65, 11, '2019-12-06 17:35:52'),
-(93, 66, 11, '2019-12-06 17:35:52'),
-(94, 67, 11, '2019-12-06 17:35:52'),
-(95, 61, 18, '2019-12-19 08:50:12'),
-(96, 64, 18, '2019-12-19 08:50:12'),
-(97, 65, 18, '2019-12-19 08:50:12'),
-(98, 66, 18, '2019-12-19 08:50:12'),
-(99, 67, 18, '2019-12-19 08:50:12'),
-(100, 75, 18, '2019-12-19 08:50:12'),
-(101, 78, 18, '2019-12-19 08:50:12'),
-(102, 61, 18, '2019-12-19 08:56:33'),
-(103, 64, 18, '2019-12-19 08:56:33'),
-(104, 65, 18, '2019-12-19 08:56:33'),
-(105, 66, 18, '2019-12-19 08:56:33'),
-(106, 67, 18, '2019-12-19 08:56:33'),
-(107, 75, 18, '2019-12-19 08:56:33'),
-(108, 78, 18, '2019-12-19 08:56:33'),
-(109, 61, 18, '2019-12-19 08:58:17'),
-(110, 64, 18, '2019-12-19 08:58:17'),
-(111, 65, 18, '2019-12-19 08:58:17'),
-(112, 66, 18, '2019-12-19 08:58:17'),
-(113, 67, 18, '2019-12-19 08:58:17'),
-(114, 75, 18, '2019-12-19 08:58:17'),
-(115, 78, 18, '2019-12-19 08:58:17'),
-(116, 61, 15, '2019-12-19 08:59:36'),
-(117, 64, 15, '2019-12-19 08:59:36'),
-(118, 75, 15, '2019-12-19 08:59:36'),
-(119, 78, 15, '2019-12-19 08:59:36'),
-(120, 67, 15, '2019-12-19 08:59:36');
 
 -- --------------------------------------------------------
 
@@ -920,39 +770,18 @@ CREATE TABLE `fournisseur` (
   `fix` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `website` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
-  `currency_id` int(11) DEFAULT NULL
+  `currency_id` int(11) DEFAULT NULL,
+  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone_vu` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `fournisseur`
 --
 
-INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `ice`, `fix`, `website`, `description`, `currency_id`) VALUES
-(3, 2, 1, '', '', '', '', '', '', NULL),
-(8, 2, 2, '', '', '', '', '', '', NULL),
-(13, 1, 1, '', '', '', '', '', '', NULL),
-(17, 1, 1, '', '', '', '', '', '', NULL),
-(51, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
-(52, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
-(53, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
-(54, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
-(55, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
-(56, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
-(57, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
-(58, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
-(59, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
-(60, NULL, NULL, '3f industrie', 'M.', NULL, NULL, NULL, NULL, NULL),
-(61, 1, 1, '3f industriee', 'M.', '123456789123456', '', '', '', NULL),
-(62, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', '', NULL),
-(63, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', '', NULL),
-(64, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', 'aaaaaaaaaaaaaaaaaaaaaaaaa', NULL),
-(65, 1, 1, '3f industrie', 'M.', '123456789123456', '+212522963180', 'https://www.d.c', '', NULL),
-(66, 1, 2, '3f industrie', 'M.', '123456789123456', '', '', '', NULL),
-(67, 1, 15, '3F Industrie', 'M.', '001531606000066', '0696318051', '', '', NULL),
-(75, 1, 1, '3f industrie2', 'M.', '123456789123456', '0523547812', 'http://www.3fi.com', '', 11),
-(78, 1, 2, '7e-sky', 'M.', '123456789123456', '', 'https://www.d.com', '', NULL),
-(79, NULL, NULL, '7e-sky', 'M.', NULL, NULL, NULL, NULL, NULL),
-(81, 1, 1, '3f industrie', 'M.', '123456789123456', '', '', '', 1);
+INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `ice`, `fix`, `website`, `description`, `currency_id`, `slug`, `phone_vu`) VALUES
+(82, 1, 1, '3f industrie', 'M.', '123456789123456', '0523221144\r\n', 'https://tailwindcss.com/', 'Une petite description ici pour votre société', 1, '3f-industrie', 2),
+(83, 8, 1, '3f industrie', 'M.', NULL, NULL, 'https://tailwindcss.com/', 'Une petite description ici pour votre société', NULL, '3f-industrie-1', 1);
 
 -- --------------------------------------------------------
 
@@ -970,46 +799,9 @@ CREATE TABLE `fournisseur_sous_secteur` (
 --
 
 INSERT INTO `fournisseur_sous_secteur` (`fournisseur_id`, `sous_secteur_id`) VALUES
-(61, 6),
-(64, 6),
-(65, 6),
-(66, 6),
-(67, 6),
-(75, 6),
-(78, 6),
-(81, 6),
-(61, 7),
-(64, 7),
-(75, 7),
-(78, 7),
-(81, 7),
-(61, 8),
-(65, 8),
-(67, 8),
-(75, 8),
-(81, 8),
-(64, 9),
-(65, 9),
-(66, 9),
-(67, 9),
-(75, 9),
-(75, 10),
-(75, 11),
-(75, 12),
-(75, 13),
-(75, 14),
-(75, 15),
-(75, 16),
-(75, 18),
-(75, 19),
-(75, 20),
-(75, 21),
-(75, 22),
-(75, 23),
-(75, 24),
-(67, 142),
-(67, 270),
-(81, 270);
+(83, 425),
+(82, 427),
+(82, 431);
 
 -- --------------------------------------------------------
 
@@ -1029,37 +821,7 @@ CREATE TABLE `historique_visite` (
 --
 
 INSERT INTO `historique_visite` (`id`, `fournisseur_id`, `demande_id`, `created`) VALUES
-(1, 75, 18, '2019-12-23 10:22:00'),
-(2, 56, 17, '2019-12-23 10:47:57'),
-(3, 75, 16, '2019-12-23 10:48:34'),
-(5, 67, 15, '2019-12-23 11:08:27'),
-(7, 52, 15, '2019-12-23 11:08:27'),
-(8, 75, 15, '2019-12-23 14:45:46'),
-(9, 51, 10, '2019-12-23 11:08:27'),
-(10, 3, 15, '0000-00-00 00:00:00'),
-(11, 8, 15, '0000-00-00 00:00:00'),
-(12, 13, 15, '0000-00-00 00:00:00'),
-(13, 17, 15, '0000-00-00 00:00:00'),
-(14, 51, 15, '0000-00-00 00:00:00'),
-(15, 3, 18, '2019-12-23 10:22:00'),
-(16, 8, 18, '2019-12-23 10:22:00'),
-(17, 13, 18, '2019-12-23 10:22:00'),
-(18, 17, 18, '2019-12-23 10:22:00'),
-(19, 51, 18, '2019-12-23 10:22:00'),
-(20, 52, 18, '2019-12-23 10:22:00'),
-(21, 55, 18, '2019-12-23 10:22:00'),
-(22, 54, 18, '2019-12-23 10:22:00'),
-(23, 55, 18, '2019-12-23 10:22:00'),
-(24, 75, 17, '2019-12-23 10:47:57'),
-(25, 75, 14, '2019-12-23 15:11:13'),
-(26, 75, 11, '2019-12-23 15:11:21'),
-(27, 75, 10, '2019-12-23 15:11:36'),
-(28, 75, 9, '2019-12-23 15:14:55'),
-(30, 75, 6, '2019-12-23 15:48:39'),
-(31, 78, 17, '2019-12-24 08:57:15'),
-(32, 81, 18, '2019-12-24 09:36:36'),
-(33, 81, 17, '2019-12-24 10:12:25'),
-(34, 75, 7, '2019-12-24 17:24:14');
+(1, 82, 26, '2020-03-05 11:21:35');
 
 -- --------------------------------------------------------
 
@@ -1141,13 +903,6 @@ CREATE TABLE `jeton` (
   `del` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `jeton`
---
-
-INSERT INTO `jeton` (`id`, `fournisseur_id`, `paiement_id`, `demande_id`, `nbr_jeton`, `prix`, `is_payed`, `created`, `del`) VALUES
-(18, 75, 1, 32, 6, 2000, 1, '2019-12-16 10:38:50', 0);
-
 -- --------------------------------------------------------
 
 --
@@ -1164,67 +919,7 @@ CREATE TABLE `migration_versions` (
 --
 
 INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
-('20191114155555', '2019-11-14 15:56:27'),
-('20191114155657', '2019-11-14 15:57:01'),
-('20191202094120', '2019-12-02 09:41:45'),
-('20191204111630', '2019-12-04 11:16:36'),
-('20191204140113', '2019-12-04 14:01:22'),
-('20191204162047', '2019-12-04 16:20:52'),
-('20191205084551', '2019-12-05 08:45:57'),
-('20191205100305', '2019-12-05 10:03:10'),
-('20191205114029', '2019-12-05 11:40:35'),
-('20191205135951', '2019-12-05 13:59:59'),
-('20191209093107', '2019-12-09 09:31:23'),
-('20191209133716', '2019-12-09 13:37:21'),
-('20191209133851', '2019-12-09 13:38:56'),
-('20191209135255', '2019-12-09 13:53:00'),
-('20191209144353', '2019-12-09 14:43:58'),
-('20191210084603', '2019-12-10 08:46:09'),
-('20191210094646', '2019-12-10 09:46:56'),
-('20191210095429', '2019-12-10 09:54:33'),
-('20191210153813', '2019-12-10 15:38:18'),
-('20191211084148', '2019-12-11 08:42:03'),
-('20191211084940', '2019-12-11 08:49:44'),
-('20191211141704', '2019-12-11 14:17:08'),
-('20191211143624', '2019-12-11 14:36:29'),
-('20191211143645', '2019-12-11 14:36:49'),
-('20191212160720', '2019-12-12 16:07:24'),
-('20191217085831', '2019-12-17 08:58:39'),
-('20191217102537', '2019-12-17 10:25:41'),
-('20191217111512', '2019-12-17 11:15:18'),
-('20191217151121', '2019-12-17 15:11:27'),
-('20191217170431', '2019-12-17 17:04:36'),
-('20191220105911', '2019-12-20 10:59:16'),
-('20191220110046', '2019-12-20 11:00:50'),
-('20191223085832', '2019-12-23 08:58:36'),
-('20191224082455', '2019-12-24 08:25:02'),
-('20191227083845', '2019-12-27 08:38:50'),
-('20191230094233', '2019-12-30 09:42:43'),
-('20191230105314', '2019-12-30 10:53:19'),
-('20191230112148', '2019-12-30 11:21:52'),
-('20191230113232', '2019-12-30 11:32:36'),
-('20191230160125', '2019-12-30 16:01:57'),
-('20191230162736', '2019-12-30 16:27:56'),
-('20191231135256', '2019-12-31 13:53:01'),
-('20200102085806', '2020-01-02 08:58:12'),
-('20200103135655', '2020-01-03 13:57:13'),
-('20200103152217', '2020-01-03 15:22:23'),
-('20200106101416', '2020-01-06 10:14:36'),
-('20200106141612', '2020-01-06 14:16:17'),
-('20200107084827', '2020-01-07 08:48:35'),
-('20200107162511', '2020-01-07 16:25:18'),
-('20200107164400', '2020-01-07 16:44:08'),
-('20200107172319', '2020-01-07 17:23:26'),
-('20200108095841', '2020-01-08 09:58:48'),
-('20200109165349', '2020-01-09 16:53:55'),
-('20200109165527', '2020-01-09 16:55:46'),
-('20200110101037', '2020-01-10 10:10:44'),
-('20200113102135', '2020-01-13 10:21:42'),
-('20200114104432', '2020-01-14 10:44:40'),
-('20200114143059', '2020-01-14 14:31:05'),
-('20200115110114', '2020-01-15 11:01:19'),
-('20200115110859', '2020-01-15 11:09:06'),
-('20200115110942', '2020-01-15 11:09:47');
+('20200304162759', '2020-03-04 16:28:04');
 
 -- --------------------------------------------------------
 
@@ -1298,90 +993,91 @@ INSERT INTO `paiement` (`id`, `name`) VALUES
 CREATE TABLE `pays` (
   `id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `del` tinyint(1) NOT NULL
+  `del` tinyint(1) NOT NULL,
+  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `pays`
 --
 
-INSERT INTO `pays` (`id`, `name`, `del`) VALUES
-(1, 'Maroc', 0),
-(2, 'France', 0),
-(3, 'Italie', 0),
-(4, 'Irlandes', 0),
-(5, 'USA', 0),
-(6, 'Liba', 0),
-(7, 'Mali', 0),
-(8, 'Afghanistan ', 0),
-(9, 'Afrique du sud ', 0),
-(10, 'Albanie ', 0),
-(11, 'Algérie ', 0),
-(12, 'Allemagne ', 0),
-(13, 'Arabie saoudite ', 0),
-(14, 'Argentine ', 0),
-(15, 'Australie ', 0),
-(16, 'Autriche ', 0),
-(17, 'Belgique ', 0),
-(18, 'Brésil ', 0),
-(19, 'Bulgarie ', 0),
-(20, 'Canada ', 0),
-(21, 'Chili ', 0),
-(22, 'Chine ', 0),
-(23, 'Colombie ', 0),
-(24, 'Corée, Sud ', 0),
-(25, 'Costa Rica ', 0),
-(26, 'Croatie ', 0),
-(27, 'Danemark ', 0),
-(28, 'Égypte ', 0),
-(29, 'Émirats Arabes Unis ', 0),
-(30, 'Équateur ', 0),
-(31, 'El Salvador ', 0),
-(32, 'Espagne ', 0),
-(33, 'Finlande ', 0),
-(34, 'Grèce ', 0),
-(35, 'Hong Kong ', 0),
-(36, 'Hongrie ', 0),
-(37, 'Inde ', 0),
-(38, 'Indonésie ', 0),
-(39, 'Israël ', 0),
-(40, 'Japon ', 0),
-(41, 'Jordanie ', 0),
-(42, 'Malaisie ', 0),
-(43, 'Mexique ', 0),
-(44, 'Norvège', 0),
-(45, 'Nouvelle-Zélande ', 0),
-(46, 'Pérou ', 0),
-(47, 'Pakistan ', 0),
-(48, 'Pays-Bas ', 0),
-(49, 'Philippines ', 0),
-(50, 'Pologne ', 0),
-(51, 'Porto Rico ', 0),
-(52, 'Portugal ', 0),
-(53, 'République tchèque ', 0),
-(54, 'Roumanie ', 0),
-(55, 'Royaume-Uni ', 0),
-(56, 'Russie ', 0),
-(57, 'Singapour ', 0),
-(58, 'Suède ', 0),
-(59, 'Suisse ', 0),
-(60, 'Taiwan ', 0),
-(61, 'Thaïlande', 0),
-(62, 'Turquie ', 0),
-(63, 'Tunisie', 0),
-(64, 'Mauritanie', 0),
-(65, 'Sénégal', 0),
-(66, 'Côte d’ivoire ', 0),
-(67, 'Ukraine ', 0),
-(68, 'Venezuela ', 0),
-(69, 'Yougoslavie ', 0),
-(70, 'Autre', 0),
-(84, 'Slovaquie', 0),
-(88, 'Béni', 0),
-(90, 'Luxembourg', 0),
-(91, 'Guinée', 0),
-(92, 'teeeeeeest_deleted-92', 1),
-(93, 'test_deleted-93', 1);
+INSERT INTO `pays` (`id`, `name`, `del`, `slug`) VALUES
+(1, 'Maroc', 0, 'maroc'),
+(2, 'France', 0, 'france'),
+(3, 'Italie', 0, 'italie'),
+(4, 'Irlandes', 0, 'irlandes'),
+(5, 'USA', 0, 'usa'),
+(6, 'Liba', 0, 'liba'),
+(7, 'Mali', 0, 'mali'),
+(8, 'Afghanistan ', 0, 'afghanistan'),
+(9, 'Afrique du sud ', 0, 'afrique-du-sud'),
+(10, 'Albanie ', 0, 'albanie'),
+(11, 'Algérie ', 0, 'algérie'),
+(12, 'Allemagne ', 0, 'allemagne'),
+(13, 'Arabie saoudite ', 0, 'arabie-saoudite'),
+(14, 'Argentine ', 0, 'argentine'),
+(15, 'Australie ', 0, 'australie'),
+(16, 'Autriche ', 0, 'autriche'),
+(17, 'Belgique ', 0, 'belgique'),
+(18, 'Brésil ', 0, 'brésil'),
+(19, 'Bulgarie ', 0, 'bulgarie'),
+(20, 'Canada ', 0, 'canada'),
+(21, 'Chili ', 0, 'chili'),
+(22, 'Chine ', 0, 'chine'),
+(23, 'Colombie ', 0, 'colombie'),
+(24, 'Corée, Sud ', 0, 'corée,-sud'),
+(25, 'Costa Rica ', 0, 'costa-rica'),
+(26, 'Croatie ', 0, 'croatie'),
+(27, 'Danemark ', 0, 'danemark'),
+(28, 'Égypte ', 0, 'égypte'),
+(29, 'Émirats Arabes Unis ', 0, 'émirats-arabes-unis'),
+(30, 'Équateur ', 0, 'équateur'),
+(31, 'El Salvador ', 0, 'el-salvador'),
+(32, 'Espagne ', 0, 'espagne'),
+(33, 'Finlande ', 0, 'finlande'),
+(34, 'Grèce ', 0, 'grèce'),
+(35, 'Hong Kong ', 0, 'hong-kong'),
+(36, 'Hongrie ', 0, 'hongrie'),
+(37, 'Inde ', 0, 'inde'),
+(38, 'Indonésie ', 0, 'indonésie'),
+(39, 'Israël ', 0, 'israël'),
+(40, 'Japon ', 0, 'japon'),
+(41, 'Jordanie ', 0, 'jordanie'),
+(42, 'Malaisie ', 0, 'malaisie'),
+(43, 'Mexique ', 0, 'mexique'),
+(44, 'Norvège', 0, 'norvège'),
+(45, 'Nouvelle-Zélande ', 0, 'nouvelle-zélande'),
+(46, 'Pérou ', 0, 'pérou'),
+(47, 'Pakistan ', 0, 'pakistan'),
+(48, 'Pays-Bas ', 0, 'pays-bas'),
+(49, 'Philippines ', 0, 'philippines'),
+(50, 'Pologne ', 0, 'pologne'),
+(51, 'Porto Rico ', 0, 'porto-rico'),
+(52, 'Portugal ', 0, 'portugal'),
+(53, 'République tchèque ', 0, 'république-tchèque'),
+(54, 'Roumanie ', 0, 'roumanie'),
+(55, 'Royaume-Uni ', 0, 'royaume-uni'),
+(56, 'Russie ', 0, 'russie'),
+(57, 'Singapour ', 0, 'singapour'),
+(58, 'Suède ', 0, 'suède'),
+(59, 'Suisse ', 0, 'suisse'),
+(60, 'Taiwan ', 0, 'taiwan'),
+(61, 'Thaïlande', 0, 'thaïlande'),
+(62, 'Turquie ', 0, 'turquie'),
+(63, 'Tunisie', 0, 'tunisie'),
+(64, 'Mauritanie', 0, 'mauritanie'),
+(65, 'Sénégal', 0, 'sénégal'),
+(66, 'Côte d’ivoire ', 0, 'côte-d’ivoire'),
+(67, 'Ukraine ', 0, 'ukraine'),
+(68, 'Venezuela ', 0, 'venezuela'),
+(69, 'Yougoslavie ', 0, 'yougoslavie'),
+(70, 'Autre', 0, 'autre'),
+(84, 'Slovaquie', 0, 'slovaquie'),
+(88, 'Béni', 0, 'béni'),
+(90, 'Luxembourg', 0, 'luxembourg'),
+(91, 'Guinée', 0, 'guinée'),
+(92, 'teeeeeeest_deleted-92', 1, 'teeeeeeest_deleted-92'),
+(93, 'test_deleted-93', 1, 'test_deleted-93');
 
 -- --------------------------------------------------------
 
@@ -1399,16 +1095,6 @@ CREATE TABLE `personnel` (
   `fullName` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `personnel`
---
-
-INSERT INTO `personnel` (`id`, `fournisseur_id`, `email`, `phone`, `del`, `created`, `fullName`) VALUES
-(1, 75, 'string@gmail.com', '0678451220', 1, '2019-12-09 15:03:33', 'aaaaaaa'),
-(2, 75, 'webmaster@3findustrie.com', '0696318051', 1, '2019-12-09 15:30:03', 'aaaaaa'),
-(3, 75, 'youness.arbouh@gmail.com', '0696318051', 0, '2019-12-09 15:38:02', 'Youness ARBOUH'),
-(4, 75, 'youness.arbouhssscq@gmail.com', '0696318051', 0, '2019-12-26 14:57:29', 'GHADBAN Said');
-
 -- --------------------------------------------------------
 
 --
@@ -1419,6 +1105,7 @@ CREATE TABLE `produit` (
   `id` int(11) NOT NULL,
   `secteur_id` int(11) DEFAULT NULL,
   `sous_secteurs_id` int(11) DEFAULT NULL,
+  `categorie_id` int(11) DEFAULT NULL,
   `fournisseur_id` int(11) DEFAULT NULL,
   `fiche_technique_id` int(11) DEFAULT NULL,
   `reference` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1429,34 +1116,42 @@ CREATE TABLE `produit` (
   `is_valid` tinyint(1) NOT NULL,
   `created` datetime NOT NULL,
   `videos` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `categorie_id` int(11) DEFAULT NULL,
   `featured_image_id_id` int(11) DEFAULT NULL,
   `titre` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `currency_id` int(11) DEFAULT NULL,
-  `date_validation` datetime DEFAULT NULL
+  `date_validation` datetime DEFAULT NULL,
+  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone_vu` int(11) NOT NULL,
+  `pays_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `produit`
 --
 
-INSERT INTO `produit` (`id`, `secteur_id`, `sous_secteurs_id`, `fournisseur_id`, `fiche_technique_id`, `reference`, `description`, `pu`, `del`, `is_select`, `is_valid`, `created`, `videos`, `categorie_id`, `featured_image_id_id`, `titre`, `currency_id`, `date_validation`) VALUES
-(1, 2, 6, 75, 1, 'P10024', 'ddd155jkjg', 0, 0, 0, 0, '2019-12-04 15:02:22', NULL, 424, NULL, '949fd73e', NULL, NULL),
-(2, 1, 51, 75, NULL, 'aaaaa0', 'asidi merhba biko2', 1003.5, 0, 0, 0, '2019-12-05 10:57:14', NULL, NULL, NULL, '7f9747b2', NULL, NULL),
-(3, 1, 52, 75, NULL, 'ddddd', 'aaji tfhmel', 15542.255, 0, 0, 0, '2019-12-05 11:05:58', NULL, NULL, NULL, '2a0cccf6', NULL, NULL),
-(4, 1, 50, 75, NULL, 'aaaaa0', 'BOn to ej e', 15.25, 0, 0, 0, '2019-12-05 11:32:46', NULL, NULL, NULL, 'd346dd0c', NULL, NULL),
-(5, 1, 51, 75, NULL, 'abcde', '10005ggv ddd', 0, 0, 0, 0, '2019-12-05 11:58:21', NULL, NULL, NULL, '87a97c37', NULL, NULL),
-(6, 1, 50, 75, NULL, 'aaaaa0', 'vvvvvvvvvvvvvv', 0, 0, 0, 1, '2019-12-05 11:59:06', NULL, 50, NULL, 'a3d9a35b', NULL, '2020-01-02 10:58:15'),
-(7, 2, 63, 75, NULL, 'aaaaa0', 'vccccccccc', 0, 0, 0, 0, '2019-12-05 11:59:28', NULL, NULL, NULL, '6f64c792', NULL, NULL),
-(8, 1, 50, 58, NULL, 'aaaaa0', '144lll jjm', 0, 0, 0, 0, '2019-12-05 15:08:59', NULL, 424, NULL, 'cb139c17', NULL, NULL),
-(9, 1, 50, 75, NULL, 'wwwww', 'wwwwwwwwwww', 0, 0, 0, 0, '2019-12-05 15:10:21', NULL, NULL, NULL, 'a2f02a19', NULL, NULL),
-(10, 1, 50, 75, NULL, 'aaaaa0s', 'sqsqsqsqsqs', 0, 0, 0, 0, '2019-12-05 15:13:35', NULL, NULL, NULL, '4140ab28', NULL, NULL),
-(11, 1, 50, 75, 12, 'aaaaa0sdssd00', 'sfsfsfsfsfsfsfsfssssssdddddd00', 0, 0, 0, 0, '2019-12-05 15:14:49', NULL, 424, NULL, '12f7d763', NULL, NULL),
-(12, 1, 51, 75, 13, 'aaaaa0', 'aaaaaaaaaa', 0, 1, 0, 0, '2019-12-05 15:33:33', NULL, NULL, 47, '3f916abb', NULL, NULL),
-(13, 2, 6, 75, 1, 'P10024', 'ddd155jkjg', 0, 1, 0, 0, '2019-12-06 16:02:34', NULL, NULL, 48, 'ce51d2fc', NULL, NULL),
-(14, 1, 50, 75, NULL, 'Incidunt in repudia', 'Ea nostrum quas haru', 74, 0, 0, 0, '2019-12-31 16:36:01', NULL, 424, NULL, 'Aliquid in assumenda', NULL, NULL),
-(15, 1, 50, 75, NULL, 'Suscipit est nostru', 'Unde temporibus temp', 42, 0, 0, 1, '2019-12-31 16:36:23', NULL, 50, NULL, 'Quo dolore ipsum eiu', NULL, '2020-01-02 10:01:38'),
-(16, 1, 50, 75, 15, 'Voluptas commodo qua', 'Consequatur fugiat ', 28, 0, 0, 1, '2019-12-31 16:37:42', NULL, 50, 49, 'Iure enim voluptas v', 11, NULL);
+INSERT INTO `produit` (`id`, `secteur_id`, `sous_secteurs_id`, `categorie_id`, `fournisseur_id`, `fiche_technique_id`, `reference`, `description`, `pu`, `del`, `is_select`, `is_valid`, `created`, `videos`, `featured_image_id_id`, `titre`, `currency_id`, `date_validation`, `slug`, `phone_vu`, `pays_id`) VALUES
+(19, 81, 425, 429, 82, 1, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', 11, '2020-02-12 16:14:41', 'titre-titre', 11, 18),
+(22, 81, 425, 426, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-1', 0, 1),
+(26, 82, 427, 428, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-2', 4, 9),
+(28, 82, 431, 432, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-3', 1, 6),
+(29, 81, 425, 426, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-4', 3, 11),
+(30, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-5', 3, 1),
+(32, 81, 425, 429, 82, 1, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-6', 9, 18),
+(34, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-7', 2, 1),
+(35, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-8', 2, 1),
+(36, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-9', 2, 1),
+(38, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-10', 3, 1),
+(39, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-11', 2, 1),
+(40, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-12', 2, 1),
+(41, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-13', 2, 1),
+(42, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-14', 2, 1),
+(43, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-15', 2, 1),
+(44, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-16', 2, 1),
+(45, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-17', 2, 1),
+(47, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 0, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-18', 2, 1),
+(48, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-19', 2, 1),
+(49, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 10000, 0, 0, 1, '2020-02-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre', NULL, '2020-02-12 16:14:41', 'titre-titre-20', 2, 1),
+(50, 81, 425, 429, 82, 11, '122455', 'aaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa\r\n\r\naaaaaaaaaaaaaaaa', 100, 0, 0, 1, '2020-03-12 16:13:56', 'exc818JAHZM', 1, 'Titre titre Titre titre Titre titre', 11, '2020-03-12 16:14:41', 'titre-titre-21', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1474,18 +1169,8 @@ CREATE TABLE `produit_image_produit` (
 --
 
 INSERT INTO `produit_image_produit` (`produit_id`, `image_produit_id`) VALUES
-(1, 1),
-(7, 29),
-(7, 30),
-(8, 43),
-(9, 44),
-(10, 45),
-(11, 46),
-(12, 47),
-(13, 1),
-(13, 48),
-(16, 49),
-(16, 50);
+(19, 1),
+(19, 2);
 
 -- --------------------------------------------------------
 
@@ -1496,83 +1181,45 @@ INSERT INTO `produit_image_produit` (`produit_id`, `image_produit_id`) VALUES
 CREATE TABLE `secteur` (
   `id` int(11) NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `del` tinyint(1) NOT NULL
+  `del` tinyint(1) NOT NULL,
+  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `secteur`
 --
 
-INSERT INTO `secteur` (`id`, `name`, `del`) VALUES
-(1, 'Bureautique & Mobilier', 0),
-(2, 'Conception & Graphismes', 0),
-(3, 'Conseil en Finance', 0),
-(4, 'Emballage', 0),
-(5, 'Energie', 0),
-(6, 'Evénements', 0),
-(7, 'Formations', 0),
-(8, 'Impressio', 0),
-(9, 'Informatique', 0),
-(11, 'Logistique', 0),
-(12, 'Marketing & Communicatio', 0),
-(14, 'Nettoyage & Environnement', 0),
-(15, 'Photo, Vidéo & Présentations', 0),
-(16, 'Promo & Cadeaux d\'affaires', 0),
-(17, 'Ressource Humaines', 0),
-(18, 'Rénovation & Constructio', 0),
-(19, 'Sécurité & Surveillance', 0),
-(20, 'Automobiles', 0),
-(23, 'Autre (à préciser sur le descriptif)', 0),
-(24, 'Voyages et loisirs', 0),
-(25, 'Sols, mine et carrière', 0),
-(26, 'Agro-industrie', 0),
-(27, 'Matériaux de construction ', 0),
-(28, 'Industries mécaniques et manufacturières ', 0),
-(29, 'Sidérurgie, métallurgie ', 0),
-(30, 'Industries de transformation ', 0),
-(31, 'Energie, électricité, Electronique', 0),
-(32, 'Environnement ', 0),
-(34, 'Bâtiment', 0),
-(35, 'Pétrole et Gaz', 0),
-(36, 'Equipements généraux ', 0),
-(37, 'Chimie, parachimie, pharmacie, santé ', 0),
-(38, 'Acier, Bois et Tôle', 0),
-(39, 'Agro-Alimentaire', 0),
-(40, 'Architectes', 0),
-(41, 'Ascenseurs et montes charges', 0),
-(42, 'Bien d’équipement industriel', 0),
-(43, 'Bureau d’étude', 0),
-(44, 'Consommable industriel', 0),
-(45, 'Entreprise intervenant dans le bâtiment', 0),
-(46, 'Internet & Webdesig', 0),
-(47, 'Maintenance et entretien ', 0),
-(48, 'Matériel et fourniture ', 0),
-(49, 'Matériel et installation d’automatisme industriel', 0),
-(50, 'Matière première et consommable', 0),
-(51, 'Matière première Plastique Caoutchouc et dérivé', 0),
-(52, 'Pièce et accessoire pour automobile', 0),
-(53, 'Pièce et accessoire pour camion et poids lourd', 0),
-(54, 'Produit Chimique', 0),
-(55, 'Télécom & Réseaux', 0),
-(56, 'Location de véhicule', 0),
-(57, 'Transport', 0),
-(58, 'Audit et Conseil', 0),
-(59, 'Chaudronnerie', 0),
-(60, 'Charpente', 0),
-(61, 'Rayonnages et systèmes de stockage', 0),
-(62, 'Manutentio', 0),
-(63, 'Peinture', 0),
-(64, 'Services', 0),
-(65, 'Fourniture Industrielle', 0),
-(67, 'Expertise', 0),
-(68, 'Distribution', 0),
-(70, 'Place de marché', 0),
-(74, 'BTP', 0),
-(75, 'Froid et Climatisatio', 0),
-(77, 'Autre', 0),
-(78, 'Centre commercial', 0),
-(79, 'Educatio', 0),
-(80, 'test_deleted-80', 1);
+INSERT INTO `secteur` (`id`, `name`, `del`, `slug`) VALUES
+(81, 'Test', 0, 'test'),
+(82, 'Secteur 2', 0, 'secteur-2');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `select_produit`
+--
+
+CREATE TABLE `select_produit` (
+  `id` int(11) NOT NULL,
+  `produit_id` int(11) DEFAULT NULL,
+  `updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `select_produit`
+--
+
+INSERT INTO `select_produit` (`id`, `produit_id`, `updated`) VALUES
+(1, 19, '2020-02-06 12:42:18'),
+(2, NULL, '2020-02-06 12:43:40'),
+(3, NULL, '2020-02-06 12:44:11'),
+(4, NULL, '2020-02-06 13:27:30'),
+(5, NULL, '2020-02-06 13:28:01'),
+(6, NULL, '2020-02-05 17:08:50'),
+(7, NULL, '2020-02-05 17:08:53'),
+(8, 19, '2020-02-05 17:08:57'),
+(9, 19, '2020-02-05 17:09:00'),
+(10, NULL, '2020-02-05 17:09:03');
 
 -- --------------------------------------------------------
 
@@ -1585,398 +1232,23 @@ CREATE TABLE `sous_secteur` (
   `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `del` tinyint(1) NOT NULL,
   `secteur_id` int(11) DEFAULT NULL,
-  `parent` int(11) DEFAULT NULL
+  `parent` int(11) DEFAULT NULL,
+  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `sous_secteur`
 --
 
-INSERT INTO `sous_secteur` (`id`, `name`, `del`, `secteur_id`, `parent`) VALUES
-(6, 'Acier Inoxydable', 0, 38, NULL),
-(7, 'Aciers spéciaux', 0, 38, 6),
-(8, 'Aluminium en barre', 0, 38, NULL),
-(9, 'Bois en panneau et dérivé', 0, 38, NULL),
-(10, 'Profilé aluminium', 0, 38, NULL),
-(11, 'Tôles ondulées', 0, 38, NULL),
-(12, 'Tube et Raccord', 0, 38, NULL),
-(13, 'Additifs alimentaires', 0, 39, NULL),
-(14, 'Alimentation animale', 0, 39, NULL),
-(15, 'Aliments pour bébés', 0, 39, NULL),
-(16, 'Fabrication Alimentation générale ', 0, 39, NULL),
-(17, 'Fabrication d’huiles et graisses alimentaires', 0, 39, NULL),
-(18, 'Fabrication de chocolats ', 0, 39, NULL),
-(19, 'Fabrication de Confiseries', 0, 39, NULL),
-(20, 'Fabrication de Glaces et sorbets ', 0, 39, NULL),
-(21, 'Fabrication de Sucres', 0, 39, NULL),
-(22, 'Fabrication Pâtes alimentaires', 0, 39, NULL),
-(23, 'Fourniture de Minerais et minéraux', 0, 39, NULL),
-(24, 'Fours pour boulangeries et pâtisseries', 0, 39, NULL),
-(25, 'Graisses alimentaires', 0, 39, NULL),
-(26, 'Lait médical et alimentation pour bébés', 0, 39, NULL),
-(27, 'Machines à café installation et entretie', 0, 39, NULL),
-(28, 'Matériel et fournitures boucheries et charcuterie', 0, 39, NULL),
-(29, 'Matériel et fournitures pour Boulangeries et pâtis', 0, 39, NULL),
-(30, 'Matériel et fournitures pour café et restaurant', 0, 39, NULL),
-(31, 'Matériel et fournitures pour Glaciers ', 0, 39, NULL),
-(32, 'Matériel et fournitures Industrie Alimentaire', 0, 39, NULL),
-(33, 'Matériel et fournitures Pâtisseries confiserie', 0, 39, NULL),
-(34, 'Mobilier pour magasins, cafés', 0, 39, NULL),
-(35, 'Produits alimentaires de luxe', 0, 39, NULL),
-(36, 'Produits alimentaires Surgelés', 0, 39, NULL),
-(37, 'Produits alimentaires surgelés et congelés', 0, 39, NULL),
-(38, 'Balance et bascule', 0, 42, NULL),
-(39, 'Broyeur', 0, 42, NULL),
-(40, 'Chauffage ', 0, 42, NULL),
-(41, 'Compresseur', 0, 42, NULL),
-(42, 'Extrudeuse', 0, 42, NULL),
-(43, 'Froid industriel', 0, 42, NULL),
-(44, 'Machine d’injection plastique', 0, 42, NULL),
-(45, 'Machine divers', 0, 42, NULL),
-(46, 'Machine-outil', 0, 42, NULL),
-(47, 'Matériel et fourniture pour blanchisserie et laver', 0, 42, NULL),
-(48, 'Souffleuse', 0, 42, NULL),
-(49, 'Traitement des eaux', 0, 42, NULL),
-(50, 'Caisse enregistreuse ', 0, 1, NULL),
-(51, 'Climatiseur', 0, 1, NULL),
-(52, 'Coffre-fort', 0, 1, NULL),
-(53, 'Distributeur de confiseries, snacks et tabac ', 0, 1, NULL),
-(54, 'Distributeurs de boissons froides ', 0, 1, NULL),
-(55, 'Distributeurs de café et boissons chaudes ', 0, 1, NULL),
-(56, 'Fontaines à eau ', 0, 1, NULL),
-(57, 'Mobilier de bureau ', 0, 1, NULL),
-(58, 'Papier ', 0, 1, NULL),
-(59, 'Photocopieurs ', 0, 1, NULL),
-(60, 'Projecteurs ', 0, 1, NULL),
-(61, 'Télécopieurs', 0, 1, NULL),
-(63, 'Conception et réalisation de brochures et catalogu', 0, 2, NULL),
-(64, 'Conception et réalisation de support publicitaire ', 0, 2, NULL),
-(65, 'Création logo ou charte graphique', 0, 2, NULL),
-(66, 'Comptabilité et Expert financier', 0, 3, NULL),
-(67, 'Conseil opérationnel et industriel', 0, 3, NULL),
-(68, 'Conseil stratégique et études', 0, 3, NULL),
-(69, 'Recouvrement de créances', 0, 3, NULL),
-(70, 'Boulonnerie, visserie, articles de fixatio', 0, 44, NULL),
-(71, 'Carburant, fuel ', 0, 44, NULL),
-(72, 'Consommable de soudure', 0, 44, NULL),
-(73, 'Consommable et composant électrique', 0, 44, NULL),
-(74, 'Droguerie', 0, 44, NULL),
-(75, 'Emballage et conditionnement', 0, 44, NULL),
-(76, 'Produit d’entretien et de nettoyage', 0, 44, NULL),
-(77, 'Quincaillerie ', 0, 44, NULL),
-(78, 'Vêtement de sécurité', 0, 44, NULL),
-(79, 'Vêtement de travaille', 0, 44, NULL),
-(80, 'Carton ondulé', 0, 4, NULL),
-(81, 'Design emballage et étiquettes', 0, 4, NULL),
-(82, 'Emballage et conditionnement ', 0, 4, NULL),
-(83, 'Fioul - mazout', 0, 5, NULL),
-(84, 'Energie Solaire', 0, 5, NULL),
-(85, 'Biocarburant', 0, 5, NULL),
-(86, 'Agencement, décoratio', 0, 45, NULL),
-(87, 'Bâtiment préfabriqué', 0, 45, NULL),
-(88, 'Construction métallique', 0, 45, NULL),
-(89, 'Entreprise de construction de bâtiment', 0, 45, NULL),
-(90, 'Génie civil', 0, 45, NULL),
-(91, 'Gros-œuvre ', 0, 45, NULL),
-(92, 'Menuiserie aluminium', 0, 45, NULL),
-(93, 'Menuiserie bois', 0, 45, NULL),
-(94, 'Piscine ', 0, 45, NULL),
-(95, 'Porte, cloison amovible', 0, 45, NULL),
-(96, 'Terrassement', 0, 45, NULL),
-(97, 'Travaux tout corps d’état', 0, 45, NULL),
-(98, 'Enseignes pour stand d\'exposition ', 0, 6, NULL),
-(99, 'Hôtesses ', 0, 6, NULL),
-(100, 'Location de salles pour mariage, fêtes,... ', 0, 6, NULL),
-(101, 'Location de salles pour séminaire, réunion,... ', 0, 6, NULL),
-(102, 'Location matériel et tentes', 0, 6, NULL),
-(103, 'Organisation d\'événements ', 0, 6, NULL),
-(104, 'Salons et conventions ', 0, 6, NULL),
-(105, 'Services de traiteur ', 0, 6, NULL),
-(106, 'Son et lumière', 0, 6, NULL),
-(107, 'Formation continue ', 0, 7, NULL),
-(108, 'Formation du soir', 0, 7, NULL),
-(109, 'Formation extra-entreprise', 0, 7, NULL),
-(110, 'Formation intra-entreprise', 0, 7, NULL),
-(111, 'Formation langue ', 0, 7, NULL),
-(112, 'Formation logiciel ', 0, 7, NULL),
-(113, 'Formation professionnel', 0, 7, NULL),
-(114, 'Formation vente et marketing', 0, 7, NULL),
-(115, 'Brochures et catalogues ', 0, 8, NULL),
-(116, 'Impression cartes de visite et papier à lettres ', 0, 8, NULL),
-(117, 'Impression classeurs et boîtes de rangement ', 0, 8, NULL),
-(118, 'Impression enveloppes ', 0, 8, NULL),
-(119, 'Impression factures et formulaires ', 0, 8, NULL),
-(120, 'Impression feuillets, dépliants et affiches ', 0, 8, NULL),
-(121, 'Impression magazines, livres et journaux ', 0, 8, NULL),
-(122, 'Impression rapports annuels ', 0, 8, NULL),
-(123, 'Impression spéciale', 0, 8, NULL),
-(124, 'Conseil informatique', 0, 9, NULL),
-(125, 'Développement et intégration base de données', 0, 9, NULL),
-(126, 'Développement, programmation logiciel ', 0, 9, NULL),
-(127, 'Intégration et gestion de projet', 0, 9, NULL),
-(128, 'Logiciel gestion CRM - SRM', 0, 9, NULL),
-(129, 'Logiciel gestion documents ', 0, 9, NULL),
-(130, 'Logiciel standard', 0, 9, NULL),
-(131, 'Progiciel de gestion intégré (ERP) ', 0, 9, NULL),
-(132, 'Services sécurité informatique', 0, 9, NULL),
-(133, 'Création site web de présentation ', 0, 46, NULL),
-(134, 'Création site web gestion et e-commerce ', 0, 46, NULL),
-(135, 'Fournisseur d\'accès FAI ', 0, 46, NULL),
-(136, 'Graphisme et animations web ', 0, 46, NULL),
-(137, 'Hébergement sites web ', 0, 46, NULL),
-(138, 'Marketing internet ', 0, 46, NULL),
-(139, 'Réalisation de bannières ', 0, 46, NULL),
-(140, 'Référencement moteur de recherche', 0, 46, NULL),
-(141, 'Bacs de stockage et conteneurs ', 0, 11, NULL),
-(142, 'Chariots élévateurs', 0, 11, NULL),
-(143, 'Transpalette et Gerbeur', 0, 11, NULL),
-(144, 'Entreposage ', 0, 11, NULL),
-(145, 'Grues ', 0, 11, NULL),
-(146, 'Palettes ', 0, 11, NULL),
-(148, 'Achat / location de bases de données', 0, 12, NULL),
-(149, 'Agence de marketing direct ', 0, 12, NULL),
-(150, 'Agence de publicité ', 0, 12, NULL),
-(151, 'Conseil vente et marketing ', 0, 12, NULL),
-(152, 'Enseignes lumineuses et signalétique ', 0, 12, NULL),
-(153, 'Mailing direct ', 0, 12, NULL),
-(154, 'Rédaction de textes ', 0, 12, NULL),
-(155, 'Relations presse', 0, 12, NULL),
-(156, 'Télémarketing et Centres d\'appels', 0, 12, NULL),
-(157, 'Aspirateur et cireuse', 0, 48, NULL),
-(158, 'Chocolat et confiserie', 0, 48, NULL),
-(159, 'Electroménager', 0, 48, NULL),
-(160, 'Hi-fi', 0, 48, NULL),
-(161, 'Literie, draps  ', 0, 48, NULL),
-(162, 'Sonorisation et effet lumineux', 0, 48, NULL),
-(163, 'Vêtement de travaille', 0, 48, NULL),
-(164, 'Armoire et coffret', 0, 49, NULL),
-(165, 'Automate programmable', 0, 49, NULL),
-(166, 'Bobinage pour moteur électrique', 0, 49, NULL),
-(167, 'Câble et fil électrique', 0, 49, NULL),
-(168, 'Carte électronique', 0, 49, NULL),
-(169, 'Composant d’automatisme pneumatique', 0, 49, NULL),
-(170, 'Composant électronique', 0, 49, NULL),
-(171, 'Composant et article hydraulique', 0, 49, NULL),
-(172, 'Conception et installation d’automatisme', 0, 49, NULL),
-(173, 'Disjoncteur, relais électrique', 0, 49, NULL),
-(174, 'Transformateur électrique', 0, 49, NULL),
-(177, 'Imprimantes ', 0, 9, NULL),
-(179, 'Ordinateurs PC', 0, 9, NULL),
-(180, 'PC portables ', 0, 9, NULL),
-(181, 'Serveurs ', 0, 9, NULL),
-(182, 'Support hardware', 0, 9, NULL),
-(183, 'Carto', 0, 50, NULL),
-(184, 'Encre', 0, 50, NULL),
-(185, 'Machine', 0, 50, NULL),
-(186, 'Papier', 0, 50, NULL),
-(187, 'Audit environnemental', 0, 14, NULL),
-(188, 'Gestion de déchèterie ', 0, 14, NULL),
-(189, 'Gestion du nettoyage ', 0, 14, NULL),
-(190, 'Matériel et produits de nettoyage ', 0, 14, NULL),
-(191, 'Nettoyage & Environnement', 0, 14, NULL),
-(192, 'Services de nettoyage', 0, 14, NULL),
-(193, 'Concepteur de reportage vidéo ', 0, 15, NULL),
-(194, 'Duplication de CD ou DVD ', 0, 15, NULL),
-(195, 'Photographie ', 0, 15, NULL),
-(196, 'Production spot radio ', 0, 15, NULL),
-(197, 'Production vidéo présentation d\'entreprise', 0, 15, NULL),
-(198, 'Production vidéo pour publicité ', 0, 15, NULL),
-(199, 'Présentation CD ou DVD ', 0, 15, NULL),
-(200, 'Streaming vidéo', 0, 15, NULL),
-(201, 'Streaming vidéo', 0, 15, NULL),
-(202, 'PLV', 0, 15, NULL),
-(203, 'Affichage', 0, 15, NULL),
-(204, 'Accessoire et équipement ', 0, 52, NULL),
-(205, 'Entretien et maintenance', 0, 52, NULL),
-(206, 'Pièce détaché pour moteur', 0, 52, NULL),
-(207, 'Accessoire et équipement ', 0, 53, NULL),
-(208, 'Entretien et maintenance', 0, 53, NULL),
-(209, 'Pièce détaché pour moteur', 0, 53, NULL),
-(210, 'Colorant pour matière plastique', 0, 54, NULL),
-(211, 'Articles promotionnels ', 0, 16, NULL),
-(212, 'Cadeaux d\'affaires ', 0, 16, NULL),
-(213, 'Vêtements promotionnels', 0, 16, NULL),
-(214, 'Architecture d\'intérieur ', 0, 18, NULL),
-(215, 'Climatisation ', 0, 18, NULL),
-(216, 'Construction générale ', 0, 18, NULL),
-(217, 'Décoration intérieure ', 0, 18, NULL),
-(218, 'Installation électrique ', 0, 18, NULL),
-(219, 'Installations spéciales ', 0, 18, NULL),
-(220, 'Peinture et rafraîchissement ', 0, 18, NULL),
-(221, 'Rénovation  bâtiment', 0, 18, NULL),
-(222, 'Sol et fondation ', 0, 18, NULL),
-(223, 'Toit et isolation ', 0, 18, NULL),
-(224, 'Tuyauterie et sanitaire', 0, 18, NULL),
-(225, 'Intérim ', 0, 17, NULL),
-(226, 'Gardiennage', 0, 17, NULL),
-(227, 'Recrutement ', 0, 17, NULL),
-(228, 'Relocation ', 0, 17, NULL),
-(229, 'Alarme et appareil de surveillance', 0, 19, NULL),
-(230, 'Antivol', 0, 19, NULL),
-(231, 'Contrôle d’accès', 0, 19, NULL),
-(232, 'Détection d’incendie', 0, 19, NULL),
-(233, 'Gardiennage', 0, 19, NULL),
-(234, 'Prévention contre le feu ', 0, 19, NULL),
-(235, 'Surveillance vidéo ', 0, 19, NULL),
-(236, 'Centraux téléphoniques', 0, 55, NULL),
-(237, 'Câblage et réseaux ', 0, 55, NULL),
-(238, 'Téléphonie VOIP ', 0, 55, NULL),
-(239, 'Téléphonie mobile', 0, 55, NULL),
-(240, 'Téléphonie Fixe', 0, 55, NULL),
-(249, 'Billets d\'avion ', 0, 24, NULL),
-(250, 'Location d\'autocars', 0, 24, NULL),
-(251, 'Hôtel', 0, 24, NULL),
-(252, 'Aciers de constructio', 0, 27, NULL),
-(253, 'Agrafages – vulcanisatio', 0, 53, NULL),
-(254, 'outillage', 0, 44, NULL),
-(255, 'Appareils de mesure et de contrôle électrique', 0, 36, NULL),
-(256, 'Location de véhicule utilitaire', 0, 56, NULL),
-(257, 'Location de camio', 0, 56, NULL),
-(258, 'VEHICULE UTILITAIRE', 0, 20, NULL),
-(259, 'CAMIO', 0, 20, NULL),
-(260, 'AUTOMOBILES', 0, 20, NULL),
-(261, 'MINIBUS', 0, 20, NULL),
-(262, 'FOURGONNETTES, FOURGONS', 0, 20, NULL),
-(263, 'Transport National', 0, 57, NULL),
-(264, 'Tansport International', 0, 57, NULL),
-(265, 'Messagerie', 0, 57, NULL),
-(266, 'Services de Coursiers', 0, 57, NULL),
-(267, 'Déménagement', 0, 57, NULL),
-(268, 'Matériel Informatique', 0, 9, NULL),
-(269, 'Palettes', 0, 61, NULL),
-(270, 'Rayonnage', 0, 11, NULL),
-(271, 'Chariots élévateurs', 0, 62, NULL),
-(272, 'Transpalettes', 0, 62, NULL),
-(273, 'Gerbeurs', 0, 62, NULL),
-(274, 'Ustensiles', 0, 48, NULL),
-(275, 'Tables et chaises', 0, 48, NULL),
-(276, 'Accessoires HCR', 0, 48, NULL),
-(286, 'Industrie Mécanique', 0, 28, NULL),
-(287, 'Manufactures', 0, 28, NULL),
-(288, 'Chargeuses sur pneus', 0, 74, NULL),
-(289, 'Chargeuses - pelleteuses', 0, 74, NULL),
-(290, 'Pelles', 0, 74, NULL),
-(291, 'Tombereaux articulés', 0, 74, NULL),
-(292, 'Niveleuses', 0, 74, NULL),
-(293, 'Finisseurs de routes', 0, 74, NULL),
-(294, 'Raboteuses', 0, 74, NULL),
-(295, 'Compacteurs', 0, 74, NULL),
-(296, 'Froid et climatisatio', 0, 75, NULL),
-(297, 'AUTRE', 0, 75, NULL),
-(298, 'Accessoires', 0, 9, NULL),
-(299, 'Entretien et réparatio', 0, 9, NULL),
-(301, 'Ordinateurs Mac', 0, 9, NULL),
-(306, 'Autre (à préciser sur le descriptif)', 0, 23, NULL),
-(307, 'Sols', 0, 25, NULL),
-(308, 'Mines', 0, 25, NULL),
-(309, 'Carrière', 0, 25, NULL),
-(311, 'Agro-industrie', 0, 26, NULL),
-(312, 'Matériaux de construction ', 0, 27, NULL),
-(313, 'Sidérurgie', 0, 29, NULL),
-(314, 'Métallurgie', 0, 29, NULL),
-(315, 'Industrie de transformatio', 0, 30, NULL),
-(316, 'Energie', 0, 31, NULL),
-(317, 'Electricité', 0, 31, NULL),
-(319, 'Electronique', 0, 31, NULL),
-(320, 'Environnement', 0, 32, NULL),
-(321, 'Equipements', 0, 34, NULL),
-(322, 'Infrastructures', 0, 34, NULL),
-(323, 'Pétrole', 0, 35, NULL),
-(324, 'Gaz', 0, 35, NULL),
-(325, 'Chimie', 0, 37, NULL),
-(326, 'Parachimie', 0, 37, NULL),
-(327, 'Pharmacie', 0, 37, NULL),
-(328, 'Santé', 0, 37, NULL),
-(329, 'Architectes', 0, 40, NULL),
-(330, 'Ascenseurs', 0, 41, NULL),
-(331, 'Montes charges', 0, 41, NULL),
-(332, 'Bureau d\'étude', 0, 43, NULL),
-(333, 'Maintenance', 0, 47, NULL),
-(334, 'Entretie', 0, 47, NULL),
-(335, 'Plastiques', 0, 51, NULL),
-(336, 'Caoutchouc', 0, 51, NULL),
-(337, 'Dérivés de matières plastiques', 0, 51, NULL),
-(338, 'Audit', 0, 58, NULL),
-(339, 'Conseil', 0, 58, NULL),
-(340, 'Chaudronerie', 0, 59, NULL),
-(341, 'Charpente', 0, 60, NULL),
-(342, 'Rayonnages', 0, 61, NULL),
-(343, 'Peinture à huile', 0, 63, NULL),
-(344, 'Colorant', 0, 63, NULL),
-(345, 'Services de tranport', 0, 64, NULL),
-(346, 'Agence immobilière', 0, 64, NULL),
-(347, 'Agence de location de voiture', 0, 64, NULL),
-(348, 'Sécurité', 0, 64, NULL),
-(349, 'Nettoyage', 0, 64, NULL),
-(350, 'Assistance', 0, 64, NULL),
-(351, 'Dépannage', 0, 64, NULL),
-(352, 'Bricolage', 0, 64, NULL),
-(353, 'Matériel de manutentio', 0, 65, NULL),
-(354, 'Outillage à mai', 0, 65, NULL),
-(355, 'Expertise', 0, 67, NULL),
-(356, 'Distributio', 0, 68, NULL),
-(357, 'Place de marché', 0, 70, NULL),
-(358, 'Autre', 0, 34, NULL),
-(364, 'Autre', 0, 6, NULL),
-(365, 'Autre', 0, 7, NULL),
-(366, 'Autre', 0, 8, NULL),
-(367, 'Autre', 0, 9, NULL),
-(368, 'Autre', 0, 11, NULL),
-(369, 'Autre', 0, 12, NULL),
-(370, 'Autre', 0, 14, NULL),
-(371, 'Autre', 0, 15, NULL),
-(372, 'Autre', 0, 16, NULL),
-(373, 'Autre', 0, 17, NULL),
-(374, 'Autre', 0, 18, NULL),
-(375, 'Autre', 0, 19, NULL),
-(376, 'Autre', 0, 20, NULL),
-(377, 'Autre', 0, 24, NULL),
-(378, 'Autre', 0, 25, NULL),
-(379, 'Autre', 0, 26, NULL),
-(380, 'Autre', 0, 27, NULL),
-(381, 'Autre', 0, 28, NULL),
-(382, 'Autre', 0, 29, NULL),
-(383, 'Autre', 0, 30, NULL),
-(384, 'Autre', 0, 32, NULL),
-(385, 'Autre', 0, 36, NULL),
-(386, 'Autre', 0, 37, NULL),
-(387, 'Autre', 0, 38, NULL),
-(388, 'Autre', 0, 39, NULL),
-(389, 'Autre', 0, 40, NULL),
-(390, 'Autre', 0, 41, NULL),
-(391, 'Autre', 0, 42, NULL),
-(392, 'Autre', 0, 43, NULL),
-(393, 'Autre', 0, 44, NULL),
-(394, 'Autre', 0, 45, NULL),
-(395, 'Autre', 0, 46, NULL),
-(396, 'Autre', 0, 48, NULL),
-(397, 'Autre', 0, 49, NULL),
-(398, 'Autre', 0, 50, NULL),
-(399, 'Autre', 0, 51, NULL),
-(400, 'Autre', 0, 52, NULL),
-(401, 'Autre', 0, 53, NULL),
-(402, 'Autre', 0, 54, NULL),
-(403, 'Autre', 0, 55, NULL),
-(404, 'Autre', 0, 56, NULL),
-(405, 'Autre', 0, 57, NULL),
-(406, 'Autre', 0, 58, NULL),
-(407, 'Autre', 0, 59, NULL),
-(408, 'Autre', 0, 60, NULL),
-(409, 'Autre', 0, 61, NULL),
-(410, 'Autre', 0, 62, NULL),
-(411, 'Autre', 0, 63, NULL),
-(412, 'Autre', 0, 64, NULL),
-(413, 'Autre', 0, 65, NULL),
-(414, 'Autre', 0, 67, NULL),
-(415, 'Autre', 0, 68, NULL),
-(416, 'Autre', 0, 70, NULL),
-(417, 'Autre', 0, 74, NULL),
-(418, 'Centre commercial', 0, 78, NULL),
-(419, 'Université', 0, 79, NULL),
-(420, 'Logiciel', 0, 11, NULL),
-(421, 'Machine et Equipement', 0, 4, NULL),
-(422, 'testt_deleted-422', 1, 1, NULL),
-(424, 'Algeriee2', 0, 1, 50);
+INSERT INTO `sous_secteur` (`id`, `name`, `del`, `secteur_id`, `parent`, `slug`) VALUES
+(425, 'sous-secteur', 0, 81, NULL, 'sous-secteur'),
+(426, 'test2', 0, 81, 425, 'test-2'),
+(427, 'SS Parent', 0, 82, NULL, 'ss-parent'),
+(428, 'SSchild', 0, 82, 427, 'ss-child'),
+(429, 'test3', 0, 81, 425, 'test-3'),
+(430, 'SSchild1-2', 0, 82, 427, 'ss-child-1-2'),
+(431, 'SS Parent 2', 0, 82, NULL, 'ss-parent-2'),
+(432, 'SSchild2', 0, 82, 431, 'ss-child-2');
 
 -- --------------------------------------------------------
 
@@ -2005,7 +1277,11 @@ INSERT INTO `suggestion_secteur` (`id`, `user_id`, `secteur`, `sous_secteur`, `c
 (3, 75, 'sss', 'sss', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 17:23:02'),
 (4, 75, 'sss', 'sssq', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 17:23:12'),
 (5, 75, 'gggg', 'ggggg', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 17:43:15'),
-(6, 75, 'kkk', 'kkkk', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 17:46:35');
+(6, 75, 'kkk', 'kkkk', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-01-07 17:46:35'),
+(7, 75, 'Acier, Bois et Tôle', 'Acier Inoxydable', 'ssssss', 'Ajout produit par fournisseur', 0, '2020-01-20 10:35:10'),
+(8, 75, 'Acier, Bois et Tôle', 'Acier Inoxydable', 'aazerty', 'Ajout produit par fournisseur', 0, '2020-01-20 10:42:02'),
+(9, 75, 'Acier, Bois et Tôle', 'Acier Inoxydable', 'ssss', 'Ajout produit par fournisseur', 0, '2020-01-20 10:44:09'),
+(10, 75, 'Acier, Bois et Tôle', 'Acier Inoxydable', 'test', 'Ajout produit par fournisseur', 0, '2020-01-22 11:45:34');
 
 -- --------------------------------------------------------
 
@@ -2043,7 +1319,7 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`, `password`, `del`, `isactif`, `created`, `first_name`, `last_name`, `username`, `discr`, `roles`, `password_change_date`, `parent1`, `confirmation_token`, `avatar_id`, `redirect`) VALUES
 (1, '36, rue imam al boukhari maarif', 'HAY EL KHAIR_2', 20370, '+212696318051', 'webmasster@3findustrie.com', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 1, 1, '2019-08-05 17:01:48', 'YOUNESS', 'ARBOUH', 'unessami', 'Admin', 'ROLE_ADMIN', 1565020062, NULL, 'ljmRxc&Jmrgox3ZYugIYQiSzqheC4N', 1, '/dashboard'),
 (2, 'HAY EL KHAIRàà', 'HAY EL KHAIR', 26000, '+212696318051', 'youness.arbouh1s@gmail.com', '$2y$13$uXkilBRFzlnwOFN7VHPkXucJ1Iz3R1IoLSvAsec3pnJlitBXcpYee', 0, 1, '2019-08-05 17:16:12', 'firstAcheteur', 'lastAcheteur', 'acheteur', 'Acheteur', 'ROLE_ACHETEUR', 1565020457, NULL, 'E.4rYgkSwxyIdaEBZpeXHmS&WON44t', 1, '/dashboard_ac'),
-(3, 'HAY EL KHAIRoo', 'HAY EL KHAIRoo', 2600, '+212696318051', 'youness.arbouh1@gmail.com', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 0, 1, '2019-08-05 17:21:18', 'firstFournisseur', 'lastfrns', 'frsnora', 'Fournisseur', 'ROLE_FOURNISSEUR', 1565021174, NULL, 'mpTGWY.Z9OjHTGSgCwV7apEqapombk', 1, '/dashboard_fr'),
+(3, 'HAY EL KHAIRoo', 'HAY EL KHAIRoo', 2600, '+212696318051', 'youness.arbouh1sd@gmail.com', '$2y$13$iLrMDSMDeyTQJwHFBzE.L.z1IzmscVY1U444ljNbFWvbeNIs/wLKK', 0, 1, '2019-08-05 17:21:18', 'firstFournisseur', 'lastfrns', 'frsnora', 'Fournisseur', 'ROLE_FOURNISSEUR', 1565021174, NULL, 'mpTGWY.Z9OjHTGSgCwV7apEqapombk', 1, '/dashboard_fr'),
 (4, 'HAY EL KHA22IR', 'cmrsoia cmrsoi2a', 2622820, '+212696318051', 'youness.arbouh4@gmail.com', '$2y$13$D5ucNPg0F4x3NASOS4VYgOPcbK.jT6aW4nmMn42ZBadntqFSZFM1W', 0, 1, '2019-08-05 17:30:47', 'cmrsoia2222', 'cmrsoi2a2223', 'cmrsoia22222d', 'ZoneCommercial', 'ROLE_ZONE', 1565078960, NULL, 'HnmaGHUOcAiIecY01yyGKTw@pDugWR', 1, ''),
 (5, 'HAY EL 00', 'HAY EL 11', 26400, '+212696318051', 'youness.arbouh5@gmail.com_deleted-5', '$2y$13$MavlmpQGslmov1KUOE1kMejriI6dW9botMR2bPgmdXoF2aE14.S6S', 1, 0, '2019-08-05 17:32:07', 'Commerc_107', 'Commerciale_107', 'cmrciale_107_deleted-5', 'ZoneCommercial', 'ROLE_ZONE', 1565079056, 1, 'mZiQL@&239srr1aa95P&EuJwWCNZfP', 1, ''),
 (6, 'HAY EL KHAIRqqq1', 'HAY EL qqqqqqqqq1', 26600, '+212696318051', 'youness.arbouh6@gmail.com', '$2y$13$.kjXEmyAnYvRpqhuqKC7te0B2PKlt7aCKkwgIt.IhJbUKnkXbIBHe', 0, 1, '2019-08-05 17:38:54', 'Commerc_2', 'Commerciale_2', 'cmrciale_2', 'Commercial', 'ROLE_COMMERCIAL', NULL, 1, 'MPsPbG9uMXgReM4P66K0zBgW7cxW&g', 31, ''),
@@ -2117,7 +1393,10 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (78, '36, rue imam al boukhari maarif', '', 26000, '0696318051', 'bouncee@3findustrie.ma', '$2y$13$r3E1Hv6tfRWcbQlySkLXUOkIHlh.KUalxRXZO7cr.wV4looBkNHHq', 0, 1, '2019-12-17 09:16:53', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard'),
 (79, NULL, NULL, NULL, '0696318051', 'webmaster@7e-ky.ma', '$2y$13$J2npEYkTNYeArf8J4YPso.HH6BdZ4DK4ez0uGoLFC6a/YNwFXcknm', 0, 1, '2019-12-17 11:27:08', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, NULL, NULL, '/register/fournisseur'),
 (80, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'webmaster@7e-sky.ma', '$2y$13$COqDwD53EBeEpYbz.pajtO7UfBLX8w11QI02KVCsN0e0kKwEz0Hr2', 0, 1, '2019-12-17 11:31:32', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac'),
-(81, '36, rue imam al boukhari maarif', 'youness.arbouh55@gmail.com', NULL, '0696318051', 'bounce@3findustrie.ma', '$2y$13$bYoEpEPrFt7.eUdhzPiG1ueeGdhXes7RC/wWXIE2Z9Dkn7WWwwZpi', 0, 1, '2019-12-24 09:20:37', 'ARBOUH', 'Youness', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, 40, '/dashboard');
+(81, '36, rue imam al boukhari maarif', 'youness.arbouh55@gmail.com', NULL, '0696318051', 'bounce@3findustrie.ma', '$2y$13$bYoEpEPrFt7.eUdhzPiG1ueeGdhXes7RC/wWXIE2Z9Dkn7WWwwZpi', 0, 1, '2019-12-24 09:20:37', 'ARBOUH', 'Youness', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, 40, '/dashboard'),
+(82, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'youness.arbouh1@gmail.com', '$2y$13$H./PWBuS/z5G4Zb2vnhUUeecSGafd4WpT6HOKJdB2aLajgV2sV57q', 0, 1, '2020-02-10 16:19:15', 'ARBOUH', 'Youness', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, 6, '/dashboard'),
+(83, NULL, NULL, NULL, '0696318051', 'test@gmail.com', '$2y$13$T8jNKEcHY518EEZyUh79suLLAlLS9mdsVZusoguM0ctmuLNHDuHXq', 0, 1, '2020-02-10 16:41:12', 'ARBOUH', 'Youness', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, 'q&BastBzQw5GunU1yl1UMIL.H4aw2E', NULL, '/register/fournisseur'),
+(84, '36, rue imam al boukhari maarif', '', NULL, '0696318051', 'webmastefghr@3findustrie.com', '$2y$13$uYLL7akTZ//jn8pGRSzPjusay5ZjR9PJVSAJd1PQb4MGWi6NM08.S', 0, 1, '2020-02-10 16:56:43', 'ARBOUH', 'Youness', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac');
 
 -- --------------------------------------------------------
 
@@ -2315,6 +1594,20 @@ ALTER TABLE `acheteur`
   ADD KEY `IDX_304AFF9D38248176` (`currency_id`);
 
 --
+-- Index pour la table `actualite`
+--
+ALTER TABLE `actualite`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_54928197989D9B62` (`slug`),
+  ADD KEY `IDX_549281973DA5256D` (`image_id`);
+
+--
+-- Index pour la table `actualite_image`
+--
+ALTER TABLE `actualite_image`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `admin`
 --
 ALTER TABLE `admin`
@@ -2355,6 +1648,13 @@ ALTER TABLE `commercial_ville`
   ADD KEY `IDX_6CBDDBE2A73F0036` (`ville_id`);
 
 --
+-- Index pour la table `contact_fournisseur`
+--
+ALTER TABLE `contact_fournisseur`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_5832758C670C757F` (`fournisseur_id`);
+
+--
 -- Index pour la table `currency`
 --
 ALTER TABLE `currency`
@@ -2377,6 +1677,7 @@ ALTER TABLE `demande_abonnement`
 --
 ALTER TABLE `demande_achat`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_D077077F989D9B62` (`slug`),
   ADD KEY `IDX_D077077F96A7BB5F` (`acheteur_id`),
   ADD KEY `search_idx` (`statut`,`del`),
   ADD KEY `IDX_D077077FCC36B3F` (`motif_rejet_id`),
@@ -2455,9 +1756,11 @@ ALTER TABLE `fiche`
 --
 ALTER TABLE `fournisseur`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_369ECA32989D9B62` (`slug`),
   ADD KEY `IDX_369ECA32A6E44244` (`pays_id`),
   ADD KEY `IDX_369ECA32A73F0036` (`ville_id`),
-  ADD KEY `IDX_369ECA3238248176` (`currency_id`);
+  ADD KEY `IDX_369ECA3238248176` (`currency_id`),
+  ADD KEY `indexe_fournisseur` (`societe`(191));
 
 --
 -- Index pour la table `fournisseur_sous_secteur`
@@ -2518,7 +1821,8 @@ ALTER TABLE `paiement`
 -- Index pour la table `pays`
 --
 ALTER TABLE `pays`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_349F3CAE989D9B62` (`slug`);
 
 --
 -- Index pour la table `personnel`
@@ -2532,13 +1836,18 @@ ALTER TABLE `personnel`
 --
 ALTER TABLE `produit`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_29A5EC27989D9B62` (`slug`),
   ADD KEY `IDX_29A5EC279F7E4405` (`secteur_id`),
   ADD KEY `IDX_29A5EC27D7BD44DD` (`sous_secteurs_id`),
   ADD KEY `IDX_29A5EC27670C757F` (`fournisseur_id`),
   ADD KEY `IDX_29A5EC27431AD613` (`fiche_technique_id`),
   ADD KEY `IDX_29A5EC27BCF5E72D` (`categorie_id`),
   ADD KEY `IDX_29A5EC276E694C1F` (`featured_image_id_id`),
-  ADD KEY `IDX_29A5EC2738248176` (`currency_id`);
+  ADD KEY `IDX_29A5EC2738248176` (`currency_id`),
+  ADD KEY `indexes_produit2` (`is_valid`),
+  ADD KEY `indexes_produit3` (`del`),
+  ADD KEY `indexes_produit` (`titre`),
+  ADD KEY `IDX_29A5EC27A6E44244` (`pays_id`);
 
 --
 -- Index pour la table `produit_image_produit`
@@ -2552,15 +1861,26 @@ ALTER TABLE `produit_image_produit`
 -- Index pour la table `secteur`
 --
 ALTER TABLE `secteur`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_8045251F989D9B62` (`slug`);
+
+--
+-- Index pour la table `select_produit`
+--
+ALTER TABLE `select_produit`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_F7E2627EF347EFB` (`produit_id`);
 
 --
 -- Index pour la table `sous_secteur`
 --
 ALTER TABLE `sous_secteur`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UNIQ_A34C5D52989D9B62` (`slug`),
   ADD KEY `IDX_A34C5D529F7E4405` (`secteur_id`),
-  ADD KEY `IDX_A34C5D523D8E604F` (`parent`);
+  ADD KEY `IDX_A34C5D523D8E604F` (`parent`),
+  ADD KEY `indexes_sous_secteur` (`name`,`parent`),
+  ADD KEY `indexes_sous_secteur2` (`del`);
 
 --
 -- Index pour la table `suggestion_secteur`
@@ -2575,7 +1895,9 @@ ALTER TABLE `suggestion_secteur`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD KEY `IDX_8D93D64965823DD6` (`parent1`),
-  ADD KEY `IDX_8D93D64986383B10` (`avatar_id`);
+  ADD KEY `IDX_8D93D64986383B10` (`avatar_id`),
+  ADD KEY `indexes_user2` (`isactif`),
+  ADD KEY `indexes_user` (`del`);
 
 --
 -- Index pour la table `ville`
@@ -2606,13 +1928,25 @@ ALTER TABLE `zone_commercial_pays`
 -- AUTO_INCREMENT pour la table `abonnement`
 --
 ALTER TABLE `abonnement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `actualite`
+--
+ALTER TABLE `actualite`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT pour la table `actualite_image`
+--
+ALTER TABLE `actualite_image`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT pour la table `attachement`
 --
 ALTER TABLE `attachement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT pour la table `avatar`
@@ -2624,7 +1958,13 @@ ALTER TABLE `avatar`
 -- AUTO_INCREMENT pour la table `black_listes`
 --
 ALTER TABLE `black_listes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `contact_fournisseur`
+--
+ALTER TABLE `contact_fournisseur`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT pour la table `currency`
@@ -2636,37 +1976,37 @@ ALTER TABLE `currency`
 -- AUTO_INCREMENT pour la table `demande_abonnement`
 --
 ALTER TABLE `demande_abonnement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT pour la table `demande_devis`
 --
 ALTER TABLE `demande_devis`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `demande_jeton`
 --
 ALTER TABLE `demande_jeton`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `detail_visite`
 --
 ALTER TABLE `detail_visite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `duree`
@@ -2684,7 +2024,7 @@ ALTER TABLE `fiche`
 -- AUTO_INCREMENT pour la table `historique_visite`
 --
 ALTER TABLE `historique_visite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `image_produit`
@@ -2696,7 +2036,7 @@ ALTER TABLE `image_produit`
 -- AUTO_INCREMENT pour la table `jeton`
 --
 ALTER TABLE `jeton`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `motif`
@@ -2726,37 +2066,43 @@ ALTER TABLE `pays`
 -- AUTO_INCREMENT pour la table `personnel`
 --
 ALTER TABLE `personnel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `produit`
 --
 ALTER TABLE `produit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT pour la table `secteur`
 --
 ALTER TABLE `secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+
+--
+-- AUTO_INCREMENT pour la table `select_produit`
+--
+ALTER TABLE `select_produit`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT pour la table `sous_secteur`
 --
 ALTER TABLE `sous_secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=425;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=433;
 
 --
 -- AUTO_INCREMENT pour la table `suggestion_secteur`
 --
 ALTER TABLE `suggestion_secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT pour la table `ville`
@@ -2800,6 +2146,12 @@ ALTER TABLE `acheteur`
   ADD CONSTRAINT `FK_304AFF9DFC8B6C6C` FOREIGN KEY (`parent2`) REFERENCES `acheteur` (`id`);
 
 --
+-- Contraintes pour la table `actualite`
+--
+ALTER TABLE `actualite`
+  ADD CONSTRAINT `FK_549281973DA5256D` FOREIGN KEY (`image_id`) REFERENCES `actualite_image` (`id`);
+
+--
 -- Contraintes pour la table `admin`
 --
 ALTER TABLE `admin`
@@ -2824,6 +2176,12 @@ ALTER TABLE `commercial`
 ALTER TABLE `commercial_ville`
   ADD CONSTRAINT `FK_6CBDDBE27854071C` FOREIGN KEY (`commercial_id`) REFERENCES `commercial` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `FK_6CBDDBE2A73F0036` FOREIGN KEY (`ville_id`) REFERENCES `ville` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `contact_fournisseur`
+--
+ALTER TABLE `contact_fournisseur`
+  ADD CONSTRAINT `FK_5832758C670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`);
 
 --
 -- Contraintes pour la table `demande_abonnement`
@@ -2939,6 +2297,7 @@ ALTER TABLE `produit`
   ADD CONSTRAINT `FK_29A5EC27670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
   ADD CONSTRAINT `FK_29A5EC276E694C1F` FOREIGN KEY (`featured_image_id_id`) REFERENCES `image_produit` (`id`),
   ADD CONSTRAINT `FK_29A5EC279F7E4405` FOREIGN KEY (`secteur_id`) REFERENCES `secteur` (`id`),
+  ADD CONSTRAINT `FK_29A5EC27A6E44244` FOREIGN KEY (`pays_id`) REFERENCES `pays` (`id`),
   ADD CONSTRAINT `FK_29A5EC27BCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `sous_secteur` (`id`),
   ADD CONSTRAINT `FK_29A5EC27D7BD44DD` FOREIGN KEY (`sous_secteurs_id`) REFERENCES `sous_secteur` (`id`);
 
@@ -2948,6 +2307,12 @@ ALTER TABLE `produit`
 ALTER TABLE `produit_image_produit`
   ADD CONSTRAINT `FK_92EB1D2563EA69CD` FOREIGN KEY (`image_produit_id`) REFERENCES `image_produit` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `FK_92EB1D25F347EFB` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `select_produit`
+--
+ALTER TABLE `select_produit`
+  ADD CONSTRAINT `FK_F7E2627EF347EFB` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`id`);
 
 --
 -- Contraintes pour la table `sous_secteur`
