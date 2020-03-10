@@ -10,6 +10,8 @@ namespace App\Controller;
 
 
 use App\Entity\Acheteur;
+use App\Entity\Attachement;
+use App\Entity\DemandeAchat;
 use App\Entity\Fiche;
 use App\Entity\Fournisseur;
 use App\Entity\Produit;
@@ -147,7 +149,41 @@ class DefaultController extends AbstractController
         return $response;
     }
 
+    /**
+     * @Route("/attachements/{id}", name="attachements")
+     */
+    public function attachements(Attachement $fiche)
+    {
 
+        // Generate response
+        $response = new JsonResponse();
+
+        if (!$fiche) {
+            return $response->setStatusCode(404);
+        }
+        $filename = dirname(__DIR__) . '/../public' . $fiche->getUrl();
+
+        // Set headers
+        $response->headers->set('Cache-Control', 'private');
+        $response->headers->set('Content-type', mime_content_type($filename));
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . basename($filename) . '";');
+        $response->headers->set('Content-length', filesize($filename));
+
+        // Send headers before outputting anything
+        $response->sendHeaders();
+
+        $response->setContent(file_get_contents($filename));
+
+        return $response;
+    }
+
+    /**
+     *=================================================
+     *=================================================
+     *    RECHERCHER PRODUITS
+     *=================================================
+     *=================================================
+     **/
     /**
      * @Route("/count_produit_pays")
      */
@@ -291,8 +327,19 @@ class DefaultController extends AbstractController
 
         return $this->json($result);
     }
+    /**
+     *=================================================
+     *    FIN RECHERCHER PRODUITS
+     *=================================================
+     **/
 
-
+    /**
+     *=================================================
+     *=================================================
+     *    RECHERCHER FOURNISSEURS
+     *=================================================
+     *=================================================
+     **/
     /**
      * @Route("/count_fournisseur_pays")
      */
@@ -412,7 +459,174 @@ class DefaultController extends AbstractController
 
         return $this->json($result);
     }
+    /**
+     *=================================================
+     *    FIN RECHERCHER FOURNISSEURS
+     *=================================================
+     **/
 
+
+    /**
+     *=================================================
+     *=================================================
+     *    RECHERCHER DEMANDES ACHATS
+     *=================================================
+     *=================================================
+     **/
+    /**
+     * @Route("/count_demandes_achats_pays")
+     */
+    public function getCountDemandesAchatsParPays(Request $request)
+    {
+        $secteur = $request->query->get('secteur', null);
+        $sousSecteur = $request->query->get('sousSecteur', null);
+        $pays = $request->query->get('pays', null);
+
+        $result = null;
+
+        $em = $this->getDoctrine()->getManager()->getRepository(DemandeAchat::class);
+
+        // Jointures
+        $qb = $em->createQueryBuilder('p')
+            ->join('p.acheteur', 'acheteur')
+            ->join('acheteur.pays', 'pays');
+
+        if($pays){
+            $qb->join('acheteur.ville', 'ville');
+        }
+        if ($secteur) {
+            $qb->join('p.sousSecteurs', 'sousSecteurs');
+            $qb->join('sousSecteurs.secteur', 'secteur');
+        }
+
+
+        // Where condition
+        $qb->where('p.del=0');
+        $qb->andWhere('p.isPublic=1');
+
+        if ($pays) {
+            $qb->andWhere('pays.slug = :slug_pays');
+        }
+        if ($sousSecteur) {
+            $qb->andWhere('sousSecteurs.slug = :slug_activite');
+        }
+        if ($secteur) {
+            $qb->andWhere('secteur.slug = :slug_secteur');
+        }
+
+
+        if($pays) {
+            $qb->groupBy('ville');
+        } else {
+            $qb->groupBy('pays');
+        }
+
+        if ($pays) {
+            $qb->setParameter('slug_pays', $pays);
+        }
+        if ($sousSecteur) {
+            $qb->setParameter('slug_activite', $sousSecteur);
+        }
+        if ($secteur) {
+            $qb->setParameter('slug_secteur', $secteur);
+        }
+
+        if ($pays) {
+            $qb->select('ville.name,ville.slug,count(distinct p.id) as count');
+
+        } else {
+            $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
+        }
+
+
+        $query = $qb->getQuery();
+
+        $result = $query->getResult();
+
+
+        return $this->json($result);
+        //  return $this->json($query->getSQL());
+    }
+
+    /**
+     * @Route("/count_demandes_achats_categorie")
+     */
+    public function getCountDemandesAchatsParCategorie(Request $request)
+    {
+        $secteur = $request->query->get('secteur', null);
+        $pays = $request->query->get('pays', null);
+        $ville = $request->query->get('ville', null);
+
+
+        $em = $this->getDoctrine()->getManager()->getRepository(DemandeAchat::class);
+
+        // Jointures
+        $qb = $em->createQueryBuilder('p')
+            ->join('p.sousSecteurs', 'sousSecteurs')
+            ->join('sousSecteurs.secteur', 'secteur');
+
+        if ($pays) {
+            $qb->join('p.acheteur', 'acheteur')
+                ->join('acheteur.pays', 'pays');
+            if($ville){
+                $qb->join('acheteur.ville', 'ville');
+            }
+        }
+
+        // Where condition
+        $qb->where('p.del=0');
+        $qb->andWhere('p.isPublic=1');
+
+
+
+        if ($secteur) {
+            $qb->andWhere('secteur.slug = :slug_secteur');
+        }
+        if ($pays) {
+            $qb->andWhere('pays.slug = :slug_pays');
+            if($ville){
+                $qb->andWhere('ville.slug = :slug_ville');
+            }
+        }
+
+        // Group by
+        if($secteur) {
+            $qb->groupBy('sousSecteurs');
+        } else {
+            $qb->groupBy('secteur');
+        }
+
+        //set Parametres
+
+
+        if ($secteur) {
+            $qb->setParameter('slug_secteur', $secteur);
+        }
+        if ($pays) {
+            $qb->setParameter('slug_pays', $pays);
+            if ($ville) {
+                $qb->setParameter('slug_ville', $ville);
+            }
+        }
+
+        if ($secteur) {
+            $qb->select('sousSecteurs.name,sousSecteurs.slug,count(distinct p.id) as count');
+        } else {
+            $qb->select('secteur.name,secteur.slug,count(distinct p.id) as count');
+        }
+
+        $query = $qb->getQuery();
+
+        $result = $query->getResult();
+
+
+        return $this->json($result);
+    }
+    /**
+     *=================================================
+     *    FIN RECHERCHER DEMANDES ACHATS
+     *=================================================
+     **/
 
 
     /**
