@@ -3,8 +3,11 @@
   "env": {
     "APP_ENV": "prod",
     "APP_SECRET": {"generator": "secret"},
-    "CORS_ALLOW_ORIGIN": "https://unruffled-bardeen-bfc2cc.netlify.com/"
+    "CORS_ALLOW_ORIGIN": "https://gentle-sands-20712.herokuapp.com/"
   },
+  "addons": [
+    "heroku-postgresql"
+  ],
   "buildpacks": [
     {
       "url": "https://github.com/heroku/heroku-buildpack-php"
