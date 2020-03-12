@@ -5,9 +5,6 @@
     "APP_SECRET": {"generator": "secret"},
     "CORS_ALLOW_ORIGIN": "https://unruffled-bardeen-bfc2cc.netlify.com/"
   },
-  "addons": [
-    "cleardb"
-  ],
   "buildpacks": [
     {
       "url": "https://github.com/heroku/heroku-buildpack-php"
