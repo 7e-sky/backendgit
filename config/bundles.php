@@ -14,4 +14,5 @@ return [
     Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
     Vich\UploaderBundle\VichUploaderBundle::class => ['all' => true],
     Misd\PhoneNumberBundle\MisdPhoneNumberBundle::class => ['all' => true],
+    CKSource\Bundle\CKFinderBundle\CKSourceCKFinderBundle::class => ['all' => true],
 ];

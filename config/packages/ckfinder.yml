@@ -1,0 +1,8 @@
+imports:
+    - { resource: ckfinder_config.php }
+
+ckfinder:
+    connector:
+        licenseName: LICENSE-NAME
+        licenseKey: LICENSE-KEY
+        authenticationClass: App\CustomCKFinderAuth\CustomCKFinderAuth

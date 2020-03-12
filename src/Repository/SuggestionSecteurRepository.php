@@ -4,7 +4,8 @@ namespace App\Repository;
 
 use App\Entity\SuggestionSecteur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
+
 
 /**
  * @method SuggestionSecteur|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,7 +15,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class SuggestionSecteurRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SuggestionSecteur::class);
     }
