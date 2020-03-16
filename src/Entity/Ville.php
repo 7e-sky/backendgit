@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ApiFilter(
@@ -108,6 +109,15 @@ class Ville
      */
     protected $del;
 
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=128, unique=true)
+     * @Groups({"get-from-ville"})
+     */
+    private $slug;
+
+
+
 
     public function __construct()
     {
@@ -186,6 +196,9 @@ class Ville
         return $this->commercials;
     }
 
-
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 
 }

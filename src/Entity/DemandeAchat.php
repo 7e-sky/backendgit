@@ -17,6 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 
@@ -27,6 +28,11 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     "description": "partial",
  *     "reference": "partial",
  *     "statut": "exact",
+ *     "isPublic": "exact",
+ *     "sousSecteurs.slug": "exact",
+ *     "acheteur.pays.slug": "exact",
+ *     "acheteur.ville.slug": "exact",
+ *     "sousSecteurs.secteur.slug": "exact",
  *      }
  * )
  * @ApiFilter(
@@ -62,7 +68,6 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *          "get_item_by_fournisseur"={
  *              "method"="GET",
  *              "path"="/demande_achats/{id}/fournisseur",
- *              "access_control"="is_granted('ROLE_FOURNISSEUR')",
  *              "normalization_context"={"groups"={"fournisseur:get-item-from-demande"}}
  *          },
  *          "get"={
@@ -77,7 +82,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *          "delete"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"}
  *     },
  *
- *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true},
+ *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true,"maximum_items_per_page"=100},
  *     subresourceOperations={
  *          "api_acheteurs_demandes_get_subresource"={
  *              "security"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",

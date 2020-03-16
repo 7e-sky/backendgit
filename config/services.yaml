@@ -54,3 +54,4 @@ services:
             arguments:
               $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
             autoconfigure: false
+    App\DataProvider\DemandeAchatItemDataProvider: ~
