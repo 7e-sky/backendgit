@@ -72,7 +72,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true,"maximum_items_per_page"=100},
  *     subresourceOperations={
  *          "api_fournisseurs_produits_get_subresource"={
- *              "security"="is_granted('ROLE_FOURNISSEUR')",
  *              "method"="GET",
  *              "normalization_context"={"groups"={"produit:get-from-fournisseur"}}
  *          }
@@ -121,7 +120,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     private $sousSecteurs;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SousSecteur")
+     * @ORM\ManyToOne(targetEntity="Categorie")
      * @Groups({"selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $categorie;

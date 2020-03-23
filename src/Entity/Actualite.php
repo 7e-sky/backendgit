@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
  * @ApiFilter(
@@ -20,6 +21,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     "titre": "partial",
  *     "slug": "exact",
  *      }
+ * )
+ * @ApiFilter(
+ *     BooleanFilter::class,properties={"isActive"}
  * )
  * @ApiFilter(OrderFilter::class, properties={"id","description","titre","created","isActive"})
  * @ApiResource(
@@ -45,7 +49,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *              "validation_groups"={"actualite:putValidation"}
  *          },
  *     },
- *      attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true},
+ *      attributes={
+ *     "pagination_client_enabled"=true,
+ *     "pagination_items_per_page"=10,
+ *     "pagination_client_items_per_page"=true,
+ *     "maximum_items_per_page"=100,
+ *     },
  * )
  * @ORM\Entity(repositoryClass="App\Repository\ActualiteRepository")
  */
@@ -85,7 +94,7 @@ class Actualite implements CreatedEntityInterface
      * @ORM\Column(type="boolean")
      * @Groups({"actualite:put","actualite:get-all"})
      */
-    private $isActive=true;
+    private $isActive = true;
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)

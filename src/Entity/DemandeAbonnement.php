@@ -47,7 +47,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     },
  *     subresourceOperations={
  *          "api_fournisseurs_demande_abonnements_get_subresource"={
- *              "security"="is_granted('ROLE_FOURNISSEUR'))",
+ *              "security"="is_granted('ROLE_FOURNISSEUR')",
  *              "method"="GET",
  *              "normalization_context"={"groups"={"dmdAbonnement:get-all"}}
  *          }

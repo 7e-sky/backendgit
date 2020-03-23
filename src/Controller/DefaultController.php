@@ -11,10 +11,13 @@ namespace App\Controller;
 
 use App\Entity\Acheteur;
 use App\Entity\Attachement;
+use App\Entity\Categorie;
 use App\Entity\DemandeAchat;
 use App\Entity\Fiche;
 use App\Entity\Fournisseur;
 use App\Entity\Produit;
+use App\Entity\Secteur;
+use App\Entity\SousSecteur;
 use App\Entity\User;
 use App\Services\UserConfirmationService;
 use App\Services\UserService;
@@ -120,6 +123,60 @@ class DefaultController extends AbstractController
         return new JsonResponse($dataa);
 
     }
+
+    /**
+     * @Route("/api/categories_navigations")
+     */
+    public function getNavigationCategorie()
+    {
+        $em_secteur = $this->getDoctrine()->getManager()->getRepository(Secteur::class);
+        $em_sous_secteur = $this->getDoctrine()->getManager()->getRepository(SousSecteur::class);
+        $em_categorie = $this->getDoctrine()->getManager()->getRepository(Categorie::class);
+
+        $qb = $em_secteur->createQueryBuilder('s')
+            ->where('s.del=0')
+            ->setMaxResults(10)
+            ->select('s.id,s.name,s.slug');
+        $query = $qb->getQuery();
+        $secteurs = $query->getResult();
+        $response=[];
+        if($secteurs){
+            foreach ($secteurs as $secteur){
+                $qb = $em_sous_secteur->createQueryBuilder('ss')
+                    ->where('ss.del=0')
+                    ->andWhere('ss.parent is null')
+                    ->andWhere('ss.secteur = :secteur')
+                    ->setMaxResults(4)
+                    ->setParameter('secteur', $secteur['id'])
+                    ->select('ss.id,ss.name,ss.slug');
+                $query = $qb->getQuery();
+                $sous_secteurs = $query->getResult();
+                if($sous_secteurs){
+                    $array=[];
+                    foreach ($sous_secteurs as $sous_secteur){
+                        $qb = $em_categorie->createQueryBuilder('c')
+                            ->where('c.del=0')
+                            ->andWhere('c.sousSecteur = :sousSecteur')
+                            ->setMaxResults(4)
+                            ->setParameter('sousSecteur', $sous_secteur['id'])
+                            ->select('c.id,c.name,c.slug');
+                        $query = $qb->getQuery();
+                        $categories = $query->getResult();
+                        if($categories){
+                            $sous_secteur['categories']=$categories;
+                        }
+                        array_push($array,$sous_secteur);
+                    }
+                    $secteur['sousSecteurs']=$array;
+                }
+                array_push($response,$secteur);
+            }
+        }
+        return $this->json($response);
+
+    }
+
+
 
     /**
      * @Route("/fiche_technique/{id}", name="fiche_technique")
