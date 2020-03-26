@@ -176,6 +176,40 @@ class DefaultController extends AbstractController
 
     }
 
+    /**
+     * @Route("/api/parcourir_secteurs")
+     */
+    public function getSecteurs()
+    {
+        $em_secteur = $this->getDoctrine()->getManager()->getRepository(Secteur::class);
+        $em_sous_secteur = $this->getDoctrine()->getManager()->getRepository(SousSecteur::class);
+
+        $qb = $em_secteur->createQueryBuilder('s')
+            ->where('s.del=0')
+            ->select('s.id,s.name,s.slug');
+        $query = $qb->getQuery();
+        $secteurs = $query->getResult();
+        $response=[];
+        if($secteurs){
+            foreach ($secteurs as $secteur){
+                $qb = $em_sous_secteur->createQueryBuilder('ss')
+                    ->where('ss.del=0')
+                    ->andWhere('ss.parent is null')
+                    ->andWhere('ss.secteur = :secteur')
+                    ->setMaxResults(4)
+                    ->setParameter('secteur', $secteur['id'])
+                    ->select('ss.id,ss.name,ss.slug');
+                $query = $qb->getQuery();
+                $sous_secteurs = $query->getResult();
+                if($sous_secteurs){
+                    $secteur['sousSecteurs']=$sous_secteurs;
+                }
+                array_push($response,$secteur);
+            }
+        }
+        return $this->json($response);
+
+    }
 
 
     /**

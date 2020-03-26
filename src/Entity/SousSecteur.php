@@ -140,7 +140,6 @@ class SousSecteur
 
     /**
      * @ORM\OneToMany(targetEntity="Categorie", mappedBy="sousSecteur")
-     * @Groups({"get"})
      * @ApiSubresource(maxDepth=1)
      */
     private $categories;

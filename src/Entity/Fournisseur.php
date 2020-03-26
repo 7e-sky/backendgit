@@ -15,6 +15,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ApiResource(
@@ -68,9 +69,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     arguments={
  *     "parameterName": "props",
  *     "overrideDefaultProperties": false,
- *     "whitelist": {"id","societe","sousSecteurs","slug"},
+ *     "whitelist": {"id","societe","sousSecteurs","slug","pays","avatar"},
  *      }
  * )
+ * @ApiFilter(OrderFilter::class, properties={"id","visite"})
  * @ORM\Table(name="fournisseur",indexes={@ORM\Index(name="indexe_fournisseur", columns={"societe"})})
  * @ORM\Entity(repositoryClass="App\Repository\FournisseurRepository")
  *
@@ -219,6 +221,10 @@ class Fournisseur extends User
      */
     private $phone_vu=0;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $visite=0;
 
     public function __construct()
     {
@@ -456,6 +462,23 @@ class Fournisseur extends User
     {
         return $this->messages;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getVisite()
+    {
+        return $this->visite;
+    }
+
+    /**
+     * @param mixed $visite
+     */
+    public function setVisite($visite): void
+    {
+        $this->visite = $visite;
+    }
+
 
 
 
