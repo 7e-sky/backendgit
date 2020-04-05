@@ -113,7 +113,7 @@ class SousSecteur
     private $del;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Fournisseur", inversedBy="sousSecteurs")
+     * @ORM\ManyToMany(targetEntity="Fournisseur", mappedBy="sousSecteurs")
      * @ORM\JoinTable(name="fournisseur_sous_secteur")
      * @Groups({"sous-secteur:get-all"})
      */
@@ -121,7 +121,7 @@ class SousSecteur
 
 
     /**
-     * @ORM\ManyToMany(targetEntity="DemandeAchat", inversedBy="sousSecteurs")
+     * @ORM\ManyToMany(targetEntity="DemandeAchat", mappedBy="sousSecteurs")
      * @ORM\JoinTable(name="demande_ha_sous_secteur")
      * @Groups({"sous-secteur:get-all"})
      * @ApiSubresource(maxDepth=1)

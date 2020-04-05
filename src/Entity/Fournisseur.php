@@ -103,7 +103,7 @@ class Fournisseur extends User
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="fournisseurs")
+     * @ORM\ManyToMany(targetEntity="SousSecteur",inversedBy="fournisseurs")
      * @ORM\JoinTable(name="fournisseur_sous_secteur")
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @Assert\NotBlank(groups={"putValidation"})

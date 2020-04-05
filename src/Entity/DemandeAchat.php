@@ -85,7 +85,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true,"maximum_items_per_page"=100},
  *     subresourceOperations={
  *          "api_acheteurs_demandes_get_subresource"={
- *              "security"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
+ *              "security"="is_granted('ROLE_ACHETEUR')",
  *              "method"="GET",
  *              "normalization_context"={"groups"={"get-from-acheteur_demandes"}}
  *          }
@@ -109,7 +109,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
-     * @Groups({"visit:get-item","visit:get-all","get-from-acheteur_demandes"})
+     * @Groups({"visit:get-item","visit:get-all"})
      */
     private $acheteur;
 
@@ -214,7 +214,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="demandes")
+     * @ORM\ManyToMany(targetEntity="SousSecteur",inversedBy="demandes")
      * @ORM\JoinTable(name="demande_ha_sous_secteur")
      * @Groups({"visit:get-item","get-from-demande","put-admin","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank()
