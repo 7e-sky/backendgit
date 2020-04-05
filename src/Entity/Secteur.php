@@ -19,15 +19,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * @ApiFilter(
  *     BooleanFilter::class,properties={"del"}
  * )
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","image"}})
  * @ApiResource(
  *    collectionOperations={
  *          "post"={
  *              "access_control"="is_granted('ROLE_ADMIN')",
  *              "denormalization_context"={"groups"={"post"}},
  *              "validation_groups"={"postValidation"},
- *
- *
  *          },
  *          "get"
  *     },
@@ -72,6 +70,11 @@ class Secteur
     private $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ImageSecteur")
+     * @Groups({"secteur:get-all","post","put"})
+     */
+    private $image;
+    /**
      * @ORM\Column(type="boolean")
      * @Groups({"secteur:get-all","put"})
      */
@@ -114,6 +117,24 @@ class Secteur
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
+    {
+        $this->image = $image;
+    }
+
+
 
     public function getDel(): ?bool
     {

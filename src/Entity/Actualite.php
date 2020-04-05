@@ -118,7 +118,7 @@ class Actualite implements CreatedEntityInterface
     private $image;
 
     /**
-     * @Gedmo\Slug(fields={"titre", "id"})
+     * @Gedmo\Slug(fields={"titre"})
      * @ORM\Column(length=128, unique=true)
      * @Groups({"actualite:get-all"})
      */

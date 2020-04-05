@@ -70,7 +70,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SousSecteurRepository")
- * @ORM\Table(name="sous_secteur",indexes={@ORM\Index(name="indexes_sous_secteur", columns={"name","parent"}),@ORM\Index(name="indexes_sous_secteur2", columns={"del"})})
+ * @ORM\Table(name="sous_secteur",indexes={@ORM\Index(name="indexe_ss_name", columns={"name_lower"}),@ORM\Index(name="indexes_sous_secteur", columns={"name","parent"}),@ORM\Index(name="indexes_sous_secteur2", columns={"del"})})
  * @UniqueEntity("name")
  */
 class SousSecteur
@@ -91,6 +91,11 @@ class SousSecteur
      *
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    private $nameLower;
 
 
     /**
@@ -179,6 +184,23 @@ class SousSecteur
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNameLower()
+    {
+        return $this->nameLower;
+    }
+
+    /**
+     * @param mixed $nameLower
+     */
+    public function setNameLower($nameLower): void
+    {
+        $this->nameLower = $nameLower;
+    }
+
 
     public function getDel(): ?bool
     {

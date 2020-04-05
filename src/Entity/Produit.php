@@ -22,6 +22,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     SearchFilter::class,
  *     properties={
  *     "titre": "partial",
+ *     "titreLower": "partial",
  *     "description": "partial",
  *     "reference": "partial",
  *     "fournisseur": "exact",
@@ -29,6 +30,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     "categorie": "exact",
  *     "categorie.slug": "exact",
  *     "pays.slug": "exact",
+ *     "ville.slug": "exact",
  *     "secteur.slug": "exact",
  *     "sousSecteurs.slug": "exact",
  *
@@ -77,7 +79,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *          }
  *     }
  * )
- * @ORM\Table(name="produit",indexes={@ORM\Index(name="indexes_produit", columns={"titre"}),@ORM\Index(name="indexes_produit2", columns={"is_valid"}),@ORM\Index(name="indexes_produit3", columns={"del"})})
+ * @ORM\Table(name="produit",indexes={@ORM\Index(name="indexes_p_title", columns={"titre_lower"}),@ORM\Index(name="indexes_produit", columns={"titre"}),@ORM\Index(name="indexes_produit2", columns={"is_valid"}),@ORM\Index(name="indexes_produit3", columns={"del"})})
  * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository")
  */
 class Produit implements CreatedEntityInterface,SetFournisseurInterface
@@ -104,6 +106,11 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
      * @Assert\Length(min=6,max=100,groups={"produit:postValidation","produit:putValidation"})
      */
     private $titre;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $titreLower;
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur")
@@ -207,8 +214,16 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays")
+     * @Groups({"produit:get-all"})
      */
     private $pays;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Ville")
+     * @Groups({"produit:get-all"})
+     */
+    private $ville;
+
     /**
      * @ORM\ManyToOne(targetEntity="Currency")
      * @Groups({"produit:get-all","selectProduit:get-all","demandeDevis:get-item"})
@@ -216,7 +231,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     private $currency;
 
     /**
-     * @Gedmo\Slug(fields={"titre", "id"})
+     * @Gedmo\Slug(fields={"titre"})
      * @ORM\Column(length=128, unique=true)
      * @Groups({"produit:get-from-fournisseur","produit:get-all","selectProduit:get-all"})
      */
@@ -274,6 +289,23 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     {
         $this->titre = $titre;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTitreLower()
+    {
+        return $this->titreLower;
+    }
+
+    /**
+     * @param mixed $titreLower
+     */
+    public function setTitreLower($titreLower): void
+    {
+        $this->titreLower = $titreLower;
+    }
+
 
     /**
      * @return mixed
@@ -529,6 +561,24 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     {
         $this->pays = $pays;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getVille()
+    {
+        return $this->ville;
+    }
+
+    /**
+     * @param mixed $ville
+     */
+    public function setVille($ville): void
+    {
+        $this->ville = $ville;
+    }
+
+
 
 
 

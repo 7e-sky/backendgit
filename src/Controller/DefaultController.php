@@ -185,8 +185,9 @@ class DefaultController extends AbstractController
         $em_sous_secteur = $this->getDoctrine()->getManager()->getRepository(SousSecteur::class);
 
         $qb = $em_secteur->createQueryBuilder('s')
+            ->leftJoin('s.image','image')
             ->where('s.del=0')
-            ->select('s.id,s.name,s.slug');
+            ->select('s.id,s.name,s.slug,image.url');
         $query = $qb->getQuery();
         $secteurs = $query->getResult();
         $response=[];
@@ -207,6 +208,80 @@ class DefaultController extends AbstractController
                 array_push($response,$secteur);
             }
         }
+        return $this->json($response);
+
+    }
+
+
+    /**
+     * @Route("/api/searchResult")
+     */
+    public function getSearchResult(Request $request)
+    {
+        $searchText = $request->query->get('searchText', null);
+
+        $em_produit = $this->getDoctrine()->getManager()->getRepository(Produit::class);
+        $em_fournisseur = $this->getDoctrine()->getManager()->getRepository(Fournisseur::class);
+        $em_sous_secteur = $this->getDoctrine()->getManager()->getRepository(SousSecteur::class);
+        $response=[];
+        if(!$searchText || !trim($searchText)){
+            return  $this->json($response);
+        }
+        $searchText=mb_strtolower($searchText);
+
+        $qb = $em_fournisseur->createQueryBuilder('f')
+            ->where('f.del=0')
+            ->andWhere('f.isactif=1')
+            ->andWhere('f.societeLower LIKE CONCAT(:societe, \'%%\')')
+            ->setParameter('societe', $searchText)
+            ->setMaxResults(5)
+            ->select('f.id,f.slug,f.societe');
+        $query = $qb->getQuery();
+        $fournisseurs = $query->getResult();
+
+        if($fournisseurs){
+            $array['title']='Fournisseurs';
+            $array['suggestions']=$fournisseurs;
+            array_push($response,$array);
+        }
+
+
+        $qb = $em_produit->createQueryBuilder('p')
+            ->join('p.secteur','secteur')
+            ->join('p.sousSecteurs','sousSecteur')
+            ->join('p.categorie','categorie')
+            ->where('p.del=0')
+            ->andWhere('p.isValid=1')
+            ->andWhere('p.titreLower LIKE CONCAT(:titre, \'%%\')')
+            ->setParameter('titre', $searchText)
+            ->setMaxResults(5)
+            ->select('p.id,p.titre,secteur.slug as sec,sousSecteur.slug as soussec,categorie.slug as cat,p.slug');
+        $query = $qb->getQuery();
+        $produits = $query->getResult();
+
+        if($produits){
+            $arrayp['title']='Produits';
+            $arrayp['suggestions']=$produits;
+            array_push($response,$arrayp);
+        }
+
+        $qb = $em_sous_secteur->createQueryBuilder('s')
+            ->join('s.secteur','secteur')
+            ->where('s.del=0')
+            ->andWhere('s.parent IS NULL')
+            ->andWhere('s.nameLower LIKE CONCAT(:name, \'%%\')')
+            ->setParameter('name', $searchText)
+            ->setMaxResults(5)
+            ->select('s.name,secteur.slug as sect,s.slug');
+        $query = $qb->getQuery();
+        $activites = $query->getResult();
+
+        if($activites){
+            $arrays['title']='Activités';
+            $arrays['suggestions']=$activites;
+            array_push($response,$arrays);
+        }
+
         return $this->json($response);
 
     }
@@ -283,6 +358,14 @@ class DefaultController extends AbstractController
         $secteur = $request->query->get('secteur', null);
         $sousSecteur = $request->query->get('sousSecteur', null);
         $categorie = $request->query->get('categorie', null);
+        $pays = $request->query->get('pays', null);
+        $q = $request->query->get('q', null);
+
+        if(!$q || !trim($q)){
+            $q = null;
+        }else{
+            $q=mb_strtolower($q);
+        }
 
         $result = null;
 
@@ -292,6 +375,9 @@ class DefaultController extends AbstractController
         $qb = $em->createQueryBuilder('p')
             ->join('p.pays', 'pays');
 
+        if($pays){
+            $qb->join('p.ville', 'ville');
+        }
         if ($secteur) {
             $qb->join('p.secteur', 'secteur');
         }
@@ -306,7 +392,12 @@ class DefaultController extends AbstractController
         $qb->where('p.del=0');
         $qb->andWhere('p.isValid=1');
 
-
+        if ($q) {
+            $qb->andWhere('p.titreLower LIKE CONCAT(\'%%\',:q, \'%%\')');
+        }
+        if ($pays) {
+            $qb->andWhere('pays.slug = :slug_pays');
+        }
         if ($sousSecteur) {
             $qb->andWhere('sousSecteurs.slug = :slug_activite');
         }
@@ -317,8 +408,18 @@ class DefaultController extends AbstractController
             $qb->andWhere('categorie.slug = :slug_cat');
         }
 
-        $qb->groupBy('p.pays');
+        if($pays) {
+            $qb->groupBy('ville');
+        } else {
+            $qb->groupBy('pays');
+        }
 
+        if ($q) {
+            $qb->setParameter('q', $q);
+        }
+        if ($pays) {
+            $qb->setParameter('slug_pays', $pays);
+        }
         if ($sousSecteur) {
             $qb->setParameter('slug_activite', $sousSecteur);
         }
@@ -329,7 +430,12 @@ class DefaultController extends AbstractController
             $qb->setParameter('slug_cat', $categorie);
         }
 
-        $qb->select('pays.name,pays.slug,count(p.id) as count');
+        if ($pays) {
+            $qb->select('ville.name,ville.slug,count(distinct p.id) as count');
+
+        } else {
+            $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
+        }
 
         $query = $qb->getQuery();
 
@@ -348,8 +454,13 @@ class DefaultController extends AbstractController
         $secteur = $request->query->get('secteur', null);
         $sousSecteur = $request->query->get('sousSecteur', null);
         $pays = $request->query->get('pays', null);
-
-
+        $ville = $request->query->get('ville', null);
+        $q = $request->query->get('q', null);
+        if(!$q || !trim($q)){
+            $q = null;
+        }else{
+            $q=mb_strtolower($q);
+        }
         $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
 
         // Jointures
@@ -366,6 +477,9 @@ class DefaultController extends AbstractController
         if ($pays) {
             $qb->join('p.pays', 'pays');
         }
+        if ($ville) {
+            $qb->join('p.ville', 'ville');
+        }
 
         // Where condition
         $qb->where('p.del=0');
@@ -381,6 +495,13 @@ class DefaultController extends AbstractController
         if ($pays) {
             $qb->andWhere('pays.slug = :slug_pays');
         }
+        if ($ville) {
+            $qb->andWhere('ville.slug = :slug_ville');
+        }
+        if ($q) {
+            $qb->andWhere('p.titreLower LIKE CONCAT( \'%%\',:q, \'%%\')');
+        }
+
 
         // Group by
         if ($sousSecteur) {
@@ -402,6 +523,13 @@ class DefaultController extends AbstractController
         if ($pays) {
             $qb->setParameter('slug_pays', $pays);
         }
+        if ($ville) {
+            $qb->setParameter('slug_ville', $ville);
+        }
+        if ($q) {
+            $qb->setParameter('q', $q);
+        }
+
 
         if ($sousSecteur) {
             $qb->select('categorie.name,categorie.slug,count(p.id) as count');
@@ -438,6 +566,14 @@ class DefaultController extends AbstractController
     {
         $secteur = $request->query->get('secteur', null);
         $sousSecteur = $request->query->get('sousSecteur', null);
+        $pays = $request->query->get('pays', null);
+        $q = $request->query->get('q', null);
+
+        if(!$q || !trim($q)){
+            $q = null;
+        }else{
+            $q=mb_strtolower($q);
+        }
 
         $result = null;
 
@@ -447,6 +583,9 @@ class DefaultController extends AbstractController
         $qb = $em->createQueryBuilder('p')
             ->join('p.pays', 'pays');
 
+        if($pays){
+            $qb->join('p.ville', 'ville');
+        }
         if ($secteur) {
             $qb->join('p.sousSecteurs', 'sousSecteurs');
             $qb->join('sousSecteurs.secteur', 'secteur');
@@ -458,6 +597,12 @@ class DefaultController extends AbstractController
         $qb->andWhere('p.isactif=1');
 
 
+        if ($q) {
+            $qb->andWhere('p.societeLower LIKE CONCAT(\'%%\',:q, \'%%\')');
+        }
+        if ($pays) {
+            $qb->andWhere('pays.slug = :slug_pays');
+        }
         if ($sousSecteur) {
             $qb->andWhere('sousSecteurs.slug = :slug_activite');
         }
@@ -465,7 +610,18 @@ class DefaultController extends AbstractController
             $qb->andWhere('secteur.slug = :slug_secteur');
         }
 
-        $qb->groupBy('p.pays');
+        if($pays) {
+            $qb->groupBy('ville');
+        } else {
+            $qb->groupBy('pays');
+        }
+
+        if ($q) {
+            $qb->setParameter('q', $q);
+        }
+        if ($pays) {
+            $qb->setParameter('slug_pays', $pays);
+        }
 
         if ($sousSecteur) {
             $qb->setParameter('slug_activite', $sousSecteur);
@@ -475,8 +631,12 @@ class DefaultController extends AbstractController
         }
 
 
-        $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
+        if ($pays) {
+            $qb->select('ville.name,ville.slug,count(distinct p.id) as count');
 
+        } else {
+            $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
+        }
         $query = $qb->getQuery();
 
         $result = $query->getResult();
@@ -492,9 +652,15 @@ class DefaultController extends AbstractController
     public function getCountFournisseurParCategorie(Request $request)
     {
         $secteur = $request->query->get('secteur', null);
-        $sousSecteur = $request->query->get('sousSecteur', null);
         $pays = $request->query->get('pays', null);
+        $ville = $request->query->get('ville', null);
+        $q = $request->query->get('q', null);
 
+        if(!$q || !trim($q)){
+            $q = null;
+        }else{
+            $q=mb_strtolower($q);
+        }
 
         $em = $this->getDoctrine()->getManager()->getRepository(Fournisseur::class);
 
@@ -506,7 +672,9 @@ class DefaultController extends AbstractController
         if ($pays) {
             $qb->join('p.pays', 'pays');
         }
-
+        if ($ville) {
+            $qb->join('p.ville', 'ville');
+        }
         // Where condition
         $qb->where('p.del=0');
         $qb->andWhere('p.isactif=1');
@@ -518,6 +686,12 @@ class DefaultController extends AbstractController
         }
         if ($pays) {
             $qb->andWhere('pays.slug = :slug_pays');
+        }
+        if ($ville) {
+            $qb->andWhere('ville.slug = :slug_ville');
+        }
+        if ($q) {
+            $qb->andWhere('p.societeLower LIKE CONCAT( \'%%\',:q, \'%%\')');
         }
 
         // Group by
@@ -535,6 +709,12 @@ class DefaultController extends AbstractController
         }
         if ($pays) {
             $qb->setParameter('slug_pays', $pays);
+        }
+        if ($ville) {
+            $qb->setParameter('slug_ville', $ville);
+        }
+        if ($q) {
+            $qb->setParameter('q', $q);
         }
 
         if ($secteur) {

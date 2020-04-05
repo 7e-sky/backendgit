@@ -58,8 +58,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     SearchFilter::class,
  *     properties={
  *     "societe": "partial",
+ *     "societeLower": "start",
  *     "sousSecteurs.slug": "exact",
  *     "pays.slug": "exact",
+ *     "ville.slug": "exact",
  *     "sousSecteurs.secteur.slug": "exact",
  *
  *      }
@@ -73,7 +75,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id","visite"})
- * @ORM\Table(name="fournisseur",indexes={@ORM\Index(name="indexe_fournisseur", columns={"societe"})})
+ * @ORM\Table(name="fournisseur",indexes={@ORM\Index(name="indexe_fournisseur", columns={"societe"}),@ORM\Index(name="indexe_societe", columns={"societe_lower"})})
  * @ORM\Entity(repositoryClass="App\Repository\FournisseurRepository")
  *
  */
@@ -122,6 +124,12 @@ class Fournisseur extends User
      * )
      */
     private $societe;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     *
+     */
+    private $societeLower;
 
     /**
      * @ORM\Column(type="string", length=5)
@@ -210,7 +218,7 @@ class Fournisseur extends User
     private $abonnements;
 
     /**
-     * @Gedmo\Slug(fields={"societe", "id"})
+     * @Gedmo\Slug(fields={"societe"})
      * @ORM\Column(length=128, unique=true)
      * @Groups({"produit:get-item","get"})
      */
@@ -304,6 +312,23 @@ class Fournisseur extends User
     {
         $this->societe = $societe;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSocieteLower()
+    {
+        return $this->societeLower;
+    }
+
+    /**
+     * @param mixed $societeLower
+     */
+    public function setSocieteLower($societeLower): void
+    {
+        $this->societeLower = $societeLower;
+    }
+
 
     /**
      * @return mixed

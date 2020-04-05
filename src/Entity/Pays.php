@@ -70,7 +70,7 @@ class Pays
     /**
      * @ORM\Column(type="string",length=50)
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Groups({"abonnement:get-item","produit:get-item","dmdAbonnement:get-item","visit:get-all","get-from-pays","get-from-ville","get","post","put"})
+     * @Groups({"produit:get-all","abonnement:get-item","produit:get-item","dmdAbonnement:get-item","visit:get-all","get-from-pays","get-from-ville","get","post","put"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      */
     private $name;
@@ -110,7 +110,7 @@ class Pays
     protected $del;
 
     /**
-     * @Gedmo\Slug(fields={"name", "id"})
+     * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=128, unique=true)
      * @Groups({"get-from-pays"})
      */

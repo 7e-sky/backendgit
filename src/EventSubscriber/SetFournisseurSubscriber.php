@@ -49,6 +49,7 @@ class SetFournisseurSubscriber implements EventSubscriberInterface
             KernelEvents::VIEW => [
                 ['SetFournisseur', EventPriorities::PRE_WRITE,],
                 ['GetFournisseur', EventPriorities::PRE_WRITE],
+                ['PutFournisseur', EventPriorities::PRE_WRITE],
             ]
         ];
     }
@@ -95,6 +96,20 @@ class SetFournisseurSubscriber implements EventSubscriberInterface
             $this->entityManager->flush();
         }
 
+    }
+
+    public function PutFournisseur(GetResponseForControllerResultEvent $event)
+    {
+
+        $entity = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        if (!$entity instanceof Fournisseur || $method !== Request::METHOD_PUT) {
+            return;
+        }
+        if($entity->getSociete()){
+            $entity->setSocieteLower(mb_strtolower($entity->getSociete()));
+        }
     }
 
 

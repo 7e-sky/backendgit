@@ -98,6 +98,9 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         if($user instanceof Fournisseur){
             $user->setRoles([User::ROLE_FOURNISSEUR_PRE]);
             $user->setRedirect("/register/fournisseur");
+            if($user->getSociete()){
+                $user->setSocieteLower(mb_strtolower($user->getSociete()));
+            }
             $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
             $this->mailer->sendConfirmationEmail($user);
         }
