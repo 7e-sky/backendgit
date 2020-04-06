@@ -12,10 +12,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
- *     attributes={"order"={"created":"desc"}},
+ *     attributes={
+ *     "pagination_client_enabled"=true,
+ *     "pagination_items_per_page"=10,
+ *     "pagination_client_items_per_page"=true,
+ *     "maximum_items_per_page"=100,
+ *     "order"={"created":"desc"}},
  *     collectionOperations={
  *          "post"={
  *               "denormalization_context"={"groups"={"post"}},
@@ -42,8 +49,15 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  *
  * )
  * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *     "societe": "partial"
+ *      }
+ * )
+ * @ApiFilter(
  *     BooleanFilter::class,properties={"del"}
  * )
+ * @ApiFilter(OrderFilter::class, properties={"id","created","isactif","societe"})
  * @ORM\Entity(repositoryClass="App\Repository\AcheteurRepository")
  */
 class Acheteur extends User

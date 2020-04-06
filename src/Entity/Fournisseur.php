@@ -41,9 +41,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *          }
  *     },
  *     attributes={
- *     "force_eager"=false,
  *     "normalization_context"={"groups"={"get"}},
- *     "enable_max_depth"=true,
  *     "pagination_client_enabled"=true,
  *     "pagination_items_per_page"=10,
  *     "pagination_client_items_per_page"=true,
@@ -74,7 +72,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     "whitelist": {"id","societe","sousSecteurs","slug","pays","avatar"},
  *      }
  * )
- * @ApiFilter(OrderFilter::class, properties={"id","visite"})
+ * @ApiFilter(OrderFilter::class, properties={"id","visite","created","isactif","societe"})
  * @ORM\Table(name="fournisseur",indexes={@ORM\Index(name="indexe_fournisseur", columns={"societe"}),@ORM\Index(name="indexe_societe", columns={"societe_lower"})})
  * @ORM\Entity(repositoryClass="App\Repository\FournisseurRepository")
  *
