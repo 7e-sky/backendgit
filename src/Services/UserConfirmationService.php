@@ -70,7 +70,6 @@ class UserConfirmationService
             ->getQuery()
             ->getScalarResult();
 
-
         if($commercial){
             $commercial = $this->userRepository->find($commercial[0]['id']);
             $user->setParent1($commercial);

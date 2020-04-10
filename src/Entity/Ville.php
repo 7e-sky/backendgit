@@ -95,7 +95,7 @@ class Ville
     private $acheteurs;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Commercial", inversedBy="villes")
+     * @ORM\ManyToMany(targetEntity="Commercial", mappedBy="villes")
      * @ORM\JoinTable(name="commercial_ville")
      * @Groups({"get-from-ville"})
      */

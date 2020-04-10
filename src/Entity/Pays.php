@@ -95,7 +95,7 @@ class Pays
     private $acheteurs;
 
     /**
-     * @ORM\ManyToMany(targetEntity="ZoneCommercial", inversedBy="pays")
+     * @ORM\ManyToMany(targetEntity="ZoneCommercial", mappedBy="pays")
      * @ORM\JoinTable(name="zone_commercial_pays")
      * @ApiSubresource(maxDepth=1)
      */
