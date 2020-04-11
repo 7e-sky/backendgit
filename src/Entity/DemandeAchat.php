@@ -27,6 +27,8 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     properties={
  *     "description": "partial",
  *     "reference": "partial",
+ *     "titre": "partial",
+ *     "budget": "exact",
  *     "statut": "exact",
  *     "isPublic": "exact",
  *     "sousSecteurs.slug": "exact",
@@ -34,6 +36,9 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     "acheteur.ville.slug": "exact",
  *     "sousSecteurs.secteur.slug": "exact",
  *      }
+ * )
+ * @ApiFilter(
+ *     BooleanFilter::class,properties={"isPublic"}
  * )
  * @ApiFilter(
  *     PropertyFilter::class,
@@ -44,7 +49,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"reference","description","dateExpiration","created","budget","isPublic","sousSecteurs.name"})
- * @ApiFilter(DateFilter::class, properties={"dateExpiration"})
+ * @ApiFilter(DateFilter::class, properties={"dateExpiration","created"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={

@@ -26,13 +26,17 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     "description": "partial",
  *     "reference": "partial",
  *     "fournisseur": "exact",
+ *     "fournisseur.societe": "partial",
  *     "slug": "exact",
  *     "categorie": "exact",
  *     "categorie.slug": "exact",
+ *     "categorie.name": "partial",
  *     "pays.slug": "exact",
  *     "ville.slug": "exact",
  *     "secteur.slug": "exact",
+ *     "secteur.name": "partial",
  *     "sousSecteurs.slug": "exact",
+ *     "sousSecteurs.name": "partial",
  *
  *      }
  * )

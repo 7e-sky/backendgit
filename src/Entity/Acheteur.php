@@ -14,6 +14,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * @ApiResource(
@@ -51,12 +52,17 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
- *     "societe": "partial"
+ *     "societe": "partial",
+ *     "phone": "partial",
+ *     "email": "partial",
+ *     "firstName": "partial",
+ *     "lastName": "partial"
  *      }
  * )
  * @ApiFilter(
- *     BooleanFilter::class,properties={"del"}
+ *     BooleanFilter::class,properties={"del","isactif"}
  * )
+ * @ApiFilter(DateFilter::class, properties={"created"})
  * @ApiFilter(OrderFilter::class, properties={"id","created","isactif","societe"})
  * @ORM\Entity(repositoryClass="App\Repository\AcheteurRepository")
  */

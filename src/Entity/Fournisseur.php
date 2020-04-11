@@ -16,6 +16,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * @ApiResource(
@@ -52,6 +53,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @ApiFilter(
  *     BooleanFilter::class,properties={"del","isactif"}
  * )
+ * @ApiFilter(DateFilter::class, properties={"created"})
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
@@ -61,7 +63,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     "pays.slug": "exact",
  *     "ville.slug": "exact",
  *     "sousSecteurs.secteur.slug": "exact",
- *
+ *     "phone": "partial",
+ *     "email": "partial",
+ *     "firstName": "partial",
+ *     "lastName": "partial"
  *      }
  * )
  * @ApiFilter(
