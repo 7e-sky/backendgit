@@ -32,6 +32,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     "statut": "exact",
  *     "isPublic": "exact",
  *     "sousSecteurs.slug": "exact",
+ *     "sousSecteurs.name": "partial",
  *     "acheteur.pays.slug": "exact",
  *     "acheteur.ville.slug": "exact",
  *     "sousSecteurs.secteur.slug": "exact",

@@ -1,0 +1,24 @@
+<h3>Bonjour</h3>
+<p>
+    Un <strong>{{ profile }}</strong> vient de s'inscrire sur le site <a href="https://www.lesachatsindustriels.com/">
+        www.lesachatsindustriels.com.</a>
+</p>
+<p>
+    Et sur votre zone commerciale veuillez le contacter :
+</p>
+<h4>Les informations du <strong>{{ profile }}</strong> :</h4>
+<ul>
+    <li><strong>Raison sociale : </strong>{{ user.societe }}</li>
+    <li><strong>Nom complet : </strong>{{ user.civilite~' '~user.firstName~' '~user.lastName }}
+    </li>
+    <li><strong>Téléphone : </strong>
+        <a href="tel:{{ user.phone }}">{{ user.phone }}</a>
+    </li>
+    <li><strong>Fixe : </strong>
+        <a href="tel:{{ user.fix }}">{{ user.fix }}</a>
+    </li>
+    <li><strong>Email : </strong>{{ user.email }}</li>
+    <li><strong>Pays : </strong>{{ user.pays ? user.pays.name : '' }}</li>
+    <li><strong>Ville : </strong>{{ user.ville ? user.ville.name:'' }}</li>
+    <li><strong>Adresse : </strong>{{ user.adresse1 }}</li>
+</ul>

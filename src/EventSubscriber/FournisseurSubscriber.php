@@ -9,9 +9,11 @@
 namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Email\Mailer;
 use App\Entity\Admin;
 use App\Entity\Fournisseur;
 use App\Interfaces\SetFournisseurInterface;
+use App\Services\ParentService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +22,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class SetFournisseurSubscriber implements EventSubscriberInterface
+class FournisseurSubscriber implements EventSubscriberInterface
 {
 
     /**
@@ -31,15 +33,27 @@ class SetFournisseurSubscriber implements EventSubscriberInterface
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var Mailer
+     */
+    private $mailer;
+    /**
+     * @var ParentService
+     */
+    private $parentService;
 
 
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        Mailer $mailer,
+        ParentService $parentService
     )
     {
         $this->tokenStorage = $tokenStorage;
         $this->entityManager = $entityManager;
+        $this->mailer = $mailer;
+        $this->parentService = $parentService;
     }
 
     public
@@ -110,6 +124,14 @@ class SetFournisseurSubscriber implements EventSubscriberInterface
         if($entity->getSociete()){
             $entity->setSocieteLower(mb_strtolower($entity->getSociete()));
         }
+
+        if($entity->getStep() === 3 && !$entity->getisComplet()){
+            $this->parentService->setParent($entity,'Fournisseur');
+            $this->mailer->bienvenueEmail($entity);
+            $entity->setIsComplet(true);
+
+        }
+
     }
 
 

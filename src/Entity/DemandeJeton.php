@@ -12,17 +12,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+
 /**
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
  *     "id":"exact",
- *     "isUse":"exact",
+ *     "nbrJeton": "exact",
+ *     "fournisseur.societe": "partial",
  *      }
  * )
  * @ApiFilter(
  *     BooleanFilter::class,properties={"isUse"}
  * )
+ * @ApiFilter(DateFilter::class, properties={"created"})
  * @ApiFilter(OrderFilter::class, properties={"id","nbrJeton","fournisseur.societe","isUse","created"})
  * @ApiResource(
  *     collectionOperations={
@@ -63,7 +67,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\DemandeJetonRepository")
  */
-class DemandeJeton implements CreatedEntityInterface,SetFournisseurInterface
+class DemandeJeton implements CreatedEntityInterface, SetFournisseurInterface
 {
     /**
      * @ORM\Id()
@@ -101,7 +105,7 @@ class DemandeJeton implements CreatedEntityInterface,SetFournisseurInterface
 
     public function __construct()
     {
-        $this->isUse=false;
+        $this->isUse = false;
     }
 
     public function getId(): ?int

@@ -65,6 +65,44 @@ class Mailer
     }
 
     //======================================================================
+    // ACHETEURS & FOURNISSEUR INSCRIPTION ALERT ADMIN
+    //======================================================================
+    public function newRegister(User $user,$profile)
+    {
+
+        $body = $this->twig->render(
+            'email/alertAdminNewRegister.html.twig', ['user' => $user,'profile'=>$profile]
+        );
+
+        //send e-mail
+        $message = (new \Swift_Message('Inscription '.$profile.' sur lesachatsindustriels.com'))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo('administrateur@lesachatsindustriels.com')
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
+
+    public function newSociete(User $user,User $parent,$profile)
+    {
+
+        $body = $this->twig->render(
+            'email/newSocieteAlert.html.twig', ['user' => $user,'profile'=>$profile]
+        );
+
+        //send e-mail
+        $message = (new \Swift_Message('Inscription '.$profile.' sur lesachatsindustriels.com'))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($parent->getEmail())
+            ->setCc([$parent->getParent1() ? $parent->getParent1()->getEmail()  : '','administrateur@lesachatsindustriels.com' ])
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
+
+    //======================================================================
     // CONFIRMATION EMAIL ACCOUNT
     //======================================================================
 
@@ -85,6 +123,21 @@ class Mailer
 
     }
 
+    public function bienvenueEmail(User $user)
+    {
+
+        $body = $this->twig->render(
+            'email/bienvenue.html.twig', ['user' => $user]
+        );
+        //send e-mail
+        $message = (new \Swift_Message('Bienvenue à lesachatsindustriels.com'))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($user->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
 
 
     //======================================================================
@@ -306,7 +359,47 @@ class Mailer
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
             ->setFrom('youness.arbouh1@gmail.com')
             ->setTo($demandeAbonnement->getCommercial()->getEmail())
-            ->setCc($demandeAbonnement->getZone()->getEmail())
+            ->setCc([$demandeAbonnement->getZone()->getEmail(),'administrateur@lesachatsindustriels.com'])
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
+
+    // Send email notification to Zone  lors d'une commande offre d'abonnement d'un fournisseur
+
+    public function sendEmailNotificationZone(DemandeAbonnement $demandeAbonnement)
+    {
+
+        $body = $this->twig->render(
+            'email/notificationAbonnement2one.html.twig', ['demande' => $demandeAbonnement, 'commercial' => $demandeAbonnement->getZone()]
+        );
+
+
+        //send e-mail
+        $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo($demandeAbonnement->getZone()->getEmail())
+            ->setCc('administrateur@lesachatsindustriels.com')
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
+
+    // Send email notification to Admin  lors d'une commande offre d'abonnement d'un fournisseur
+
+    public function sendEmailNotificationAdmin(DemandeAbonnement $demandeAbonnement)
+    {
+
+        $body = $this->twig->render(
+            'email/notificationAbonnementAdmin.html.twig', ['demande' => $demandeAbonnement]
+        );
+
+        //send e-mail
+        $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
+            ->setFrom('youness.arbouh1@gmail.com')
+            ->setTo('administrateur@lesachatsindustriels.com')
             ->setBody($body, 'text/html');
 
         $this->mailer->send($message);

@@ -36,6 +36,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  *              "validation_groups"={"personnel:putValidation"}
  *          },
  *     },
+ *     attributes={"pagination_items_per_page"=10,"pagination_enabled"=false},
  * )
  * @ORM\Entity(repositoryClass="App\Repository\PersonnelRepository")
  */

@@ -19,10 +19,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
- *     "name":"partial"
+ *     "name":"partial",
+ *     "pays.name":"partial",
  *      }
  * )
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","pays"}})
  * @ApiFilter(OrderFilter::class, properties={"id","name","pays.id"})
  * @ApiResource(
  *     collectionOperations={

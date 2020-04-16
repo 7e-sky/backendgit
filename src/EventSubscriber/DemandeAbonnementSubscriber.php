@@ -133,6 +133,9 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             //Set Commercial && zone Commercial
             $parent1 = $user->getParent1();
             $parent2 = null;
+            if(!$parent1){
+                $this->mailer->sendEmailNotificationAdmin($entity);
+            }
             if ($parent1) {
                 $parent2 = $parent1->getParent1();
             }
@@ -147,6 +150,7 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             } else {
                 if ($parent1 instanceof ZoneCommercial) {
                     $entity->setZone($parent1);
+                    $this->mailer->sendEmailNotificationZone($entity);
                 }
             }
             //Accuser de réception

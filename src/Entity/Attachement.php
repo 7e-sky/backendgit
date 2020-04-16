@@ -56,7 +56,7 @@ class Attachement
     /**
      * @Vich\UploadableField(mapping="demande",fileNameProperty="url",size="fileSize",mimeType="type")
      * @Assert\NotNull()
-     * @Assert\File(maxSize="1M")
+     * @Assert\File(maxSize="2M")
      */
     private $file;
 

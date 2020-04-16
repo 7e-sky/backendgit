@@ -12,6 +12,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * @ApiFilter(OrderFilter::class, properties={"contact","societe","message","created","statut","produit.reference"})
@@ -20,9 +21,20 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     properties={
  *     "contact": "partial",
  *     "message":"partial",
+ *     "fournisseur.societe":"partial",
+ *     "produit.reference":"partial",
+ *     "quantity":"exact",
+ *     "contact":"partial",
+ *     "societe":"partial",
+ *     "phone":"partial",
+ *     "email":"partial",
+ *     "adresse":"partial",
+ *     "message":"partial",
  *     "statut":"exact",
  *      }
  * )
+ * @ApiFilter(DateFilter::class, properties={"created"})
+ * @ApiFilter(BooleanFilter::class, properties={"statut"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={

@@ -76,14 +76,14 @@ class DefaultController extends AbstractController
     /**
      * @Route("/confrim-user/{token}", name="default_confirm_token")
      */
-    public function confirm(string $token)
-    {
+    /* public function confirm(string $token)
+     {
 
-        $this->confirmationService->confirmUser($token);
+         $this->confirmationService->confirmUser($token);
 
-        return $this->redirectToRoute('defaultIndex');
-    }
-
+         return $this->redirectToRoute('defaultIndex');
+     }
+ */
     /**
      * @Route("/api/currentUser", name="get_current_user")
      */
@@ -139,9 +139,9 @@ class DefaultController extends AbstractController
             ->select('s.id,s.name,s.slug');
         $query = $qb->getQuery();
         $secteurs = $query->getResult();
-        $response=[];
-        if($secteurs){
-            foreach ($secteurs as $secteur){
+        $response = [];
+        if ($secteurs) {
+            foreach ($secteurs as $secteur) {
                 $qb = $em_sous_secteur->createQueryBuilder('ss')
                     ->where('ss.del=0')
                     ->andWhere('ss.parent is null')
@@ -151,9 +151,9 @@ class DefaultController extends AbstractController
                     ->select('ss.id,ss.name,ss.slug');
                 $query = $qb->getQuery();
                 $sous_secteurs = $query->getResult();
-                if($sous_secteurs){
-                    $array=[];
-                    foreach ($sous_secteurs as $sous_secteur){
+                if ($sous_secteurs) {
+                    $array = [];
+                    foreach ($sous_secteurs as $sous_secteur) {
                         $qb = $em_categorie->createQueryBuilder('c')
                             ->where('c.del=0')
                             ->andWhere('c.sousSecteur = :sousSecteur')
@@ -162,14 +162,14 @@ class DefaultController extends AbstractController
                             ->select('c.id,c.name,c.slug');
                         $query = $qb->getQuery();
                         $categories = $query->getResult();
-                        if($categories){
-                            $sous_secteur['categories']=$categories;
+                        if ($categories) {
+                            $sous_secteur['categories'] = $categories;
                         }
-                        array_push($array,$sous_secteur);
+                        array_push($array, $sous_secteur);
                     }
-                    $secteur['sousSecteurs']=$array;
+                    $secteur['sousSecteurs'] = $array;
                 }
-                array_push($response,$secteur);
+                array_push($response, $secteur);
             }
         }
         return $this->json($response);
@@ -185,14 +185,14 @@ class DefaultController extends AbstractController
         $em_sous_secteur = $this->getDoctrine()->getManager()->getRepository(SousSecteur::class);
 
         $qb = $em_secteur->createQueryBuilder('s')
-            ->leftJoin('s.image','image')
+            ->leftJoin('s.image', 'image')
             ->where('s.del=0')
             ->select('s.id,s.name,s.slug,image.url');
         $query = $qb->getQuery();
         $secteurs = $query->getResult();
-        $response=[];
-        if($secteurs){
-            foreach ($secteurs as $secteur){
+        $response = [];
+        if ($secteurs) {
+            foreach ($secteurs as $secteur) {
                 $qb = $em_sous_secteur->createQueryBuilder('ss')
                     ->where('ss.del=0')
                     ->andWhere('ss.parent is null')
@@ -202,10 +202,10 @@ class DefaultController extends AbstractController
                     ->select('ss.id,ss.name,ss.slug');
                 $query = $qb->getQuery();
                 $sous_secteurs = $query->getResult();
-                if($sous_secteurs){
-                    $secteur['sousSecteurs']=$sous_secteurs;
+                if ($sous_secteurs) {
+                    $secteur['sousSecteurs'] = $sous_secteurs;
                 }
-                array_push($response,$secteur);
+                array_push($response, $secteur);
             }
         }
         return $this->json($response);
@@ -223,11 +223,11 @@ class DefaultController extends AbstractController
         $em_produit = $this->getDoctrine()->getManager()->getRepository(Produit::class);
         $em_fournisseur = $this->getDoctrine()->getManager()->getRepository(Fournisseur::class);
         $em_sous_secteur = $this->getDoctrine()->getManager()->getRepository(SousSecteur::class);
-        $response=[];
-        if(!$searchText || !trim($searchText)){
-            return  $this->json($response);
+        $response = [];
+        if (!$searchText || !trim($searchText)) {
+            return $this->json($response);
         }
-        $searchText=mb_strtolower($searchText);
+        $searchText = mb_strtolower($searchText);
 
         $qb = $em_fournisseur->createQueryBuilder('f')
             ->where('f.del=0')
@@ -239,17 +239,17 @@ class DefaultController extends AbstractController
         $query = $qb->getQuery();
         $fournisseurs = $query->getResult();
 
-        if($fournisseurs){
-            $array['title']='Fournisseurs';
-            $array['suggestions']=$fournisseurs;
-            array_push($response,$array);
+        if ($fournisseurs) {
+            $array['title'] = 'Fournisseurs';
+            $array['suggestions'] = $fournisseurs;
+            array_push($response, $array);
         }
 
 
         $qb = $em_produit->createQueryBuilder('p')
-            ->join('p.secteur','secteur')
-            ->join('p.sousSecteurs','sousSecteur')
-            ->join('p.categorie','categorie')
+            ->join('p.secteur', 'secteur')
+            ->join('p.sousSecteurs', 'sousSecteur')
+            ->join('p.categorie', 'categorie')
             ->where('p.del=0')
             ->andWhere('p.isValid=1')
             ->andWhere('p.titreLower LIKE CONCAT(:titre, \'%%\')')
@@ -259,14 +259,14 @@ class DefaultController extends AbstractController
         $query = $qb->getQuery();
         $produits = $query->getResult();
 
-        if($produits){
-            $arrayp['title']='Produits';
-            $arrayp['suggestions']=$produits;
-            array_push($response,$arrayp);
+        if ($produits) {
+            $arrayp['title'] = 'Produits';
+            $arrayp['suggestions'] = $produits;
+            array_push($response, $arrayp);
         }
 
         $qb = $em_sous_secteur->createQueryBuilder('s')
-            ->join('s.secteur','secteur')
+            ->join('s.secteur', 'secteur')
             ->where('s.del=0')
             ->andWhere('s.parent IS NULL')
             ->andWhere('s.nameLower LIKE CONCAT(:name, \'%%\')')
@@ -276,10 +276,10 @@ class DefaultController extends AbstractController
         $query = $qb->getQuery();
         $activites = $query->getResult();
 
-        if($activites){
-            $arrays['title']='Activités';
-            $arrays['suggestions']=$activites;
-            array_push($response,$arrays);
+        if ($activites) {
+            $arrays['title'] = 'Activités';
+            $arrays['suggestions'] = $activites;
+            array_push($response, $arrays);
         }
 
         return $this->json($response);
@@ -361,10 +361,10 @@ class DefaultController extends AbstractController
         $pays = $request->query->get('pays', null);
         $q = $request->query->get('q', null);
 
-        if(!$q || !trim($q)){
+        if (!$q || !trim($q)) {
             $q = null;
-        }else{
-            $q=mb_strtolower($q);
+        } else {
+            $q = mb_strtolower($q);
         }
 
         $result = null;
@@ -375,7 +375,7 @@ class DefaultController extends AbstractController
         $qb = $em->createQueryBuilder('p')
             ->join('p.pays', 'pays');
 
-        if($pays){
+        if ($pays) {
             $qb->join('p.ville', 'ville');
         }
         if ($secteur) {
@@ -408,7 +408,7 @@ class DefaultController extends AbstractController
             $qb->andWhere('categorie.slug = :slug_cat');
         }
 
-        if($pays) {
+        if ($pays) {
             $qb->groupBy('ville');
         } else {
             $qb->groupBy('pays');
@@ -456,10 +456,10 @@ class DefaultController extends AbstractController
         $pays = $request->query->get('pays', null);
         $ville = $request->query->get('ville', null);
         $q = $request->query->get('q', null);
-        if(!$q || !trim($q)){
+        if (!$q || !trim($q)) {
             $q = null;
-        }else{
-            $q=mb_strtolower($q);
+        } else {
+            $q = mb_strtolower($q);
         }
         $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
 
@@ -569,10 +569,10 @@ class DefaultController extends AbstractController
         $pays = $request->query->get('pays', null);
         $q = $request->query->get('q', null);
 
-        if(!$q || !trim($q)){
+        if (!$q || !trim($q)) {
             $q = null;
-        }else{
-            $q=mb_strtolower($q);
+        } else {
+            $q = mb_strtolower($q);
         }
 
         $result = null;
@@ -583,7 +583,7 @@ class DefaultController extends AbstractController
         $qb = $em->createQueryBuilder('p')
             ->join('p.pays', 'pays');
 
-        if($pays){
+        if ($pays) {
             $qb->join('p.ville', 'ville');
         }
         if ($secteur) {
@@ -610,7 +610,7 @@ class DefaultController extends AbstractController
             $qb->andWhere('secteur.slug = :slug_secteur');
         }
 
-        if($pays) {
+        if ($pays) {
             $qb->groupBy('ville');
         } else {
             $qb->groupBy('pays');
@@ -656,10 +656,10 @@ class DefaultController extends AbstractController
         $ville = $request->query->get('ville', null);
         $q = $request->query->get('q', null);
 
-        if(!$q || !trim($q)){
+        if (!$q || !trim($q)) {
             $q = null;
-        }else{
-            $q=mb_strtolower($q);
+        } else {
+            $q = mb_strtolower($q);
         }
 
         $em = $this->getDoctrine()->getManager()->getRepository(Fournisseur::class);
@@ -680,7 +680,6 @@ class DefaultController extends AbstractController
         $qb->andWhere('p.isactif=1');
 
 
-
         if ($secteur) {
             $qb->andWhere('secteur.slug = :slug_secteur');
         }
@@ -695,7 +694,7 @@ class DefaultController extends AbstractController
         }
 
         // Group by
-        if($secteur) {
+        if ($secteur) {
             $qb->groupBy('sousSecteurs');
         } else {
             $qb->groupBy('secteur');
@@ -762,7 +761,7 @@ class DefaultController extends AbstractController
             ->join('p.acheteur', 'acheteur')
             ->join('acheteur.pays', 'pays');
 
-        if($pays){
+        if ($pays) {
             $qb->join('acheteur.ville', 'ville');
         }
         if ($secteur) {
@@ -786,7 +785,7 @@ class DefaultController extends AbstractController
         }
 
 
-        if($pays) {
+        if ($pays) {
             $qb->groupBy('ville');
         } else {
             $qb->groupBy('pays');
@@ -839,7 +838,7 @@ class DefaultController extends AbstractController
         if ($pays) {
             $qb->join('p.acheteur', 'acheteur')
                 ->join('acheteur.pays', 'pays');
-            if($ville){
+            if ($ville) {
                 $qb->join('acheteur.ville', 'ville');
             }
         }
@@ -849,19 +848,18 @@ class DefaultController extends AbstractController
         $qb->andWhere('p.isPublic=1');
 
 
-
         if ($secteur) {
             $qb->andWhere('secteur.slug = :slug_secteur');
         }
         if ($pays) {
             $qb->andWhere('pays.slug = :slug_pays');
-            if($ville){
+            if ($ville) {
                 $qb->andWhere('ville.slug = :slug_ville');
             }
         }
 
         // Group by
-        if($secteur) {
+        if ($secteur) {
             $qb->groupBy('sousSecteurs');
         } else {
             $qb->groupBy('secteur');
@@ -910,11 +908,11 @@ class DefaultController extends AbstractController
         if (!$fournisseur) {
             return $response->setStatusCode(404);
         }
-        $fournisseur->setPhoneVu($fournisseur->getPhoneVu()+1);
+        $fournisseur->setPhoneVu($fournisseur->getPhoneVu() + 1);
         $this->getDoctrine()->getManager()->flush();
         // Set headers
         $response->headers->set('Cache-Control', 'private');
-        $response->setContent($fournisseur->getFix()?$fournisseur->getFix():$fournisseur->getPhone());
+        $response->setContent($fournisseur->getFix() ? $fournisseur->getFix() : $fournisseur->getPhone());
         return $response;
 
     }

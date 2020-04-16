@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Interfaces\CreatedEntityInterface;
 use App\Interfaces\SetFournisseurInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,15 +11,23 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
- *      "reference": "partial"
+ *      "reference": "partial",
+ *      "offre.name": "partial",
+ *      "fournisseur.societe": "partial",
+ *      "mode.name": "partial",
+ *      "sousSecteurs.name": "partial",
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"reference","created","statut","sousSecteurs.name"})
+ * @ApiFilter(DateFilter::class, properties={"created"})
+ * @ApiFilter(BooleanFilter::class, properties={"statut"})
  * @ApiResource(
  *      collectionOperations={
  *          "post"={

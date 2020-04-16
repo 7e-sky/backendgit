@@ -22,6 +22,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     SearchFilter::class,
  *     properties={
  *     "name":"partial",
+ *     "sousSecteur.name":"partial"
  *      }
  * )
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","sousSecteur","slug"}})

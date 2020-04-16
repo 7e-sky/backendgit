@@ -117,9 +117,8 @@ class User implements UserInterface,CreatedEntityInterface
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post","get-from-demande"})
      * @AssertPhoneNumber(
      *     type="mobile",
-     *     defaultRegion="MA",
      *     groups={"postValidation","putValidation"},
-     *     message="Cette valeur n'est pas un numéro de mobile valide."
+     *     message="Veuillez entrer votre numéro en format international (Exemple Maroc) : +212666112244."
      *     )
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=10,max=255,groups={"postValidation","putValidation"})

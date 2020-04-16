@@ -26,10 +26,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     SearchFilter::class,
  *     properties={
  *     "name":"partial",
- *     "parent":"exact"
+ *     "parent":"partial",
+ *     "secteur.name":"partial",
  *      }
  * )
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","secteur","slug"}})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","secteur","fournisseurs","slug"}})
  * @ApiFilter(ExistsFilter::class, properties={"parent"})
  * @ApiFilter(OrderFilter::class, properties={"id","name","secteur.id","parent.name"})
  * @ApiResource(

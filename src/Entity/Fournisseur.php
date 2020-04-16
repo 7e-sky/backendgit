@@ -154,10 +154,8 @@ class Fournisseur extends User
      * @ORM\Column(type="string", length=30,nullable=true)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @AssertPhoneNumber(
-     *     type="fix",
-     *     defaultRegion="MA",
      *     groups={"postValidation","putValidation"},
-     *     message="Cette valeur n'est pas un numéro de mobile valide."
+     *     message="Veuillez entrer votre numéro en format international (Exemple Maroc) : +212522112244."
      *     )
      * @Assert\Length(min=10,max=15,groups={"postValidation","putValidation"})
      */
@@ -229,6 +227,18 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"get","put","post"})
+     */
+    private $step;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"get"})
+     */
+    protected $isComplet;
+
+    /**
+     * @ORM\Column(type="integer")
      */
     private $phone_vu=0;
 
@@ -246,6 +256,8 @@ class Fournisseur extends User
         $this->demandes = new ArrayCollection();
         $this->demandeAbonnement = new ArrayCollection();
         $this->abonnements = new ArrayCollection();
+        $this->isComplet = false;
+        $this->step = 1;
     }
 
 
@@ -506,6 +518,39 @@ class Fournisseur extends User
     {
         $this->visite = $visite;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStep()
+    {
+        return $this->step;
+    }
+
+    /**
+     * @param mixed $step
+     */
+    public function setStep($step): void
+    {
+        $this->step = $step;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getisComplet()
+    {
+        return $this->isComplet;
+    }
+
+    /**
+     * @param mixed $isComplet
+     */
+    public function setIsComplet($isComplet): void
+    {
+        $this->isComplet = $isComplet;
+    }
+
 
 
 

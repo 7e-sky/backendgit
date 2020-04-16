@@ -120,10 +120,8 @@ class Acheteur extends User
      * @ORM\Column(type="string", length=30,nullable=true)
      * @Groups({"visit:get-all","get","put","post"})
      *  @AssertPhoneNumber(
-     *     type="fix",
-     *     defaultRegion="MA",
      *     groups={"postValidation","putValidation"},
-     *     message="Cette valeur n'est pas un numéro de fix valide."
+     *     message="Veuillez entrer votre numéro en format international (Exemple Maroc) : +212522112244."
      *     )
      * @Assert\Length(min=10,max=15,groups={"postValidation","putValidation"})
      */
@@ -182,12 +180,25 @@ class Acheteur extends User
     private $secteur;
 
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"get","put","post"})
+     */
+    private $step;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"get"})
+     */
+    protected $isComplet;
 
     public function __construct()
     {
         parent::__construct();
         $this->blacklistes = new ArrayCollection();
         $this->demandes = new ArrayCollection();
+        $this->isComplet = false;
+        $this->step = 1;
       //  $this->sousSecteurs = new ArrayCollection();
 
     }
@@ -395,6 +406,39 @@ class Acheteur extends User
     {
         $this->secteur = $secteur;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStep()
+    {
+        return $this->step;
+    }
+
+    /**
+     * @param mixed $step
+     */
+    public function setStep($step): void
+    {
+        $this->step = $step;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getisComplet()
+    {
+        return $this->isComplet;
+    }
+
+    /**
+     * @param mixed $isComplet
+     */
+    public function setIsComplet($isComplet): void
+    {
+        $this->isComplet = $isComplet;
+    }
+
 
 
 

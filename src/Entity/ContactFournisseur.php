@@ -11,16 +11,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+
 /**
  * @ApiFilter(OrderFilter::class, properties={"contact","message","created","statut"})
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
  *     "contact": "partial",
+ *     "fournisseur.societe":"partial",
+ *     "phone":"partial",
+ *     "email":"partial",
  *     "message":"partial",
- *     "statut":"exact",
  *      }
  * )
+ * @ApiFilter(DateFilter::class, properties={"created"})
+ * @ApiFilter(BooleanFilter::class, properties={"statut"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -50,7 +57,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *               "normalization_context"={"groups"={"contactFournisseur:get-all"}}
  *          }
  *     },
- *     attributes={"pagination_items_per_page"=10},
+ *     attributes={"pagination_items_per_page"=10,"pagination_enabled"=false},
  *
  * )
  *

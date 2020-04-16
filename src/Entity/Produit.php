@@ -16,8 +16,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
+ * @ApiFilter(DateFilter::class, properties={"created"})
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
@@ -28,6 +30,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     "fournisseur": "exact",
  *     "fournisseur.societe": "partial",
  *     "slug": "exact",
+ *     "pu": "exact",
  *     "categorie": "exact",
  *     "categorie.slug": "exact",
  *     "categorie.name": "partial",
