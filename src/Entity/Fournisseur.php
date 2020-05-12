@@ -74,7 +74,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     arguments={
  *     "parameterName": "props",
  *     "overrideDefaultProperties": false,
- *     "whitelist": {"id","societe","sousSecteurs","slug","pays","avatar"},
+ *     "whitelist": {"id","societe","sousSecteurs","firstName","lastName","slug","pays","avatar"},
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id","visite","created","isactif","societe"})

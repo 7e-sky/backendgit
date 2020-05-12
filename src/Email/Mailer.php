@@ -48,6 +48,9 @@ class Mailer
     private $blackListesRepository;
 
 
+    private $admin_email = 'dev@7e-sky.com';
+
+
     public function __construct(
         \Swift_Mailer $mailer,
         \Twig_Environment $twig,
@@ -76,7 +79,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Inscription '.$profile.' sur lesachatsindustriels.com'))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo('administrateur@lesachatsindustriels.com')
             ->setBody($body, 'text/html');
 
@@ -93,7 +96,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Inscription '.$profile.' sur lesachatsindustriels.com'))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($parent->getEmail())
             ->setCc([$parent->getParent1() ? $parent->getParent1()->getEmail()  : '','administrateur@lesachatsindustriels.com' ])
             ->setBody($body, 'text/html');
@@ -102,6 +105,26 @@ class Mailer
 
     }
 
+    //======================================================================
+    // FORGOT PASSWORD
+    //======================================================================
+
+    public function sendForgotPasswordToken(User $user)
+    {
+
+        $body = $this->twig->render(
+            'email/forgotPassword.html.twig', ['user' => $user]
+        );
+
+        //send e-mail
+        $message = (new \Swift_Message('Réinitialiser votre mot de passe'))
+            ->setFrom($this->admin_email)
+            ->setTo($user->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
     //======================================================================
     // CONFIRMATION EMAIL ACCOUNT
     //======================================================================
@@ -115,7 +138,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Vérifiez votre adresse email'))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
@@ -131,7 +154,7 @@ class Mailer
         );
         //send e-mail
         $message = (new \Swift_Message('Bienvenue à lesachatsindustriels.com'))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
@@ -185,7 +208,7 @@ class Mailer
 
             if (!$trouve) {
                 $message = (new \Swift_Message('Demande de devis'))
-                    ->setFrom('youness.arbouh1@gmail.com')
+                    ->setFrom($this->admin_email)
                     ->setTo($fournisseur->getEmail())
                     ->setBody($body, 'text/html');
 
@@ -224,7 +247,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Affectation Email'))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($personnel->getEmail())
             ->setCc($fournisseur->getEmail())
             ->setBody($body, 'text/html');
@@ -254,7 +277,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Demande d\'information | Les Achats Industriels'))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($message->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -277,7 +300,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Demande de devis | Les Achats Industriels'))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($demandeDevis->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -295,7 +318,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Validation du produit Réf. ' . $produit->getReference()))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($produit->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -319,7 +342,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Activation de l\'abonnement  ' . $abonnement->getOffre()->getName()))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($abonnement->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -337,7 +360,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Commande Réf. ' . $demande->getReference()))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($demande->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -357,7 +380,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($demandeAbonnement->getCommercial()->getEmail())
             ->setCc([$demandeAbonnement->getZone()->getEmail(),'administrateur@lesachatsindustriels.com'])
             ->setBody($body, 'text/html');
@@ -378,7 +401,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo($demandeAbonnement->getZone()->getEmail())
             ->setCc('administrateur@lesachatsindustriels.com')
             ->setBody($body, 'text/html');
@@ -398,7 +421,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
-            ->setFrom('youness.arbouh1@gmail.com')
+            ->setFrom($this->admin_email)
             ->setTo('administrateur@lesachatsindustriels.com')
             ->setBody($body, 'text/html');
 

@@ -19,7 +19,6 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  *
  *     },
  *     itemOperations={
-
  *          "put-reset-password"={
  *               "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object === user",
  *               "method"="PUT",
@@ -245,6 +244,17 @@ class User implements UserInterface,CreatedEntityInterface
      */
     protected  $confirmationToken;
 
+
+    /**
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    protected $passwordResetDate;
+
+
+    /**
+     * @ORM\Column(type="string",length=40,nullable=true)
+     */
+    protected  $forgotToken;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -560,6 +570,39 @@ class User implements UserInterface,CreatedEntityInterface
     {
         $this->redirect = $redirect;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPasswordResetDate()
+    {
+        return $this->passwordResetDate;
+    }
+
+    /**
+     * @param mixed $passwordResetDate
+     */
+    public function setPasswordResetDate($passwordResetDate): void
+    {
+        $this->passwordResetDate = $passwordResetDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getForgotToken()
+    {
+        return $this->forgotToken;
+    }
+
+    /**
+     * @param mixed $forgotToken
+     */
+    public function setForgotToken($forgotToken): void
+    {
+        $this->forgotToken = $forgotToken;
+    }
+
 
 
 
