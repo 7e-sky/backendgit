@@ -437,6 +437,8 @@ class DefaultController extends AbstractController
             $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
         }
 
+        $qb->orderBy('count','desc');
+
         $query = $qb->getQuery();
 
         $result = $query->getResult();
@@ -538,6 +540,7 @@ class DefaultController extends AbstractController
         } else {
             $qb->select('secteur.name,secteur.slug,count(p.id) as count');
         }
+        $qb->orderBy('count','desc');
 
         $query = $qb->getQuery();
 
@@ -637,6 +640,8 @@ class DefaultController extends AbstractController
         } else {
             $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
         }
+        $qb->orderBy('count','desc');
+
         $query = $qb->getQuery();
 
         $result = $query->getResult();
@@ -721,6 +726,8 @@ class DefaultController extends AbstractController
         } else {
             $qb->select('secteur.name,secteur.slug,count(distinct p.id) as count');
         }
+
+        $qb->orderBy('count','desc');
 
         $query = $qb->getQuery();
 
@@ -807,7 +814,7 @@ class DefaultController extends AbstractController
         } else {
             $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
         }
-
+        $qb->orderBy('count','desc');
 
         $query = $qb->getQuery();
 
@@ -883,6 +890,8 @@ class DefaultController extends AbstractController
         } else {
             $qb->select('secteur.name,secteur.slug,count(distinct p.id) as count');
         }
+
+        $qb->orderBy('count','desc');
 
         $query = $qb->getQuery();
 

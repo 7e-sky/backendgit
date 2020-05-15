@@ -80,6 +80,14 @@ class Actualite implements CreatedEntityInterface
      * @ORM\Column(type="text")
      * @Assert\NotBlank(groups={"actualite:postValidation","actualite:putValidation"})
      * @Groups({"actualite:post","actualite:put","actualite:get-all"})
+     * @Assert\Length(min=20,groups={"actualite:postValidation","actualite:putValidation"})
+     */
+    private $apercu;
+
+    /**
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank(groups={"actualite:postValidation","actualite:putValidation"})
+     * @Groups({"actualite:post","actualite:put","actualite:get-all"})
      * @Assert\Length(min=100,groups={"actualite:postValidation","actualite:putValidation"})
      */
     private $description;
@@ -139,6 +147,22 @@ class Actualite implements CreatedEntityInterface
         $this->titre = $titre;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApercu()
+    {
+        return $this->apercu;
+    }
+
+    /**
+     * @param mixed $apercu
+     */
+    public function setApercu($apercu): void
+    {
+        $this->apercu = $apercu;
     }
 
     public function getDescription()
