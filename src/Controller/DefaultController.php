@@ -135,6 +135,7 @@ class DefaultController extends AbstractController
 
         $qb = $em_secteur->createQueryBuilder('s')
             ->where('s.del=0')
+            //->orderBy('s.name','asc')
             ->setMaxResults(10)
             ->select('s.id,s.name,s.slug');
         $query = $qb->getQuery();
@@ -144,8 +145,10 @@ class DefaultController extends AbstractController
             foreach ($secteurs as $secteur) {
                 $qb = $em_sous_secteur->createQueryBuilder('ss')
                     ->where('ss.del=0')
+
                     ->andWhere('ss.parent is null')
                     ->andWhere('ss.secteur = :secteur')
+                    //->orderBy('ss.name','asc')
                     ->setMaxResults(4)
                     ->setParameter('secteur', $secteur['id'])
                     ->select('ss.id,ss.name,ss.slug');
@@ -157,6 +160,7 @@ class DefaultController extends AbstractController
                         $qb = $em_categorie->createQueryBuilder('c')
                             ->where('c.del=0')
                             ->andWhere('c.sousSecteur = :sousSecteur')
+                            //->orderBy('c.name','asc')
                             ->setMaxResults(4)
                             ->setParameter('sousSecteur', $sous_secteur['id'])
                             ->select('c.id,c.name,c.slug');
@@ -187,6 +191,7 @@ class DefaultController extends AbstractController
         $qb = $em_secteur->createQueryBuilder('s')
             ->leftJoin('s.image', 'image')
             ->where('s.del=0')
+            ->orderBy('s.name','asc')
             ->select('s.id,s.name,s.slug,image.url');
         $query = $qb->getQuery();
         $secteurs = $query->getResult();
@@ -197,6 +202,7 @@ class DefaultController extends AbstractController
                     ->where('ss.del=0')
                     ->andWhere('ss.parent is null')
                     ->andWhere('ss.secteur = :secteur')
+                    ->orderBy('ss.name','asc')
                     ->setMaxResults(4)
                     ->setParameter('secteur', $secteur['id'])
                     ->select('ss.id,ss.name,ss.slug');
@@ -233,6 +239,7 @@ class DefaultController extends AbstractController
             ->where('f.del=0')
             ->andWhere('f.isactif=1')
             ->andWhere('f.societeLower LIKE CONCAT(:societe, \'%%\')')
+            ->orderBy('f.visite','desc')
             ->setParameter('societe', $searchText)
             ->setMaxResults(5)
             ->select('f.id,f.slug,f.societe');
@@ -269,7 +276,8 @@ class DefaultController extends AbstractController
             ->join('s.secteur', 'secteur')
             ->where('s.del=0')
             ->andWhere('s.parent IS NULL')
-            ->andWhere('s.nameLower LIKE CONCAT(:name, \'%%\')')
+            ->andWhere('s.nameLower LIKE CONCAT(\'%%\',:name, \'%%\')')
+            ->orderBy('s.name','asc')
             ->setParameter('name', $searchText)
             ->setMaxResults(5)
             ->select('s.name,secteur.slug as sect,s.slug');
