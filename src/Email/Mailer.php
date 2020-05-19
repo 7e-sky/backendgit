@@ -70,15 +70,15 @@ class Mailer
     //======================================================================
     // ACHETEURS & FOURNISSEUR INSCRIPTION ALERT ADMIN
     //======================================================================
-    public function newRegister(User $user,$profile)
+    public function newRegister(User $user, $profile)
     {
 
         $body = $this->twig->render(
-            'email/alertAdminNewRegister.html.twig', ['user' => $user,'profile'=>$profile]
+            'email/alertAdminNewRegister.html.twig', ['user' => $user, 'profile' => $profile]
         );
 
         //send e-mail
-        $message = (new \Swift_Message('Inscription '.$profile.' sur lesachatsindustriels.com'))
+        $message = (new \Swift_Message('Inscription ' . $profile . ' sur lesachatsindustriels.com'))
             ->setFrom($this->admin_email)
             ->setTo('administrateur@lesachatsindustriels.com')
             ->setBody($body, 'text/html');
@@ -87,18 +87,18 @@ class Mailer
 
     }
 
-    public function newSociete(User $user,User $parent,$profile)
+    public function newSociete(User $user, User $parent, $profile)
     {
 
         $body = $this->twig->render(
-            'email/newSocieteAlert.html.twig', ['user' => $user,'profile'=>$profile]
+            'email/newSocieteAlert.html.twig', ['user' => $user, 'profile' => $profile]
         );
 
         //send e-mail
-        $message = (new \Swift_Message('Inscription '.$profile.' sur lesachatsindustriels.com'))
+        $message = (new \Swift_Message('Inscription ' . $profile . ' sur lesachatsindustriels.com'))
             ->setFrom($this->admin_email)
             ->setTo($parent->getEmail())
-            ->setCc([$parent->getParent1() ? $parent->getParent1()->getEmail()  : '','administrateur@lesachatsindustriels.com' ])
+            ->setCc([$parent->getParent1() ? $parent->getParent1()->getEmail() : '', 'administrateur@lesachatsindustriels.com'])
             ->setBody($body, 'text/html');
 
         $this->mailer->send($message);
@@ -162,7 +162,24 @@ class Mailer
 
     }
 
+    //======================================================================
+    // DIFFUSER RFQ => Alerter l'Acheteur lorsque la demande est validée
+    //======================================================================
+    public function alerterAcheteur(DemandeAchat $demande)
+    {
 
+        $body = $this->twig->render(
+            'email/alerterAcheteur.html.twig', ['demande' => $demande]
+        );
+        //send e-mail
+        $message = (new \Swift_Message('Votre demande est validée | Les Achats Industriels'))
+            ->setFrom($this->admin_email)
+            ->setTo($demande->getAcheteur()->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->mailer->send($message);
+
+    }
     //======================================================================
     // DIFFUSER RFQ => FOURNISSEURS CONSERNEES
     //======================================================================
@@ -382,7 +399,7 @@ class Mailer
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
             ->setFrom($this->admin_email)
             ->setTo($demandeAbonnement->getCommercial()->getEmail())
-            ->setCc([$demandeAbonnement->getZone()->getEmail(),'administrateur@lesachatsindustriels.com'])
+            ->setCc([$demandeAbonnement->getZone()->getEmail(), 'administrateur@lesachatsindustriels.com'])
             ->setBody($body, 'text/html');
 
         $this->mailer->send($message);

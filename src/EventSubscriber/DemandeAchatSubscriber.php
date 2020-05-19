@@ -9,6 +9,7 @@
 namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Email\Mailer;
 use App\Entity\Acheteur;
 use App\Entity\DemandeAchat;
 use App\Entity\Fournisseur;
@@ -43,40 +44,47 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
      * @var HistoriqueVisiteRepository
      */
     private $visiteRepository;
+    /**
+     * @var Mailer
+     */
+    private $mailer;
 
-    public  function  __construct(
+    public function __construct(
         TokenStorageInterface $tokenStorage,
         EntityManagerInterface $entityManager,
         DemandeAchatRepository $repository,
-        HistoriqueVisiteRepository $visiteRepository
-        )
+        HistoriqueVisiteRepository $visiteRepository,
+        Mailer $mailer
+    )
     {
         $this->tokenStorage = $tokenStorage;
         $this->entityManager = $entityManager;
         $this->repository = $repository;
         $this->visiteRepository = $visiteRepository;
+        $this->mailer = $mailer;
     }
 
     public static function getSubscribedEvents()
     {
-       return [
-           KernelEvents::VIEW => [
-               ['visiteDemandeAchat',EventPriorities::PRE_WRITE ],
-               ['deleteDemeandeAchat',EventPriorities::PRE_WRITE ],
-            //   ['AccessControll',EventPriorities::PRE_WRITE ],
-               ['postDemandeAchat',EventPriorities::PRE_WRITE ],
-               ['putDemandeAchat',EventPriorities::PRE_WRITE ],
-              // ['sendEmails',EventPriorities::POST_WRITE ]
-           ]
-       ];
+        return [
+            KernelEvents::VIEW => [
+                ['visiteDemandeAchat', EventPriorities::PRE_WRITE],
+                ['deleteDemeandeAchat', EventPriorities::PRE_WRITE],
+                //   ['AccessControll',EventPriorities::PRE_WRITE ],
+                ['postDemandeAchat', EventPriorities::PRE_WRITE],
+                ['putDemandeAchat', EventPriorities::PRE_WRITE],
+                // ['sendEmails',EventPriorities::POST_WRITE ]
+            ]
+        ];
     }
 
-    public function postDemandeAchat(GetResponseForControllerResultEvent $event){
+    public function postDemandeAchat(GetResponseForControllerResultEvent $event)
+    {
 
         $demande = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
-        if(!$demande instanceof  DemandeAchat  || $method !== Request::METHOD_POST ){
+        if (!$demande instanceof DemandeAchat || $method !== Request::METHOD_POST) {
             return;
         }
 
@@ -84,14 +92,14 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
          * @var UserInterface $acheteur
          */
         $acheteur = $this->tokenStorage->getToken()->getUser();
-        if($acheteur instanceof Acheteur){
-            if($acheteur->getCurrency()){
+        if ($acheteur instanceof Acheteur) {
+            if ($acheteur->getCurrency()) {
                 $demande->setCurrency($acheteur->getCurrency());
             }
-            if($acheteur->getPays()){
+            if ($acheteur->getPays()) {
                 $demande->setPays($acheteur->getPays()->getName());
             }
-            if($acheteur->getVille()){
+            if ($acheteur->getVille()) {
                 $demande->setVille($acheteur->getVille()->getName());
             }
         }
@@ -100,13 +108,14 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
     }
 
 
-    public function putDemandeAchat(GetResponseForControllerResultEvent $event){
+    public function putDemandeAchat(GetResponseForControllerResultEvent $event)
+    {
 
         $demande = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
 
-        if(!$demande instanceof  DemandeAchat  || $method !== Request::METHOD_PUT ){
+        if (!$demande instanceof DemandeAchat || $method !== Request::METHOD_PUT) {
             return;
         }
 
@@ -117,14 +126,15 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
          */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if($user->getRoles()[0] === 'ROLE_ACHETEUR'){
+        if ($user->getRoles()[0] === 'ROLE_ACHETEUR') {
             $demande->setStatut(0);
         }
 
-        if($user->getRoles()[0] === 'ROLE_ADMIN'){
-            if(!$demande->getReference() || is_null($demande->getReference())){
-                if($demande->getStatut() === 1){
+        if ($user->getRoles()[0] === 'ROLE_ADMIN') {
+            if (!$demande->getReference() || is_null($demande->getReference())) {
+                if ($demande->getStatut() === 1 && !$demande->getReference()) {
                     $demande->setReference($this->getRfq());
+                    $this->mailer->alerterAcheteur($demande);
                 }
             }
         }
@@ -132,10 +142,10 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
 //        if($demande->getStatut() === 1 && $demande->sendEmail){
 //            $demande->setNbrShare($this->mailer->alerterFournisseurs($demande));
 //        }
-        if($demande->getStatut() !== 2 ){
+        if ($demande->getStatut() !== 2) {
             $demande->setMotifRejet(null);
         }
-        if($demande->sendEmail){
+        if ($demande->sendEmail) {
             $demande->setIsAlerted(true);
         }
 
@@ -143,9 +153,10 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
 
     /** GENERETE RFQ TO VALID DEMANDE BY ADMIN **/
 
-    public function getRfq(){
+    public function getRfq()
+    {
 
-        $qb =$this->repository->createQueryBuilder('d')
+        $qb = $this->repository->createQueryBuilder('d')
             ->where('d.statut = :searchTerm')
             ->andWhere('year(d.created) = :year')
             ->setParameter('searchTerm', 1)
@@ -154,33 +165,35 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
         $result++;
-        return date("Y").'-'.$result;
+        return date("Y") . '-' . $result;
 
     }
-/*
-    public function sendEmails(GetResponseForControllerResultEvent $event){
 
-        $demande = $event->getControllerResult();
-        $method = $event->getRequest()->getMethod();
+    /*
+        public function sendEmails(GetResponseForControllerResultEvent $event){
 
-        //$demande->setNbrShare(5);
+            $demande = $event->getControllerResult();
+            $method = $event->getRequest()->getMethod();
 
-        if(!$demande instanceof  DemandeAchat  || $method !== Request::METHOD_PUT ){
-            return;
+            //$demande->setNbrShare(5);
+
+            if(!$demande instanceof  DemandeAchat  || $method !== Request::METHOD_PUT ){
+                return;
+            }
+
+
+            if( $demande->getStatut() !== 1 || !$demande->sendEmail) {
+               return;
+            }
+
+            $this->mailer->alerterFournisseurs($demande);
+            $this->entityManager->flush();
+
+
         }
-
-
-        if( $demande->getStatut() !== 1 || !$demande->sendEmail) {
-           return;
-        }
-
-        $this->mailer->alerterFournisseurs($demande);
-        $this->entityManager->flush();
-
-
-    }
-*/
-    public function visiteDemandeAchat(GetResponseForControllerResultEvent $event){
+    */
+    public function visiteDemandeAchat(GetResponseForControllerResultEvent $event)
+    {
 
         $demande = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
@@ -190,15 +203,15 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
          */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if(!$demande instanceof  DemandeAchat  || $method !== Request::METHOD_GET ){
+        if (!$demande instanceof DemandeAchat || $method !== Request::METHOD_GET) {
             return;
         }
 
-        if($user instanceof Fournisseur){
+        if ($user instanceof Fournisseur) {
 
 
-            $visite = $this->visiteRepository->findBy(['demande'=>$demande,'fournisseur'=>$user]);
-            if(!$visite){
+            $visite = $this->visiteRepository->findBy(['demande' => $demande, 'fournisseur' => $user]);
+            if (!$visite) {
                 $historique = new HistoriqueVisite();
                 $historique->setFournisseur($user);
                 $historique->setDemande($demande);
@@ -209,23 +222,23 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
             }
 
 
-
         }
 
 
     }
 
-    public function deleteDemeandeAchat(GetResponseForControllerResultEvent $event){
+    public function deleteDemeandeAchat(GetResponseForControllerResultEvent $event)
+    {
 
         $demande = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
 
 
-        if(!$demande instanceof  DemandeAchat  || $method !== Request::METHOD_DELETE ){
+        if (!$demande instanceof DemandeAchat || $method !== Request::METHOD_DELETE) {
             return;
         }
 
-        if($demande->getStatut() === 1 || $demande->getStatut() === 3){
+        if ($demande->getStatut() === 1 || $demande->getStatut() === 3) {
             throw new DisableToDelete();
         }
 
