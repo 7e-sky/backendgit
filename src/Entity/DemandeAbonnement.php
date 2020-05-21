@@ -102,7 +102,7 @@ class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterfac
 
     /**
      * @ORM\ManyToMany(targetEntity="SousSecteur")
-     * @ORM\JoinTable(name="demande_dmdAbonnement_sous_secteur")
+     * @ORM\JoinTable(name="demande_abonnement_sous_secteur")
      * @Groups({"dmdAbonnement:get-all","dmdAbonnement:post","dmdAbonnement:put"})
      * @Assert\NotBlank(groups={"dmdAbonnement:postValidation","dmdAbonnement:putValidation"})
      */
