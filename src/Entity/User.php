@@ -77,7 +77,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Column(type="string", length=255)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","get-from-demande","sous-secteur:get-all","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
+     * @Assert\Length(min=2,max=255,groups={"postValidation","putValidation"})
      */
     protected $firstName;
 
@@ -85,7 +85,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Column(type="string", length=255)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","sous-secteur:get-all","get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
+     * @Assert\Length(min=2,max=255,groups={"postValidation","putValidation"})
      */
     protected $lastName;
 

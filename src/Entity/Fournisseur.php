@@ -59,10 +59,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     properties={
  *     "societe": "partial",
  *     "societeLower": "start",
- *     "sousSecteurs.slug": "exact",
+ *     "categories.slug": "exact",
  *     "pays.slug": "exact",
  *     "ville.slug": "exact",
- *     "sousSecteurs.secteur.slug": "exact",
+ *     "categories.sousSecteurs.secteur.slug": "exact",
+ *     "categories.sousSecteurs.slug": "exact",
  *     "phone": "partial",
  *     "email": "partial",
  *     "firstName": "partial",
@@ -74,7 +75,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     arguments={
  *     "parameterName": "props",
  *     "overrideDefaultProperties": false,
- *     "whitelist": {"id","societe","sousSecteurs","firstName","lastName","slug","pays","avatar"},
+ *     "whitelist": {"id","societe","categories","firstName","lastName","slug","pays","avatar"},
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id","visite","created","isactif","societe"})
@@ -106,13 +107,13 @@ class Fournisseur extends User
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur",inversedBy="fournisseurs")
-     * @ORM\JoinTable(name="fournisseur_sous_secteur")
+     * @ORM\ManyToMany(targetEntity="Categorie", inversedBy="fournisseurs")
+     * @ORM\JoinTable(name="fournisseur_categories")
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @Assert\NotBlank(groups={"putValidation"})
      * @ApiSubresource(maxDepth=1)
      */
-    private $sousSecteurs;
+    private $categories;
 
 
     /**
@@ -250,7 +251,7 @@ class Fournisseur extends User
     public function __construct()
     {
         parent::__construct();
-        $this->sousSecteurs = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->personnels = new ArrayCollection();
         $this->commandes = new ArrayCollection();
         $this->demandes = new ArrayCollection();
@@ -294,22 +295,23 @@ class Fournisseur extends User
         return $this->commandes;
     }
 
-    public function getSousSecteurs() : Collection
+    /**
+     * @return mixed
+     */
+    public function getCategories()
     {
-        return $this->sousSecteurs;
+        return $this->categories;
     }
 
-    public function addSousSecteur(SousSecteur $sousSecteur){
-
-        $this->sousSecteurs->add($sousSecteur);
-
+    /**
+     * @param mixed $categories
+     */
+    public function setCategories($categories): void
+    {
+        $this->categories = $categories;
     }
 
-    public function removeSousSecteur(SousSecteur $sousSecteur){
 
-        $this->sousSecteurs->removeElement($sousSecteur);
-
-    }
 
 
     /**

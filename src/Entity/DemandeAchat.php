@@ -31,11 +31,12 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     "budget": "exact",
  *     "statut": "exact",
  *     "isPublic": "exact",
- *     "sousSecteurs.slug": "exact",
- *     "sousSecteurs.name": "partial",
+ *     "categories.slug": "exact",
+ *     "categories.name": "partial",
  *     "acheteur.pays.slug": "exact",
  *     "acheteur.ville.slug": "exact",
- *     "sousSecteurs.secteur.slug": "exact",
+ *     "categories.sousSecteurs.secteur.slug": "exact",
+ *     "categories.sousSecteurs.slug": "exact",
  *      }
  * )
  * @ApiFilter(
@@ -49,7 +50,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     "whitelist": {"id","slug","reference","titre","description","pays","ville","dateExpiration","created"},
  *      }
  * )
- * @ApiFilter(OrderFilter::class, properties={"reference","description","dateExpiration","created","budget","isPublic","sousSecteurs.name"})
+ * @ApiFilter(OrderFilter::class, properties={"reference","description","dateExpiration","created","budget","isPublic","categories.name"})
  * @ApiFilter(DateFilter::class, properties={"dateExpiration","created"})
  * @ApiResource(
  *     collectionOperations={
@@ -220,13 +221,11 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur",inversedBy="demandes")
-     * @ORM\JoinTable(name="demande_ha_sous_secteur")
+     * @ORM\ManyToMany(targetEntity="Categorie")
+     * @ORM\JoinTable(name="demande_ha_categories")
      * @Groups({"visit:get-item","get-from-demande","put-admin","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
-     * @Assert\NotBlank()
-     * @ApiSubresource(maxDepth=1)
      */
-    private $sousSecteurs;
+    private $categories;
 
 
     /**
@@ -298,7 +297,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
         $this->attachements = new ArrayCollection();
         $this->historiques = new ArrayCollection();
         $this->diffusionsdemandes = new ArrayCollection();
-        $this->sousSecteurs = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->dateModification = new \DateTime();
 
     }
@@ -484,22 +483,22 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
     }
 
-    public function getSousSecteurs(): Collection
+    public function getCategories(): Collection
     {
-        return $this->sousSecteurs;
+        return $this->categories;
     }
 
-    public function addSousSecteur(SousSecteur $sousSecteur)
+    public function addCategorie(Categorie $categorie)
     {
 
-        $this->sousSecteurs->add($sousSecteur);
+        $this->categories->add($categorie);
 
     }
 
-    public function removeSousSecteur(SousSecteur $sousSecteur)
+    public function removeCategorie(Categorie $categorie)
     {
 
-        $this->sousSecteurs->removeElement($sousSecteur);
+        $this->categories->removeElement($categorie);
 
     }
 

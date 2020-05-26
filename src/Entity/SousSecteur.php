@@ -80,13 +80,13 @@ class SousSecteur
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"selectProduit:get-all","visit:get-item","sous-secteur:get-all","secteur:get-all","get","get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"categorie:get-all","selectProduit:get-all","sous-secteur:get-all","secteur:get-all","get"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Groups({"categorie:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-item","dmdAbonnement:get-all","visit:get-item","produit:get-item","produit:get-all","produit:get-from-fournisseur","sous-secteur:get-all","secteur:get-all","get","put","post","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"categorie:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-item","dmdAbonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","sous-secteur:get-all","secteur:get-all","get","put","post"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
@@ -114,23 +114,6 @@ class SousSecteur
     private $del;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Fournisseur", mappedBy="sousSecteurs")
-     * @ORM\JoinTable(name="fournisseur_sous_secteur")
-     * @Groups({"sous-secteur:get-all"})
-     */
-    private $fournisseurs;
-
-
-    /**
-     * @ORM\ManyToMany(targetEntity="DemandeAchat", mappedBy="sousSecteurs")
-     * @ORM\JoinTable(name="demande_ha_sous_secteur")
-     * @Groups({"sous-secteur:get-all"})
-     * @ApiSubresource(maxDepth=1)
-     */
-    private $demandes;
-
-
-    /**
      * @ORM\ManyToOne(targetEntity="SousSecteur")
      * @Groups({"sous-secteur:get-all","post","put"})
      * @ORM\JoinColumn(name="parent", referencedColumnName="id" , nullable=true)
@@ -145,7 +128,8 @@ class SousSecteur
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="Categorie", mappedBy="sousSecteur")
+     * @ORM\ManyToMany(targetEntity="Categorie" ,mappedBy="sousSecteurs")
+     * @ORM\JoinTable(name="categorie_sous_secteur")
      * @ApiSubresource(maxDepth=1)
      */
     private $categories;
@@ -162,8 +146,6 @@ class SousSecteur
     public function __construct()
     {
         $this->del=false;
-        $this->fournisseurs = new ArrayCollection();
-        $this->demandes = new ArrayCollection();
         $this->categories = new ArrayCollection();
      //   $this->acheteurs = new ArrayCollection();
 
@@ -224,12 +206,6 @@ class SousSecteur
     public function setSecteur($secteur): void
     {
         $this->secteur = $secteur;
-    }
-
-
-    public function getFournisseurs() : Collection
-    {
-        return $this->fournisseurs;
     }
 
     public function getDemandes() : Collection

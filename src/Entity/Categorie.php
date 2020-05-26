@@ -4,6 +4,9 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -22,11 +25,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     SearchFilter::class,
  *     properties={
  *     "name":"partial",
- *     "sousSecteur.name":"partial"
+ *     "sousSecteurs.name":"partial"
  *      }
  * )
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","sousSecteur","slug"}})
- * @ApiFilter(OrderFilter::class, properties={"id","name","sousSecteur.id"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","sousSecteurs","slug"}})
+ * @ApiFilter(OrderFilter::class, properties={"id","name","sousSecteurs.id"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -73,7 +76,7 @@ class Categorie
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"categorie:get-all","sousSecteurSub","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur"})
+     * @Groups({"categorie:get-all","sousSecteurSub","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","visit:get-item","get-from-demande","get-from-acheteur_demandes"})
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -81,7 +84,7 @@ class Categorie
     /**
      * @ORM\Column(type="string", length=150)
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
-     * @Groups({"categorie:get-all","sousSecteurSub","post","put","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur"})
+     * @Groups({"categorie:get-all","sousSecteurSub","post","put","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","visit:get-item","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
      */
@@ -89,11 +92,18 @@ class Categorie
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="SousSecteur", inversedBy="categories")
+     * @ORM\ManyToMany(targetEntity="SousSecteur",inversedBy="categories")
+     * @ORM\JoinTable(name="categorie_sous_secteur")
      * @Groups({"categorie:get-all","post","put"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
-    private $sousSecteur;
+    private $sousSecteurs;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Fournisseur",mappedBy="categories")
+     * @ORM\JoinTable(name="fournisseur_categories")
+     */
+    private $fournisseurs;
 
 
     /**
@@ -111,7 +121,9 @@ class Categorie
 
     public function __construct()
     {
-        $this->del=false;
+        $this->del = false;
+        $this->sousSecteurs = new ArrayCollection();
+        $this->fournisseurs = new ArrayCollection();
 
     }
 
@@ -136,20 +148,29 @@ class Categorie
         $this->name = $name;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSousSecteur()
+    public function getFournisseurs(): Collection
     {
-        return $this->sousSecteur;
+        return $this->fournisseurs;
     }
 
-    /**
-     * @param mixed $sousSecteur
-     */
-    public function setSousSecteur($sousSecteur): void
+    public function getSousSecteurs(): Collection
     {
-        $this->sousSecteur = $sousSecteur;
+        return $this->sousSecteurs;
+    }
+
+
+    public function addSousSecteur(SousSecteur $sousSecteur)
+    {
+
+        $this->sousSecteurs->add($sousSecteur);
+
+    }
+
+    public function removeSousSecteur(SousSecteur $sousSecteur)
+    {
+
+        $this->sousSecteurs->removeElement($sousSecteur);
+
     }
 
     /**
