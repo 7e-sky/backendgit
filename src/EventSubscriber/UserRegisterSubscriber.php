@@ -54,9 +54,9 @@ class UserRegisterSubscriber implements EventSubscriberInterface
     private $zoneCommercialRepository;
 
 
-    public  function  __construct(
+    public function __construct(
         UserPasswordEncoderInterface $passwordEncoder,
-        TokenGenerator $tokenGenerator ,
+        TokenGenerator $tokenGenerator,
         Mailer $mailer,
         UserRepository $userRepository,
         CommercialRepository $commercialRepository,
@@ -72,58 +72,75 @@ class UserRegisterSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-       return [
-           KernelEvents::VIEW => ['userRegistered',EventPriorities::PRE_WRITE]
-       ];
+        return [
+
+            KernelEvents::VIEW => [
+                ['userRegistered', EventPriorities::PRE_WRITE]
+            ]
+        ];
     }
-    public function userRegistered(GetResponseForControllerResultEvent $event){
+
+    public function userRegistered(GetResponseForControllerResultEvent $event)
+    {
 
         $user = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();
-        if(!$user instanceof  User || !in_array($method,[Request::METHOD_POST]) ){
+        if (!$user instanceof User || !in_array($method, [Request::METHOD_POST])) {
             return;
         }
 
         //Encode Password
         $user->setPassword(
-            $this->passwordEncoder->encodePassword($user,$user->getPassword
+            $this->passwordEncoder->encodePassword($user, $user->getPassword
             ())
         );
 
 
-        //Set Confirmation Token
 
 
-        //Set Role
-        if($user instanceof Fournisseur){
+        //Set Role Fournisseur
+        if ($user instanceof Fournisseur) {
+
             $user->setRoles([User::ROLE_FOURNISSEUR_PRE]);
             $user->setRedirect("/register/fournisseur");
+            if ($user->getSociete()) {
+                $user->setSocieteLower(mb_strtolower($user->getSociete()));
+            }
+
+            //Set Confirmation Token
             $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
+            // Send email confirmation to Fournisseur
             $this->mailer->sendConfirmationEmail($user);
-        }
-        elseif($user instanceof Acheteur){
+            // Send email new fournisseur registred to Admin
+            $this->mailer->newRegister($user,'Fournisseur');
+        } elseif ($user instanceof Acheteur) {
             $user->setRoles([User::ROLE_ACHETEUR_PRE]);
             $user->setRedirect("/register/ac2");
+
+            //Set Confirmation Token
             $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
+            // Send email confirmation to Acheteur
             $this->mailer->sendConfirmationEmail($user);
-        }
-        elseif($user instanceof ZoneCommercial){
+            // Send email new acheteur registred to Admin
+            $this->mailer->newRegister($user,'Acheteur');
+
+        } elseif ($user instanceof ZoneCommercial) {
             $user->setRoles([User::ROLE_ZONE]);
             $user->setRedirect("/dashboard");
 
             $user->setIsActif(true);
-        }
-        elseif($user instanceof Commercial){
+        } elseif ($user instanceof Commercial) {
 
             $user->setRoles([User::ROLE_COMMERCIAL]);
             $user->setRedirect("/dashboard");
             $user->setIsActif(true);
-        }
-        else{
+        } else {
             $user->setRoles([User::ROLE_ADMIN]);
             $user->setRedirect("/dashboard");
             $user->setIsActif(true);
         }
 
     }
+
+
 }

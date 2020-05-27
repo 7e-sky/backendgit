@@ -155,7 +155,7 @@ class FournisseurController extends AbstractController
 
         }
 
-        return 0;
+        return $this->json(0);
 
 
     }
@@ -198,7 +198,7 @@ class FournisseurController extends AbstractController
             return $this->json($result);
         }
 
-        return 0;
+        return $this->json(0);
 
 
     }

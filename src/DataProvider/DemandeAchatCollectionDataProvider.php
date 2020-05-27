@@ -76,6 +76,7 @@ final class DemandeAchatCollectionDataProvider implements CollectionDataProvider
                     $queryBuilder->innerJoin('o.sousSecteurs', 's')
                         ->where('s.id in (:sous_secteurs_id)')
                         ->andWhere('o.statut = 1')
+                        ->andWhere('o.isPublic = 1')
                         ->andWhere('s.del = 0')
                         ->setParameter('sous_secteurs_id', $sous_secteurs_id);
                 } else {

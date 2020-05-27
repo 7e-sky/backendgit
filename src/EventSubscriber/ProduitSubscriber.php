@@ -71,12 +71,17 @@ class ProduitSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if($entity->getTitre()){
+            $entity->setTitreLower(mb_strtolower($entity->getTitre()));
+        }
         /**
          * @var UserInterface $user
          */
         $user = $this->tokenStorage->getToken()->getUser();
         if($user instanceof Fournisseur){
             $entity->setCurrency($user->getCurrency());
+            $entity->setPays($user->getPays());
+            $entity->setVille($user->getVille());
         }
 
     }
@@ -91,11 +96,20 @@ class ProduitSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if($entity->getTitre()){
+            $entity->setTitreLower(mb_strtolower($entity->getTitre()));
+        }
+
         /**
          * @var UserInterface $user
          */
         $user = $this->tokenStorage->getToken()->getUser();
 
+        if($user instanceof Fournisseur){
+            $entity->setCurrency($user->getCurrency());
+            $entity->setPays($user->getPays());
+            $entity->setVille($user->getVille());
+        }
         if($user instanceof Admin) {
             if ($entity->getisValid() && is_null($entity->getDateValidation())) {
                 $entity->setDateValidation(new \DateTime());

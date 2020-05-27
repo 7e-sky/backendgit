@@ -28,8 +28,14 @@ final class DemandeAchatItemDataProvider implements ItemDataProviderInterface, R
     {
         $manager = $this->managerRegistry->getManagerForClass($resourceClass);
         $repository = $manager->getRepository($resourceClass);
-        $demande = $repository->findOneBy(['id'=>$id,'statut'=>1,'isPublic'=>true]);
+        if ($operationName === 'get_item_by_fournisseur') {
+            $demande = $repository->findOneBy(['id'=>$id,'statut'=>1,'isPublic'=>true]);
+            // Retrieve the blog post item from somewhere then return it or null if not found
+            return $demande;
+        }
+        $demande = $repository->find($id);
         // Retrieve the blog post item from somewhere then return it or null if not found
         return $demande;
+
     }
 }

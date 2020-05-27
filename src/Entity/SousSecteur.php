@@ -16,22 +16,28 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
+ * @ApiFilter(
+ *     BooleanFilter::class,properties={"del"}
+ * )
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
  *     "name":"partial",
- *     "parent":"exact"
+ *     "parent":"partial",
+ *     "secteur.name":"partial",
  *      }
  * )
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","secteur","slug"}})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","secteur","fournisseurs","slug"}})
  * @ApiFilter(ExistsFilter::class, properties={"parent"})
  * @ApiFilter(OrderFilter::class, properties={"id","name","secteur.id","parent.name"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
  *              "normalization_context"={"groups"={"sous-secteur:get-all"}},
+ *              "access_control"="is_granted('ROLE_ADMIN')",
  *              "denormalization_context"={"groups"={"post"}},
  *              "validation_groups"={"postValidation"}
  *          },
@@ -44,6 +50,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *               "normalization_context"={"groups"={"sous-secteur:get-all"}}},
  *          "put"={
  *              "denormalization_context"={"groups"={"put"}},
+ *              "access_control"="is_granted('ROLE_ADMIN')",
  *              "validation_groups"={"putValidation"},
  *              "normalization_context"={"groups"={"sous-secteur:get-all"}}
  *          }
@@ -51,9 +58,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *      attributes={
  *              "force_eager"=false,
  *              "normalization_context"={"groups"={"sous-secteur:get-all"}},
- *              "pagination_client_items_per_page"=true,
- *              "pagination_items_per_page"=10,
+ *              "enable_max_depth"=true,
  *              "pagination_client_enabled"=true,
+ *              "pagination_items_per_page"=10,
+ *              "pagination_client_items_per_page"=true,
+ *              "maximum_items_per_page"=100,
  *     },
  *     subresourceOperations={
  *          "api_secteurs_sous_secteurs_get_subresource"={
@@ -62,7 +71,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SousSecteurRepository")
- * @ORM\Table(name="sous_secteur",indexes={@ORM\Index(name="indexes_sous_secteur", columns={"name","parent"}),@ORM\Index(name="indexes_sous_secteur2", columns={"del"})})
+ * @ORM\Table(name="sous_secteur",indexes={@ORM\Index(name="indexe_ss_name", columns={"name_lower"}),@ORM\Index(name="indexes_sous_secteur", columns={"name","parent"}),@ORM\Index(name="indexes_sous_secteur2", columns={"del"})})
  * @UniqueEntity("name")
  */
 class SousSecteur
@@ -71,18 +80,23 @@ class SousSecteur
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"selectProduit:get-all","visit:get-item","sous-secteur:get-all","secteur:get-all","get","get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"categorie:get-all","selectProduit:get-all","sous-secteur:get-all","secteur:get-all","get"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Groups({"selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-item","dmdAbonnement:get-all","visit:get-item","produit:get-item","produit:get-all","produit:get-from-fournisseur","sous-secteur:get-all","secteur:get-all","get","put","post","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"categorie:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-item","dmdAbonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","sous-secteur:get-all","secteur:get-all","get","put","post"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
      */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    private $nameLower;
 
 
     /**
@@ -100,23 +114,6 @@ class SousSecteur
     private $del;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Fournisseur", inversedBy="sousSecteurs")
-     * @ORM\JoinTable(name="fournisseur_sous_secteur")
-     * @Groups({"sous-secteur:get-all"})
-     */
-    private $fournisseurs;
-
-
-    /**
-     * @ORM\ManyToMany(targetEntity="DemandeAchat", inversedBy="sousSecteurs")
-     * @ORM\JoinTable(name="demande_ha_sous_secteur")
-     * @Groups({"sous-secteur:get-all"})
-     * @ApiSubresource(maxDepth=1)
-     */
-    private $demandes;
-
-
-    /**
      * @ORM\ManyToOne(targetEntity="SousSecteur")
      * @Groups({"sous-secteur:get-all","post","put"})
      * @ORM\JoinColumn(name="parent", referencedColumnName="id" , nullable=true)
@@ -124,13 +121,18 @@ class SousSecteur
     private $parent;
 
     /**
-     * @Gedmo\Slug(fields={"name", "id"})
+     * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=128, unique=true)
-     * @Groups({"produit:get-from-fournisseur","sous-secteur:get-all","produit:get-all","selectProduit:get-all"})
+     * @Groups({"produit:get-from-fournisseur","get","sous-secteur:get-all","produit:get-all","selectProduit:get-all"})
      */
     private $slug;
 
-
+    /**
+     * @ORM\ManyToMany(targetEntity="Categorie" ,mappedBy="sousSecteurs")
+     * @ORM\JoinTable(name="categorie_sous_secteur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $categories;
 
     /*
     /**
@@ -144,8 +146,7 @@ class SousSecteur
     public function __construct()
     {
         $this->del=false;
-        $this->fournisseurs = new ArrayCollection();
-        $this->demandes = new ArrayCollection();
+        $this->categories = new ArrayCollection();
      //   $this->acheteurs = new ArrayCollection();
 
     }
@@ -166,6 +167,23 @@ class SousSecteur
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNameLower()
+    {
+        return $this->nameLower;
+    }
+
+    /**
+     * @param mixed $nameLower
+     */
+    public function setNameLower($nameLower): void
+    {
+        $this->nameLower = $nameLower;
+    }
+
 
     public function getDel(): ?bool
     {
@@ -188,12 +206,6 @@ class SousSecteur
     public function setSecteur($secteur): void
     {
         $this->secteur = $secteur;
-    }
-
-
-    public function getFournisseurs() : Collection
-    {
-        return $this->fournisseurs;
     }
 
     public function getDemandes() : Collection
@@ -222,6 +234,15 @@ class SousSecteur
     {
         return $this->slug;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
 
    /* public function getAcheteurs() : Collection
     {

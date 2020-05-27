@@ -16,21 +16,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
+ * @ApiFilter(DateFilter::class, properties={"created"})
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
  *     "titre": "partial",
+ *     "titreLower": "partial",
  *     "description": "partial",
  *     "reference": "partial",
  *     "fournisseur": "exact",
+ *     "fournisseur.societe": "partial",
  *     "slug": "exact",
+ *     "pu": "exact",
  *     "categorie": "exact",
  *     "categorie.slug": "exact",
+ *     "categorie.name": "partial",
  *     "pays.slug": "exact",
+ *     "ville.slug": "exact",
  *     "secteur.slug": "exact",
+ *     "secteur.name": "partial",
  *     "sousSecteurs.slug": "exact",
+ *     "sousSecteurs.name": "partial",
  *
  *      }
  * )
@@ -72,13 +81,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true,"maximum_items_per_page"=100},
  *     subresourceOperations={
  *          "api_fournisseurs_produits_get_subresource"={
- *              "security"="is_granted('ROLE_FOURNISSEUR')",
  *              "method"="GET",
  *              "normalization_context"={"groups"={"produit:get-from-fournisseur"}}
  *          }
  *     }
  * )
- * @ORM\Table(name="produit",indexes={@ORM\Index(name="indexes_produit", columns={"titre"}),@ORM\Index(name="indexes_produit2", columns={"is_valid"}),@ORM\Index(name="indexes_produit3", columns={"del"})})
+ * @ORM\Table(name="produit",indexes={@ORM\Index(name="indexes_p_title", columns={"titre_lower"}),@ORM\Index(name="indexes_produit", columns={"titre"}),@ORM\Index(name="indexes_produit2", columns={"is_valid"}),@ORM\Index(name="indexes_produit3", columns={"del"})})
  * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository")
  */
 class Produit implements CreatedEntityInterface,SetFournisseurInterface
@@ -107,6 +115,11 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     private $titre;
 
     /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $titreLower;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Secteur")
      * @Groups({"produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
@@ -121,7 +134,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     private $sousSecteurs;
 
     /**
-     * @ORM\ManyToOne(targetEntity="SousSecteur")
+     * @ORM\ManyToOne(targetEntity="Categorie")
      * @Groups({"selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $categorie;
@@ -208,8 +221,16 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays")
+     * @Groups({"produit:get-all"})
      */
     private $pays;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Ville")
+     * @Groups({"produit:get-all"})
+     */
+    private $ville;
+
     /**
      * @ORM\ManyToOne(targetEntity="Currency")
      * @Groups({"produit:get-all","selectProduit:get-all","demandeDevis:get-item"})
@@ -217,7 +238,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     private $currency;
 
     /**
-     * @Gedmo\Slug(fields={"titre", "id"})
+     * @Gedmo\Slug(fields={"titre"})
      * @ORM\Column(length=128, unique=true)
      * @Groups({"produit:get-from-fournisseur","produit:get-all","selectProduit:get-all"})
      */
@@ -275,6 +296,23 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     {
         $this->titre = $titre;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTitreLower()
+    {
+        return $this->titreLower;
+    }
+
+    /**
+     * @param mixed $titreLower
+     */
+    public function setTitreLower($titreLower): void
+    {
+        $this->titreLower = $titreLower;
+    }
+
 
     /**
      * @return mixed
@@ -530,6 +568,24 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     {
         $this->pays = $pays;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getVille()
+    {
+        return $this->ville;
+    }
+
+    /**
+     * @param mixed $ville
+     */
+    public function setVille($ville): void
+    {
+        $this->ville = $ville;
+    }
+
+
 
 
 

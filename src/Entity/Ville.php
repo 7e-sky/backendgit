@@ -19,10 +19,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
- *     "name":"partial"
+ *     "name":"partial",
+ *     "pays.name":"partial",
  *      }
  * )
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","pays"}})
  * @ApiFilter(OrderFilter::class, properties={"id","name","pays.id"})
  * @ApiResource(
  *     collectionOperations={
@@ -68,7 +69,7 @@ class Ville
     /**
      * @ORM\Column(type="string",length=50)
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Groups({"abonnement:get-item","produit:get-item","dmdAbonnement:get-item","visit:get-all","get-from-ville","get","post","put"})
+     * @Groups({"produit:get-all","abonnement:get-item","produit:get-item","dmdAbonnement:get-item","visit:get-all","get-from-ville","get","post","put"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      */
     private $name;
@@ -95,7 +96,7 @@ class Ville
     private $acheteurs;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Commercial", inversedBy="villes")
+     * @ORM\ManyToMany(targetEntity="Commercial", mappedBy="villes")
      * @ORM\JoinTable(name="commercial_ville")
      * @Groups({"get-from-ville"})
      */

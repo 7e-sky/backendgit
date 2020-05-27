@@ -11,18 +11,23 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
  *     "id":"exact",
- *     "del":"exact",
+ *     "nbrJeton": "exact",
+ *     "prix": "exact",
+ *     "fournisseur.societe": "partial",
+ *     "paiement.name": "partial",
  *      }
  * )
  * @ApiFilter(
- *     BooleanFilter::class,properties={"del"}
+ *     BooleanFilter::class,properties={"del","isPayed"}
  * )
+ * @ApiFilter(DateFilter::class, properties={"created"})
  * @ApiFilter(OrderFilter::class, properties={"id","nbrJeton","fournisseur.societe","paiement.name","demande.id","isPayed","prix","created"})
  * @ApiResource(
  *     collectionOperations={

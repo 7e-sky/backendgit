@@ -11,15 +11,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
- *      "reference": "partial"
+ *      "reference": "partial",
+ *      "offre.name": "partial",
+ *      "fournisseur.societe": "partial",
+ *      "mode.name": "partial",
+ *      "sousSecteurs.name": "partial",
  *      }
  * )
+ * @ApiFilter(BooleanFilter::class, properties={"statut"})
  * @ApiFilter(ExistsFilter::class, properties={"expired"})
+ * @ApiFilter(DateFilter::class, properties={"created","expired"})
  * @ApiFilter(OrderFilter::class, properties={"reference","created","expired","statut","sousSecteurs.name"})
  * @ApiResource(
  *      collectionOperations={

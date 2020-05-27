@@ -15,6 +15,8 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * @ApiResource(
@@ -40,9 +42,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *          }
  *     },
  *     attributes={
- *     "force_eager"=false,
  *     "normalization_context"={"groups"={"get"}},
- *     "enable_max_depth"=true,
  *     "pagination_client_enabled"=true,
  *     "pagination_items_per_page"=10,
  *     "pagination_client_items_per_page"=true,
@@ -53,14 +53,21 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ApiFilter(
  *     BooleanFilter::class,properties={"del","isactif"}
  * )
+ * @ApiFilter(DateFilter::class, properties={"created"})
  * @ApiFilter(
  *     SearchFilter::class,
  *     properties={
  *     "societe": "partial",
- *     "sousSecteurs.slug": "exact",
+ *     "societeLower": "start",
+ *     "categories.slug": "exact",
  *     "pays.slug": "exact",
- *     "sousSecteurs.secteur.slug": "exact",
- *
+ *     "ville.slug": "exact",
+ *     "categories.sousSecteurs.secteur.slug": "exact",
+ *     "categories.sousSecteurs.slug": "exact",
+ *     "phone": "partial",
+ *     "email": "partial",
+ *     "firstName": "partial",
+ *     "lastName": "partial"
  *      }
  * )
  * @ApiFilter(
@@ -68,10 +75,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     arguments={
  *     "parameterName": "props",
  *     "overrideDefaultProperties": false,
- *     "whitelist": {"id","societe","sousSecteurs","slug"},
+ *     "whitelist": {"id","societe","categories","firstName","lastName","slug","pays","avatar"},
  *      }
  * )
- * @ORM\Table(name="fournisseur",indexes={@ORM\Index(name="indexe_fournisseur", columns={"societe"})})
+ * @ApiFilter(OrderFilter::class, properties={"id","visite","created","isactif","societe"})
+ * @ORM\Table(name="fournisseur",indexes={@ORM\Index(name="indexe_fournisseur", columns={"societe"}),@ORM\Index(name="indexe_societe", columns={"societe_lower"})})
  * @ORM\Entity(repositoryClass="App\Repository\FournisseurRepository")
  *
  */
@@ -99,13 +107,13 @@ class Fournisseur extends User
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="fournisseurs")
-     * @ORM\JoinTable(name="fournisseur_sous_secteur")
+     * @ORM\ManyToMany(targetEntity="Categorie", inversedBy="fournisseurs")
+     * @ORM\JoinTable(name="fournisseur_categories")
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @Assert\NotBlank(groups={"putValidation"})
      * @ApiSubresource(maxDepth=1)
      */
-    private $sousSecteurs;
+    private $categories;
 
 
     /**
@@ -120,6 +128,12 @@ class Fournisseur extends User
      * )
      */
     private $societe;
+
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     *
+     */
+    private $societeLower;
 
     /**
      * @ORM\Column(type="string", length=5)
@@ -141,10 +155,8 @@ class Fournisseur extends User
      * @ORM\Column(type="string", length=30,nullable=true)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @AssertPhoneNumber(
-     *     type="fix",
-     *     defaultRegion="MA",
      *     groups={"postValidation","putValidation"},
-     *     message="Cette valeur n'est pas un numéro de mobile valide."
+     *     message="Veuillez entrer votre numéro en format international (Exemple Maroc) : +212522112244."
      *     )
      * @Assert\Length(min=10,max=15,groups={"postValidation","putValidation"})
      */
@@ -208,7 +220,7 @@ class Fournisseur extends User
     private $abonnements;
 
     /**
-     * @Gedmo\Slug(fields={"societe", "id"})
+     * @Gedmo\Slug(fields={"societe"})
      * @ORM\Column(length=128, unique=true)
      * @Groups({"produit:get-item","get"})
      */
@@ -216,19 +228,37 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"get","put","post"})
+     */
+    private $step;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"get"})
+     */
+    protected $isComplet;
+
+    /**
+     * @ORM\Column(type="integer")
      */
     private $phone_vu=0;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $visite=0;
 
     public function __construct()
     {
         parent::__construct();
-        $this->sousSecteurs = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->personnels = new ArrayCollection();
         $this->commandes = new ArrayCollection();
         $this->demandes = new ArrayCollection();
         $this->demandeAbonnement = new ArrayCollection();
         $this->abonnements = new ArrayCollection();
+        $this->isComplet = false;
+        $this->step = 1;
     }
 
 
@@ -265,22 +295,23 @@ class Fournisseur extends User
         return $this->commandes;
     }
 
-    public function getSousSecteurs() : Collection
+    /**
+     * @return mixed
+     */
+    public function getCategories()
     {
-        return $this->sousSecteurs;
+        return $this->categories;
     }
 
-    public function addSousSecteur(SousSecteur $sousSecteur){
-
-        $this->sousSecteurs->add($sousSecteur);
-
+    /**
+     * @param mixed $categories
+     */
+    public function setCategories($categories): void
+    {
+        $this->categories = $categories;
     }
 
-    public function removeSousSecteur(SousSecteur $sousSecteur){
 
-        $this->sousSecteurs->removeElement($sousSecteur);
-
-    }
 
 
     /**
@@ -298,6 +329,23 @@ class Fournisseur extends User
     {
         $this->societe = $societe;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSocieteLower()
+    {
+        return $this->societeLower;
+    }
+
+    /**
+     * @param mixed $societeLower
+     */
+    public function setSocieteLower($societeLower): void
+    {
+        $this->societeLower = $societeLower;
+    }
+
 
     /**
      * @return mixed
@@ -456,6 +504,56 @@ class Fournisseur extends User
     {
         return $this->messages;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getVisite()
+    {
+        return $this->visite;
+    }
+
+    /**
+     * @param mixed $visite
+     */
+    public function setVisite($visite): void
+    {
+        $this->visite = $visite;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStep()
+    {
+        return $this->step;
+    }
+
+    /**
+     * @param mixed $step
+     */
+    public function setStep($step): void
+    {
+        $this->step = $step;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getisComplet()
+    {
+        return $this->isComplet;
+    }
+
+    /**
+     * @param mixed $isComplet
+     */
+    public function setIsComplet($isComplet): void
+    {
+        $this->isComplet = $isComplet;
+    }
+
+
 
 
 

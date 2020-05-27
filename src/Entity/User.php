@@ -19,7 +19,6 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  *
  *     },
  *     itemOperations={
-
  *          "put-reset-password"={
  *               "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object === user",
  *               "method"="PUT",
@@ -78,7 +77,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Column(type="string", length=255)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","get-from-demande","sous-secteur:get-all","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
+     * @Assert\Length(min=2,max=255,groups={"postValidation","putValidation"})
      */
     protected $firstName;
 
@@ -86,7 +85,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Column(type="string", length=255)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","sous-secteur:get-all","get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
+     * @Assert\Length(min=2,max=255,groups={"postValidation","putValidation"})
      */
     protected $lastName;
 
@@ -117,9 +116,8 @@ class User implements UserInterface,CreatedEntityInterface
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post","get-from-demande"})
      * @AssertPhoneNumber(
      *     type="mobile",
-     *     defaultRegion="MA",
      *     groups={"postValidation","putValidation"},
-     *     message="Cette valeur n'est pas un numéro de mobile valide."
+     *     message="Veuillez entrer votre numéro en format international (Exemple Maroc) : +212666112244."
      *     )
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=10,max=255,groups={"postValidation","putValidation"})
@@ -246,6 +244,17 @@ class User implements UserInterface,CreatedEntityInterface
      */
     protected  $confirmationToken;
 
+
+    /**
+     * @ORM\Column(type="datetime",nullable=true)
+     */
+    protected $passwordResetDate;
+
+
+    /**
+     * @ORM\Column(type="string",length=40,nullable=true)
+     */
+    protected  $forgotToken;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -561,6 +570,39 @@ class User implements UserInterface,CreatedEntityInterface
     {
         $this->redirect = $redirect;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPasswordResetDate()
+    {
+        return $this->passwordResetDate;
+    }
+
+    /**
+     * @param mixed $passwordResetDate
+     */
+    public function setPasswordResetDate($passwordResetDate): void
+    {
+        $this->passwordResetDate = $passwordResetDate;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getForgotToken()
+    {
+        return $this->forgotToken;
+    }
+
+    /**
+     * @param mixed $forgotToken
+     */
+    public function setForgotToken($forgotToken): void
+    {
+        $this->forgotToken = $forgotToken;
+    }
+
 
 
 

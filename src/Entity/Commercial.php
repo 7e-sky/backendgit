@@ -46,7 +46,7 @@ class Commercial extends User
 {
 
     /**
-     * @ORM\ManyToMany(targetEntity="Ville",mappedBy="commercials")
+     * @ORM\ManyToMany(targetEntity="Ville",inversedBy="commercials")
      * @ORM\JoinTable(name="commercial_ville")
      * @Groups({"get","put","post"})
      * @Assert\NotBlank()

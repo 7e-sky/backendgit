@@ -14,8 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     collectionOperations={
  *          "post"={
  *              "access_control"="is_granted('ROLE_ACHETEUR')",
- *              "denormalization_context"={"groups"={"post"}},
- *              "validation_groups"={"postValidation"},
+ *              "denormalization_context"={"groups"={"blackListe:post"}},
+ *              "validation_groups"={"blackList:postValidation"},
  *
  *          },
  *          "get"={
@@ -32,8 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "put"={
  *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
- *              "denormalization_context"={"groups"={"put"}},
- *              "validation_groups"={"putValidation"}
+ *              "denormalization_context"={"groups"={"blackListe:put"}},
+ *              "validation_groups"={"blackListe:putValidation"}
  *          },
  *          "delete"={"access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)"}
  *     },
@@ -71,16 +71,16 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
-     * @Groups({"post","put","get-from-acheteurs_blacklistes"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Groups({"blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
+     * @Assert\NotBlank(groups={"blackList:postValidation","blackListe:putValidation"})
      */
     private $fournisseur;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"post","put","get-from-acheteurs_blacklistes"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Assert\Length(min=6,groups={"postValidation","putValidation"})
+     * @Groups({"blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
+     * @Assert\NotBlank(groups={"blackList:postValidation","blackListe:putValidation"})
+     * @Assert\Length(min=6,groups={"blackList:postValidation","blackListe:putValidation"})
      */
     private $raison;
 
@@ -99,7 +99,7 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"put","get-from-acheteurs_blacklistes"})
+     * @Groups({"blackListe:put","get-from-acheteurs_blacklistes"})
      */
     private $etat;
 

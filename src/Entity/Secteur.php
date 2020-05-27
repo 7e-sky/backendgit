@@ -13,17 +13,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name"}})
+ * @ApiFilter(
+ *     BooleanFilter::class,properties={"del"}
+ * )
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","image"}})
  * @ApiResource(
  *    collectionOperations={
  *          "post"={
  *              "access_control"="is_granted('ROLE_ADMIN')",
  *              "denormalization_context"={"groups"={"post"}},
  *              "validation_groups"={"postValidation"},
- *
- *
  *          },
  *          "get"
  *     },
@@ -38,8 +40,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     attributes={
  *     "force_eager"=false,
  *     "normalization_context"={"groups"={"secteur:get-all"},"enable_max_depth"=true},
- *     "pagination_enabled"=false,
- *     "pagination_client_enabled"=true
+ *     "enable_max_depth"=true,
+ *     "pagination_client_enabled"=true,
+ *     "pagination_items_per_page"=10,
+ *     "pagination_client_items_per_page"=true,
+ *     "maximum_items_per_page"=100,
  *     }
  *
  * )
@@ -65,6 +70,11 @@ class Secteur
     private $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ImageSecteur")
+     * @Groups({"secteur:get-all","post","put"})
+     */
+    private $image;
+    /**
      * @ORM\Column(type="boolean")
      * @Groups({"secteur:get-all","put"})
      */
@@ -78,7 +88,7 @@ class Secteur
     private $sousSecteurs;
 
     /**
-     * @Gedmo\Slug(fields={"name", "id"})
+     * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=128, unique=true)
      * @Groups({"produit:get-from-fournisseur","sous-secteur:get-all","produit:get-all","secteur:get-all"})
      */
@@ -107,6 +117,24 @@ class Secteur
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
+    {
+        $this->image = $image;
+    }
+
+
 
     public function getDel(): ?bool
     {

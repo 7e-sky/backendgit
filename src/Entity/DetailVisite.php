@@ -11,6 +11,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
 /**
  * @ApiFilter(
@@ -18,8 +19,16 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     properties={
  *     "fournisseur": "exact",
  *     "demande": "exact",
+ *     "demande.reference": "partial",
+ *     "demande.description": "partial",
+ *     "personnel.name": "partial",
+ *     "demande.acheteur.societe": "partial",
+ *     "demande.statut": "exact",
+ *     "statut": "exact",
+ *     "budget": "exact",
  *      }
  * )
+ * @ApiFilter(DateFilter::class, properties={"demande.dateExpiration"})
  * @ApiFilter(OrderFilter::class, properties={"fournisseur.societe","demande.reference","demande.description","demande.dateExpiration","created","budget","statut"})
  * @ApiResource(
  *     collectionOperations={

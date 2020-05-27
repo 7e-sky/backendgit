@@ -27,13 +27,20 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     properties={
  *     "description": "partial",
  *     "reference": "partial",
+ *     "titre": "partial",
+ *     "budget": "exact",
  *     "statut": "exact",
  *     "isPublic": "exact",
- *     "sousSecteurs.slug": "exact",
+ *     "categories.slug": "exact",
+ *     "categories.name": "partial",
  *     "acheteur.pays.slug": "exact",
  *     "acheteur.ville.slug": "exact",
- *     "sousSecteurs.secteur.slug": "exact",
+ *     "categories.sousSecteurs.secteur.slug": "exact",
+ *     "categories.sousSecteurs.slug": "exact",
  *      }
+ * )
+ * @ApiFilter(
+ *     BooleanFilter::class,properties={"isPublic"}
  * )
  * @ApiFilter(
  *     PropertyFilter::class,
@@ -43,8 +50,8 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     "whitelist": {"id","slug","reference","titre","description","pays","ville","dateExpiration","created"},
  *      }
  * )
- * @ApiFilter(OrderFilter::class, properties={"reference","description","dateExpiration","created","budget","isPublic","sousSecteurs.name"})
- * @ApiFilter(DateFilter::class, properties={"dateExpiration"})
+ * @ApiFilter(OrderFilter::class, properties={"reference","description","dateExpiration","created","budget","isPublic","categories.name"})
+ * @ApiFilter(DateFilter::class, properties={"dateExpiration","created"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -64,16 +71,16 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *          }
  *     },
  *     itemOperations={
- *
+ *          "get"={
+ *                  "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
+ *                  "normalization_context"={"groups"={"get-from-demande","item:get-from-demande"}}
+ *                },
  *          "get_item_by_fournisseur"={
  *              "method"="GET",
  *              "path"="/demande_achats/{id}/fournisseur",
  *              "normalization_context"={"groups"={"fournisseur:get-item-from-demande"}}
  *          },
- *          "get"={
- *                  "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
- *                  "normalization_context"={"groups"={"get-from-demande","item:get-from-demande"}}
- *                },
+ *
  *          "put"={
  *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
  *              "denormalization_context"={"groups"={"put"}},
@@ -85,7 +92,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true,"maximum_items_per_page"=100},
  *     subresourceOperations={
  *          "api_acheteurs_demandes_get_subresource"={
- *              "security"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
+ *              "security"="is_granted('ROLE_ACHETEUR')",
  *              "method"="GET",
  *              "normalization_context"={"groups"={"get-from-acheteur_demandes"}}
  *          }
@@ -96,7 +103,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  * @ORM\Table(name="demande_achat",indexes={@ORM\Index(name="search_idx", columns={"statut","del"})})
  * @UniqueEntity("reference", groups={"postValidation","putValidation"})
  */
-class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
+class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 {
     /**
      * @ORM\Id()
@@ -109,7 +116,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
-     * @Groups({"visit:get-item","visit:get-all","get-from-acheteur_demandes"})
+     * @Groups({"visit:get-item","visit:get-all"})
      */
     private $acheteur;
 
@@ -214,13 +221,11 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * add mapped by if you want to miggrate
-     * @ORM\ManyToMany(targetEntity="SousSecteur",mappedBy="demandes")
-     * @ORM\JoinTable(name="demande_ha_sous_secteur")
+     * @ORM\ManyToMany(targetEntity="Categorie")
+     * @ORM\JoinTable(name="demande_ha_categories")
      * @Groups({"visit:get-item","get-from-demande","put-admin","put","post","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
-     * @Assert\NotBlank()
-     * @ApiSubresource(maxDepth=1)
      */
-    private $sousSecteurs;
+    private $categories;
 
 
     /**
@@ -243,7 +248,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      * @Assert\NotBlank()
      * @Groups({"visit:get-item","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
-    private $budget ;
+    private $budget;
 
 
     /**
@@ -264,7 +269,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
      * @ORM\Column(type="string",nullable=true)
      * @Groups({"visit:get-item","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
-    private $pays ;
+    private $pays;
 
     /**
      * @ORM\Column(type="string",nullable=true)
@@ -282,17 +287,17 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
 
     public function __construct()
     {
-        $this->statut=false;
-        $this->del=false;
-        $this->isAnonyme=false;
-        $this->isAlerted=false;
-        $this->isPublic=false;
-        $this->nbrVisite=0;
-        $this->nbrShare=0;
+        $this->statut = false;
+        $this->del = false;
+        $this->isAnonyme = false;
+        $this->isAlerted = false;
+        $this->isPublic = false;
+        $this->nbrVisite = 0;
+        $this->nbrShare = 0;
         $this->attachements = new ArrayCollection();
         $this->historiques = new ArrayCollection();
         $this->diffusionsdemandes = new ArrayCollection();
-        $this->sousSecteurs = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->dateModification = new \DateTime();
 
     }
@@ -331,7 +336,7 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
         $this->currency = $currency;
     }
 
-    public function getStatut():? int
+    public function getStatut(): ? int
     {
         return $this->statut;
     }
@@ -459,37 +464,41 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
         return $this;
     }
 
-    public function getAttachements() : Collection
+    public function getAttachements(): Collection
     {
         return $this->attachements;
     }
 
-    public function addAttachement(Attachement $attachement){
+    public function addAttachement(Attachement $attachement)
+    {
 
         $this->attachements->add($attachement);
 
     }
 
-    public function removeAttachement(Attachement $attachement){
+    public function removeAttachement(Attachement $attachement)
+    {
 
         $this->attachements->removeElement($attachement);
 
     }
 
-    public function getSousSecteurs() : Collection
+    public function getCategories(): Collection
     {
-        return $this->sousSecteurs;
+        return $this->categories;
     }
 
-    public function addSousSecteur(SousSecteur $sousSecteur){
+    public function addCategorie(Categorie $categorie)
+    {
 
-        $this->sousSecteurs->add($sousSecteur);
+        $this->categories->add($categorie);
 
     }
 
-    public function removeSousSecteur(SousSecteur $sousSecteur){
+    public function removeCategorie(Categorie $categorie)
+    {
 
-        $this->sousSecteurs->removeElement($sousSecteur);
+        $this->categories->removeElement($categorie);
 
     }
 
@@ -511,12 +520,13 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     }
 
 
-    public function getDiffusionsdemandes() : Collection
+    public function getDiffusionsdemandes(): Collection
     {
         return $this->diffusionsdemandes;
     }
 
-    public function addDiffusionsdemande(DiffusionDemande $diffusionDemande){
+    public function addDiffusionsdemande(DiffusionDemande $diffusionDemande)
+    {
 
         $this->diffusionsdemandes->add($diffusionDemande);
 
@@ -571,12 +581,13 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     }
 
 
-    public function getHistoriques() : Collection
+    public function getHistoriques(): Collection
     {
         return $this->historiques;
     }
 
-    public function addHistorique(HistoriqueVisite $historiqueVisite){
+    public function addHistorique(HistoriqueVisite $historiqueVisite)
+    {
 
         $this->historiques->add($historiqueVisite);
 
@@ -637,8 +648,6 @@ class DemandeAchat implements CreatedEntityInterface,SetAcheteurInterface
     {
         return $this->slug;
     }
-
-
 
 
 }

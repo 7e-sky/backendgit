@@ -55,7 +55,7 @@ class ImageProduit
     /**
      * @Vich\UploadableField(mapping="produitImage",fileNameProperty="url")
      * @Assert\NotNull()
-     * @Assert\File(maxSize="1M")
+     * @Assert\File(maxSize="2M")
      */
     private $file;
 
