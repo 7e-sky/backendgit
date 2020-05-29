@@ -66,19 +66,19 @@ final class DemandeAchatCollectionDataProvider implements CollectionDataProvider
 
             if ($fournisseur instanceof Fournisseur) {
 
-                $sous_secteurs = $fournisseur->getSousSecteurs();
-                $sous_secteurs_id = [];
-                foreach ($sous_secteurs as $secteur) {
-                    if ($secteur)
-                        array_push($sous_secteurs_id, $secteur->getId());
+                $categories = $fournisseur->getCategories();
+                $categories_id = [];
+                foreach ($categories as $categorie) {
+                    if ($categorie)
+                        array_push($categories_id, $categorie->getId());
                 }
-                if (!empty($sous_secteurs_id)) {
-                    $queryBuilder->innerJoin('o.sousSecteurs', 's')
-                        ->where('s.id in (:sous_secteurs_id)')
+                if (!empty($categories_id)) {
+                    $queryBuilder->innerJoin('o.categories', 's')
+                        ->where('s.id in (:categories_id)')
                         ->andWhere('o.statut = 1')
                         ->andWhere('o.isPublic = 1')
                         ->andWhere('s.del = 0')
-                        ->setParameter('sous_secteurs_id', $sous_secteurs_id);
+                        ->setParameter('categories_id', $categories_id);
                 } else {
                     throw new NotFoundHttpException();
                 }

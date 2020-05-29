@@ -483,24 +483,23 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
     }
 
-    public function getCategories(): Collection
+    /**
+     * @return mixed
+     */
+    public function getCategories()
     {
         return $this->categories;
     }
 
-    public function addCategorie(Categorie $categorie)
+    /**
+     * @param mixed $categories
+     */
+    public function setCategories($categories): void
     {
-
-        $this->categories->add($categorie);
-
+        $this->categories = $categories;
     }
 
-    public function removeCategorie(Categorie $categorie)
-    {
 
-        $this->categories->removeElement($categorie);
-
-    }
 
 
     /**

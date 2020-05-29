@@ -26,13 +26,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     SearchFilter::class,
  *     properties={
  *     "name":"partial",
- *     "parent":"partial",
  *     "secteur.name":"partial",
  *      }
  * )
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "props", "overrideDefaultProperties": false, "whitelist": {"id","name","secteur","fournisseurs","slug"}})
- * @ApiFilter(ExistsFilter::class, properties={"parent"})
- * @ApiFilter(OrderFilter::class, properties={"id","name","secteur.id","parent.name"})
+ * @ApiFilter(OrderFilter::class, properties={"id","name","secteur.id"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -71,7 +69,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SousSecteurRepository")
- * @ORM\Table(name="sous_secteur",indexes={@ORM\Index(name="indexe_ss_name", columns={"name_lower"}),@ORM\Index(name="indexes_sous_secteur", columns={"name","parent"}),@ORM\Index(name="indexes_sous_secteur2", columns={"del"})})
+ * @ORM\Table(name="sous_secteur",indexes={@ORM\Index(name="indexe_ss_name", columns={"name_lower"}),@ORM\Index(name="indexes_sous_secteur2", columns={"del"})})
  * @UniqueEntity("name")
  */
 class SousSecteur
@@ -101,7 +99,7 @@ class SousSecteur
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="sousSecteurs")
-     * @Groups({"abonnement:get-all","sous-secteur:get-all","post","put"})
+     * @Groups({"dmdAbonnement:get-item","abonnement:get-all","sous-secteur:get-all","post","put"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $secteur;
@@ -113,12 +111,7 @@ class SousSecteur
      */
     private $del;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SousSecteur")
-     * @Groups({"sous-secteur:get-all","post","put"})
-     * @ORM\JoinColumn(name="parent", referencedColumnName="id" , nullable=true)
-     */
-    private $parent;
+
 
     /**
      * @Gedmo\Slug(fields={"name"})
@@ -208,27 +201,6 @@ class SousSecteur
         $this->secteur = $secteur;
     }
 
-    public function getDemandes() : Collection
-    {
-        return $this->demandes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param mixed $parent
-     */
-    public function setParent($parent): void
-    {
-        $this->parent = $parent;
-    }
-
 
     public function getSlug()
     {
@@ -244,8 +216,4 @@ class SousSecteur
     }
 
 
-   /* public function getAcheteurs() : Collection
-    {
-        return $this->acheteurs;
-    }*/
 }

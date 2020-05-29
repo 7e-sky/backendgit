@@ -93,12 +93,16 @@ class Mailer
         $body = $this->twig->render(
             'email/newSocieteAlert.html.twig', ['user' => $user, 'profile' => $profile]
         );
+        $cc = [];
+        array_push($cc, 'administrateur@lesachatsindustriels.com');
+        if ($parent->getParent1())
+            array_push($cc, $parent->getParent1()->getEmail());
 
         //send e-mail
         $message = (new \Swift_Message('Inscription ' . $profile . ' sur lesachatsindustriels.com'))
             ->setFrom($this->admin_email)
             ->setTo($parent->getEmail())
-            ->setCc([$parent->getParent1() ? $parent->getParent1()->getEmail() : '', 'administrateur@lesachatsindustriels.com'])
+            ->setCc($cc)
             ->setBody($body, 'text/html');
 
         $this->mailer->send($message);

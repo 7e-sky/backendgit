@@ -92,8 +92,15 @@ class AcheteurSubscriber implements EventSubscriberInterface
             $this->parentService->setParent($entity,'Acheteur');
             $this->mailer->bienvenueEmail($entity);
             $entity->setIsComplet(true);
+            $entity->setCodeClient('A-'.$entity->getId().$this->random_strings(4));
 
         }
+    }
+    function random_strings($length_of_string) {
+
+        // md5 the timestamps and returns substring
+        // of specified length
+        return substr(md5(time()), 0, $length_of_string);
     }
 
 

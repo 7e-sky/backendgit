@@ -80,6 +80,7 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         ];
     }
 
+
     public function userRegistered(GetResponseForControllerResultEvent $event)
     {
 
@@ -116,7 +117,6 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         } elseif ($user instanceof Acheteur) {
             $user->setRoles([User::ROLE_ACHETEUR_PRE]);
             $user->setRedirect("/register/ac2");
-
             //Set Confirmation Token
             $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
             // Send email confirmation to Acheteur

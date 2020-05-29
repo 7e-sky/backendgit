@@ -14,8 +14,10 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
+ * @ApiFilter(OrderFilter::class, properties={"name"})
  * @ApiFilter(
  *     BooleanFilter::class,properties={"del"}
  * )
@@ -65,7 +67,7 @@ class Secteur
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
-     * @Groups({"abonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","visit:get-all","secteur:get-all","sous-secteur:get-all","get","post","put","get-from-demande"})
+     * @Groups({"dmdAbonnement:get-item","abonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","visit:get-all","secteur:get-all","sous-secteur:get-all","get","post","put","get-from-demande"})
      */
     private $name;
 

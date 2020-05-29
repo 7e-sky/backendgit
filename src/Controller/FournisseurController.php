@@ -114,21 +114,21 @@ class FournisseurController extends AbstractController
         $em = $this->getDoctrine()->getManager()->getRepository(DemandeAchat::class);
         if ($fournisseur instanceof Fournisseur) {
 
-            $sous_secteurs = $fournisseur->getSousSecteurs();
-            $sous_secteurs_id = [];
-            foreach ($sous_secteurs as $secteur) {
-                if ($secteur)
-                    array_push($sous_secteurs_id, $secteur->getId());
+            $categories = $fournisseur->getCategories();
+            $categories_id = [];
+            foreach ($categories as $categorie) {
+                if ($categorie)
+                    array_push($categories_id, $categorie->getId());
             }
-            if (!empty($sous_secteurs_id)) {
+            if (!empty($categories_id)) {
 
                 $qb = $em->createQueryBuilder('d')
-                    ->innerJoin('d.sousSecteurs', 's')
-                    ->where('s.id in (:sous_secteurs_id)')
+                    ->innerJoin('d.categories', 's')
+                    ->where('s.id in (:categories_id)')
                     ->andWhere('d.statut = 1')
                     ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
                     ->andWhere('d.del = 0')
-                    ->setParameter('sous_secteurs_id', $sous_secteurs_id)
+                    ->setParameter('categories_id', $categories_id)
                     ->select('d');
                 $query = $qb->getQuery()->getResult();
 
@@ -241,23 +241,23 @@ class FournisseurController extends AbstractController
 
 
             //Demandes en cours
-            $sous_secteurs = $user->getSousSecteurs();
-            $sous_secteurs_id = [];
+            $caregories = $user->getCategories();
+            $caregorie_id = [];
             $demande_encours = 0;
-            foreach ($sous_secteurs as $secteur) {
-                if ($secteur)
-                    array_push($sous_secteurs_id, $secteur->getId());
+            foreach ($caregories as $caregorie) {
+                if ($caregorie)
+                    array_push($caregorie_id, $caregorie->getId());
             }
-            if (!empty($sous_secteurs_id)) {
+            if (!empty($caregorie_id)) {
 
                 $qb = $em2->createQueryBuilder('d')
-                    ->innerJoin('d.sousSecteurs', 's')
-                    ->where('s.id in (:sous_secteurs_id)')
+                    ->innerJoin('d.categories', 's')
+                    ->where('s.id in (:caregorie_id)')
                     ->andWhere('d.statut = :searchTerm')
                     ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
                     ->andWhere('d.del = 0')
                     ->setParameter('searchTerm', 1)
-                    ->setParameter('sous_secteurs_id', $sous_secteurs_id)
+                    ->setParameter('caregorie_id', $caregorie_id)
                     ->select('d');
                 $query = $qb->getQuery()->getResult();
 

@@ -155,16 +155,6 @@ class Acheteur extends User
      */
     private $demandes;
 
-    /*
-    /**
-     * @ORM\ManyToMany(targetEntity="SousSecteur", mappedBy="acheteurs")
-     * @ORM\JoinTable(name="achteur_sous_secteur")
-     * @Groups({"put","post"})
-     * @Assert\NotBlank()
-     * @ApiSubresource()
-     */
-   // private $sousSecteurs;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur")
@@ -192,6 +182,12 @@ class Acheteur extends User
      */
     protected $isComplet;
 
+    /**
+     * @ORM\Column(type="string", length=30,nullable=true)
+     *
+     */
+    private $codeClient;
+
     public function __construct()
     {
         parent::__construct();
@@ -199,7 +195,6 @@ class Acheteur extends User
         $this->demandes = new ArrayCollection();
         $this->isComplet = false;
         $this->step = 1;
-      //  $this->sousSecteurs = new ArrayCollection();
 
     }
 
@@ -209,56 +204,36 @@ class Acheteur extends User
 
     }
 
-
     public function setPays($pays): void
     {
         $this->pays = $pays;
     }
 
-    /**
-     * @return mixed
-     */
     public function getVille()
     {
         return $this->ville;
     }
 
-    /**
-     * @param mixed $ville
-     */
     public function setVille($ville): void
     {
         $this->ville = $ville;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCurrency()
     {
         return $this->currency;
     }
 
-    /**
-     * @param mixed $currency
-     */
     public function setCurrency($currency): void
     {
         $this->currency = $currency;
     }
 
-
-    /**
-     * @return mixed
-     */
     public function getSociete()
     {
         return $this->societe;
     }
 
-    /**
-     * @param mixed $societe
-     */
     public function setSociete($societe): void
     {
         $this->societe = $societe;
@@ -275,175 +250,105 @@ class Acheteur extends User
         return $this->demandes;
     }
 
-    /*
-    public function getSousSecteurs() : Collection
-    {
-        return $this->sousSecteurs;
-    }
-
-    public function addSousSecteur(SousSecteur $secteur){
-
-        $this->sousSecteurs->add($secteur);
-
-    }
-
-    public function removeSousSecteur(SousSecteur $secteur){
-
-        $this->sousSecteurs->removeElement($secteur);
-
-    }
-    */
-    /**
-     * @return mixed
-     */
     public function getCivilite()
     {
         return $this->civilite;
     }
 
-    /**
-     * @param mixed $civilite
-     */
     public function setCivilite($civilite): void
     {
         $this->civilite = $civilite;
     }
 
-    /**
-     * @return mixed
-     */
     public function getIce()
     {
         return $this->ice;
     }
 
-    /**
-     * @param mixed $ice
-     */
     public function setIce($ice): void
     {
         $this->ice = $ice;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFix()
     {
         return $this->fix;
     }
 
-    /**
-     * @param mixed $fix
-     */
     public function setFix($fix): void
     {
         $this->fix = $fix;
     }
 
-    /**
-     * @return mixed
-     */
     public function getWebsite()
     {
         return $this->website;
     }
 
-    /**
-     * @param mixed $website
-     */
     public function setWebsite($website): void
     {
         $this->website = $website;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    /**
-     * @param mixed $description
-     */
     public function setDescription($description): void
     {
         $this->description = $description;
     }
 
-
-
-    /**
-     * @return mixed
-     */
     public function getParent2()
     {
         return $this->parent2;
     }
 
-    /**
-     * @param mixed $parent2
-     */
     public function setParent2($parent2): void
     {
         $this->parent2 = $parent2;
     }
 
-    /**
-     * @return mixed
-     */
     public function getSecteur()
     {
         return $this->secteur;
     }
 
-    /**
-     * @param mixed $secteur
-     */
     public function setSecteur($secteur): void
     {
         $this->secteur = $secteur;
     }
 
-    /**
-     * @return mixed
-     */
     public function getStep()
     {
         return $this->step;
     }
 
-    /**
-     * @param mixed $step
-     */
     public function setStep($step): void
     {
         $this->step = $step;
     }
 
-    /**
-     * @return mixed
-     */
     public function getisComplet()
     {
         return $this->isComplet;
     }
 
-    /**
-     * @param mixed $isComplet
-     */
     public function setIsComplet($isComplet): void
     {
         $this->isComplet = $isComplet;
     }
 
+    public function getCodeClient()
+    {
+        return $this->codeClient;
+    }
 
-
-
-
-
+    public function setCodeClient($codeClient): void
+    {
+        $this->codeClient = $codeClient;
+    }
 
 
 }

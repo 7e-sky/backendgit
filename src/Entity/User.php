@@ -50,10 +50,8 @@ class User implements UserInterface,CreatedEntityInterface
     const ROLE_ZONE = 'ROLE_ZONE';
     const ROLE_COMMERCIAL = 'ROLE_COMMERCIAL';
 
-
     const ROLE_ACHETEUR_PRE = 'ROLE_ACHETEUR_PRE';
     const ROLE_ACHETEUR = 'ROLE_ACHETEUR';
-
 
     const ROLE_FOURNISSEUR_PRE = 'ROLE_FOURNISSEUR_PRE';
     const ROLE_FOURNISSEUR = 'ROLE_FOURNISSEUR';
@@ -129,7 +127,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @Assert\NotBlank(groups={"postValidation"})
      * @Assert\Email(groups={"postValidation"})
      * @Assert\Length(min=10,max=255,groups={"postValidation"})
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get-admin","post","put-admin"})
+     * @Groups({"get-owner","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get-admin","post","put-admin"})
      */
     protected $email;
 

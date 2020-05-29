@@ -81,7 +81,7 @@ class Offre
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"offre:get-all","offre:post","offre:put"})
+     * @Groups({"offre:get-all","dmdAbonnement:get-all","offre:post","offre:put"})
      *
      */
     private $nbActivite;

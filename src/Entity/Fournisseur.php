@@ -135,6 +135,8 @@ class Fournisseur extends User
      */
     private $societeLower;
 
+
+
     /**
      * @ORM\Column(type="string", length=5)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
@@ -248,6 +250,12 @@ class Fournisseur extends User
      */
     private $visite=0;
 
+    /**
+     * @ORM\Column(type="string", length=30,nullable=true)
+     *
+     */
+    private $codeClient;
+
     public function __construct()
     {
         parent::__construct();
@@ -295,183 +303,111 @@ class Fournisseur extends User
         return $this->commandes;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCategories()
     {
         return $this->categories;
     }
 
-    /**
-     * @param mixed $categories
-     */
     public function setCategories($categories): void
     {
         $this->categories = $categories;
     }
 
-
-
-
-    /**
-     * @return mixed
-     */
     public function getSociete()
     {
         return $this->societe;
     }
 
-    /**
-     * @param mixed $societe
-     */
     public function setSociete($societe): void
     {
         $this->societe = $societe;
     }
 
-    /**
-     * @return mixed
-     */
     public function getSocieteLower()
     {
         return $this->societeLower;
     }
 
-    /**
-     * @param mixed $societeLower
-     */
     public function setSocieteLower($societeLower): void
     {
         $this->societeLower = $societeLower;
     }
 
-
-    /**
-     * @return mixed
-     */
     public function getCivilite()
     {
         return $this->civilite;
     }
 
-    /**
-     * @param mixed $civilite
-     */
     public function setCivilite($civilite): void
     {
         $this->civilite = $civilite;
     }
 
-    /**
-     * @return mixed
-     */
     public function getIce()
     {
         return $this->ice;
     }
 
-    /**
-     * @param mixed $ice
-     */
     public function setIce($ice): void
     {
         $this->ice = $ice;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFix()
     {
         return $this->fix;
     }
 
-    /**
-     * @param mixed $fix
-     */
     public function setFix($fix): void
     {
         $this->fix = $fix;
     }
 
-    /**
-     * @return mixed
-     */
     public function getWebsite()
     {
         return $this->website;
     }
 
-    /**
-     * @param mixed $website
-     */
     public function setWebsite($website): void
     {
         $this->website = $website;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    /**
-     * @param mixed $description
-     */
     public function setDescription($description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return mixed
-     */
     public function getProduits()
     {
         return $this->produits;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDemandes() : Collection
     {
         return $this->demandes;
     }
 
-
-
-    /**
-     * @return mixed
-     */
     public function getCurrency()
     {
         return $this->currency;
     }
 
-    /**
-     * @param mixed $currency
-     */
     public function setCurrency($currency): void
     {
         $this->currency = $currency;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDemandeAbonnement() : Collection
     {
         return $this->demandeAbonnement;
     }
 
-    /**
-     * @return mixed
-     */
     public function getAbonnements() : Collection
     {
         return $this->abonnements;
@@ -551,6 +487,22 @@ class Fournisseur extends User
     public function setIsComplet($isComplet): void
     {
         $this->isComplet = $isComplet;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodeClient()
+    {
+        return $this->codeClient;
+    }
+
+    /**
+     * @param mixed $codeClient
+     */
+    public function setCodeClient($codeClient): void
+    {
+        $this->codeClient = $codeClient;
     }
 
 

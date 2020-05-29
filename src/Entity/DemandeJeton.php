@@ -149,9 +149,6 @@ class DemandeJeton implements CreatedEntityInterface, SetFournisseurInterface
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getFournisseur()
     {
         return $this->fournisseur;

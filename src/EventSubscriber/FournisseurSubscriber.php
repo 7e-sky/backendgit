@@ -105,7 +105,7 @@ class FournisseurSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$user || !$user instanceof Admin) {
+        if (!$user instanceof Admin) {
             $entity->setVisite($entity->getVisite() + 1);
             $this->entityManager->flush();
         }
@@ -129,10 +129,20 @@ class FournisseurSubscriber implements EventSubscriberInterface
             $this->parentService->setParent($entity,'Fournisseur');
             $this->mailer->bienvenueEmail($entity);
             $entity->setIsComplet(true);
+            $entity->setCodeClient('F-'.$entity->getId().$this->random_strings(4));
+
 
         }
 
     }
+
+    function random_strings($length_of_string) {
+
+        // md5 the timestamps and returns substring
+        // of specified length
+        return substr(md5(time()), 0, $length_of_string);
+    }
+
 
 
 }
