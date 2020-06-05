@@ -74,6 +74,9 @@ class ProduitSubscriber implements EventSubscriberInterface
         if($entity->getTitre()){
             $entity->setTitreLower(mb_strtolower($entity->getTitre()));
         }
+        if($entity->getSousSecteurs()){
+            $entity->setSecteur($entity->getSousSecteurs()->getSecteur());
+        }
         /**
          * @var UserInterface $user
          */
@@ -100,6 +103,9 @@ class ProduitSubscriber implements EventSubscriberInterface
             $entity->setTitreLower(mb_strtolower($entity->getTitre()));
         }
 
+        if($entity->getSousSecteurs()){
+            $entity->setSecteur($entity->getSousSecteurs()->getSecteur());
+        }
         /**
          * @var UserInterface $user
          */

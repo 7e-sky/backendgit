@@ -43,7 +43,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *
  *      }
  * )
- * @ApiFilter(BooleanFilter::class, properties={"isValid"})
+ * @ApiFilter(BooleanFilter::class, properties={"isValid","free"})
  * @ApiFilter(OrderFilter::class, properties={"reference","description","created","pu","isValid","sousSecteurs.name"})
  * @ApiFilter(
  *     PropertyFilter::class,
@@ -122,7 +122,6 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     /**
      * @ORM\ManyToOne(targetEntity="Secteur")
      * @Groups({"produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
-     * @Assert\NotBlank(groups={"produit:postValidation","produit:putValidation"})
      */
     private $secteur;
 
@@ -249,6 +248,12 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
      * @Groups({"get-owner"})
      */
     private $phone_vu=0;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"produit:get-all","produit:get-from-fournisseur","produit:post"})
+     */
+    private $free=false;
 
     public function __construct()
     {
@@ -585,10 +590,6 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
         $this->ville = $ville;
     }
 
-
-
-
-
     /**
      * @return mixed
      */
@@ -624,6 +625,22 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     public function setPhoneVu($phone_vu): void
     {
         $this->phone_vu = $phone_vu;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFree()
+    {
+        return $this->free;
+    }
+
+    /**
+     * @param mixed $free
+     */
+    public function setFree($free): void
+    {
+        $this->free = $free;
     }
 
 

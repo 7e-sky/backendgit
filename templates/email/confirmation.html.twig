@@ -216,7 +216,12 @@
 														line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">
                                                     Confirmer votre email
                                                 </a-->
-                                                <a href="https://7e-sky.com/register/confirm/{{ user.getConfirmationToken()}}"
+                                                <!--a href="https://7e-sky.com/register/confirm/{{ user.getConfirmationToken()}}"
+                                                   style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;
+														line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">
+                                                    Confirmer votre email
+                                                </a-->
+                                                <a href="http://192.168.1.124:3000/register/confirm/{{ user.getConfirmationToken()}}"
                                                    style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;
 														line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">
                                                     Confirmer votre email
@@ -243,7 +248,8 @@
 
                                     <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:center;color:#555;">
                                         <!--a href="https://unruffled-bardeen-bfc2cc.netlify.com/register/confirm/{{ user.getConfirmationToken()}}" style="color:#387ca3">https://unruffled-bardeen-bfc2cc.netlify.com/register/confirm/{{ user.getConfirmationToken()}}</a-->
-                                        <a href="https://7e-sky.com/register/confirm/{{ user.getConfirmationToken()}}" style="color:#387ca3">http://192.168.1.124:3000/register/confirm/{{ user.getConfirmationToken()}}</a>
+                                        {#<a href="https://7e-sky.com/register/confirm/{{ user.getConfirmationToken()}}" style="color:#387ca3">https://7e-sky.com/register/confirm/{{ user.getConfirmationToken()}}</a>#}
+                                        <a href="http://192.168.1.124:3000/register/confirm/{{ user.getConfirmationToken()}}" style="color:#387ca3">https://7e-sky.com/register/confirm/{{ user.getConfirmationToken()}}</a>
                                     </div>
 
                                 </td>

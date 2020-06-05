@@ -60,6 +60,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     },
  *     attributes={
  *     "pagination_items_per_page"=10,
+ *     "pagination_client_items_per_page"=true,
+ *     "maximum_items_per_page"=100,
  *
  *     }
  * )
@@ -161,7 +163,7 @@ class Abonnement implements CreatedEntityInterface
     private $datePeiment;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="float")
      * @Groups({"abonnement:get-all","abonnement:put","abonnement:post"})
      */
     private $remise;
@@ -184,6 +186,12 @@ class Abonnement implements CreatedEntityInterface
      * @Groups({"abonnement:get-all","abonnement:post","abonnement:put"})
      */
     private $commentaire;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"abonnement:get-all","abonnement:post"})
+     */
+    private $type = false;
 
     public function __construct()
     {
@@ -465,6 +473,22 @@ class Abonnement implements CreatedEntityInterface
     public function setCommentaire($commentaire): void
     {
         $this->commentaire = $commentaire;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type): void
+    {
+        $this->type = $type;
     }
 
 

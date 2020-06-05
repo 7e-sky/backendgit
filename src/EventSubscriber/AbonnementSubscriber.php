@@ -102,54 +102,58 @@ class AbonnementSubscriber implements EventSubscriberInterface
         $user = $this->tokenStorage->getToken()->getUser();
         if ($user instanceof Admin) {
 
-
             $entity->setReference($this->getRefAbonnement());
 
             $prixOffre = $entity->getOffre()->getPrixMad();
 
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS')
-            {
-                $entity->setCurrency($this->currencyRepository->findOneBy(['name'=>'EUR']));
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS') {
+                $entity->setCurrency($this->currencyRepository->findOneBy(['name' => 'EUR']));
                 $prixOffre = $entity->getOffre()->getPrixEur();
-            }
-            else
-                $entity->setCurrency($this->currencyRepository->findOneBy(['name'=>'DHS']));
+            } else
+                $entity->setCurrency($this->currencyRepository->findOneBy(['name' => 'DHS']));
 
-            $remiseOffre=0;
-            if($entity->getDuree()->getRemise()){
-                $remiseOffre=$entity->getDuree()->getRemise();
+            $remiseOffre = 0;
+            if ($entity->getDuree()->getRemise()) {
+                $remiseOffre = $entity->getDuree()->getRemise();
             }
 
             $prixHT = $prixOffre * $entity->getDuree()->getName();
 
             //Remise par offre
-            if($remiseOffre){
-                $prixHT = $prixHT - ($prixHT*$remiseOffre/100);
+            if ($remiseOffre) {
+                $prixHT = $prixHT - ($prixHT * $remiseOffre / 100);
             }
 
             //Remise par admin
-            if($entity->getRemise()){
+            if ($entity->getRemise()) {
                 $entity->setRemise($entity->getRemise());
                 $prixHT = $prixHT - ($entity->getRemise());
             }
 
             //HT + TVA = TTC
-            $ttc = $prixHT+ ($prixHT*0.2);
-
+            $ttc = $prixHT + ($prixHT * 0.2);
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS') {
+                $ttc = $prixHT;
+            }
 
             $entity->setPrix($ttc);
 
 
             if ($entity->getStatut()) {
                 $entity->setDatePeiment(new \DateTime());
-                $entity->setExpired(new \DateTime('+' . $entity->getDuree()->getName() . ' months'));
+                if ($entity->getType()) {
+                    $old = $this->abonnementRepository->findOneBy(['fournisseur' => $entity->getFournisseur(), 'statut' => true], ['expired' => 'desc']);
+                    $entity->setExpired($old->getExpired()->add(new \DateInterval('P' . $entity->getDuree()->getName() . 'M')));
+
+                } else {
+                    $entity->setExpired(new \DateTime('+' . $entity->getDuree()->getName() . ' months'));
+                }
                 $this->mailer->alerteFournisseurValidationAbonnement($entity);
             }
 
         }
 
     }
-
 
 
     public function PutAbonnement(GetResponseForControllerResultEvent $event)
@@ -180,33 +184,48 @@ class AbonnementSubscriber implements EventSubscriberInterface
             if ($abonnement->getCurrency() && $abonnement->getCurrency()->getName() !== 'DHS')
                 $prixOffre = $abonnement->getOffre()->getPrixEur();
 
-            $remiseOffre=0;
-            if($abonnement->getDuree()->getRemise()){
-                $remiseOffre=$abonnement->getDuree()->getRemise();
+            $remiseOffre = 0;
+            if ($abonnement->getDuree()->getRemise()) {
+                $remiseOffre = $abonnement->getDuree()->getRemise();
             }
 
             $prixHT = $prixOffre * $abonnement->getDuree()->getName();
 
             //Remise par offre
-            if($remiseOffre){
-                $prixHT = $prixHT - ($prixHT*$remiseOffre/100);
+            if ($remiseOffre) {
+                $prixHT = $prixHT - ($prixHT * $remiseOffre / 100);
             }
 
             //Remise par admin
-            if($abonnement->getRemise()){
+            if ($abonnement->getRemise()) {
                 $abonnement->setRemise($abonnement->getRemise());
                 $prixHT = $prixHT - ($abonnement->getRemise());
             }
 
             //HT + TVA = TTC
-            $ttc = $prixHT+ ($prixHT*0.2);
+            $ttc = $prixHT + ($prixHT * 0.2);
+
+            if ($abonnement->getCurrency() && $abonnement->getCurrency()->getName() !== 'DHS')
+                $ttc = $prixHT;
 
             $abonnement->setPrix($ttc);
 
 
-            if ($abonnement->getStatut() &&  is_null($abonnement->getDatePeiment())) {
+            if ($abonnement->getStatut() && is_null($abonnement->getDatePeiment())) {
                 $abonnement->setDatePeiment(new \DateTime());
-                $abonnement->setExpired(new \DateTime('+' . $abonnement->getDuree()->getName() . ' months'));
+
+                if ($abonnement->getType()) {
+                    $old = $this->abonnementRepository->findOneBy(['fournisseur' => $abonnement->getFournisseur(), 'statut' => true], ['expired' => 'desc']);
+                    $datenow = new \DateTime();
+                    if ($old->getExpired() > $datenow)
+                        $abonnement->setExpired($old->getExpired()->add(new \DateInterval('P' . $abonnement->getDuree()->getName() . 'M')));
+                    else
+                        $abonnement->setExpired(new \DateTime('+' . $abonnement->getDuree()->getName() . ' months'));
+
+                } else {
+                    $abonnement->setExpired(new \DateTime('+' . $abonnement->getDuree()->getName() . ' months'));
+                }
+
                 $this->mailer->alerteFournisseurValidationAbonnement($abonnement);
 
             }
@@ -227,7 +246,7 @@ class AbonnementSubscriber implements EventSubscriberInterface
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
         $result++;
-        return 'A-'.date("Y") . '-' . $result;
+        return 'A-' . date("Y") . '-' . $result;
 
     }
 

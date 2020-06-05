@@ -197,11 +197,11 @@ class Mailer
 
         $ids_sous_secteurs = [];
 
-        foreach ($demande->getSousSecteurs() as $sousSecteur) {
+        foreach ($demande->getCategories() as $sousSecteur) {
             array_push($ids_sous_secteurs, $sousSecteur->getId());
         }
         $fournisseurs = $this->fournisseurRepository->createQueryBuilder('f')
-            ->innerJoin('f.sousSecteurs', 's')
+            ->innerJoin('f.categories', 's')
             ->where('s.id in (:sous_secteurs_id)')
             ->andWhere('s.del = 0')
             ->andWhere('f.del = 0')

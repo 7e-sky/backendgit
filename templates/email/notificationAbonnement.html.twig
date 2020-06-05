@@ -1,8 +1,15 @@
 <h3>Bonjour {{ commercial.firstName~' '~commercial.lastName }}</h3>
-<p>
-    Un fournisseur dans votre zone vient de faire une commande pour l'offre "<strong>{{ demande.offre.name }}</strong>",
-    prière de bien vouloir le contacter dans les plus brefs délais.
-</p>
+{% if  demande.type %}
+    <p>
+        <strong>{{ demande.fournisseur.societe }}</strong> vient de faire une demande de renouvellement pour l'offre "<strong>{{ demande.offre.name }}</strong>",
+        prière de bien vouloir le contacter dans les plus brefs délais.
+    </p>
+{% else %}
+    <p>
+        <strong>{{ demande.fournisseur.societe }}</strong> vient de faire une commande pour l'offre "<strong>{{ demande.offre.name }}</strong>",
+        prière de bien vouloir le contacter dans les plus brefs délais.
+    </p>
+{% endif %}
 <h4>Les informations du fournisseur :</h4>
 <ul>
     <li><strong>Raison sociale : </strong>{{ demande.fournisseur.societe }}</li>

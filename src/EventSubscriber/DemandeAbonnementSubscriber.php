@@ -108,32 +108,36 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             $prixOffre = $entity->getOffre()->getPrixMad();
 
             $entity->setCurrency('DHS');
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS'){
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS') {
                 $prixOffre = $entity->getOffre()->getPrixEur();
                 $entity->setCurrency('EUR');
             }
 
-            $remiseOffre=0;
-            if($entity->getDuree()->getRemise()){
-                $remiseOffre=$entity->getDuree()->getRemise();
+            $remiseOffre = 0;
+            if ($entity->getDuree()->getRemise()) {
+                $remiseOffre = $entity->getDuree()->getRemise();
             }
 
             $prixHT = $prixOffre * $entity->getDuree()->getName();
 
             //Remise par offre
-            if($remiseOffre){
-                $prixHT = $prixHT - ($prixHT*$remiseOffre/100);
+            if ($remiseOffre) {
+                $prixHT = $prixHT - ($prixHT * $remiseOffre / 100);
             }
 
             //HT + TVA = TTC
-            $ttc = $prixHT+ ($prixHT*0.2);
+            $ttc = $prixHT + ($prixHT * 0.2);
+
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS') {
+                $ttc = $prixHT;
+            }
 
             $entity->setPrix($ttc);
 
             //Set Commercial && zone Commercial
             $parent1 = $user->getParent1();
             $parent2 = null;
-            if(!$parent1){
+            if (!$parent1) {
                 $this->mailer->sendEmailNotificationAdmin($entity);
             }
             if ($parent1) {
@@ -173,7 +177,7 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
         $result++;
-        return 'D-'.date("Y") . '-' . $result;
+        return 'D-' . date("Y") . '-' . $result;
 
     }
 
@@ -200,52 +204,69 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             $abonnement->setOffre($entity->getOffre());
             $abonnement->setMode($entity->getMode());
             $abonnement->setDuree($entity->getDuree());
+            $abonnement->setType($entity->getType());
             $abonnement->setSousSecteurs($entity->getSousSecteurs());
             $abonnement->setCreated(new \DateTime());
 
             if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS')
-                $abonnement->setCurrency($this->currencyRepository->findOneBy(['name'=>'EUR']));
+                $abonnement->setCurrency($this->currencyRepository->findOneBy(['name' => 'EUR']));
             else
-                $abonnement->setCurrency($this->currencyRepository->findOneBy(['name'=>'DHS']));
+                $abonnement->setCurrency($this->currencyRepository->findOneBy(['name' => 'DHS']));
 
 
-            if($entity->getFournisseur()->getCurrency())
-            $abonnement->setCurrency($entity->getFournisseur()->getCurrency());
+            if ($entity->getFournisseur()->getCurrency())
+                $abonnement->setCurrency($entity->getFournisseur()->getCurrency());
 
             $prixOffre = $entity->getOffre()->getPrixMad();
 
             if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS')
                 $prixOffre = $entity->getOffre()->getPrixEur();
 
-            $remiseOffre=0;
-            if($entity->getDuree()->getRemise()){
-                $remiseOffre=$entity->getDuree()->getRemise();
+            $remiseOffre = 0;
+            if ($entity->getDuree()->getRemise()) {
+                $remiseOffre = $entity->getDuree()->getRemise();
             }
 
             $prixHT = $prixOffre * $entity->getDuree()->getName();
 
             //Remise par offre
-            if($remiseOffre){
-                $prixHT = $prixHT - ($prixHT*$remiseOffre/100);
+            if ($remiseOffre) {
+                $prixHT = $prixHT - ($prixHT * $remiseOffre / 100);
             }
 
             //Remise par admin
-            if($entity->remise){
+            if ($entity->remise) {
                 $abonnement->setRemise($entity->remise);
                 $prixHT = $prixHT - ($entity->remise);
             }
 
-            //HT + TVA = TTC
-            $ttc = $prixHT+ ($prixHT*0.2);
 
+            //HT + TVA = TTC
+            $ttc = $prixHT + ($prixHT * 0.2);
+
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS')
+                $ttc = $prixHT;
 
             $abonnement->setPrix($ttc);
             $abonnement->setReference($this->getRefAbonnement());
+            $abonnement->setType($entity->getType());
 
 
             if ($entity->paiement && is_null($abonnement->getDatePeiment())) {
                 $abonnement->setDatePeiment(new \DateTime());
                 $abonnement->setStatut(true);
+
+                if ($entity->getType()) {
+                    $old = $this->abonnementRepository->findOneBy(['fournisseur' => $entity->getFournisseur(), 'statut' => true], ['expired' => 'desc']);
+                    $datenow = new \DateTime();
+                    if ($old->getExpired() > $datenow)
+                        $abonnement->setExpired($old->getExpired()->add(new \DateInterval('P' . $entity->getDuree()->getName() . 'M')));
+                    else
+                        $abonnement->setExpired(new \DateTime('+' . $entity->getDuree()->getName() . ' months'));
+
+                } else {
+                    $abonnement->setExpired(new \DateTime('+' . $entity->getDuree()->getName() . ' months'));
+                }
                 $abonnement->setExpired(new \DateTime('+' . $entity->getDuree()->getName() . ' months'));
                 $this->mailer->alerteFournisseurValidationAbonnement($abonnement);
             }
@@ -269,7 +290,7 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
         $result++;
-        return 'A-'.date("Y") . '-' . $result;
+        return 'A-' . date("Y") . '-' . $result;
 
     }
 

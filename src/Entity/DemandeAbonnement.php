@@ -27,7 +27,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * )
  * @ApiFilter(OrderFilter::class, properties={"reference","created","statut","sousSecteurs.name"})
  * @ApiFilter(DateFilter::class, properties={"created"})
- * @ApiFilter(BooleanFilter::class, properties={"statut"})
+ * @ApiFilter(BooleanFilter::class, properties={"statut","type"})
  * @ApiResource(
  *      collectionOperations={
  *          "post"={
@@ -60,12 +60,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *          }
  *     },
  *     attributes={
- *     "pagination_items_per_page"=10
+ *     "pagination_items_per_page"=10,
+ *     "pagination_client_items_per_page"=true,
+ *     "maximum_items_per_page"=100,
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\DemandeAbonnementRepository")
  */
-class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterface
+class DemandeAbonnement implements CreatedEntityInterface, SetFournisseurInterface
 {
     /**
      * @ORM\Id()
@@ -162,10 +164,16 @@ class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterfac
      */
     private $currency;
 
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"dmdAbonnement:get-all","dmdAbonnement:post"})
+     */
+    private $type = false;
+
 
     public function __construct()
     {
-        $this->statut=false;
+        $this->statut = false;
     }
 
     public function getId(): ?int
@@ -240,121 +248,85 @@ class DemandeAbonnement implements CreatedEntityInterface,SetFournisseurInterfac
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getZone()
     {
         return $this->zone;
     }
 
-    /**
-     * @param mixed $zone
-     */
     public function setZone($zone): void
     {
         $this->zone = $zone;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCommercial()
     {
         return $this->commercial;
     }
 
-    /**
-     * @param mixed $commercial
-     */
     public function setCommercial($commercial): void
     {
         $this->commercial = $commercial;
     }
 
-    /**
-     * @return mixed
-     */
     public function getSousSecteurs()
     {
         return $this->sousSecteurs;
     }
 
-    /**
-     * @param mixed $sousSecteurs
-     */
     public function setSousSecteurs($sousSecteurs): void
     {
         $this->sousSecteurs = $sousSecteurs;
     }
 
-    /**
-     * @return mixed
-     */
     public function getDuree()
     {
         return $this->duree;
     }
 
-    /**
-     * @param mixed $duree
-     */
     public function setDuree($duree): void
     {
         $this->duree = $duree;
     }
 
-
-    /**
-     * @return mixed
-     */
     public function getMode()
     {
         return $this->mode;
     }
 
-    /**
-     * @param mixed $mode
-     */
     public function setMode($mode): void
     {
         $this->mode = $mode;
     }
 
-    /**
-     * @return mixed
-     */
     public function getPrix()
     {
         return $this->prix;
     }
 
-    /**
-     * @param mixed $prix
-     */
     public function setPrix($prix): void
     {
         $this->prix = $prix;
     }
 
-    /**
-     * @return mixed
-     */
     public function getCurrency()
     {
         return $this->currency;
     }
 
-    /**
-     * @param mixed $currency
-     */
     public function setCurrency($currency): void
     {
         $this->currency = $currency;
     }
 
+    public function getType()
+    {
+        return $this->type;
+    }
 
-
+    public function setType($type): void
+    {
+        $this->type = $type;
+    }
 
 
 }

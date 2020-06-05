@@ -84,7 +84,7 @@ class Categorie
     /**
      * @ORM\Column(type="string", length=150)
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
-     * @Groups({"categorie:get-all","get","sousSecteurSub","post","put","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","visit:get-item","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"categorie:get-all","dmdAbonnement:get-item","get","sousSecteurSub","post","put","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","visit:get-item","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
      */

@@ -157,7 +157,7 @@ class Fournisseur extends User
      * @ORM\Column(type="string", length=30,nullable=true)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      * @AssertPhoneNumber(
-     *     groups={"postValidation","putValidation"},
+     *     groups={"postValidation"},
      *     message="Veuillez entrer votre numéro en format international (Exemple Maroc) : +212522112244."
      *     )
      * @Assert\Length(min=10,max=15,groups={"postValidation","putValidation"})

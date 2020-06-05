@@ -114,7 +114,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post","get-from-demande"})
      * @AssertPhoneNumber(
      *     type="mobile",
-     *     groups={"postValidation","putValidation"},
+     *     groups={"postValidation"},
      *     message="Veuillez entrer votre numéro en format international (Exemple Maroc) : +212666112244."
      *     )
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
@@ -324,11 +324,10 @@ class User implements UserInterface,CreatedEntityInterface
         return $this->codepostal;
     }
 
-    public function setCodePostal(int $codepostal): self
+    public function setCodePostal($codepostal): void
     {
         $this->codepostal = $codepostal;
 
-        return $this;
     }
 
     public function getPhone(): ?string

@@ -1,8 +1,15 @@
 <h3>Madame, Monsieur,</h3>
 
-<h4>
-    Félicitations, votre abonnement référence <strong> {{ abonnement.reference }} </strong> a été enregistrée avec succès!
-</h4>
+
+{% if abonnement.type %}
+    <h4>
+        La renouvellement de votre abonnement a été enregistrée avec succès!
+    </h4>
+{% else %}
+    <h4>
+        Félicitations, votre abonnement référence <strong> {{ abonnement.reference }} </strong> a été enregistrée avec succès!
+    </h4>
+{% endif %}
 
 <p>
     Veuillez lire ce mail et le conserver pour un éventuel usage ultérieur car il contient des informations importantes concernant la gestion de vos produits.
@@ -29,7 +36,8 @@
 </p>
 
 <ol>
-    <li>Cliquez sur le lien suivant: <a href="http://192.168.1.124:3000/login">http://192.168.1.124:3000/login</a></li>
+    {#<li>Cliquez sur le lien suivant: <a href="https://7e-sky.com/login">https://7e-sky.com</a></li>#}
+    <li>Cliquez sur le lien suivant: <a href="http://192.168.1.124:3000/login">https://7e-sky.com</a></li>
     <li>Connectez-vous votre email et mot de passe</li>
     <li>Sur le menu a gauche cliquer sur le lien <strong>"Mes Produits"</strong> </li>
 </ol>
