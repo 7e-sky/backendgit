@@ -134,6 +134,13 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
     private $statut;
 
     /**
+     * @ORM\Column(type="smallint",length=1)
+     * @Groups({"visit:get-all","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     *
+     */
+    private $localisation=1;
+
+    /**
      * @ORM\Column(type="string", length=50,nullable=true)
      * @Groups({"visit:get-item","visit:get-all","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      *
@@ -347,6 +354,24 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getLocalisation()
+    {
+        return $this->localisation;
+    }
+
+    /**
+     * @param mixed $localisation
+     */
+    public function setLocalisation($localisation): void
+    {
+        $this->localisation = $localisation;
+    }
+
+
 
     public function getReference(): ?string
     {

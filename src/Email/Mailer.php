@@ -200,17 +200,19 @@ class Mailer
         foreach ($demande->getCategories() as $sousSecteur) {
             array_push($ids_sous_secteurs, $sousSecteur->getId());
         }
-        $fournisseurs = $this->fournisseurRepository->createQueryBuilder('f')
+        $qb = $this->fournisseurRepository->createQueryBuilder('f')
             ->innerJoin('f.categories', 's')
             ->where('s.id in (:sous_secteurs_id)')
             ->andWhere('s.del = 0')
             ->andWhere('f.del = 0')
-            ->andWhere('f.isactif = 1')
-            ->select('f')
-            ->setParameter('sous_secteurs_id', $ids_sous_secteurs)
-            ->getQuery()
-            ->getResult();
-
+            ->andWhere('f.isactif = 1');
+        if ($demande->getLocalisation() === 2) {
+            $qb->andWhere('f.pays = :pays')->setParameter('pays', $demande->getAcheteur()->getPays());
+        }
+        $qb->setParameter('sous_secteurs_id', $ids_sous_secteurs)
+            ->select('f');
+        $query = $qb->getQuery();
+        $fournisseurs = $query->getResult();
 
         $fournisseurs_blacklists = $this->blackListesRepository->findBy(['acheteur' => $demande->getAcheteur()->getId(), 'etat' => 1]);
 

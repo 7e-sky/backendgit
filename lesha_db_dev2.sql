@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 05 juin 2020 à 17:53
+-- Généré le :  Dim 07 juin 2020 à 23:41
 -- Version du serveur :  10.1.31-MariaDB
 -- Version de PHP :  7.2.4
 
@@ -49,6 +49,13 @@ CREATE TABLE `abonnement` (
   `type` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `abonnement`
+--
+
+INSERT INTO `abonnement` (`id`, `offre_id`, `demande_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `mode_id`, `reference`, `statut`, `prix`, `created`, `expired`, `date_peiment`, `duree_id`, `remise`, `currency_id`, `commentaire`, `type`) VALUES
+(2, 1, 3, 680, NULL, NULL, 1, 'A-2020-1', 1, 1440, '2020-06-06 15:46:46', '2020-06-05 00:00:00', '2020-06-06 15:46:46', 1, 0, 11, NULL, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -59,6 +66,15 @@ CREATE TABLE `abonnement_sous_secteur` (
   `abonnement_id` int(11) NOT NULL,
   `sous_secteur_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `abonnement_sous_secteur`
+--
+
+INSERT INTO `abonnement_sous_secteur` (`abonnement_id`, `sous_secteur_id`) VALUES
+(2, 6),
+(2, 7),
+(2, 8);
 
 -- --------------------------------------------------------
 
@@ -506,8 +522,8 @@ CREATE TABLE `black_listes` (
 --
 
 INSERT INTO `black_listes` (`id`, `fournisseur_id`, `raison`, `created`, `acheteur_id`, `deblacklister`, `etat`) VALUES
-(1, 680, 'Testeee', '2020-06-05 17:13:17', 682, NULL, 1),
-(2, 684, 'azertyu', '2020-06-05 17:13:42', 682, NULL, 1);
+(1, 680, 'Testeee', '2020-06-05 17:13:17', 682, '2020-06-06 14:38:53', 0),
+(2, 684, 'azertyu', '2020-06-05 17:13:42', 682, '2020-06-06 14:39:02', 0);
 
 -- --------------------------------------------------------
 
@@ -1740,7 +1756,8 @@ CREATE TABLE `demande_abonnement` (
 --
 
 INSERT INTO `demande_abonnement` (`id`, `offre_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `reference`, `statut`, `created`, `mode_id`, `duree_id`, `prix`, `currency`, `type`) VALUES
-(2, 1, 2, NULL, NULL, 'D-2020-1', 1, '2020-06-05 13:47:32', 1, 1, 120, 'EUR', 0);
+(2, 1, 2, NULL, NULL, 'D-2020-1', 1, '2020-06-05 13:47:32', 1, 1, 120, 'EUR', 0),
+(3, 1, 680, NULL, NULL, 'D-2020-2', 1, '2020-06-06 15:40:07', 1, 1, 1440, 'DHS', 0);
 
 -- --------------------------------------------------------
 
@@ -1759,7 +1776,10 @@ CREATE TABLE `demande_abonnement_sous_secteur` (
 
 INSERT INTO `demande_abonnement_sous_secteur` (`demande_abonnement_id`, `sous_secteur_id`) VALUES
 (2, 6),
-(2, 7);
+(2, 7),
+(3, 6),
+(3, 7),
+(3, 8);
 
 -- --------------------------------------------------------
 
@@ -1788,138 +1808,141 @@ CREATE TABLE `demande_achat` (
   `titre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pays` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ville` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL
+  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `localisation` smallint(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `demande_achat`
 --
 
-INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `budget`, `del`, `motif_rejet_id`, `currency_id`, `titre`, `pays`, `ville`, `slug`) VALUES
-(89, 40, 1, '2009-89', 'Achat de materiel informatique', '2016-12-06 00:00:00', 1, 0, NULL, '2009-04-02 17:11:51', '2009-12-06 13:26:09', 1, 0, 0, 0, NULL, 11, 'Demande de devis #89', 'Maroc', 'Casablanca', 'demande-devis-89'),
-(100, 3, 1, '2009-100', 'ACHATS D\'ASSENCEUR TYPE 450 KG 5 NIVEAUX 1 M/S', '2016-12-09 00:00:00', 1, 0, NULL, '2009-05-26 10:30:51', '2017-12-08 16:28:54', 1, 0, 0, 0, NULL, 11, 'Demande de devis #100', 'Maroc', 'Casablanca', 'demande-devis-100'),
-(101, 53, 1, '2009-101', 'BESOIN DE SURVEILLANCE ET GARDIENAGE', '2016-06-30 00:00:00', 1, 0, NULL, '2009-06-01 19:50:58', '2009-06-01 19:52:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #101', 'Maroc', 'Rabat', 'demande-devis-101'),
-(102, 3, 1, '2009-102', 'ACHATS DE MATIERE PREMIERE PLASTIQUE PPE, QTE 10T/3MOIS', '2016-06-24 00:00:00', 1, 0, NULL, '2009-06-03 00:27:48', '2009-07-14 19:54:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #102', 'Maroc', 'Casablanca', 'demande-devis-102'),
-(103, 3, 1, '2009-103', 'BESOIN EN RAYONNAGE CONVENTIONNEL POUR 2000 PALETTES.', '2016-06-29 00:00:00', 1, 0, NULL, '2009-06-28 16:35:43', '2009-06-28 16:36:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #103', 'Maroc', 'Casablanca', 'demande-devis-103'),
-(104, 3, 1, '2009-104', 'BESOIN EN NIVELEUR DE QUAI POUR NOTRE CLIENT BASE A TANGER, POUR UNE QUANTITE DE 5 NIVELEURS.', '2016-02-11 00:00:00', 1, 0, NULL, '2009-06-28 16:38:39', '2010-02-19 11:51:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #104', 'Maroc', 'Casablanca', 'demande-devis-104'),
-(105, 3, 1, '2009-105', 'Location ou Achat de conteneur 20 pieds climatisé pour stockage\r\ndes produits chimique pendant 3 mois.', '2016-08-10 00:00:00', 1, 0, NULL, '2009-06-28 16:48:29', '2010-03-25 10:33:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #105', 'Maroc', 'Casablanca', 'demande-devis-105'),
-(106, 3, 1, '2009-106', 'Tanger Free Zone: Chapiteaux de 888m2 sol 74metre longueur et 12 mètre\r\nlargeur pour prestation RAMADAN 2009.\r\n120 Tables rondes.\r\n1200 Chaises pour tables.\r\nClient Basé Sur Tanger, Votre Offre HT, HD.', '2016-07-30 00:00:00', 1, 0, NULL, '2009-06-30 13:34:25', '2009-07-14 19:55:06', 1, 0, 0, 0, NULL, 11, 'Demande de devis #106', 'Maroc', 'Casablanca', 'demande-devis-106'),
-(107, 58, 1, '2009-107', 'location  des chapitaux de 888m2 sol 74m longeur et 12 m de largeur pour prestation RAMADAN 2009 ( 1 mois) avec 120 tables rondes et 1200 chaises.\r\n\r\nMerci de noter que nous somme un groupe multinationale, installer dans la zone franche d\'exportation de Tanger.', '2016-07-10 00:00:00', 1, 0, NULL, '2009-07-01 08:56:06', '2009-07-07 13:34:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #107', 'Maroc', 'Kenitra', 'demande-devis-107'),
-(108, 68, 1, '2009-108', 'PERCEUSE PNEUMATIQUE \r\nB33\r\nFACOM QUANTITE 02', '2016-07-01 00:00:00', 1, 0, NULL, '2009-07-02 15:37:37', '2009-07-02 15:48:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #108', 'Maroc', 'Casablanca', 'demande-devis-108'),
-(113, 78, 1, '2009-113', 'APPEL D’OFFRE LOCATION CAMION LONGUE DUREE\r\nNous vous prions de nous faire parvenir votre meilleure offre de prix pour location d\'un camion avec cabine en bon état de 14t sous les conditions suivantes :\r\n\r\nPayement: 60 jours après date facture\r\nLivraison : A domicile\r\nService : 24/24 - 6/7 = Le service doit être assure par 2 chauffeur (24/24) qui doivent être instruit\r\nTravail dimanche : nous aurons éventuellement besoin du camion le dimanche (merci de préciser le cout sup. Jour/nuit.)\r\nGasoil : inclus\r\nPanne : en cas de panne du camion dépasse 2h, il fait faire un remplacement immédiat du camion, \r\nPermanence : les deux chauffeurs doivent être permanents sur notre site pour assurer les mouvements.\r\nIl faut tabler l\'offre sur  2500 km/mois. Et confirmer le cout des km sup.\r\nAssurance obligatoire : RC+ AT+Assurance marchandise couvrant 300.000dhs de dommage.\r\n\r\n\r\nNB : ce camion va travailler essentiellement dans la zone franche et éventuellement il fera des déplacements vers TAZA, Casa.', '2016-07-15 00:00:00', 1, 0, NULL, '2009-07-10 12:30:26', '2009-07-10 12:44:27', 1, 0, 0, 0, NULL, 11, 'Demande de devis #113', 'Maroc', 'Tanger', 'demande-devis-113'),
-(114, 83, 1, '2009-114', 'Ponts de chargement en aluminium avec une charge utile de 1200 kg.', '2016-09-14 00:00:00', 1, 0, NULL, '2009-07-14 17:19:09', '2009-08-18 17:33:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #114', 'Maroc', 'Casablanca', 'demande-devis-114'),
-(115, 102, 1, '2009-115', 'Bache d\'eau pour secourir l\'eau de l\'ONEP de cap.5m3 en inox 316 L avec système de chloration et déchloration , système de surpression , filtres....', '2016-09-18 00:00:00', 1, 0, NULL, '2009-08-11 09:51:59', '2009-09-11 10:35:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #115', 'Maroc', 'Casablanca', 'demande-devis-115'),
-(116, 102, 1, '2009-116', 'Deux aspirateurs de dimensions 50 cm * 50 cm , robuste pour aspirer l\'air chaud d\'une salle de 100 m2', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-11 09:54:43', '2009-10-29 11:42:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #116', 'Maroc', 'Casablanca', 'demande-devis-116'),
-(117, 102, 1, '2009-117', 'Bac de lavage en inox 304 L divisé trois compartiments pour usage agro-alimentaire de longeur2500 mm , largeur 400 mm , hauteur 850 mm.', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-11 09:58:17', '2009-10-29 11:42:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #117', 'Maroc', 'Casablanca', 'demande-devis-117'),
-(118, 102, 1, '2009-118', 'Porte métallique de 4.3 * 5 m avec moteur et bouton marche arrêt.', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 15:51:37', '2009-10-29 11:41:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #118', 'Maroc', 'Casablanca', 'demande-devis-118'),
-(119, 102, 1, '2009-119', '01 Gerbeur 1500 kg , température d\'utilisation =-25°C , rayon de braquage : le minimum possible , fourche : 1200mm , hauteur à atteindre :4500 mm', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 15:59:03', '2010-03-29 15:19:21', 1, 0, 0, 0, NULL, 11, 'Demande de devis #119', 'Maroc', 'Casablanca', 'demande-devis-119'),
-(120, 102, 1, '2009-120', '01 Gerbeur 1500 kg , température d\'utilisation =  T ambiante , hauteur à atteidre 4.5 metres , Rayon de braquage: le moins encombrant possible. ', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 16:02:21', '2010-03-29 15:18:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #120', 'Maroc', 'Casablanca', 'demande-devis-120'),
-(121, 102, 1, '2009-121', '06 transpalettes galvanisées , capacité en kg : 2500 kg , descente : par poigné , longeur des fourches : 1150 mm', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 16:06:58', '2009-10-29 11:39:24', 1, 0, 0, 0, NULL, 11, 'Demande de devis #121', 'Maroc', 'Casablanca', 'demande-devis-121'),
-(122, 143, 1, '2009-122', 'cable de skipe metalique 22MM', '2016-08-25 00:00:00', 1, 0, NULL, '2009-08-24 11:00:19', '2009-08-24 11:38:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #122', 'Maroc', 'Marrakech', 'demande-devis-122'),
-(123, 143, 1, '2009-123', '05 CAMIONS  3,5T-7T-8T \r\nETAT NEUF', '2016-09-15 00:00:00', 1, 0, NULL, '2009-08-25 11:00:30', '2009-09-12 14:04:57', 1, 0, 0, 0, NULL, 11, 'Demande de devis #123', 'Maroc', 'Marrakech', 'demande-devis-123'),
-(124, 143, 1, '2009-124', '01 ONDULEUR POUR PC MGE 600VA', '2016-08-27 00:00:00', 1, 0, NULL, '2009-08-25 11:02:37', '2009-09-11 10:31:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #124', 'Maroc', 'Marrakech', 'demande-devis-124'),
-(125, 146, 1, '2009-125', 'Nous recherchons 10 rallonges 4 poste+terre (long:5m)\r\nmarque LEGRAND 3500W', '2016-09-10 00:00:00', 1, 0, NULL, '2009-08-25 12:23:19', '2009-09-17 21:31:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #125', 'Maroc', 'Casablanca', 'demande-devis-125'),
-(126, 143, 1, '2009-126', '01 PICK UP NEUVE', '2016-09-10 00:00:00', 1, 0, NULL, '2009-09-01 14:27:45', '2009-09-11 10:34:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #126', 'Maroc', 'Marrakech', 'demande-devis-126'),
-(127, 143, 1, '2009-127', '20 VOITURES UTILITAIRES EQUIVALENT A BERLIN ESPACE OU DACIA ', '2016-09-15 00:00:00', 1, 0, NULL, '2009-09-01 14:29:40', '2009-09-12 14:04:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #127', 'Maroc', 'Marrakech', 'demande-devis-127'),
-(128, 166, 1, '2009-128', 'Besoin de matériel informatique et électrique suivant:\r\n\r\n> Cordons informatiques de 10ML (prix pour les CAT6 et les CAT5).....................   Qté 30.\r\n> Câble électrique (courbe C, section 6mm2, constitué de deux files intérieur en rouge (-)  et bleu(+) ) ................................Qté 300ML.\r\n> Disjoncteur unipolaire 10A avec embouts 6mm2.....................................Qté 30.\r\n> Prix des Jarretières optiques d\'environ 10M avec connecteurs. \r\n\r\n> Switch 24ports, similaire au Switch Cisco Catalyst 3750 ME avec module d\'alimentation en 48V DC.\r\n\r\nUne demande directe et officielle sera envoyée après consultation des réponses.', '2016-09-08 00:00:00', 1, 0, NULL, '2009-09-02 11:56:54', '2009-09-11 10:30:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #128', 'Maroc', 'Casablanca', 'demande-devis-128'),
-(129, 143, 1, '2009-129', 'Besoin en :\r\n\r\n01UN : CARTE POUR PILOTE BOSCH 324A2871837001390 \r\n01UN : CARTE POUR PILOTE BOSCH 4176A1911837001391\r\n01UN : CARTE POUR PILOTE BOSCH 1435A3831837001378\r\n', '2016-09-07 00:00:00', 1, 0, NULL, '2009-09-03 09:40:56', '2009-09-03 09:49:35', 1, 0, 0, 0, NULL, 11, 'Demande de devis #129', 'Maroc', 'Marrakech', 'demande-devis-129'),
-(130, 89, 1, '2009-130', ' besoin d’une unité moderne de trituration des olives (système continu): fourniture, installation et mise en marche et avoir une capacité de production de 350 Kg d’olives par heure et travaillant sous une tension de service de 380 volts à trois fil ', '2016-09-30 00:00:00', 1, 0, NULL, '2009-09-09 01:57:45', '2009-09-09 09:32:32', 1, 0, 0, 0, NULL, 11, 'Demande de devis #130', 'Maroc', 'Ouezzane', 'demande-devis-130'),
-(131, 179, 1, '2009-131', 'Veuillez trouver ci-dessous la liste de notre besoin en matériels informatiques pour notre  nouvelle filière qui sera basée sur  BENI MELLAL.\r\n\r\n04- UC DX2400 CORE 2 DUO 2,8/3G/250G SANS ECRAN\r\n\r\n06- DX2390MT 2,5/1G/160 + TFT 19\"\r\n\r\n01- Imp couleur A3 officejet7103	\r\n01- Imp laser couleur A4 1515N	\r\n02- Imp matricielle EPSON LQ300+	\r\n04- Imp laser Mono chrome A4 3010	\r\n10- Support de l\'unité centrale en metal\r\n	\r\n03- Onduleur 1000v MGE NOVA 1250	\r\n\r\n01- Fax brother 2820	\r\n\r\n02- Swtch 8 port 3COM	\r\n', '2016-09-15 00:00:00', 1, 0, NULL, '2009-09-09 11:11:00', '2009-09-14 15:08:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #131', 'Maroc', 'Marrakech', 'demande-devis-131'),
-(135, 185, 1, '2009-135', 'Besoin en belets pour boisson chaude et froide, taille moyenne, à utilisation fréquente. \r\n1ère Quantité à livrer: 450 Unité.', '2016-09-26 00:00:00', 1, 0, NULL, '2009-09-23 17:45:53', '2009-09-25 12:10:50', 1, 0, 0, 0, NULL, 11, 'Demande de devis #135', 'Maroc', 'Tanger', 'demande-devis-135'),
-(136, 58, 1, '2009-136', 'Besoin en Audit par un organisme externe ( certifié HACCP) vis à vis  notre sous-traitant de gestion de notre cantine .', '2016-09-30 00:00:00', 1, 0, NULL, '2009-09-24 15:59:32', '2009-09-25 14:23:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #136', 'Maroc', 'Kenitra', 'demande-devis-136'),
-(137, 185, 1, '2009-137', 'NOUS AVONS BESOIN DE PRODUITS DE LA MARQUE PARKER:\r\nGARNITURE SM 551472/1AX \r\nGARNITURE WRM 472519\r\nANNEAU DE GUIDE I/DRW 60\r\nGarniture code E/GR 0850\r\nGarniture code E/GR 0900\r\nAnneau de guidage type I/DWR 40/2\r\nAnneau de guidage type I/DWR 55\r\nAnneau de guidage type I/DWR 60\r\nAnneau de guidage type E/DWR 30/2\r\nGarniture \r\nGarniture type WRM 118 149\r\nGarniture type MU/P 4230\r\nGarniture type I/DWR 30/2\r\nGarniture type DBM 216 153\r\nRACLEUR WRM 314346  \r\nQTE 1 DE CHAQUE PRODUIT', '2016-10-05 00:00:00', 1, 0, NULL, '2009-09-25 10:59:35', '2009-09-25 11:26:21', 1, 0, 0, 0, NULL, 11, 'Demande de devis #137', 'Maroc', 'Tanger', 'demande-devis-137'),
-(138, 185, 1, '2009-138', 'Nous avons besoin de:\r\nCourroie transport dentée 985H30M.M B30mm L2501,9mm\r\nLA MARQUE BANDO POUR EQUIPEMENT ETIREUSE DE LA PRESSE', '2016-10-05 00:00:00', 1, 0, NULL, '2009-09-25 11:02:37', '2009-09-25 11:27:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #138', 'Maroc', 'Tanger', 'demande-devis-138'),
-(139, 77, 1, '2009-139', 'BESOIN EN PIGNONS VOIR FICHE JOINTE', '2016-09-25 00:00:00', 1, 0, NULL, '2009-09-26 17:19:23', '2009-09-26 17:21:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #139', 'Maroc', 'Mohammadia', 'demande-devis-139'),
-(140, 77, 1, '2009-140', 'Besoin en Rayonnage métallique type léger selon plan ci-joint.', '2016-10-10 00:00:00', 1, 0, NULL, '2009-09-28 14:56:10', '2009-09-28 14:56:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #140', 'Maroc', 'Mohammadia', 'demande-devis-140'),
-(141, 143, 1, '2009-141', '01 tendeuse pour jardin type T.51 XP MARQUE WOLF OU EQUIVALENTE', '2016-10-07 00:00:00', 1, 0, NULL, '2009-09-28 14:56:18', '2009-09-30 15:46:41', 1, 0, 0, 0, NULL, 11, 'Demande de devis #141', 'Maroc', 'Marrakech', 'demande-devis-141'),
-(143, 77, 1, '2009-143', 'Besoin en 100 Vestiaires métalliques à 02 portes/ 02 cases – 198x30x50 CM. EP 7/10.', '2016-10-13 00:00:00', 1, 0, NULL, '2009-10-02 23:16:32', '2009-10-08 16:50:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #143', 'Maroc', 'Mohammadia', 'demande-devis-143'),
-(144, 185, 1, '2009-144', 'Besoin en Prestation de nettoyage au sein de notre administration.\r\nCette demande est réservée aux sociétés basées sur la ville de Tanger.', '2016-10-12 00:00:00', 1, 0, NULL, '2009-10-06 11:52:18', '2009-10-06 19:13:59', 1, 0, 0, 0, NULL, 11, 'Demande de devis #144', 'Maroc', 'Tanger', 'demande-devis-144'),
-(145, 208, 1, '2009-145', 'Merci de nous faire votre proposition pour la construction d\'un hangar avec les dimensions suivantes:\r\nLargeur: 13.24m\r\nLongueur:24m avec travées de 6m\r\nHauteur 5 a 6m\r\nToit de préférence en charpente', '2016-10-31 00:00:00', 1, 0, NULL, '2009-10-17 06:42:45', '2009-10-17 12:38:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #145', 'Maroc', 'Casablanca', 'demande-devis-145'),
-(146, 185, 1, '2009-146', 'Je vous mets ci-joint une liste des pièces de rechange  dont je vous demande de bien vouloir nous faire une offre commerciale complète comprenant vos délais de livraison de chaque produit.', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-19 15:10:40', '2009-10-19 15:56:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #146', 'Maroc', 'Tanger', 'demande-devis-146'),
-(147, 211, 1, '2009-147', 'TAPIS RHINO-BAND D\r\nlisières bouclage DG\r\nMatière : acier doux ecroui\r\n1 tapis de 40mx2.30m', '2016-10-30 00:00:00', 1, 0, NULL, '2009-10-20 10:17:26', '2009-10-21 12:28:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #147', 'Maroc', 'Casablanca', 'demande-devis-147'),
-(148, 211, 1, '2009-148', 'Duplex souple imprimé 2 à 5 couleurs différentes laizes de 90 à 525mm.\r\n20T/3mois', '2016-10-30 00:00:00', 1, 0, NULL, '2009-10-20 10:24:05', '2009-10-21 14:15:44', 1, 0, 0, 0, NULL, 11, 'Demande de devis #148', 'Maroc', 'Casablanca', 'demande-devis-148'),
-(149, 212, 1, '2009-149', 'Cherchons prestataire pour réaliser des travaux d\'éclairage (diagnostic des causes de dysfonctionnement + réparation) dans un entrepot de  10 000 m2 en activité, hauteur sous plafond de environ 11 m. \r\nLe prestataire qui nous contactera devra étre assuré et montrer ses habilitations électrique, intervention sur site certifé ISO...', '2016-10-31 00:00:00', 1, 0, NULL, '2009-10-20 17:05:48', '2009-10-30 11:53:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #149', 'Maroc', 'Casablanca', 'demande-devis-149'),
-(150, 213, 1, '2009-150', 'Nous souhaitons réaliser 2 installations racking : une de 2500 EPR en rack à accumulation et l’autre de 2.000 EPR en rack conventionnel. Détail des plans et gabarit palette en pièce jointe.', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-20 17:34:25', '2009-10-20 22:56:40', 1, 0, 0, 0, NULL, 11, 'Demande de devis #150', 'Maroc', 'Casablanca', 'demande-devis-150'),
-(151, 214, 1, '2009-151', 'Achat du Logiciel Autocad 2009 avec licence mono poste', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-21 13:19:14', '2009-10-21 13:40:14', 1, 0, 0, 0, NULL, 11, 'Demande de devis #151', 'Maroc', 'Casablanca', 'demande-devis-151'),
-(152, 185, 1, '2009-152', 'Equipement pour dépoussierage des sols en 50mm\r\nBesoin Urgent', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-22 09:15:18', '2009-10-22 10:49:10', 1, 0, 0, 0, NULL, 11, 'Demande de devis #152', 'Maroc', 'Tanger', 'demande-devis-152'),
-(153, 77, 1, '2009-153', 'Nous cherchons des fabricants de palettes fumigées ( anti-feux) pour export par avion Dim palette 800x1000. EN ADMISSION TEMPORAIRE.\r\nQté mensuelle environ 100 \r\n\r\n', '2016-11-03 00:00:00', 1, 0, NULL, '2009-10-24 16:44:03', '2009-10-27 11:48:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #153', 'Maroc', 'Mohammadia', 'demande-devis-153'),
-(154, 207, 1, '2009-154', 'Merci de nos communiquer votre offre de prix pour la fourniture des motoréducteur  arbre creux suivantes en respectant le type indiquer sur la photo ci jointe:\r\n          2- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:1 CV Vitesse de sortie 10 tr/min.\r\n          2- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:2 CV Vitesse de sortie 40à50 tr/min.\r\n          1- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:3 CV Vitesse de sortie 40à50 tr/min.\r\n* Moto réducteur à 2 ou 3 trains. \r\n* Moteur triphasé accouplé.', '2016-11-10 00:00:00', 1, 0, NULL, '2009-10-28 10:39:01', '2009-10-28 16:13:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #154', 'Maroc', 'Casablanca', 'demande-devis-154'),
-(155, 185, 1, '2009-155', 'Nous Cherchons un fournisseur sur la zone de Tanger, qui peut nous fournir des flexibles et des composants pneumatiques pour un budget d’achat annuel de plus de 300 000,00 Dhs.\r\nNous consommons des composants tels que :\r\nLes raccords, les limiteurs de débits les flexibles, les pompes à graisses …\r\nNous exigeant la disponibilité de stock, le respect des délais de livraisons ainsi que la bonne santé financière du fournisseur.', '2016-11-10 00:00:00', 1, 0, NULL, '2009-10-29 12:36:13', '2009-11-09 08:57:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #155', 'Maroc', 'Tanger', 'demande-devis-155'),
-(156, 234, 1, '2009-156', 'Besoin en rayonnage selon plan ci-joint.\r\nLe nombre de traves ainsi que le détail du besoin est sur le plan.\r\nMeilleures salutations.\r\n', '2016-11-21 00:00:00', 1, 0, NULL, '2009-11-05 10:26:29', '2009-11-12 12:39:29', 1, 0, 0, 0, NULL, 11, 'Demande de devis #156', 'Maroc', 'Casablanca', 'demande-devis-156'),
-(157, 58, 1, '2009-157', 'BESOIN EN USTENSILES DE CUISINE SELON LISTE CI-JOINTE SUR LE LIEN SUIVANT: \r\nhttp://www.lesachatsindustriels.com/ImageDemande/AC_8620Q274_DP_UC.pdf\r\n', '2016-11-19 00:00:00', 1, 0, NULL, '2009-11-13 11:33:39', '2009-11-16 15:24:11', 1, 0, 0, 0, NULL, 11, 'Demande de devis #157', 'Maroc', 'Kenitra', 'demande-devis-157'),
-(158, 185, 1, '2009-158', 'Besoin en Matériel informatique : Le prestataire devra faire un diagnostique et audit du parc existant, et la proposition selon état du matériel du remplacement. Ceci comprend nos deux sites une cinquantaine sur Tanger ainsi qu’une cinquantaine sur nos agences sur Casablanca.\r\nAU TOTAL 100 MACHINES ENTRE PC PORTABLE ET PC FIXE.', '2016-11-25 00:00:00', 1, 0, NULL, '2009-11-13 16:15:35', '2009-11-23 11:26:47', 1, 0, 0, 0, NULL, 11, 'Demande de devis #158', 'Maroc', 'Tanger', 'demande-devis-158'),
-(159, 242, 1, '2009-159', 'Cherche organisme de formation  pour thèmes: Cariste - Secouriste au travail - Equipiers de premières intervention ', '2016-11-30 00:00:00', 1, 0, NULL, '2009-11-23 15:07:59', '2009-11-25 10:07:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #159', 'Maroc', 'Casablanca', 'demande-devis-159'),
-(160, 242, 1, '2009-160', 'Besoin organisme pour réalisation de l\'ingénierie de formation conformément aux exigences de l\'OFPPT ', '2016-11-30 00:00:00', 1, 0, NULL, '2009-11-23 17:42:07', '2009-11-24 11:59:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #160', 'Maroc', 'Casablanca', 'demande-devis-160'),
-(161, 77, 1, '2009-161', 'Travaux mécaniques sur une grosse machine.\r\n(Voir liste des travaux en fichier ci-joint)', '2016-12-08 00:00:00', 1, 0, NULL, '2009-11-26 11:16:38', '2009-11-26 11:17:29', 1, 0, 0, 0, NULL, 11, 'Demande de devis #161', 'Maroc', 'Mohammadia', 'demande-devis-161'),
-(162, 251, 1, '2009-162', 'AMENAGEMENT D\'UN ESPACE D\'ACCUEIL\r\nACHATS DE MEUBLES : \r\n-	Nombre de Chaises : 1200 (plusieurs gammes)\r\n-	Nombre de Tables : 180 (1,5 m de diamètre, prévue pour un service à table pour 10 personnes assises)\r\n\r\n', '2016-12-16 00:00:00', 1, 0, NULL, '2009-12-02 12:54:41', '2009-12-09 17:54:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #162', 'Maroc', 'Marrakech', 'demande-devis-162'),
-(163, 264, 1, '2009-163', 'Nous avons besoin d’une presse à comprimés de  préférence de marque \"Courtoy\", fonctionnant en euronormes BB avec un  minimum de 30 stations et pouvant atteindre une capacité de 300.000 cph d\'âge  <= à 17 ans.\r\n Si vous avez des offres correspondant de manière + ou - exacte à  ce besoin, je vous prie de bien vouloir me contacter dès que possible avec vos  meilleures offres de prix, délais, services et transport.\r\nMerci d\'avance', '2017-02-01 00:00:00', 1, 0, NULL, '2009-12-14 10:43:00', '2009-12-14 10:54:20', 1, 0, 0, 0, NULL, 11, 'Demande de devis #163', 'Maroc', 'Bouskoura', 'demande-devis-163'),
-(164, 264, 1, '2009-164', 'Nous avons besoin de 25 paires de potelets de séparation en inox avec ruban pour délimiter des zones au sein de notre ligne de production.\r\nHauteur: entre 100 et 130 cm\r\nTaille ruban: 200 cm', '2017-01-29 00:00:00', 1, 0, NULL, '2009-12-14 14:37:41', '2009-12-17 16:52:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #164', 'Maroc', 'Bouskoura', 'demande-devis-164'),
-(165, 264, 1, '2009-165', 'Nous avons besoin d\'une solution  complète pour l\'équipement d’une blanchisserie industrielle (calendre de repassage, machine à laver 30 kg, séchoir à linge, table à repasser, pressoir à vapeur...). Ce qu\'il faudrait pour constituer une blanchisserie industrielle en interne pour une entreprise de 350 ouvriers et techniciens.\r\nNous somme Ouvert à toute proposition en lots égalant ou dépassant ce besoin.', '2017-02-12 00:00:00', 1, 0, NULL, '2009-12-15 14:31:00', '2009-12-17 14:58:56', 1, 0, 0, 0, NULL, 11, 'Demande de devis #165', 'Maroc', 'Bouskoura', 'demande-devis-165'),
-(166, 58, 1, '2009-166', 'Nous avons besoin de 85m2 de Film antireflet blanc à coller sur nos vitres et portes vitrés.', '2016-12-25 00:00:00', 1, 0, NULL, '2009-12-22 11:27:09', '2009-12-22 11:59:39', 1, 0, 0, 0, NULL, 11, 'Demande de devis #166', 'Maroc', 'Kenitra', 'demande-devis-166'),
-(167, 58, 1, '2009-167', 'Nous avons besoin de faire la numérotation de nos 25 transpalettes manuels par agrafage.', '2016-12-28 00:00:00', 1, 0, NULL, '2009-12-22 18:57:30', '2009-12-24 15:02:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #167', 'Maroc', 'Kenitra', 'demande-devis-167'),
-(168, 287, 1, '2009-168', '* Vidéo enregistreur avec et sans connectivité ;\r\n\r\n* Caméra à usage extérieur, Portée 25 m IR 24 Led et plus \r\n\r\n* Caméra dôme Portée 25 m IR 24 Led et plus ', '2016-12-09 00:00:00', 1, 0, NULL, '2009-12-30 12:55:17', '2010-02-15 18:33:50', 1, 0, 0, 0, NULL, 11, 'Demande de devis #168', 'Maroc', 'Casablanca', 'demande-devis-168'),
-(169, 77, 1, '2010-169', 'Nous avons besoin de :\r\n08 Molettes selon plans, photos et le descriptif des textes à graver.\r\n\r\nNB : Les textes en noir  doivent être gravés sur la molette par contre nous aurons besoin d’un  module de chiffre interchangeable (texte en rouge) : 2010 pour l’année.\r\n', '2017-01-20 00:00:00', 1, 0, NULL, '2010-01-04 10:32:50', '2010-03-25 15:47:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #169', 'Maroc', 'Mohammadia', 'demande-devis-169'),
-(170, 293, 1, '2010-170', 'Nous souhaitons recevoir les meilleures offres pour la fourniture suivante:\r\nProfilés UAP130 : 120ml.\r\nPlat 50x5mm : 24ml.\r\nTôle ép. 2.5mm : 630m2.\r\nCornière 30x30x3 : 60ml.\r\n1260m2 de laine de roche ép 50mm, B353 ROCLAINE (température limite 650 °C)\r\nMerci d’avance.', '2017-01-17 00:00:00', 1, 0, NULL, '2010-01-08 09:55:32', '2010-01-08 10:02:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #170', 'Maroc', 'Casablanca', 'demande-devis-170'),
-(171, 272, 1, '2010-171', 'Nous avons besoin de deux nacelles suspendues motorisées au moyen de treuils électriques, la vitesse d’élévation est en moyenne de 9 m/min. Chaque plateforme devra être constituée  de deux modules en aluminium de 3 mètres chacune. \r\nLes systèmes de suspension doivent être adaptés à un accrochage sur des supports chariots installés sur les toitures du bâtiment.\r\nLes treuils doivent avoir une capacité de 2000 Kg et doivent être alimentés par du 220 Volts en monophasé et 380 Volts en triphasé.\r\nLes câbles des treuils auront une longueur de 100 m par treuil.\r\nTous les équipements doivent être conformes à la réglementation en vigueur, les échafaudages volants et les plateformes suspendues motorisées doivent être  reconnus par les professionnels des contrôles techniques et les organismes de prévention comme la référence en matière de sécurité pour l\'élévation du personnel effectuant des travaux légers.\r\n', '2017-03-10 00:00:00', 1, 0, NULL, '2010-01-08 11:12:26', '2010-02-23 17:07:31', 1, 0, 0, 0, NULL, 11, 'Demande de devis #171', 'Maroc', 'Casablanca', 'demande-devis-171'),
-(172, 58, 1, '2010-172', 'Bonjour,\r\n\r\nNous avons besoin de faire un diagnostiquer de l’état du matériel de notre cuisine.\r\n\r\nDe plus  nous comptons sur vous de nous fournir votre offre de prix de maintenance dont le cadre d’un contrat annuel.\r\n	\r\nDans l’attente de confirmation de  votre visite début de la semaine prochaine.', '2017-01-27 00:00:00', 1, 0, NULL, '2010-01-19 12:44:41', '2010-01-20 10:07:39', 1, 0, 0, 0, NULL, 11, 'Demande de devis #172', 'Maroc', 'Kenitra', 'demande-devis-172'),
-(176, 264, 1, '2010-176', 'Nous avons besoin de 2 générateurs de courant Diesel 600-800 kVA.\r\nDELAI PROROGE (VOIR NOUVELLE DATE)', '2017-02-20 00:00:00', 1, 0, NULL, '2010-02-03 15:50:59', '2010-02-15 14:32:32', 1, 0, 0, 0, NULL, 11, 'Demande de devis #176', 'Maroc', 'Bouskoura', 'demande-devis-176'),
-(177, 264, 1, '2010-177', 'Nous avons besoin d\'un calibreur tamiseur de marque Frewitt à tamis oscillant modèle MF-6.\r\n\r\nDélai prorogé (Voir nouvelle date)', '2017-02-20 00:00:00', 1, 0, NULL, '2010-02-04 08:47:45', '2010-03-11 17:25:30', 1, 0, 0, 0, NULL, 11, 'Demande de devis #177', 'Maroc', 'Bouskoura', 'demande-devis-177'),
-(187, 77, 1, '2010-187', 'Le présent marché a pour objet la réalisation d’une machine de roulage de contreplaqués pour nos besoins en fûts de Diamètre 200 mm, Largeur 500 mm, Épaisseur 3 mm.\r\nLa feuille du contreplaqué est trempée dans de l’eau chaude et passe ensuite à la machine de roulage cylindrique.\r\nLa jonction des extrémités du fût se fait à l’aide d’une languette placée en dessous de la jointure et le maintien est assuré par des agrafes (Voir photos).\r\nLa présente demande doit être réalisée suivant nos données (Description ; Photos … ) et dans les règles de l’art.\r\nL’Entrepreneur devra présenter à notre société un plan de réalisation de la machine établi suivant nos données et ne pourra  être mis en exécution qu’après acceptation  par ordre de service délivré par nos soins. \r\nL’Entrepreneur devra respecter le délai de réalisation sur lequel nous nous mettrons d’accord.\r\n\r\n(Voir pièdes jointes).', '2017-03-10 00:00:00', 1, 0, NULL, '2010-02-23 15:34:24', '2010-03-04 15:46:09', 1, 0, 0, 0, NULL, 11, 'Demande de devis #187', 'Maroc', 'Mohammadia', 'demande-devis-187'),
-(191, 318, 1, '2010-191', 'Nous avons besoin d’une entreprise spécialisée dans la sécurité (Matériels et services) qui peut nous accompagner pour élaborer un plan de sécurité (plan d’évacuation, formation 1er secours…) et pouvoir l’exécuter dans les règles de l’art.\r\nL’entreprise intéressée devra être conventionnée et certifiée auprès des compagnies d’assurances et disposera de tout agrément nécessaire délivré par les administrations et fédérations compétentes.', '2017-03-11 00:00:00', 1, 0, NULL, '2010-02-24 11:46:05', '2010-04-01 17:56:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #191', 'Maroc', 'Casablanca', 'demande-devis-191'),
-(192, 320, 1, '2010-192', '*****DATE PROROGER*****\r\n\r\nCloutier d’encadrement de Ciol : \r\nPoids : corps 3.67kgs (8.07Ibs) en aluminium\r\nCorps du magnésium 3.38kgs (7.43Ibs)\r\nCapacité du magasin : 225-300 Clous\r\nDiamètre de jambe : 2.3-2.9mm (0.092 \" - 0.113 \")\r\nLongueur des clous : 45mm-70mm (1-3/4 \"--2-3/4 \")\r\nOpération : 5-7kgs/cm2 (70-100psi) \r\n\r\nQuantité = 05 unité\r\n\r\n(Voir photo ci-jointe) ', '2017-03-31 00:00:00', 1, 0, NULL, '2010-02-24 12:28:52', '2010-03-25 08:58:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #192', 'Maroc', 'Meknes', 'demande-devis-192'),
-(194, 306, 1, '2010-194', 'Sachet Biodégradable \r\n(Voir détail sur le PDF ci-joint)', '2017-03-26 00:00:00', 1, 0, NULL, '2010-02-25 14:13:23', '2010-02-25 17:32:07', 1, 0, 0, 0, NULL, 11, 'Demande de devis #194', 'Maroc', 'Casablanca', 'demande-devis-194'),
-(195, 335, 1, '2010-195', '>>>>>  DELAI PROLONGE  <<<<<\r\nNous avons besoin de deux (02) GERBEURS équivalant au model en fichier ci-joint fonctionnant en \r\nHauteur mât abaissé Inférieur à 2,20m.\r\nCharge à porter = 1,5 T.\r\nHauteur mât déployé= 3 m.\r\nTempérature Négative -18°C.\r\n\r\nQuantité= 02.\r\n\r\n\r\n(Voir fichier attaché)', '2017-04-24 00:00:00', 1, 0, NULL, '2010-03-12 17:03:30', '2010-04-14 10:24:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #195', 'Maroc', 'Rabat', 'demande-devis-195'),
-(196, 351, 1, '2010-196', 'PEINTURE resistant à l\'eau, avec sechage rapide, non inflammable, couleur noir (finition peu intense) Pour marquage exterieure des pipes sous marins', '2017-03-30 00:00:00', 1, 0, NULL, '2010-03-25 11:29:12', '2010-03-29 09:55:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #196', 'France', 'Caissargues', 'demande-devis-196'),
-(197, 355, 1, '2010-197', 'Nous avons besoin d\'une solution de rayonnage mixte Accumulation et conventionnel selon plan ci-joint.\r\nDim palette 800x1200x1600 poids 1000Kg.', '2017-04-09 00:00:00', 1, 0, NULL, '2010-03-25 17:18:40', '2010-03-31 17:29:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #197', 'Maroc', 'Casablanca', 'demande-devis-197'),
-(201, 335, 1, '2010-201', 'Nous aurons besoin de thermomètre à sonde pour contrôler la température à la réception des produits congelés. \r\nNombre demandé : 3 thermomètres à sonde pour mesurer la température à cœur des produits congelés à la réception.', '2017-04-10 00:00:00', 1, 0, NULL, '2010-03-26 11:48:58', '2010-03-26 11:54:00', 1, 0, 0, 0, NULL, 11, 'Demande de devis #201', 'Maroc', 'Rabat', 'demande-devis-201'),
-(204, 358, 1, '2010-204', 'Produit de nettoyage industriel des pièces mécaniques.\r\nNon nocif aux intervenants ni à l\'environnement\r\nAgrée par la CEE, certifié ISO ou DIN.\r\nA joindre une notice en français ou en anglais', '2017-05-01 00:00:00', 1, 0, NULL, '2010-03-27 09:43:09', '2010-03-29 09:52:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #204', 'Maroc', 'Temara', 'demande-devis-204'),
-(208, 3, 1, '2010-208', 'Je recherche des fournisseurs capables de me réaliser les 3 pièces selon plans ci-joint.\r\nLa technologie pressentie est : MOULAGE CONTACT (sinon moulage basse pression)', '2017-04-24 00:00:00', 1, 0, NULL, '2010-04-09 15:34:41', '2010-04-23 11:39:55', 1, 0, 0, 0, NULL, 11, 'Demande de devis #208', 'Maroc', 'Casablanca', 'demande-devis-208'),
-(216, 335, 1, '2010-216', 'Extincteur CO² 5 kg. Quantité 08.\r\nRIA. Quantité 04.\r\nCentrale d’alarme. Quantité 01.\r\nBatterie rechargeable 12V, 7,2 Ah. Quantité 01.\r\nBatterie 12V, 2,2 Ah. Quantité 01.\r\nDétecteur IR de mouvement. Quantité 04.\r\nSirène extérieure. Quantité 01.', '2017-04-25 00:00:00', 1, 0, NULL, '2010-04-15 17:10:26', '2010-04-23 11:40:14', 1, 0, 0, 0, NULL, 11, 'Demande de devis #216', 'Maroc', 'Rabat', 'demande-devis-216'),
-(217, 58, 1, '2010-217', 'Nous avons besoin de tourniquet et pointeuse voir demande ci-jointe\r\n\r\nAchats du Matériel en DDP /CIF/EX WORK.', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-21 10:01:12', '2010-05-03 09:47:18', 1, 0, 0, 0, NULL, 11, 'Demande de devis #217', 'Maroc', 'Kenitra', 'demande-devis-217'),
-(219, 58, 1, '2010-219', 'MATERIEL INFORMATIQUE ( VOIR DETAIL CI-JOINT)', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-22 08:47:59', '2010-05-03 09:48:31', 1, 0, 0, 0, NULL, 11, 'Demande de devis #219', 'Maroc', 'Kenitra', 'demande-devis-219'),
-(221, 58, 1, '2010-221', 'PC industriels. PC core duo 1,66 MHZ, 1 GB Ram sans Disque dur mais avec Mémoire Compact FLASH (Windows ou Linux) écran tactile.', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-23 17:53:14', '2010-05-03 09:47:52', 1, 0, 0, 0, NULL, 11, 'Demande de devis #221', 'Maroc', 'Kenitra', 'demande-devis-221'),
-(222, 77, 1, '2010-222', 'Bonjour,\r\nje vous prie de bien vouloir me faire votre meilleure offre de prix et délai pour la fourniture de une station mobile de carburant d’une capacité de 10 T équivalent au model ci-joint', '2017-05-08 00:00:00', 1, 0, NULL, '2010-04-26 17:46:53', '2010-04-26 17:47:59', 1, 0, 0, 0, NULL, 11, 'Demande de devis #222', 'Maroc', 'Mohammadia', 'demande-devis-222'),
-(223, 391, 1, '2010-223', ' Pierre de bien vouloir nous communiquer votre meilleure offre concernant le rayonnage lourd a palette ainsi que la note de calcule correspondante .\r\n10 éléments des dimensions suivante:\r\n\r\n    DIM: L 20 x H 6 m\r\n\r\n   nombre de niveau : quatre \r\n\r\n   capacité totale de stockage : 700 palettes\r\n-- ', '2017-05-05 00:00:00', 1, 0, NULL, '2010-04-27 10:36:54', '2010-05-06 10:53:46', 1, 0, 0, 0, NULL, 11, 'Demande de devis #223', 'Maroc', 'Agadir', 'demande-devis-223'),
-(226, 402, 1, '2010-226', 'Nous cherchons une société étrangère pour nous fournir les contreplaqués selon le cahier des charges en fichier ci-joint.\r\nMeilleures salutations.', '2017-05-31 00:00:00', 1, 0, NULL, '2010-05-18 19:57:55', '2010-05-19 11:37:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #226', 'Maroc', 'Oujda', 'demande-devis-226'),
-(228, 422, 1, '2010-228', 'Prière de me communiquer votre meilleure offre de prix pour les articles cités en pièce jointe.\r\n\r\nLa Quantité : 100 pour chaque article. Autrement dit :\r\n* 100 Automatisme pour portes battantes.\r\n\r\n* 100 Sélecteur \r\n\r\n* 100 Bouton poussoir \r\n\r\n* 100 Télécommande \r\n\r\n* 100 Serrure pêne piston \r\n\r\nN\'hésitez pas à nous contacter pour plus d\'informations.', '2017-06-15 00:00:00', 1, 0, NULL, '2010-06-09 10:15:27', '2010-06-09 10:59:26', 1, 0, 0, 0, NULL, 11, 'Demande de devis #228', 'Maroc', 'Casablanca', 'demande-devis-228'),
-(237, 428, 1, '2010-237', 'ROUE DN200 MM PIVOTANTE AVEC FRIEN (EN CAOUTCHOUC OU EN PEHD)\r\nQté : 08 Uté\r\nPJ : Photo descriptive de l\'utilisation des dites roues.', '2017-06-25 00:00:00', 1, 0, NULL, '2010-06-22 17:34:37', '2010-06-22 17:34:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #237', 'Maroc', 'Casablanca', 'demande-devis-237'),
-(238, 58, 1, '2010-238', 'Conteneur pour utiliser comme atelier de maintenance. Dimension min 5m*2.5m.\r\nEquipé de climatiseur, fenêtre, et table pour 4 techniciens.', '2017-07-24 00:00:00', 1, 0, NULL, '2010-07-14 11:07:56', '2010-07-22 17:08:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #238', 'Maroc', 'Kenitra', 'demande-devis-238'),
-(240, 452, 1, '2010-240', 'Recherchons d\'urgence la location du matériel ci-dessous:\r\n- Chariot télescopique tout terrain rotatif à fort tonnage \"5,5t\" hauteur non spécifiée, de marque Manitou (de préférence).\r\nDurée de location: 1 mois\r\nFull Service.\r\nConducteur(s) compris 7j/7\r\n30 à 40 Km /j.', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-15 09:54:42', '2010-07-20 15:59:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #240', 'Maroc', 'Tanger', 'demande-devis-240'),
-(241, 452, 1, '2010-241', 'Recherchons d\'urgence la location du matériel ci-dessous:\r\n- Camion plateau 13m. En Option avec ridelle.\r\nDurée de location: 1 mois\r\nFull Service.\r\nConducteur(s) compris 7j/7\r\n30 à 40 Km /j.', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-15 12:28:30', '2010-07-20 15:58:08', 1, 0, 0, 0, NULL, 11, 'Demande de devis #241', 'Maroc', 'Tanger', 'demande-devis-241'),
-(242, 452, 1, '2010-242', 'Recherchons d\'urgence la location du matériel ci-dessous :\r\nChariot élévateur: avec conducteur à charge\r\n- Capacité de charge nominale : 4 tonnes\r\n- tablier à déplacement latéral,\r\n- type: diesel \" carburant à votre charge\",\r\n- Hauteur de levée : 3 à 4 mètres,\r\n- Mât triplex grande visibilité,\r\n- Horaire de travail: 24h/24h , 7j/7j\r\n- Durée de location: un mois avec possibilité de prolongation', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-16 11:53:55', '2010-07-20 15:58:43', 1, 0, 0, 0, NULL, 11, 'Demande de devis #242', 'Maroc', 'Tanger', 'demande-devis-242'),
-(243, 385, 1, '2010-243', 'Bande Modulaire Blanche UNI-228 mm x 100 (ml) pour convoyeur transportant du poisson.\r\n(Voir photos ci-jointe)', '2017-08-07 00:00:00', 1, 0, NULL, '2010-07-22 16:35:40', '2010-08-02 13:36:18', 1, 0, 0, 0, NULL, 11, 'Demande de devis #243', 'Maroc', 'Agadir', 'demande-devis-243'),
-(244, 385, 1, '2010-244', '1 - Eléctropompe de GRUNDFOSS 5.5 KW 2900 tr/min CR 16', '2017-08-04 00:00:00', 1, 0, NULL, '2010-07-27 18:12:26', '2010-07-28 11:57:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #244', 'Maroc', 'Agadir', 'demande-devis-244'),
-(245, 385, 1, '2010-245', '25 l huile shell CASSIDA FLUIDE G 150', '2017-08-04 00:00:00', 1, 0, NULL, '2010-07-27 18:18:22', '2010-07-28 11:57:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #245', 'Maroc', 'Agadir', 'demande-devis-245'),
-(246, 460, 1, '2010-246', 'Recherche fournisseur huile végétale ', '2017-09-03 00:00:00', 1, 0, NULL, '2010-08-25 12:56:37', '2010-08-27 12:29:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #246', 'France', 'Sainte-Florence', 'demande-devis-246'),
-(247, 460, 1, '2010-247', 'Recherche fournisseurs pour étudie la mise en place étiquettes RFID', '2017-10-10 00:00:00', 1, 0, NULL, '2010-08-25 12:57:31', '2010-08-25 17:29:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #247', 'France', 'Sainte-Florence', 'demande-devis-247'),
-(248, 473, 1, '2011-248', '10.000 GRILLES DE CUISSON DIMENSION EXT : L600-P400-H90 mm \r\nCouleur : Gris .\r\nCaisse : Fond & Parois ajourés.\r\nCes grilles sont utilisées dans les bac de cuisson : cuisson en Saumure ( Eau + sel à 4 ° baumé ) chauffée à 90 °C, et le temps peut varier de 20 à 30 minutes. \r\ngrilles  nettoyées à la soude caustique dans une eau chauffée à 60° C.\r\n( photo ci-joint)\r\n', '2017-04-13 00:00:00', 1, 0, NULL, '2011-04-05 14:46:02', '2011-04-05 16:10:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #248', 'Maroc', 'Agadir', 'demande-devis-248'),
-(250, 478, 1, '2011-250', 'Besoin de Pate de Paprika pour production de sauce! Ci dessous spécification:\r\nMatière première: paprika rouge fraiche et naturelle\r\nTransformation: concentre sous vide ou réfrigéré\r\nSans additif, ni colorant\r\nBrix: 13 a 15°\r\nDensité: 1,02GR/CM3 8,5° DE BRIX\r\nQuantité: 2 TONNES', '2017-12-02 00:00:00', 1, 0, NULL, '2011-06-17 10:22:41', '2011-06-17 15:03:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #250', 'Maroc', 'Berrechid', 'demande-devis-250'),
-(251, 480, 1, '2011-251', 'Je vous remercie de bien nous faire parvenir une meilleur offre de prix de la référence ci-dessous :\r\n \r\n\r\n8034102:  Bd 0.5x12 DIN 1791- CuFe 0.1P F44                  \r\n\r\nQT : 1000kg\r\n\r\n', '2017-08-21 00:00:00', 1, 0, NULL, '2011-08-10 15:46:42', '2011-08-10 16:04:17', 1, 0, 0, 0, NULL, 11, 'Demande de devis #251', 'Maroc', 'Tanger', 'demande-devis-251'),
-(302, 3, 1, '2018-302', 'Bonjour\r\nje vous remercie de bien nous faire parvenir une meilleur offre de prix pour la demande ci_joint ', '2018-01-31 00:00:00', 1, 0, NULL, '2018-01-15 16:25:25', '2018-01-25 16:24:24', 1, 0, 0, 0, NULL, 11, 'Demande de devis #302', 'Maroc', 'Casablanca', 'demande-devis-302'),
-(308, 571, 1, '2018-308', 'bonjour;\r\nmerci de nous faire parvenir votre meilleur offre de prix pour les articles en pièces jointe:', '2018-02-02 00:00:00', 1, 0, NULL, '2018-01-29 15:30:29', '2018-02-01 17:22:38', 1, 0, 0, 0, NULL, 11, 'Demande de devis #308', 'Maroc', 'Casablanca', 'demande-devis-308'),
-(314, 3, 1, '2019-314', 'j ia besoin d un rayonnage  2 m de hauteur ', '2019-06-01 00:00:00', 1, 0, NULL, '2019-05-29 16:34:45', '2019-07-08 17:47:43', 1, 0, 0, 0, NULL, 11, 'Demande de devis #314', 'Maroc', 'Casablanca', 'demande-devis-314'),
-(323, 621, 1, '2019-323', '2 panneaux de brassage \r\n24 prises informatique murale \r\n2 passe câbles \r\nArmoire informatique \r\n1 collier de serrage 300 blanche ', '2019-10-30 00:00:00', 1, 0, NULL, '2019-10-22 20:47:23', '2019-10-25 10:27:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #323', 'Maroc', 'Sale', 'demande-devis-323'),
-(324, 630, 1, '2019-324', 'Je cherche des fournisseurs pour la location d\'un chariot élévateur de 3T semaine prochaine pour 1 jour et la semaine d\'après aussi 1 jour', '2019-11-11 00:00:00', 1, 0, NULL, '2019-10-24 11:23:56', '2019-10-24 11:35:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #324', 'Maroc', 'Casablanca', 'demande-devis-324'),
-(325, 628, 1, '2019-325', 'besoin d\'un pyromètre optique type IGAR 6 advanced ', '2019-11-06 00:00:00', 1, 0, NULL, '2019-10-25 10:50:53', '2019-11-04 10:43:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #325', 'Maroc', 'Casablanca', 'demande-devis-325'),
-(326, 622, 1, '2019-326', 'demande de prix 2 tôles noires\r\nDimensions ; 2000*1000*12 mm', '2019-11-03 00:00:00', 1, 0, NULL, '2019-10-25 11:22:16', '2019-10-25 15:52:51', 1, 0, 0, 0, NULL, 11, 'Demande de devis #326', 'Maroc', 'Kenitra', 'demande-devis-326'),
-(327, 632, 1, '2019-327', 'Besoin 8 casques de protection casco petzl vertex Best\r\n', '2019-11-05 00:00:00', 1, 0, NULL, '2019-10-28 19:36:55', '2019-11-05 12:53:55', 1, 0, 0, 0, NULL, 11, 'Demande de devis #327', 'Maroc', 'Khenifra', 'demande-devis-327'),
-(331, 629, 1, '2019-331', 'Bonjour,\r\nJe cherche des fournisseurs pour 5 pince de mesure de terre numérique modele 4200 de marque KYORITSU.', '2019-11-08 00:00:00', 1, 0, NULL, '2019-10-29 19:09:20', '2019-11-05 10:16:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #331', 'Maroc', 'Casablanca', 'demande-devis-331'),
-(332, 629, 1, '2019-332', 'bonjour,\r\n\r\nJe cherche ce ventilateur en urgence :\r\nVENTILATEUR HÉLICOÏDE 630mm et 220v', '2019-11-06 00:00:00', 1, 0, NULL, '2019-10-30 22:00:19', '2019-11-05 11:52:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #332', 'Maroc', 'Casablanca', 'demande-devis-332'),
-(333, 643, 1, '2019-333', 'Nous vous demandons de bien vouloir nous faire parvenir, vos meilleures conditions de prix et délai concernant les articles ci-dessous en pièce jointe', '2019-11-05 00:00:00', 1, 0, NULL, '2019-11-01 20:01:01', '2019-11-07 11:09:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #333', 'Maroc', 'El jadida', 'demande-devis-333'),
-(334, 646, 1, '2019-334', ' \r\n\r\n1. Hepc20 push fit male adaptor  x12pcs\r\n\r\n2.Hepc2o push fit female adaptor x 4pcs\r\n\r\n3.Hepc2o pipe inserts  all in 12mm diameter x 85pcs', '2019-11-18 00:00:00', 1, 0, NULL, '2019-11-12 17:04:55', '2019-11-18 15:41:22', 1, 0, 0, 0, NULL, 11, 'Demande de devis #334', 'Maroc', 'El jadida', 'demande-devis-334'),
-(335, 653, 1, '2019-335', 'Bonjour,\r\nMerci de me parvenir le prix REVENDEUR pour :\r\n* 1000 Graisseur en acier inoxydable M10 45° et 90° \r\nCordialement.', '2020-01-01 00:00:00', 1, 0, NULL, '2019-12-03 12:26:07', '2019-12-04 11:22:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #335', 'Maroc', 'Laâyoune', 'demande-devis-335'),
-(336, 653, 1, '2019-336', 'Bonjour,\r\n\r\nMerci de me parvenir votre meilleur offre de prix revendeur Pour :\r\n* 1 - Appareil junction courroie 12 cm. \r\n\r\nCordialement. \r\n ', '2020-01-01 00:00:00', 1, 0, NULL, '2019-12-19 11:11:00', '2019-12-20 15:26:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #336', 'Maroc', 'Laâyoune', 'demande-devis-336'),
-(337, 663, 1, '2020-337', 'Bonjour \r\nNous aurons besoin Des Barres de seuil à visser, en acier inox brossé type DINAC 4.5 cm de largeur (Au niveau des transitions d\'un type de revêtement à un autre) Quantité: 170ml\r\nNez de marche de profils antidérapants de type Passage (Profilé angle L45x1.5 aluminium stair nosing 6060 T5 20 microns anodisée avec insert minéral hautement\r\nantidérapant épousant parfaitement le nez de marche ) Quantité: 80ml\r\nCordialement', '2020-02-18 00:00:00', 1, 0, NULL, '2020-02-04 09:34:53', '2020-02-04 15:19:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #337', 'Maroc', 'Casablanca', 'demande-devis-337'),
-(338, 663, 1, '2020-338', 'Bonjour,\r\nMerci de m\'envoyer votre meilleures offre de prix, pour un profilé U ( U Channels) en Aluminium, DIM:20*50mm ép:10/10 ou bien 20/10mm, selon la disponibilité des profilés\r\nQuantité: 2000ml', '2020-02-11 00:00:00', 1, 0, NULL, '2020-02-04 09:52:08', '2020-02-04 15:18:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #338', 'Maroc', 'Casablanca', 'demande-devis-338'),
-(340, 663, 1, '2020-340', 'Bonjour,\r\nMerci de m\'envoyer votre meilleures offre de prix, pour des Boîtes d\'attente pour le béton armé de type GAMMBOX 2 , Fiche technique en pièce joint\r\nQuantité: 6500ml', '2020-02-10 00:00:00', 1, 0, NULL, '2020-02-04 12:17:55', '2020-02-04 15:18:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #340', 'Maroc', 'Casablanca', 'demande-devis-340'),
-(342, 3, 1, '2020-342', 'chariot élevateur ', '2020-03-27 00:00:00', 1, 0, NULL, '2020-03-16 14:19:32', '2020-03-16 14:30:51', 1, 0, 0, 0, NULL, 11, 'Demande de devis #342', 'Maroc', 'Casablanca', 'demande-devis-342'),
-(344, 3, 1, '2020-344', 'Besoin en rayonnage ', '2020-04-03 00:00:00', 1, 0, NULL, '2020-03-23 09:41:00', '2020-03-23 09:41:00', 1, 0, 0, 0, NULL, 11, 'Demande de devis #344', 'Maroc', 'Casablanca', 'demande-devis-344'),
-(345, 3, 1, '2020-345', 'Demande de chambre froide', '2020-04-24 00:00:00', 1, 0, NULL, '2020-04-02 18:30:05', '2020-04-02 18:30:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #345', 'Maroc', 'Casablanca', 'demande-devis-345'),
-(347, 676, 1, '2020-7', 'Doloribus impedit a', '2020-06-10 12:04:00', 1, 0, 0, '2020-05-27 13:04:43', '2020-05-27 13:48:37', 0, 0, 0, 0, NULL, 1, 'Fugiat nemo dolorem', 'Maroc', 'Casablanca', 'fugiat-nemo-dolorem'),
-(348, 682, 1, '2020-8', 'Perspiciatis a inve', '2020-06-11 15:45:00', 1, 0, 0, '2020-06-05 16:46:43', '2020-06-05 16:51:20', 1, 0, 47, 0, NULL, 11, 'Necessitatibus ut eu', 'Maroc', 'Casablanca', 'necessitatibus-ut-eu'),
-(349, 682, 1, '2020-9', 'Aut eiusmod aliquém ', '2020-06-24 15:59:00', 1, 0, 0, '2020-06-05 17:00:00', '2020-06-05 17:10:02', 1, 1, 11, 0, NULL, 11, 'Exercitationem sint', 'Maroc', 'Casablanca', 'exercitationem-sint'),
-(350, 682, 1, '2020-10', 'Molestias odit ex sof', '2020-06-21 16:02:00', 1, 0, 0, '2020-06-05 17:02:17', '2020-06-05 17:10:15', 0, 1, 39, 0, NULL, 11, 'Laborum Ut officiis', 'Maroc', 'Casablanca', 'laborum-ut-officiis'),
-(351, 682, 1, '2020-11', 'Nesciunt beatae con', '2020-06-12 16:18:00', 1, 0, 0, '2020-06-05 17:18:54', '2020-06-05 17:19:26', 1, 0, 28, 0, NULL, 11, 'Sint sint non eos al', 'Maroc', 'Casablanca', 'sint-sint-non-eos-al');
+INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `budget`, `del`, `motif_rejet_id`, `currency_id`, `titre`, `pays`, `ville`, `slug`, `localisation`) VALUES
+(89, 40, 1, '2009-89', 'Achat de materiel informatique', '2016-12-06 00:00:00', 1, 0, NULL, '2009-04-02 17:11:51', '2009-12-06 13:26:09', 1, 0, 0, 0, NULL, 11, 'Demande de devis #89', 'Maroc', 'Casablanca', 'demande-devis-89', 0),
+(100, 3, 1, '2009-100', 'ACHATS D\'ASSENCEUR TYPE 450 KG 5 NIVEAUX 1 M/S', '2016-12-09 00:00:00', 1, 0, NULL, '2009-05-26 10:30:51', '2017-12-08 16:28:54', 1, 0, 0, 0, NULL, 11, 'Demande de devis #100', 'Maroc', 'Casablanca', 'demande-devis-100', 0),
+(101, 53, 1, '2009-101', 'BESOIN DE SURVEILLANCE ET GARDIENAGE', '2016-06-30 00:00:00', 1, 0, NULL, '2009-06-01 19:50:58', '2009-06-01 19:52:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #101', 'Maroc', 'Rabat', 'demande-devis-101', 0),
+(102, 3, 1, '2009-102', 'ACHATS DE MATIERE PREMIERE PLASTIQUE PPE, QTE 10T/3MOIS', '2016-06-24 00:00:00', 1, 0, NULL, '2009-06-03 00:27:48', '2009-07-14 19:54:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #102', 'Maroc', 'Casablanca', 'demande-devis-102', 0),
+(103, 3, 1, '2009-103', 'BESOIN EN RAYONNAGE CONVENTIONNEL POUR 2000 PALETTES.', '2016-06-29 00:00:00', 1, 0, NULL, '2009-06-28 16:35:43', '2009-06-28 16:36:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #103', 'Maroc', 'Casablanca', 'demande-devis-103', 0),
+(104, 3, 1, '2009-104', 'BESOIN EN NIVELEUR DE QUAI POUR NOTRE CLIENT BASE A TANGER, POUR UNE QUANTITE DE 5 NIVELEURS.', '2016-02-11 00:00:00', 1, 0, NULL, '2009-06-28 16:38:39', '2010-02-19 11:51:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #104', 'Maroc', 'Casablanca', 'demande-devis-104', 0),
+(105, 3, 1, '2009-105', 'Location ou Achat de conteneur 20 pieds climatisé pour stockage\r\ndes produits chimique pendant 3 mois.', '2016-08-10 00:00:00', 1, 0, NULL, '2009-06-28 16:48:29', '2010-03-25 10:33:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #105', 'Maroc', 'Casablanca', 'demande-devis-105', 0),
+(106, 3, 1, '2009-106', 'Tanger Free Zone: Chapiteaux de 888m2 sol 74metre longueur et 12 mètre\r\nlargeur pour prestation RAMADAN 2009.\r\n120 Tables rondes.\r\n1200 Chaises pour tables.\r\nClient Basé Sur Tanger, Votre Offre HT, HD.', '2016-07-30 00:00:00', 1, 0, NULL, '2009-06-30 13:34:25', '2009-07-14 19:55:06', 1, 0, 0, 0, NULL, 11, 'Demande de devis #106', 'Maroc', 'Casablanca', 'demande-devis-106', 0),
+(107, 58, 1, '2009-107', 'location  des chapitaux de 888m2 sol 74m longeur et 12 m de largeur pour prestation RAMADAN 2009 ( 1 mois) avec 120 tables rondes et 1200 chaises.\r\n\r\nMerci de noter que nous somme un groupe multinationale, installer dans la zone franche d\'exportation de Tanger.', '2016-07-10 00:00:00', 1, 0, NULL, '2009-07-01 08:56:06', '2009-07-07 13:34:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #107', 'Maroc', 'Kenitra', 'demande-devis-107', 0),
+(108, 68, 1, '2009-108', 'PERCEUSE PNEUMATIQUE \r\nB33\r\nFACOM QUANTITE 02', '2016-07-01 00:00:00', 1, 0, NULL, '2009-07-02 15:37:37', '2009-07-02 15:48:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #108', 'Maroc', 'Casablanca', 'demande-devis-108', 0),
+(113, 78, 1, '2009-113', 'APPEL D’OFFRE LOCATION CAMION LONGUE DUREE\r\nNous vous prions de nous faire parvenir votre meilleure offre de prix pour location d\'un camion avec cabine en bon état de 14t sous les conditions suivantes :\r\n\r\nPayement: 60 jours après date facture\r\nLivraison : A domicile\r\nService : 24/24 - 6/7 = Le service doit être assure par 2 chauffeur (24/24) qui doivent être instruit\r\nTravail dimanche : nous aurons éventuellement besoin du camion le dimanche (merci de préciser le cout sup. Jour/nuit.)\r\nGasoil : inclus\r\nPanne : en cas de panne du camion dépasse 2h, il fait faire un remplacement immédiat du camion, \r\nPermanence : les deux chauffeurs doivent être permanents sur notre site pour assurer les mouvements.\r\nIl faut tabler l\'offre sur  2500 km/mois. Et confirmer le cout des km sup.\r\nAssurance obligatoire : RC+ AT+Assurance marchandise couvrant 300.000dhs de dommage.\r\n\r\n\r\nNB : ce camion va travailler essentiellement dans la zone franche et éventuellement il fera des déplacements vers TAZA, Casa.', '2016-07-15 00:00:00', 1, 0, NULL, '2009-07-10 12:30:26', '2009-07-10 12:44:27', 1, 0, 0, 0, NULL, 11, 'Demande de devis #113', 'Maroc', 'Tanger', 'demande-devis-113', 0),
+(114, 83, 1, '2009-114', 'Ponts de chargement en aluminium avec une charge utile de 1200 kg.', '2016-09-14 00:00:00', 1, 0, NULL, '2009-07-14 17:19:09', '2009-08-18 17:33:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #114', 'Maroc', 'Casablanca', 'demande-devis-114', 0),
+(115, 102, 1, '2009-115', 'Bache d\'eau pour secourir l\'eau de l\'ONEP de cap.5m3 en inox 316 L avec système de chloration et déchloration , système de surpression , filtres....', '2016-09-18 00:00:00', 1, 0, NULL, '2009-08-11 09:51:59', '2009-09-11 10:35:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #115', 'Maroc', 'Casablanca', 'demande-devis-115', 0),
+(116, 102, 1, '2009-116', 'Deux aspirateurs de dimensions 50 cm * 50 cm , robuste pour aspirer l\'air chaud d\'une salle de 100 m2', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-11 09:54:43', '2009-10-29 11:42:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #116', 'Maroc', 'Casablanca', 'demande-devis-116', 0),
+(117, 102, 1, '2009-117', 'Bac de lavage en inox 304 L divisé trois compartiments pour usage agro-alimentaire de longeur2500 mm , largeur 400 mm , hauteur 850 mm.', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-11 09:58:17', '2009-10-29 11:42:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #117', 'Maroc', 'Casablanca', 'demande-devis-117', 0),
+(118, 102, 1, '2009-118', 'Porte métallique de 4.3 * 5 m avec moteur et bouton marche arrêt.', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 15:51:37', '2009-10-29 11:41:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #118', 'Maroc', 'Casablanca', 'demande-devis-118', 0),
+(119, 102, 1, '2009-119', '01 Gerbeur 1500 kg , température d\'utilisation =-25°C , rayon de braquage : le minimum possible , fourche : 1200mm , hauteur à atteindre :4500 mm', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 15:59:03', '2010-03-29 15:19:21', 1, 0, 0, 0, NULL, 11, 'Demande de devis #119', 'Maroc', 'Casablanca', 'demande-devis-119', 0),
+(120, 102, 1, '2009-120', '01 Gerbeur 1500 kg , température d\'utilisation =  T ambiante , hauteur à atteidre 4.5 metres , Rayon de braquage: le moins encombrant possible. ', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 16:02:21', '2010-03-29 15:18:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #120', 'Maroc', 'Casablanca', 'demande-devis-120', 0),
+(121, 102, 1, '2009-121', '06 transpalettes galvanisées , capacité en kg : 2500 kg , descente : par poigné , longeur des fourches : 1150 mm', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 16:06:58', '2009-10-29 11:39:24', 1, 0, 0, 0, NULL, 11, 'Demande de devis #121', 'Maroc', 'Casablanca', 'demande-devis-121', 0),
+(122, 143, 1, '2009-122', 'cable de skipe metalique 22MM', '2016-08-25 00:00:00', 1, 0, NULL, '2009-08-24 11:00:19', '2009-08-24 11:38:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #122', 'Maroc', 'Marrakech', 'demande-devis-122', 0),
+(123, 143, 1, '2009-123', '05 CAMIONS  3,5T-7T-8T \r\nETAT NEUF', '2016-09-15 00:00:00', 1, 0, NULL, '2009-08-25 11:00:30', '2009-09-12 14:04:57', 1, 0, 0, 0, NULL, 11, 'Demande de devis #123', 'Maroc', 'Marrakech', 'demande-devis-123', 0),
+(124, 143, 1, '2009-124', '01 ONDULEUR POUR PC MGE 600VA', '2016-08-27 00:00:00', 1, 0, NULL, '2009-08-25 11:02:37', '2009-09-11 10:31:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #124', 'Maroc', 'Marrakech', 'demande-devis-124', 0),
+(125, 146, 1, '2009-125', 'Nous recherchons 10 rallonges 4 poste+terre (long:5m)\r\nmarque LEGRAND 3500W', '2016-09-10 00:00:00', 1, 0, NULL, '2009-08-25 12:23:19', '2009-09-17 21:31:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #125', 'Maroc', 'Casablanca', 'demande-devis-125', 0),
+(126, 143, 1, '2009-126', '01 PICK UP NEUVE', '2016-09-10 00:00:00', 1, 0, NULL, '2009-09-01 14:27:45', '2009-09-11 10:34:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #126', 'Maroc', 'Marrakech', 'demande-devis-126', 0),
+(127, 143, 1, '2009-127', '20 VOITURES UTILITAIRES EQUIVALENT A BERLIN ESPACE OU DACIA ', '2016-09-15 00:00:00', 1, 0, NULL, '2009-09-01 14:29:40', '2009-09-12 14:04:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #127', 'Maroc', 'Marrakech', 'demande-devis-127', 0),
+(128, 166, 1, '2009-128', 'Besoin de matériel informatique et électrique suivant:\r\n\r\n> Cordons informatiques de 10ML (prix pour les CAT6 et les CAT5).....................   Qté 30.\r\n> Câble électrique (courbe C, section 6mm2, constitué de deux files intérieur en rouge (-)  et bleu(+) ) ................................Qté 300ML.\r\n> Disjoncteur unipolaire 10A avec embouts 6mm2.....................................Qté 30.\r\n> Prix des Jarretières optiques d\'environ 10M avec connecteurs. \r\n\r\n> Switch 24ports, similaire au Switch Cisco Catalyst 3750 ME avec module d\'alimentation en 48V DC.\r\n\r\nUne demande directe et officielle sera envoyée après consultation des réponses.', '2016-09-08 00:00:00', 1, 0, NULL, '2009-09-02 11:56:54', '2009-09-11 10:30:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #128', 'Maroc', 'Casablanca', 'demande-devis-128', 0),
+(129, 143, 1, '2009-129', 'Besoin en :\r\n\r\n01UN : CARTE POUR PILOTE BOSCH 324A2871837001390 \r\n01UN : CARTE POUR PILOTE BOSCH 4176A1911837001391\r\n01UN : CARTE POUR PILOTE BOSCH 1435A3831837001378\r\n', '2016-09-07 00:00:00', 1, 0, NULL, '2009-09-03 09:40:56', '2009-09-03 09:49:35', 1, 0, 0, 0, NULL, 11, 'Demande de devis #129', 'Maroc', 'Marrakech', 'demande-devis-129', 0),
+(130, 89, 1, '2009-130', ' besoin d’une unité moderne de trituration des olives (système continu): fourniture, installation et mise en marche et avoir une capacité de production de 350 Kg d’olives par heure et travaillant sous une tension de service de 380 volts à trois fil ', '2016-09-30 00:00:00', 1, 0, NULL, '2009-09-09 01:57:45', '2009-09-09 09:32:32', 1, 0, 0, 0, NULL, 11, 'Demande de devis #130', 'Maroc', 'Ouezzane', 'demande-devis-130', 0),
+(131, 179, 1, '2009-131', 'Veuillez trouver ci-dessous la liste de notre besoin en matériels informatiques pour notre  nouvelle filière qui sera basée sur  BENI MELLAL.\r\n\r\n04- UC DX2400 CORE 2 DUO 2,8/3G/250G SANS ECRAN\r\n\r\n06- DX2390MT 2,5/1G/160 + TFT 19\"\r\n\r\n01- Imp couleur A3 officejet7103	\r\n01- Imp laser couleur A4 1515N	\r\n02- Imp matricielle EPSON LQ300+	\r\n04- Imp laser Mono chrome A4 3010	\r\n10- Support de l\'unité centrale en metal\r\n	\r\n03- Onduleur 1000v MGE NOVA 1250	\r\n\r\n01- Fax brother 2820	\r\n\r\n02- Swtch 8 port 3COM	\r\n', '2016-09-15 00:00:00', 1, 0, NULL, '2009-09-09 11:11:00', '2009-09-14 15:08:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #131', 'Maroc', 'Marrakech', 'demande-devis-131', 0),
+(135, 185, 1, '2009-135', 'Besoin en belets pour boisson chaude et froide, taille moyenne, à utilisation fréquente. \r\n1ère Quantité à livrer: 450 Unité.', '2016-09-26 00:00:00', 1, 0, NULL, '2009-09-23 17:45:53', '2009-09-25 12:10:50', 1, 0, 0, 0, NULL, 11, 'Demande de devis #135', 'Maroc', 'Tanger', 'demande-devis-135', 0),
+(136, 58, 1, '2009-136', 'Besoin en Audit par un organisme externe ( certifié HACCP) vis à vis  notre sous-traitant de gestion de notre cantine .', '2016-09-30 00:00:00', 1, 0, NULL, '2009-09-24 15:59:32', '2009-09-25 14:23:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #136', 'Maroc', 'Kenitra', 'demande-devis-136', 0),
+(137, 185, 1, '2009-137', 'NOUS AVONS BESOIN DE PRODUITS DE LA MARQUE PARKER:\r\nGARNITURE SM 551472/1AX \r\nGARNITURE WRM 472519\r\nANNEAU DE GUIDE I/DRW 60\r\nGarniture code E/GR 0850\r\nGarniture code E/GR 0900\r\nAnneau de guidage type I/DWR 40/2\r\nAnneau de guidage type I/DWR 55\r\nAnneau de guidage type I/DWR 60\r\nAnneau de guidage type E/DWR 30/2\r\nGarniture \r\nGarniture type WRM 118 149\r\nGarniture type MU/P 4230\r\nGarniture type I/DWR 30/2\r\nGarniture type DBM 216 153\r\nRACLEUR WRM 314346  \r\nQTE 1 DE CHAQUE PRODUIT', '2016-10-05 00:00:00', 1, 0, NULL, '2009-09-25 10:59:35', '2009-09-25 11:26:21', 1, 0, 0, 0, NULL, 11, 'Demande de devis #137', 'Maroc', 'Tanger', 'demande-devis-137', 0),
+(138, 185, 1, '2009-138', 'Nous avons besoin de:\r\nCourroie transport dentée 985H30M.M B30mm L2501,9mm\r\nLA MARQUE BANDO POUR EQUIPEMENT ETIREUSE DE LA PRESSE', '2016-10-05 00:00:00', 1, 0, NULL, '2009-09-25 11:02:37', '2009-09-25 11:27:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #138', 'Maroc', 'Tanger', 'demande-devis-138', 0),
+(139, 77, 1, '2009-139', 'BESOIN EN PIGNONS VOIR FICHE JOINTE', '2016-09-25 00:00:00', 1, 0, NULL, '2009-09-26 17:19:23', '2009-09-26 17:21:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #139', 'Maroc', 'Mohammadia', 'demande-devis-139', 0),
+(140, 77, 1, '2009-140', 'Besoin en Rayonnage métallique type léger selon plan ci-joint.', '2016-10-10 00:00:00', 1, 0, NULL, '2009-09-28 14:56:10', '2009-09-28 14:56:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #140', 'Maroc', 'Mohammadia', 'demande-devis-140', 0),
+(141, 143, 1, '2009-141', '01 tendeuse pour jardin type T.51 XP MARQUE WOLF OU EQUIVALENTE', '2016-10-07 00:00:00', 1, 0, NULL, '2009-09-28 14:56:18', '2009-09-30 15:46:41', 1, 0, 0, 0, NULL, 11, 'Demande de devis #141', 'Maroc', 'Marrakech', 'demande-devis-141', 0),
+(143, 77, 1, '2009-143', 'Besoin en 100 Vestiaires métalliques à 02 portes/ 02 cases – 198x30x50 CM. EP 7/10.', '2016-10-13 00:00:00', 1, 0, NULL, '2009-10-02 23:16:32', '2009-10-08 16:50:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #143', 'Maroc', 'Mohammadia', 'demande-devis-143', 0),
+(144, 185, 1, '2009-144', 'Besoin en Prestation de nettoyage au sein de notre administration.\r\nCette demande est réservée aux sociétés basées sur la ville de Tanger.', '2016-10-12 00:00:00', 1, 0, NULL, '2009-10-06 11:52:18', '2009-10-06 19:13:59', 1, 0, 0, 0, NULL, 11, 'Demande de devis #144', 'Maroc', 'Tanger', 'demande-devis-144', 0),
+(145, 208, 1, '2009-145', 'Merci de nous faire votre proposition pour la construction d\'un hangar avec les dimensions suivantes:\r\nLargeur: 13.24m\r\nLongueur:24m avec travées de 6m\r\nHauteur 5 a 6m\r\nToit de préférence en charpente', '2016-10-31 00:00:00', 1, 0, NULL, '2009-10-17 06:42:45', '2009-10-17 12:38:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #145', 'Maroc', 'Casablanca', 'demande-devis-145', 0),
+(146, 185, 1, '2009-146', 'Je vous mets ci-joint une liste des pièces de rechange  dont je vous demande de bien vouloir nous faire une offre commerciale complète comprenant vos délais de livraison de chaque produit.', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-19 15:10:40', '2009-10-19 15:56:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #146', 'Maroc', 'Tanger', 'demande-devis-146', 0),
+(147, 211, 1, '2009-147', 'TAPIS RHINO-BAND D\r\nlisières bouclage DG\r\nMatière : acier doux ecroui\r\n1 tapis de 40mx2.30m', '2016-10-30 00:00:00', 1, 0, NULL, '2009-10-20 10:17:26', '2009-10-21 12:28:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #147', 'Maroc', 'Casablanca', 'demande-devis-147', 0),
+(148, 211, 1, '2009-148', 'Duplex souple imprimé 2 à 5 couleurs différentes laizes de 90 à 525mm.\r\n20T/3mois', '2016-10-30 00:00:00', 1, 0, NULL, '2009-10-20 10:24:05', '2009-10-21 14:15:44', 1, 0, 0, 0, NULL, 11, 'Demande de devis #148', 'Maroc', 'Casablanca', 'demande-devis-148', 0),
+(149, 212, 1, '2009-149', 'Cherchons prestataire pour réaliser des travaux d\'éclairage (diagnostic des causes de dysfonctionnement + réparation) dans un entrepot de  10 000 m2 en activité, hauteur sous plafond de environ 11 m. \r\nLe prestataire qui nous contactera devra étre assuré et montrer ses habilitations électrique, intervention sur site certifé ISO...', '2016-10-31 00:00:00', 1, 0, NULL, '2009-10-20 17:05:48', '2009-10-30 11:53:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #149', 'Maroc', 'Casablanca', 'demande-devis-149', 0),
+(150, 213, 1, '2009-150', 'Nous souhaitons réaliser 2 installations racking : une de 2500 EPR en rack à accumulation et l’autre de 2.000 EPR en rack conventionnel. Détail des plans et gabarit palette en pièce jointe.', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-20 17:34:25', '2009-10-20 22:56:40', 1, 0, 0, 0, NULL, 11, 'Demande de devis #150', 'Maroc', 'Casablanca', 'demande-devis-150', 0),
+(151, 214, 1, '2009-151', 'Achat du Logiciel Autocad 2009 avec licence mono poste', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-21 13:19:14', '2009-10-21 13:40:14', 1, 0, 0, 0, NULL, 11, 'Demande de devis #151', 'Maroc', 'Casablanca', 'demande-devis-151', 0),
+(152, 185, 1, '2009-152', 'Equipement pour dépoussierage des sols en 50mm\r\nBesoin Urgent', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-22 09:15:18', '2009-10-22 10:49:10', 1, 0, 0, 0, NULL, 11, 'Demande de devis #152', 'Maroc', 'Tanger', 'demande-devis-152', 0),
+(153, 77, 1, '2009-153', 'Nous cherchons des fabricants de palettes fumigées ( anti-feux) pour export par avion Dim palette 800x1000. EN ADMISSION TEMPORAIRE.\r\nQté mensuelle environ 100 \r\n\r\n', '2016-11-03 00:00:00', 1, 0, NULL, '2009-10-24 16:44:03', '2009-10-27 11:48:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #153', 'Maroc', 'Mohammadia', 'demande-devis-153', 0),
+(154, 207, 1, '2009-154', 'Merci de nos communiquer votre offre de prix pour la fourniture des motoréducteur  arbre creux suivantes en respectant le type indiquer sur la photo ci jointe:\r\n          2- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:1 CV Vitesse de sortie 10 tr/min.\r\n          2- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:2 CV Vitesse de sortie 40à50 tr/min.\r\n          1- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:3 CV Vitesse de sortie 40à50 tr/min.\r\n* Moto réducteur à 2 ou 3 trains. \r\n* Moteur triphasé accouplé.', '2016-11-10 00:00:00', 1, 0, NULL, '2009-10-28 10:39:01', '2009-10-28 16:13:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #154', 'Maroc', 'Casablanca', 'demande-devis-154', 0),
+(155, 185, 1, '2009-155', 'Nous Cherchons un fournisseur sur la zone de Tanger, qui peut nous fournir des flexibles et des composants pneumatiques pour un budget d’achat annuel de plus de 300 000,00 Dhs.\r\nNous consommons des composants tels que :\r\nLes raccords, les limiteurs de débits les flexibles, les pompes à graisses …\r\nNous exigeant la disponibilité de stock, le respect des délais de livraisons ainsi que la bonne santé financière du fournisseur.', '2016-11-10 00:00:00', 1, 0, NULL, '2009-10-29 12:36:13', '2009-11-09 08:57:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #155', 'Maroc', 'Tanger', 'demande-devis-155', 0),
+(156, 234, 1, '2009-156', 'Besoin en rayonnage selon plan ci-joint.\r\nLe nombre de traves ainsi que le détail du besoin est sur le plan.\r\nMeilleures salutations.\r\n', '2016-11-21 00:00:00', 1, 0, NULL, '2009-11-05 10:26:29', '2009-11-12 12:39:29', 1, 0, 0, 0, NULL, 11, 'Demande de devis #156', 'Maroc', 'Casablanca', 'demande-devis-156', 0),
+(157, 58, 1, '2009-157', 'BESOIN EN USTENSILES DE CUISINE SELON LISTE CI-JOINTE SUR LE LIEN SUIVANT: \r\nhttp://www.lesachatsindustriels.com/ImageDemande/AC_8620Q274_DP_UC.pdf\r\n', '2016-11-19 00:00:00', 1, 0, NULL, '2009-11-13 11:33:39', '2009-11-16 15:24:11', 1, 0, 0, 0, NULL, 11, 'Demande de devis #157', 'Maroc', 'Kenitra', 'demande-devis-157', 0),
+(158, 185, 1, '2009-158', 'Besoin en Matériel informatique : Le prestataire devra faire un diagnostique et audit du parc existant, et la proposition selon état du matériel du remplacement. Ceci comprend nos deux sites une cinquantaine sur Tanger ainsi qu’une cinquantaine sur nos agences sur Casablanca.\r\nAU TOTAL 100 MACHINES ENTRE PC PORTABLE ET PC FIXE.', '2016-11-25 00:00:00', 1, 0, NULL, '2009-11-13 16:15:35', '2009-11-23 11:26:47', 1, 0, 0, 0, NULL, 11, 'Demande de devis #158', 'Maroc', 'Tanger', 'demande-devis-158', 0),
+(159, 242, 1, '2009-159', 'Cherche organisme de formation  pour thèmes: Cariste - Secouriste au travail - Equipiers de premières intervention ', '2016-11-30 00:00:00', 1, 0, NULL, '2009-11-23 15:07:59', '2009-11-25 10:07:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #159', 'Maroc', 'Casablanca', 'demande-devis-159', 0),
+(160, 242, 1, '2009-160', 'Besoin organisme pour réalisation de l\'ingénierie de formation conformément aux exigences de l\'OFPPT ', '2016-11-30 00:00:00', 1, 0, NULL, '2009-11-23 17:42:07', '2009-11-24 11:59:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #160', 'Maroc', 'Casablanca', 'demande-devis-160', 0),
+(161, 77, 1, '2009-161', 'Travaux mécaniques sur une grosse machine.\r\n(Voir liste des travaux en fichier ci-joint)', '2016-12-08 00:00:00', 1, 0, NULL, '2009-11-26 11:16:38', '2009-11-26 11:17:29', 1, 0, 0, 0, NULL, 11, 'Demande de devis #161', 'Maroc', 'Mohammadia', 'demande-devis-161', 0),
+(162, 251, 1, '2009-162', 'AMENAGEMENT D\'UN ESPACE D\'ACCUEIL\r\nACHATS DE MEUBLES : \r\n-	Nombre de Chaises : 1200 (plusieurs gammes)\r\n-	Nombre de Tables : 180 (1,5 m de diamètre, prévue pour un service à table pour 10 personnes assises)\r\n\r\n', '2016-12-16 00:00:00', 1, 0, NULL, '2009-12-02 12:54:41', '2009-12-09 17:54:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #162', 'Maroc', 'Marrakech', 'demande-devis-162', 0),
+(163, 264, 1, '2009-163', 'Nous avons besoin d’une presse à comprimés de  préférence de marque \"Courtoy\", fonctionnant en euronormes BB avec un  minimum de 30 stations et pouvant atteindre une capacité de 300.000 cph d\'âge  <= à 17 ans.\r\n Si vous avez des offres correspondant de manière + ou - exacte à  ce besoin, je vous prie de bien vouloir me contacter dès que possible avec vos  meilleures offres de prix, délais, services et transport.\r\nMerci d\'avance', '2017-02-01 00:00:00', 1, 0, NULL, '2009-12-14 10:43:00', '2009-12-14 10:54:20', 1, 0, 0, 0, NULL, 11, 'Demande de devis #163', 'Maroc', 'Bouskoura', 'demande-devis-163', 0),
+(164, 264, 1, '2009-164', 'Nous avons besoin de 25 paires de potelets de séparation en inox avec ruban pour délimiter des zones au sein de notre ligne de production.\r\nHauteur: entre 100 et 130 cm\r\nTaille ruban: 200 cm', '2017-01-29 00:00:00', 1, 0, NULL, '2009-12-14 14:37:41', '2009-12-17 16:52:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #164', 'Maroc', 'Bouskoura', 'demande-devis-164', 0),
+(165, 264, 1, '2009-165', 'Nous avons besoin d\'une solution  complète pour l\'équipement d’une blanchisserie industrielle (calendre de repassage, machine à laver 30 kg, séchoir à linge, table à repasser, pressoir à vapeur...). Ce qu\'il faudrait pour constituer une blanchisserie industrielle en interne pour une entreprise de 350 ouvriers et techniciens.\r\nNous somme Ouvert à toute proposition en lots égalant ou dépassant ce besoin.', '2017-02-12 00:00:00', 1, 0, NULL, '2009-12-15 14:31:00', '2009-12-17 14:58:56', 1, 0, 0, 0, NULL, 11, 'Demande de devis #165', 'Maroc', 'Bouskoura', 'demande-devis-165', 0),
+(166, 58, 1, '2009-166', 'Nous avons besoin de 85m2 de Film antireflet blanc à coller sur nos vitres et portes vitrés.', '2016-12-25 00:00:00', 1, 0, NULL, '2009-12-22 11:27:09', '2009-12-22 11:59:39', 1, 0, 0, 0, NULL, 11, 'Demande de devis #166', 'Maroc', 'Kenitra', 'demande-devis-166', 0),
+(167, 58, 1, '2009-167', 'Nous avons besoin de faire la numérotation de nos 25 transpalettes manuels par agrafage.', '2016-12-28 00:00:00', 1, 0, NULL, '2009-12-22 18:57:30', '2009-12-24 15:02:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #167', 'Maroc', 'Kenitra', 'demande-devis-167', 0),
+(168, 287, 1, '2009-168', '* Vidéo enregistreur avec et sans connectivité ;\r\n\r\n* Caméra à usage extérieur, Portée 25 m IR 24 Led et plus \r\n\r\n* Caméra dôme Portée 25 m IR 24 Led et plus ', '2016-12-09 00:00:00', 1, 0, NULL, '2009-12-30 12:55:17', '2010-02-15 18:33:50', 1, 0, 0, 0, NULL, 11, 'Demande de devis #168', 'Maroc', 'Casablanca', 'demande-devis-168', 0),
+(169, 77, 1, '2010-169', 'Nous avons besoin de :\r\n08 Molettes selon plans, photos et le descriptif des textes à graver.\r\n\r\nNB : Les textes en noir  doivent être gravés sur la molette par contre nous aurons besoin d’un  module de chiffre interchangeable (texte en rouge) : 2010 pour l’année.\r\n', '2017-01-20 00:00:00', 1, 0, NULL, '2010-01-04 10:32:50', '2010-03-25 15:47:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #169', 'Maroc', 'Mohammadia', 'demande-devis-169', 0),
+(170, 293, 1, '2010-170', 'Nous souhaitons recevoir les meilleures offres pour la fourniture suivante:\r\nProfilés UAP130 : 120ml.\r\nPlat 50x5mm : 24ml.\r\nTôle ép. 2.5mm : 630m2.\r\nCornière 30x30x3 : 60ml.\r\n1260m2 de laine de roche ép 50mm, B353 ROCLAINE (température limite 650 °C)\r\nMerci d’avance.', '2017-01-17 00:00:00', 1, 0, NULL, '2010-01-08 09:55:32', '2010-01-08 10:02:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #170', 'Maroc', 'Casablanca', 'demande-devis-170', 0),
+(171, 272, 1, '2010-171', 'Nous avons besoin de deux nacelles suspendues motorisées au moyen de treuils électriques, la vitesse d’élévation est en moyenne de 9 m/min. Chaque plateforme devra être constituée  de deux modules en aluminium de 3 mètres chacune. \r\nLes systèmes de suspension doivent être adaptés à un accrochage sur des supports chariots installés sur les toitures du bâtiment.\r\nLes treuils doivent avoir une capacité de 2000 Kg et doivent être alimentés par du 220 Volts en monophasé et 380 Volts en triphasé.\r\nLes câbles des treuils auront une longueur de 100 m par treuil.\r\nTous les équipements doivent être conformes à la réglementation en vigueur, les échafaudages volants et les plateformes suspendues motorisées doivent être  reconnus par les professionnels des contrôles techniques et les organismes de prévention comme la référence en matière de sécurité pour l\'élévation du personnel effectuant des travaux légers.\r\n', '2017-03-10 00:00:00', 1, 0, NULL, '2010-01-08 11:12:26', '2010-02-23 17:07:31', 1, 0, 0, 0, NULL, 11, 'Demande de devis #171', 'Maroc', 'Casablanca', 'demande-devis-171', 0),
+(172, 58, 1, '2010-172', 'Bonjour,\r\n\r\nNous avons besoin de faire un diagnostiquer de l’état du matériel de notre cuisine.\r\n\r\nDe plus  nous comptons sur vous de nous fournir votre offre de prix de maintenance dont le cadre d’un contrat annuel.\r\n	\r\nDans l’attente de confirmation de  votre visite début de la semaine prochaine.', '2017-01-27 00:00:00', 1, 0, NULL, '2010-01-19 12:44:41', '2010-01-20 10:07:39', 1, 0, 0, 0, NULL, 11, 'Demande de devis #172', 'Maroc', 'Kenitra', 'demande-devis-172', 0),
+(176, 264, 1, '2010-176', 'Nous avons besoin de 2 générateurs de courant Diesel 600-800 kVA.\r\nDELAI PROROGE (VOIR NOUVELLE DATE)', '2017-02-20 00:00:00', 1, 0, NULL, '2010-02-03 15:50:59', '2010-02-15 14:32:32', 1, 0, 0, 0, NULL, 11, 'Demande de devis #176', 'Maroc', 'Bouskoura', 'demande-devis-176', 0),
+(177, 264, 1, '2010-177', 'Nous avons besoin d\'un calibreur tamiseur de marque Frewitt à tamis oscillant modèle MF-6.\r\n\r\nDélai prorogé (Voir nouvelle date)', '2017-02-20 00:00:00', 1, 0, NULL, '2010-02-04 08:47:45', '2010-03-11 17:25:30', 1, 0, 0, 0, NULL, 11, 'Demande de devis #177', 'Maroc', 'Bouskoura', 'demande-devis-177', 0),
+(187, 77, 1, '2010-187', 'Le présent marché a pour objet la réalisation d’une machine de roulage de contreplaqués pour nos besoins en fûts de Diamètre 200 mm, Largeur 500 mm, Épaisseur 3 mm.\r\nLa feuille du contreplaqué est trempée dans de l’eau chaude et passe ensuite à la machine de roulage cylindrique.\r\nLa jonction des extrémités du fût se fait à l’aide d’une languette placée en dessous de la jointure et le maintien est assuré par des agrafes (Voir photos).\r\nLa présente demande doit être réalisée suivant nos données (Description ; Photos … ) et dans les règles de l’art.\r\nL’Entrepreneur devra présenter à notre société un plan de réalisation de la machine établi suivant nos données et ne pourra  être mis en exécution qu’après acceptation  par ordre de service délivré par nos soins. \r\nL’Entrepreneur devra respecter le délai de réalisation sur lequel nous nous mettrons d’accord.\r\n\r\n(Voir pièdes jointes).', '2017-03-10 00:00:00', 1, 0, NULL, '2010-02-23 15:34:24', '2010-03-04 15:46:09', 1, 0, 0, 0, NULL, 11, 'Demande de devis #187', 'Maroc', 'Mohammadia', 'demande-devis-187', 0),
+(191, 318, 1, '2010-191', 'Nous avons besoin d’une entreprise spécialisée dans la sécurité (Matériels et services) qui peut nous accompagner pour élaborer un plan de sécurité (plan d’évacuation, formation 1er secours…) et pouvoir l’exécuter dans les règles de l’art.\r\nL’entreprise intéressée devra être conventionnée et certifiée auprès des compagnies d’assurances et disposera de tout agrément nécessaire délivré par les administrations et fédérations compétentes.', '2017-03-11 00:00:00', 1, 0, NULL, '2010-02-24 11:46:05', '2010-04-01 17:56:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #191', 'Maroc', 'Casablanca', 'demande-devis-191', 0),
+(192, 320, 1, '2010-192', '*****DATE PROROGER*****\r\n\r\nCloutier d’encadrement de Ciol : \r\nPoids : corps 3.67kgs (8.07Ibs) en aluminium\r\nCorps du magnésium 3.38kgs (7.43Ibs)\r\nCapacité du magasin : 225-300 Clous\r\nDiamètre de jambe : 2.3-2.9mm (0.092 \" - 0.113 \")\r\nLongueur des clous : 45mm-70mm (1-3/4 \"--2-3/4 \")\r\nOpération : 5-7kgs/cm2 (70-100psi) \r\n\r\nQuantité = 05 unité\r\n\r\n(Voir photo ci-jointe) ', '2017-03-31 00:00:00', 1, 0, NULL, '2010-02-24 12:28:52', '2010-03-25 08:58:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #192', 'Maroc', 'Meknes', 'demande-devis-192', 0),
+(194, 306, 1, '2010-194', 'Sachet Biodégradable \r\n(Voir détail sur le PDF ci-joint)', '2017-03-26 00:00:00', 1, 0, NULL, '2010-02-25 14:13:23', '2010-02-25 17:32:07', 1, 0, 0, 0, NULL, 11, 'Demande de devis #194', 'Maroc', 'Casablanca', 'demande-devis-194', 0),
+(195, 335, 1, '2010-195', '>>>>>  DELAI PROLONGE  <<<<<\r\nNous avons besoin de deux (02) GERBEURS équivalant au model en fichier ci-joint fonctionnant en \r\nHauteur mât abaissé Inférieur à 2,20m.\r\nCharge à porter = 1,5 T.\r\nHauteur mât déployé= 3 m.\r\nTempérature Négative -18°C.\r\n\r\nQuantité= 02.\r\n\r\n\r\n(Voir fichier attaché)', '2017-04-24 00:00:00', 1, 0, NULL, '2010-03-12 17:03:30', '2010-04-14 10:24:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #195', 'Maroc', 'Rabat', 'demande-devis-195', 0),
+(196, 351, 1, '2010-196', 'PEINTURE resistant à l\'eau, avec sechage rapide, non inflammable, couleur noir (finition peu intense) Pour marquage exterieure des pipes sous marins', '2017-03-30 00:00:00', 1, 0, NULL, '2010-03-25 11:29:12', '2010-03-29 09:55:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #196', 'France', 'Caissargues', 'demande-devis-196', 0),
+(197, 355, 1, '2010-197', 'Nous avons besoin d\'une solution de rayonnage mixte Accumulation et conventionnel selon plan ci-joint.\r\nDim palette 800x1200x1600 poids 1000Kg.', '2017-04-09 00:00:00', 1, 0, NULL, '2010-03-25 17:18:40', '2010-03-31 17:29:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #197', 'Maroc', 'Casablanca', 'demande-devis-197', 0),
+(201, 335, 1, '2010-201', 'Nous aurons besoin de thermomètre à sonde pour contrôler la température à la réception des produits congelés. \r\nNombre demandé : 3 thermomètres à sonde pour mesurer la température à cœur des produits congelés à la réception.', '2017-04-10 00:00:00', 1, 0, NULL, '2010-03-26 11:48:58', '2010-03-26 11:54:00', 1, 0, 0, 0, NULL, 11, 'Demande de devis #201', 'Maroc', 'Rabat', 'demande-devis-201', 0),
+(204, 358, 1, '2010-204', 'Produit de nettoyage industriel des pièces mécaniques.\r\nNon nocif aux intervenants ni à l\'environnement\r\nAgrée par la CEE, certifié ISO ou DIN.\r\nA joindre une notice en français ou en anglais', '2017-05-01 00:00:00', 1, 0, NULL, '2010-03-27 09:43:09', '2010-03-29 09:52:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #204', 'Maroc', 'Temara', 'demande-devis-204', 0),
+(208, 3, 1, '2010-208', 'Je recherche des fournisseurs capables de me réaliser les 3 pièces selon plans ci-joint.\r\nLa technologie pressentie est : MOULAGE CONTACT (sinon moulage basse pression)', '2017-04-24 00:00:00', 1, 0, NULL, '2010-04-09 15:34:41', '2010-04-23 11:39:55', 1, 0, 0, 0, NULL, 11, 'Demande de devis #208', 'Maroc', 'Casablanca', 'demande-devis-208', 0),
+(216, 335, 1, '2010-216', 'Extincteur CO² 5 kg. Quantité 08.\r\nRIA. Quantité 04.\r\nCentrale d’alarme. Quantité 01.\r\nBatterie rechargeable 12V, 7,2 Ah. Quantité 01.\r\nBatterie 12V, 2,2 Ah. Quantité 01.\r\nDétecteur IR de mouvement. Quantité 04.\r\nSirène extérieure. Quantité 01.', '2017-04-25 00:00:00', 1, 0, NULL, '2010-04-15 17:10:26', '2010-04-23 11:40:14', 1, 0, 0, 0, NULL, 11, 'Demande de devis #216', 'Maroc', 'Rabat', 'demande-devis-216', 0),
+(217, 58, 1, '2010-217', 'Nous avons besoin de tourniquet et pointeuse voir demande ci-jointe\r\n\r\nAchats du Matériel en DDP /CIF/EX WORK.', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-21 10:01:12', '2010-05-03 09:47:18', 1, 0, 0, 0, NULL, 11, 'Demande de devis #217', 'Maroc', 'Kenitra', 'demande-devis-217', 0),
+(219, 58, 1, '2010-219', 'MATERIEL INFORMATIQUE ( VOIR DETAIL CI-JOINT)', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-22 08:47:59', '2010-05-03 09:48:31', 1, 0, 0, 0, NULL, 11, 'Demande de devis #219', 'Maroc', 'Kenitra', 'demande-devis-219', 0),
+(221, 58, 1, '2010-221', 'PC industriels. PC core duo 1,66 MHZ, 1 GB Ram sans Disque dur mais avec Mémoire Compact FLASH (Windows ou Linux) écran tactile.', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-23 17:53:14', '2010-05-03 09:47:52', 1, 0, 0, 0, NULL, 11, 'Demande de devis #221', 'Maroc', 'Kenitra', 'demande-devis-221', 0),
+(222, 77, 1, '2010-222', 'Bonjour,\r\nje vous prie de bien vouloir me faire votre meilleure offre de prix et délai pour la fourniture de une station mobile de carburant d’une capacité de 10 T équivalent au model ci-joint', '2017-05-08 00:00:00', 1, 0, NULL, '2010-04-26 17:46:53', '2010-04-26 17:47:59', 1, 0, 0, 0, NULL, 11, 'Demande de devis #222', 'Maroc', 'Mohammadia', 'demande-devis-222', 0),
+(223, 391, 1, '2010-223', ' Pierre de bien vouloir nous communiquer votre meilleure offre concernant le rayonnage lourd a palette ainsi que la note de calcule correspondante .\r\n10 éléments des dimensions suivante:\r\n\r\n    DIM: L 20 x H 6 m\r\n\r\n   nombre de niveau : quatre \r\n\r\n   capacité totale de stockage : 700 palettes\r\n-- ', '2017-05-05 00:00:00', 1, 0, NULL, '2010-04-27 10:36:54', '2010-05-06 10:53:46', 1, 0, 0, 0, NULL, 11, 'Demande de devis #223', 'Maroc', 'Agadir', 'demande-devis-223', 0),
+(226, 402, 1, '2010-226', 'Nous cherchons une société étrangère pour nous fournir les contreplaqués selon le cahier des charges en fichier ci-joint.\r\nMeilleures salutations.', '2017-05-31 00:00:00', 1, 0, NULL, '2010-05-18 19:57:55', '2010-05-19 11:37:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #226', 'Maroc', 'Oujda', 'demande-devis-226', 0),
+(228, 422, 1, '2010-228', 'Prière de me communiquer votre meilleure offre de prix pour les articles cités en pièce jointe.\r\n\r\nLa Quantité : 100 pour chaque article. Autrement dit :\r\n* 100 Automatisme pour portes battantes.\r\n\r\n* 100 Sélecteur \r\n\r\n* 100 Bouton poussoir \r\n\r\n* 100 Télécommande \r\n\r\n* 100 Serrure pêne piston \r\n\r\nN\'hésitez pas à nous contacter pour plus d\'informations.', '2017-06-15 00:00:00', 1, 0, NULL, '2010-06-09 10:15:27', '2010-06-09 10:59:26', 1, 0, 0, 0, NULL, 11, 'Demande de devis #228', 'Maroc', 'Casablanca', 'demande-devis-228', 0),
+(237, 428, 1, '2010-237', 'ROUE DN200 MM PIVOTANTE AVEC FRIEN (EN CAOUTCHOUC OU EN PEHD)\r\nQté : 08 Uté\r\nPJ : Photo descriptive de l\'utilisation des dites roues.', '2017-06-25 00:00:00', 1, 0, NULL, '2010-06-22 17:34:37', '2010-06-22 17:34:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #237', 'Maroc', 'Casablanca', 'demande-devis-237', 0),
+(238, 58, 1, '2010-238', 'Conteneur pour utiliser comme atelier de maintenance. Dimension min 5m*2.5m.\r\nEquipé de climatiseur, fenêtre, et table pour 4 techniciens.', '2017-07-24 00:00:00', 1, 0, NULL, '2010-07-14 11:07:56', '2010-07-22 17:08:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #238', 'Maroc', 'Kenitra', 'demande-devis-238', 0),
+(240, 452, 1, '2010-240', 'Recherchons d\'urgence la location du matériel ci-dessous:\r\n- Chariot télescopique tout terrain rotatif à fort tonnage \"5,5t\" hauteur non spécifiée, de marque Manitou (de préférence).\r\nDurée de location: 1 mois\r\nFull Service.\r\nConducteur(s) compris 7j/7\r\n30 à 40 Km /j.', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-15 09:54:42', '2010-07-20 15:59:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #240', 'Maroc', 'Tanger', 'demande-devis-240', 0),
+(241, 452, 1, '2010-241', 'Recherchons d\'urgence la location du matériel ci-dessous:\r\n- Camion plateau 13m. En Option avec ridelle.\r\nDurée de location: 1 mois\r\nFull Service.\r\nConducteur(s) compris 7j/7\r\n30 à 40 Km /j.', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-15 12:28:30', '2010-07-20 15:58:08', 1, 0, 0, 0, NULL, 11, 'Demande de devis #241', 'Maroc', 'Tanger', 'demande-devis-241', 0),
+(242, 452, 1, '2010-242', 'Recherchons d\'urgence la location du matériel ci-dessous :\r\nChariot élévateur: avec conducteur à charge\r\n- Capacité de charge nominale : 4 tonnes\r\n- tablier à déplacement latéral,\r\n- type: diesel \" carburant à votre charge\",\r\n- Hauteur de levée : 3 à 4 mètres,\r\n- Mât triplex grande visibilité,\r\n- Horaire de travail: 24h/24h , 7j/7j\r\n- Durée de location: un mois avec possibilité de prolongation', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-16 11:53:55', '2010-07-20 15:58:43', 1, 0, 0, 0, NULL, 11, 'Demande de devis #242', 'Maroc', 'Tanger', 'demande-devis-242', 0),
+(243, 385, 1, '2010-243', 'Bande Modulaire Blanche UNI-228 mm x 100 (ml) pour convoyeur transportant du poisson.\r\n(Voir photos ci-jointe)', '2017-08-07 00:00:00', 1, 0, NULL, '2010-07-22 16:35:40', '2010-08-02 13:36:18', 1, 0, 0, 0, NULL, 11, 'Demande de devis #243', 'Maroc', 'Agadir', 'demande-devis-243', 0),
+(244, 385, 1, '2010-244', '1 - Eléctropompe de GRUNDFOSS 5.5 KW 2900 tr/min CR 16', '2017-08-04 00:00:00', 1, 0, NULL, '2010-07-27 18:12:26', '2010-07-28 11:57:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #244', 'Maroc', 'Agadir', 'demande-devis-244', 0),
+(245, 385, 1, '2010-245', '25 l huile shell CASSIDA FLUIDE G 150', '2017-08-04 00:00:00', 1, 0, NULL, '2010-07-27 18:18:22', '2010-07-28 11:57:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #245', 'Maroc', 'Agadir', 'demande-devis-245', 0),
+(246, 460, 1, '2010-246', 'Recherche fournisseur huile végétale ', '2017-09-03 00:00:00', 1, 0, NULL, '2010-08-25 12:56:37', '2010-08-27 12:29:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #246', 'France', 'Sainte-Florence', 'demande-devis-246', 0),
+(247, 460, 1, '2010-247', 'Recherche fournisseurs pour étudie la mise en place étiquettes RFID', '2017-10-10 00:00:00', 1, 0, NULL, '2010-08-25 12:57:31', '2010-08-25 17:29:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #247', 'France', 'Sainte-Florence', 'demande-devis-247', 0),
+(248, 473, 1, '2011-248', '10.000 GRILLES DE CUISSON DIMENSION EXT : L600-P400-H90 mm \r\nCouleur : Gris .\r\nCaisse : Fond & Parois ajourés.\r\nCes grilles sont utilisées dans les bac de cuisson : cuisson en Saumure ( Eau + sel à 4 ° baumé ) chauffée à 90 °C, et le temps peut varier de 20 à 30 minutes. \r\ngrilles  nettoyées à la soude caustique dans une eau chauffée à 60° C.\r\n( photo ci-joint)\r\n', '2017-04-13 00:00:00', 1, 0, NULL, '2011-04-05 14:46:02', '2011-04-05 16:10:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #248', 'Maroc', 'Agadir', 'demande-devis-248', 0),
+(250, 478, 1, '2011-250', 'Besoin de Pate de Paprika pour production de sauce! Ci dessous spécification:\r\nMatière première: paprika rouge fraiche et naturelle\r\nTransformation: concentre sous vide ou réfrigéré\r\nSans additif, ni colorant\r\nBrix: 13 a 15°\r\nDensité: 1,02GR/CM3 8,5° DE BRIX\r\nQuantité: 2 TONNES', '2017-12-02 00:00:00', 1, 0, NULL, '2011-06-17 10:22:41', '2011-06-17 15:03:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #250', 'Maroc', 'Berrechid', 'demande-devis-250', 0),
+(251, 480, 1, '2011-251', 'Je vous remercie de bien nous faire parvenir une meilleur offre de prix de la référence ci-dessous :\r\n \r\n\r\n8034102:  Bd 0.5x12 DIN 1791- CuFe 0.1P F44                  \r\n\r\nQT : 1000kg\r\n\r\n', '2017-08-21 00:00:00', 1, 0, NULL, '2011-08-10 15:46:42', '2011-08-10 16:04:17', 1, 0, 0, 0, NULL, 11, 'Demande de devis #251', 'Maroc', 'Tanger', 'demande-devis-251', 0),
+(302, 3, 1, '2018-302', 'Bonjour\r\nje vous remercie de bien nous faire parvenir une meilleur offre de prix pour la demande ci_joint ', '2018-01-31 00:00:00', 1, 0, NULL, '2018-01-15 16:25:25', '2018-01-25 16:24:24', 1, 0, 0, 0, NULL, 11, 'Demande de devis #302', 'Maroc', 'Casablanca', 'demande-devis-302', 0),
+(308, 571, 1, '2018-308', 'bonjour;\r\nmerci de nous faire parvenir votre meilleur offre de prix pour les articles en pièces jointe:', '2018-02-02 00:00:00', 1, 0, NULL, '2018-01-29 15:30:29', '2018-02-01 17:22:38', 1, 0, 0, 0, NULL, 11, 'Demande de devis #308', 'Maroc', 'Casablanca', 'demande-devis-308', 0),
+(314, 3, 1, '2019-314', 'j ia besoin d un rayonnage  2 m de hauteur ', '2019-06-01 00:00:00', 1, 0, NULL, '2019-05-29 16:34:45', '2019-07-08 17:47:43', 1, 0, 0, 0, NULL, 11, 'Demande de devis #314', 'Maroc', 'Casablanca', 'demande-devis-314', 0),
+(323, 621, 1, '2019-323', '2 panneaux de brassage \r\n24 prises informatique murale \r\n2 passe câbles \r\nArmoire informatique \r\n1 collier de serrage 300 blanche ', '2019-10-30 00:00:00', 1, 0, NULL, '2019-10-22 20:47:23', '2019-10-25 10:27:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #323', 'Maroc', 'Sale', 'demande-devis-323', 0),
+(324, 630, 1, '2019-324', 'Je cherche des fournisseurs pour la location d\'un chariot élévateur de 3T semaine prochaine pour 1 jour et la semaine d\'après aussi 1 jour', '2019-11-11 00:00:00', 1, 0, NULL, '2019-10-24 11:23:56', '2019-10-24 11:35:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #324', 'Maroc', 'Casablanca', 'demande-devis-324', 0),
+(325, 628, 1, '2019-325', 'besoin d\'un pyromètre optique type IGAR 6 advanced ', '2019-11-06 00:00:00', 1, 0, NULL, '2019-10-25 10:50:53', '2019-11-04 10:43:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #325', 'Maroc', 'Casablanca', 'demande-devis-325', 0),
+(326, 622, 1, '2019-326', 'demande de prix 2 tôles noires\r\nDimensions ; 2000*1000*12 mm', '2019-11-03 00:00:00', 1, 0, NULL, '2019-10-25 11:22:16', '2019-10-25 15:52:51', 1, 0, 0, 0, NULL, 11, 'Demande de devis #326', 'Maroc', 'Kenitra', 'demande-devis-326', 0),
+(327, 632, 1, '2019-327', 'Besoin 8 casques de protection casco petzl vertex Best\r\n', '2019-11-05 00:00:00', 1, 0, NULL, '2019-10-28 19:36:55', '2019-11-05 12:53:55', 1, 0, 0, 0, NULL, 11, 'Demande de devis #327', 'Maroc', 'Khenifra', 'demande-devis-327', 0),
+(331, 629, 1, '2019-331', 'Bonjour,\r\nJe cherche des fournisseurs pour 5 pince de mesure de terre numérique modele 4200 de marque KYORITSU.', '2019-11-08 00:00:00', 1, 0, NULL, '2019-10-29 19:09:20', '2019-11-05 10:16:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #331', 'Maroc', 'Casablanca', 'demande-devis-331', 0),
+(332, 629, 1, '2019-332', 'bonjour,\r\n\r\nJe cherche ce ventilateur en urgence :\r\nVENTILATEUR HÉLICOÏDE 630mm et 220v', '2019-11-06 00:00:00', 1, 0, NULL, '2019-10-30 22:00:19', '2019-11-05 11:52:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #332', 'Maroc', 'Casablanca', 'demande-devis-332', 0),
+(333, 643, 1, '2019-333', 'Nous vous demandons de bien vouloir nous faire parvenir, vos meilleures conditions de prix et délai concernant les articles ci-dessous en pièce jointe', '2019-11-05 00:00:00', 1, 0, NULL, '2019-11-01 20:01:01', '2019-11-07 11:09:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #333', 'Maroc', 'El jadida', 'demande-devis-333', 0),
+(334, 646, 1, '2019-334', ' \r\n\r\n1. Hepc20 push fit male adaptor  x12pcs\r\n\r\n2.Hepc2o push fit female adaptor x 4pcs\r\n\r\n3.Hepc2o pipe inserts  all in 12mm diameter x 85pcs', '2019-11-18 00:00:00', 1, 0, NULL, '2019-11-12 17:04:55', '2019-11-18 15:41:22', 1, 0, 0, 0, NULL, 11, 'Demande de devis #334', 'Maroc', 'El jadida', 'demande-devis-334', 0),
+(335, 653, 1, '2019-335', 'Bonjour,\r\nMerci de me parvenir le prix REVENDEUR pour :\r\n* 1000 Graisseur en acier inoxydable M10 45° et 90° \r\nCordialement.', '2020-01-01 00:00:00', 1, 0, NULL, '2019-12-03 12:26:07', '2019-12-04 11:22:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #335', 'Maroc', 'Laâyoune', 'demande-devis-335', 0),
+(336, 653, 1, '2019-336', 'Bonjour,\r\n\r\nMerci de me parvenir votre meilleur offre de prix revendeur Pour :\r\n* 1 - Appareil junction courroie 12 cm. \r\n\r\nCordialement. \r\n ', '2020-01-01 00:00:00', 1, 0, NULL, '2019-12-19 11:11:00', '2019-12-20 15:26:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #336', 'Maroc', 'Laâyoune', 'demande-devis-336', 0),
+(337, 663, 1, '2020-337', 'Bonjour \r\nNous aurons besoin Des Barres de seuil à visser, en acier inox brossé type DINAC 4.5 cm de largeur (Au niveau des transitions d\'un type de revêtement à un autre) Quantité: 170ml\r\nNez de marche de profils antidérapants de type Passage (Profilé angle L45x1.5 aluminium stair nosing 6060 T5 20 microns anodisée avec insert minéral hautement\r\nantidérapant épousant parfaitement le nez de marche ) Quantité: 80ml\r\nCordialement', '2020-02-18 00:00:00', 1, 0, NULL, '2020-02-04 09:34:53', '2020-02-04 15:19:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #337', 'Maroc', 'Casablanca', 'demande-devis-337', 0),
+(338, 663, 1, '2020-338', 'Bonjour,\r\nMerci de m\'envoyer votre meilleures offre de prix, pour un profilé U ( U Channels) en Aluminium, DIM:20*50mm ép:10/10 ou bien 20/10mm, selon la disponibilité des profilés\r\nQuantité: 2000ml', '2020-02-11 00:00:00', 1, 0, NULL, '2020-02-04 09:52:08', '2020-02-04 15:18:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #338', 'Maroc', 'Casablanca', 'demande-devis-338', 0),
+(340, 663, 1, '2020-340', 'Bonjour,\r\nMerci de m\'envoyer votre meilleures offre de prix, pour des Boîtes d\'attente pour le béton armé de type GAMMBOX 2 , Fiche technique en pièce joint\r\nQuantité: 6500ml', '2020-02-10 00:00:00', 1, 0, NULL, '2020-02-04 12:17:55', '2020-02-04 15:18:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #340', 'Maroc', 'Casablanca', 'demande-devis-340', 0),
+(342, 3, 1, '2020-342', 'chariot élevateur ', '2020-03-27 00:00:00', 1, 0, NULL, '2020-03-16 14:19:32', '2020-03-16 14:30:51', 1, 0, 0, 0, NULL, 11, 'Demande de devis #342', 'Maroc', 'Casablanca', 'demande-devis-342', 0),
+(344, 3, 1, '2020-344', 'Besoin en rayonnage ', '2020-04-03 00:00:00', 1, 0, NULL, '2020-03-23 09:41:00', '2020-03-23 09:41:00', 1, 0, 0, 0, NULL, 11, 'Demande de devis #344', 'Maroc', 'Casablanca', 'demande-devis-344', 0),
+(345, 3, 1, '2020-345', 'Demande de chambre froide', '2020-04-24 00:00:00', 1, 0, NULL, '2020-04-02 18:30:05', '2020-04-02 18:30:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #345', 'Maroc', 'Casablanca', 'demande-devis-345', 0),
+(347, 676, 1, '2020-7', 'Doloribus impedit a', '2020-06-10 12:04:00', 1, 0, 0, '2020-05-27 13:04:43', '2020-05-27 13:48:37', 0, 0, 0, 0, NULL, 1, 'Fugiat nemo dolorem', 'Maroc', 'Casablanca', 'fugiat-nemo-dolorem', 0),
+(348, 682, 1, '2020-8', 'Perspiciatis a inve', '2020-06-11 15:45:00', 1, 0, 0, '2020-06-05 16:46:43', '2020-06-05 16:51:20', 1, 0, 47, 0, NULL, 11, 'Necessitatibus ut eu', 'Maroc', 'Casablanca', 'necessitatibus-ut-eu', 0),
+(349, 682, 1, '2020-9', 'Aut eiusmod aliquém ', '2020-06-24 15:59:00', 1, 0, 0, '2020-06-05 17:00:00', '2020-06-05 17:10:02', 1, 1, 11, 0, NULL, 11, 'Exercitationem sint', 'Maroc', 'Casablanca', 'exercitationem-sint', 0),
+(350, 682, 1, '2020-10', 'Molestias odit ex sof', '2020-06-21 16:02:00', 1, 0, 0, '2020-06-05 17:02:17', '2020-06-05 17:10:15', 0, 1, 39, 0, NULL, 11, 'Laborum Ut officiis', 'Maroc', 'Casablanca', 'laborum-ut-officiis', 0),
+(351, 682, 1, '2020-11', 'Nesciunt beatae con', '2020-06-12 16:18:00', 1, 0, 0, '2020-06-05 17:18:54', '2020-06-05 17:19:26', 1, 0, 28, 0, NULL, 11, 'Sint sint non eos al', 'Maroc', 'Casablanca', 'sint-sint-non-eos-al', 0),
+(352, 682, 1, '2020-12', 'Placeat vitae conse', '2020-06-26 16:14:00', 1, 0, 0, '2020-06-07 17:14:57', '2020-06-07 20:56:08', 1, 0, 34, 0, NULL, 11, 'Qui nulla quis ut ea', 'Maroc', 'Casablanca', 'qui-nulla-quis-ut-ea', 1),
+(353, 682, 1, '2020-13', 'Sint totam qui do co', '2020-06-17 20:58:00', 1, 0, 0, '2020-06-07 20:58:48', '2020-06-07 21:10:08', 1, 0, 92, 0, NULL, 11, 'Dolorem aut enim off', 'Maroc', 'Casablanca', 'dolorem-aut-enim-off', 2);
 
 -- --------------------------------------------------------
 
@@ -1988,7 +2011,9 @@ INSERT INTO `demande_ha_categories` (`demande_achat_id`, `categorie_id`) VALUES
 (348, 30),
 (349, 30),
 (350, 34),
-(351, 30);
+(351, 30),
+(352, 549),
+(353, 110);
 
 -- --------------------------------------------------------
 
@@ -2003,6 +2028,13 @@ CREATE TABLE `demande_jeton` (
   `is_use` tinyint(1) NOT NULL,
   `created` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `demande_jeton`
+--
+
+INSERT INTO `demande_jeton` (`id`, `fournisseur_id`, `nbr_jeton`, `is_use`, `created`) VALUES
+(2, 680, 5, 1, '2020-06-06 14:26:37');
 
 -- --------------------------------------------------------
 
@@ -2021,6 +2053,13 @@ CREATE TABLE `detail_visite` (
   `statut` smallint(6) NOT NULL,
   `personnel_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `detail_visite`
+--
+
+INSERT INTO `detail_visite` (`id`, `fournisseur_id`, `demande_id`, `created`, `date_rec`, `is_send`, `budget`, `statut`, `personnel_id`) VALUES
+(1, 680, 351, '2020-06-06 14:40:01', '2020-06-13 14:40:01', 0, 250, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2047,7 +2086,10 @@ INSERT INTO `diffusion_demande` (`id`, `fournisseur_id`, `demande_id`, `date_dif
 (5, 674, 349, '2020-06-05 17:01:37'),
 (6, 680, 349, '2020-06-05 17:01:37'),
 (7, 2, 351, '2020-06-05 17:19:26'),
-(8, 674, 351, '2020-06-05 17:19:26');
+(8, 674, 351, '2020-06-05 17:19:26'),
+(9, 674, 352, '2020-06-07 20:53:52'),
+(10, 674, 352, '2020-06-07 20:56:08'),
+(11, 680, 353, '2020-06-07 21:01:28');
 
 -- --------------------------------------------------------
 
@@ -2144,7 +2186,8 @@ INSERT INTO `fiche` (`id`, `url`, `file_size`, `type`) VALUES
 (7, 'Neant_PresentationPROTECTIONUNIT.pdf', 0, NULL),
 (8, '5ed8fff998df8339062544.pdf', 142995, 'application/pdf'),
 (9, '5ed90057b3cfc549317303.pdf', 142995, 'application/pdf'),
-(10, '5ed900dbcf63a325620144.pdf', 142995, 'application/pdf');
+(10, '5ed900dbcf63a325620144.pdf', 142995, 'application/pdf'),
+(11, '5edb99bec338c349901378.pdf', 97055, 'application/pdf');
 
 -- --------------------------------------------------------
 
@@ -2177,7 +2220,7 @@ CREATE TABLE `fournisseur` (
 --
 
 INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `ice`, `fix`, `website`, `description`, `currency_id`, `slug`, `phone_vu`, `visite`, `societe_lower`, `step`, `is_complet`, `code_client`) VALUES
-(2, 144, 1, '3F Industrie', 'M.', '001531606000066', '0522365797', 'http://www.3finudstrie.com', '3F Industrie a choisi de se positionner sur le secteur de la logistique en mettant à la disposition de ce dernier les meilleures fournisseurs tout en respectant les normes les plus sévères et les plus demandées par les donneurs d’ordres les plus exigeants. Notre objectif est d’offrir à nos clients une qualité de service qui s’inscrit dans une amélioration continue.\n\nRayonnage et système de stockage : Rayonnage à palettes : Conventionnel, Accumulation, Mobile, Dynamique. Rayonnage pour archive, charge légère et lourde plateforme sur deux ou trois niveaux pour une optimisation maximale rayonnage cantilever pour des charges longues, lourdes et volumineuses.\n\nRayonnage mobile pour archive documents et œuvres d’art. Intervention sur tout type de rayonnage pour démontage remontage et divers modifications de niveaux ou d’implantation. Notre savoir-faire nous a permis d’avoir la confiance de nombreuses entreprises dans différents secteurs d’activité : Alimentaire, Industriel, Logistique, Distribution…', 1, '3f-industrie', 1, 117, '3f industrie', 0, 0, NULL),
+(2, 144, 1, '3F Industrie', 'M.', '001531606000066', '0522365797', 'http://www.3finudstrie.com', '3F Industrie a choisi de se positionner sur le secteur de la logistique en mettant à la disposition de ce dernier les meilleures fournisseurs tout en respectant les normes les plus sévères et les plus demandées par les donneurs d’ordres les plus exigeants. Notre objectif est d’offrir à nos clients une qualité de service qui s’inscrit dans une amélioration continue.\n\nRayonnage et système de stockage : Rayonnage à palettes : Conventionnel, Accumulation, Mobile, Dynamique. Rayonnage pour archive, charge légère et lourde plateforme sur deux ou trois niveaux pour une optimisation maximale rayonnage cantilever pour des charges longues, lourdes et volumineuses.\n\nRayonnage mobile pour archive documents et œuvres d’art. Intervention sur tout type de rayonnage pour démontage remontage et divers modifications de niveaux ou d’implantation. Notre savoir-faire nous a permis d’avoir la confiance de nombreuses entreprises dans différents secteurs d’activité : Alimentaire, Industriel, Logistique, Distribution…', 1, '3f-industrie', 1, 118, '3f industrie', 0, 0, NULL),
 (49, 144, 1, 'thyssenkrupp elevator maroc', '', NULL, '212522204505', '', NULL, 11, 'thyssenkrupp-elevator-maroc', 0, 0, 'thyssenkrupp elevator maroc', 0, 0, NULL),
 (55, 144, 1, 'Le Carton', '', NULL, '212522204505', '', NULL, 11, 'le-carton', 0, 0, 'le carton', 0, 0, NULL),
 (56, 144, 1, 'Imprimerie Sabri', '', NULL, '212522902037', '', NULL, 11, 'imprimerie-sabri', 0, 0, 'imprimerie sabri', 0, 0, NULL),
@@ -2455,9 +2498,11 @@ INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `
 (675, 144, 1, 'Ut itaque beatae quo', 'M.', '123456789954412', '', 'https://www.vifocijumoxar.tv', 'Unde incididunt nesc', 1, 'ut-itaque-beatae-quo', 0, 0, 'ut itaque beatae quo', 3, 1, NULL),
 (677, 144, 1, 'Quaerat qui tenetur ', 'M.', '123456789123456', '', '', '', 1, 'quaerat-qui-tenetur', 0, 0, 'quaerat qui tenetur ', 3, 1, 'F-677620e'),
 (678, NULL, NULL, 'Ut eveniet ad in do', 'M.', NULL, NULL, NULL, NULL, NULL, 'ut-eveniet-ad-in-do', 0, 0, 'ut eveniet ad in do', 1, 0, NULL),
-(680, 144, 1, 'Fournisseur 1', 'M.', '123456789123456', '+212522151213', 'http://www.3fi.com', 'Présentation', 11, 'fournisseur-1', 0, 1, 'fournisseur 1', 3, 1, 'F-680a299'),
+(680, 4, 55, 'Fournisseur 1', 'M.', NULL, '+212522151213', 'http://www.3fi.com', 'Présentation', 11, 'fournisseur-1', 0, 10, 'fournisseur 1', 3, 1, 'F-680a299'),
 (681, 144, 1, 'Fournisseur 2 ', 'Mme', '001527438000082', '+212522113344', 'https://forums.commentcamarche', 'Presentation ', 11, 'acheteur-2', 0, 1, 'acheteur 2 ', 3, 1, 'F-681e781'),
-(684, 75, 33, 'Fournisseur 3', 'M.', NULL, '', 'https://www.lesachatsindustrie', '', 1, 'fournisseur-3', 0, 1, 'fournisseur 3', 3, 1, 'F-6845f24');
+(684, 75, 33, 'Fournisseur 3', 'M.', NULL, '', 'https://www.lesachatsindustrie', '', 1, 'fournisseur-3', 0, 1, 'fournisseur 3', 3, 1, 'F-6845f24'),
+(685, 144, 1, '3F Industrie', 'M.', '123456789123456', '', '', '', 11, '3f-industrie-1', 0, 0, '3f industrie', 3, 1, 'F-6855a41'),
+(686, 75, 33, '3F Industrie', 'M.', NULL, '', '', '', 1, '3f-industrie-2', 0, 0, '3f industrie', 3, 1, 'F-686303c');
 
 -- --------------------------------------------------------
 
@@ -2493,6 +2538,7 @@ INSERT INTO `fournisseur_categories` (`fournisseur_id`, `categorie_id`) VALUES
 (680, 31),
 (680, 32),
 (680, 34),
+(680, 110),
 (680, 268),
 (680, 286),
 (681, 32),
@@ -2502,7 +2548,10 @@ INSERT INTO `fournisseur_categories` (`fournisseur_id`, `categorie_id`) VALUES
 (681, 133),
 (681, 550),
 (684, 37),
-(684, 73);
+(684, 73),
+(685, 34),
+(686, 30),
+(686, 31);
 
 -- --------------------------------------------------------
 
@@ -2526,7 +2575,8 @@ INSERT INTO `historique_visite` (`id`, `fournisseur_id`, `demande_id`, `created`
 (2, 2, 340, '2020-05-14 11:07:19'),
 (3, 674, 347, '2020-05-27 14:02:22'),
 (4, 680, 351, '2020-06-05 17:23:11'),
-(5, 680, 350, '2020-06-05 17:26:21');
+(5, 680, 350, '2020-06-05 17:26:21'),
+(6, 686, 349, '2020-06-06 21:10:42');
 
 -- --------------------------------------------------------
 
@@ -2591,7 +2641,10 @@ INSERT INTO `image_produit` (`id`, `url`) VALUES
 (58, 'neant_Sans-titre-1.jpg'),
 (59, '5ed8ffef4fbff435818301.png'),
 (60, '5ed9005050f01168369131.png'),
-(61, '5ed900d5cc623610167196.png');
+(61, '5ed900d5cc623610167196.png'),
+(62, '5edb90d7ebe8e716632113.jpg'),
+(63, '5edb9192606c6081110533.jpg'),
+(64, '5edb99b804358277105556.png');
 
 -- --------------------------------------------------------
 
@@ -2622,6 +2675,13 @@ CREATE TABLE `jeton` (
   `del` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `jeton`
+--
+
+INSERT INTO `jeton` (`id`, `fournisseur_id`, `paiement_id`, `demande_id`, `nbr_jeton`, `prix`, `is_payed`, `created`, `del`) VALUES
+(1, 680, 1, 2, 5, 500, 1, '2020-06-06 14:31:43', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -2638,13 +2698,15 @@ CREATE TABLE `migration_versions` (
 --
 
 INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
+('20200520111008', '2020-06-07 15:03:55'),
 ('20200527145954', '2020-05-27 15:00:00'),
 ('20200528101704', '2020-05-28 10:17:11'),
 ('20200529103958', '2020-05-29 10:40:03'),
 ('20200601090617', '2020-06-01 09:06:26'),
 ('20200601113723', '2020-06-01 11:37:27'),
 ('20200602100240', '2020-06-02 10:02:45'),
-('20200603145109', '2020-06-03 14:51:17');
+('20200603145109', '2020-06-03 14:51:17'),
+('20200607150435', '2020-06-07 15:04:42');
 
 -- --------------------------------------------------------
 
@@ -2984,6 +3046,13 @@ CREATE TABLE `personnel` (
   `fullName` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `personnel`
+--
+
+INSERT INTO `personnel` (`id`, `fournisseur_id`, `email`, `phone`, `del`, `created`, `fullName`) VALUES
+(1, 680, 'webmaster@3findustrie.com', '+212696318051', 0, '2020-06-06 15:57:39', 'YOUNESS ARBOUH');
+
 -- --------------------------------------------------------
 
 --
@@ -3068,7 +3137,13 @@ INSERT INTO `produit` (`id`, `secteur_id`, `sous_secteurs_id`, `fournisseur_id`,
 (160, 1, 50, 2, 10, 'Omnis adipisicing co', 'Id quos do aspernatu', 26, 1, 0, 0, '2020-06-04 16:10:54', 'TblwGcIbZnM', 294, 61, 'Repudiandae ut porro', 1, NULL, 144, 'repudiandae-ut-porro-1', 0, 'repudiandae ut porro', 1, 1),
 (161, 1, 50, 2, 10, 'Omnis adipisicing co', 'Id quos do aspernatu', 26, 0, 0, 0, '2020-06-04 16:10:54', 'TblwGcIbZnM', 294, 61, 'Repudiandae ut porro', 1, NULL, 144, 'repudiandae-ut-porro-2', 0, 'repudiandae ut porro', 1, 1),
 (162, 1, 50, 2, 10, 'Omnis adipisicing co', 'Id quos do aspernatu', 26, 0, 0, 0, '2020-06-04 16:10:54', 'TblwGcIbZnM', 294, 61, 'Repudiandae ut porro', 1, NULL, 144, 'repudiandae-ut-porro-4', 0, 'repudiandae ut porro', 1, 1),
-(163, 1, 50, 2, 10, 'Omnis adipisicing co', 'Id quos do aspernatu', 26, 0, 0, 0, '2020-06-04 16:10:54', 'TblwGcIbZnM', 294, 61, 'Repudiandae ut porro', 1, NULL, 144, 'repudiandae-ut-porro-5', 0, 'repudiandae ut porro', 1, 1);
+(163, 1, 50, 2, 10, 'Omnis adipisicing co', 'Id quos do aspernatu', 26, 0, 0, 0, '2020-06-04 16:10:54', 'TblwGcIbZnM', 294, 61, 'Repudiandae ut porro', 1, NULL, 144, 'repudiandae-ut-porro-5', 0, 'repudiandae ut porro', 1, 1),
+(164, 1, 50, 680, NULL, '3423', 'TEEEEEEEEST', 4555, 0, 0, 0, '2020-06-06 14:49:40', NULL, 294, 62, 'Familliarisation moteur / Propulseur', 11, NULL, 144, 'familliarisation-moteur-propulseur', 0, 'familliarisation moteur / propulseur', 1, 1),
+(165, 1, 50, 680, 11, 'abcde', 'Familliarisation moteur / Propulseur', 0, 0, 0, 0, '2020-06-06 15:27:51', 'TblwGcIbZnM', 294, NULL, 'Familliarisation moteur / Propulseur', 11, NULL, 144, 'familliarisation-moteur-propulseur-1', 0, 'familliarisation moteur / propulseur', 1, 1),
+(166, 2, 63, 680, NULL, 'aaaaa0s', 'Familliarisation avion ( M & H )', 0, 0, 0, 0, '2020-06-06 15:28:29', NULL, 43, NULL, 'Familliarisation avion ( M & H )', 11, NULL, 144, 'familliarisation-avion-m-h', 0, 'familliarisation avion ( m & h )', 1, 1),
+(167, 2, 64, 680, NULL, 'xwsss', 'LEGISLATION INTERNATIONALE (ICAO) EN MATIERE D\'AVIATION', 0, 0, 0, 0, '2020-06-06 15:30:02', NULL, 45, NULL, 'LEGISLATION INTERNATIONALE (ICAO) EN MATIERE D\'AVIATION', 11, NULL, 144, 'legislation-internationale-icao-en-matiere-daviation', 0, 'legislation internationale (icao) en matiere d\'aviation', 1, 1),
+(168, 3, 67, 680, NULL, 'dsd3', 'Organisme de maintenance maintien de la navigabilité ( ou part 145 )', 0, 0, 0, 0, '2020-06-06 15:30:31', NULL, 308, NULL, 'Organisme de maintenance maintien de la navigabilité ( ou part 145 )', 11, NULL, 144, 'organisme-de-maintenance-maintien-de-la-navigabilite-ou-part-145', 0, 'organisme de maintenance maintien de la navigabilité ( ou part 145 )', 1, 1),
+(169, 38, 6, 680, NULL, 'ddddd', 'Familliarisation moteur / Propulseur,', 0, 0, 0, 0, '2020-06-06 15:51:31', NULL, 123, NULL, 'Familliarisation moteur / Propulseur,', 11, NULL, 144, 'familliarisation-moteur-propulseur-2', 0, 'familliarisation moteur / propulseur,', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -3128,7 +3203,9 @@ INSERT INTO `produit_image_produit` (`produit_id`, `image_produit_id`) VALUES
 (152, 56),
 (153, 57),
 (158, 58),
-(159, 61);
+(159, 61),
+(164, 62),
+(165, 64);
 
 -- --------------------------------------------------------
 
@@ -4189,7 +4266,9 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (681, 'adresse 1 2', '', NULL, '+212668936900', 'maria.rhaiti@lesachatsindustriels.com', '$2y$13$nSNMvo1Suo1OCk4fUXz.vepJaREUhgLE1lFblmiRBcR4H3XdjSm.O', 0, 1, '2020-06-05 16:03:43', 'Maria', 'Rhaiti', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (682, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'ha1@3findustrie.com', '$2y$13$wDlkV0UN8hct4MdEkk38FeFq7WFkkgW921uolU/s53/OgJeHHYwMi', 0, 1, '2020-06-05 16:19:56', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac', NULL, NULL),
 (683, 'adresse 1 2', '', NULL, '+212668936900', 'maria.rhaiti@7e-sky.com', '$2y$13$sNVSMK52mcvlaCZ8RkXOHeKFx0ilqq7CrrwRMSREBfInh9XEaiADS', 0, 1, '2020-06-05 16:24:33', 'Maria ', 'Rhaiti', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac', NULL, NULL),
-(684, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'frs2@3findustrie.com', '$2y$13$ilKL3UXu8qGlb1cJqo/VhecGWg.3M0/pd4/vttddnvv.h/ruSO9vC', 0, 1, '2020-06-05 16:26:57', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL);
+(684, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'frs2@3findustrie.com', '$2y$13$ilKL3UXu8qGlb1cJqo/VhecGWg.3M0/pd4/vttddnvv.h/ruSO9vC', 0, 1, '2020-06-05 16:26:57', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(685, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'youness.arbouhD@gmail.com', '$2y$13$5wk4HdwyL6QBL.cyGmvDqOs7hK3gQi.YdmBd9si71ln5q2siPrvYW', 0, 1, '2020-06-06 20:22:37', 'ARBOUH', 'Youness', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(686, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'youness.arboussh@gmail.com', '$2y$13$FsYLsEv8Qsdb6GKXMP9J8uq2diyOYe9fF5I1ApMWEVxWRG5GIOY82', 0, 1, '2020-06-06 20:57:50', 'ARBOUH', 'Youness', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -4745,7 +4824,7 @@ ALTER TABLE `zone_commercial_pays`
 -- AUTO_INCREMENT pour la table `abonnement`
 --
 ALTER TABLE `abonnement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `actualite`
@@ -4805,13 +4884,13 @@ ALTER TABLE `currency`
 -- AUTO_INCREMENT pour la table `demande_abonnement`
 --
 ALTER TABLE `demande_abonnement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=352;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=354;
 
 --
 -- AUTO_INCREMENT pour la table `demande_devis`
@@ -4823,19 +4902,19 @@ ALTER TABLE `demande_devis`
 -- AUTO_INCREMENT pour la table `demande_jeton`
 --
 ALTER TABLE `demande_jeton`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `detail_visite`
 --
 ALTER TABLE `detail_visite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `duree`
@@ -4859,19 +4938,19 @@ ALTER TABLE `faq_categorie`
 -- AUTO_INCREMENT pour la table `fiche`
 --
 ALTER TABLE `fiche`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `historique_visite`
 --
 ALTER TABLE `historique_visite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `image_produit`
 --
 ALTER TABLE `image_produit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT pour la table `image_secteur`
@@ -4883,7 +4962,7 @@ ALTER TABLE `image_secteur`
 -- AUTO_INCREMENT pour la table `jeton`
 --
 ALTER TABLE `jeton`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `motif`
@@ -4913,13 +4992,13 @@ ALTER TABLE `pays`
 -- AUTO_INCREMENT pour la table `personnel`
 --
 ALTER TABLE `personnel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `produit`
 --
 ALTER TABLE `produit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
 
 --
 -- AUTO_INCREMENT pour la table `secteur`
@@ -4949,7 +5028,7 @@ ALTER TABLE `suggestion_secteur`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=685;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=687;
 
 --
 -- AUTO_INCREMENT pour la table `ville`

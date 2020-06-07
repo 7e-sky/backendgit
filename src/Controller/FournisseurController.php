@@ -124,11 +124,14 @@ class FournisseurController extends AbstractController
 
                 $qb = $em->createQueryBuilder('d')
                     ->innerJoin('d.categories', 's')
+                    ->innerJoin('d.acheteur', 'a')
                     ->where('s.id in (:categories_id)')
                     ->andWhere('d.statut = 1')
+                    ->andWhere('d.localisation = 1 OR ( d.localisation = 2 AND a.pays = :pays) ')
                     ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
                     ->andWhere('d.del = 0')
                     ->setParameter('categories_id', $categories_id)
+                    ->setParameter('pays', $fournisseur->getPays())
                     ->select('d');
                 $query = $qb->getQuery()->getResult();
 
@@ -252,12 +255,17 @@ class FournisseurController extends AbstractController
 
                 $qb = $em2->createQueryBuilder('d')
                     ->innerJoin('d.categories', 's')
+                    ->innerJoin('d.acheteur', 'a')
                     ->where('s.id in (:caregorie_id)')
                     ->andWhere('d.statut = :searchTerm')
                     ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
                     ->andWhere('d.del = 0')
+                    ->andWhere('d.localisation = 1 OR ( d.localisation = 2 AND a.pays = :pays) ')
+                    ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
+                    ->andWhere('d.del = 0')
                     ->setParameter('searchTerm', 1)
                     ->setParameter('caregorie_id', $caregorie_id)
+                    ->setParameter('pays', $user->getPays())
                     ->select('d');
                 $query = $qb->getQuery()->getResult();
 
