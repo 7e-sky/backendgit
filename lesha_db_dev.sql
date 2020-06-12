@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 29 mai 2020 à 17:55
+-- Généré le :  ven. 12 juin 2020 à 17:59
 -- Version du serveur :  10.1.31-MariaDB
 -- Version de PHP :  7.2.4
 
@@ -43,10 +43,18 @@ CREATE TABLE `abonnement` (
   `expired` datetime DEFAULT NULL,
   `date_peiment` datetime DEFAULT NULL,
   `duree_id` int(11) DEFAULT NULL,
-  `remise` smallint(6) NOT NULL,
+  `remise` double NOT NULL,
   `currency_id` int(11) DEFAULT NULL,
-  `commentaire` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `commentaire` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `abonnement`
+--
+
+INSERT INTO `abonnement` (`id`, `offre_id`, `demande_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `mode_id`, `reference`, `statut`, `prix`, `created`, `expired`, `date_peiment`, `duree_id`, `remise`, `currency_id`, `commentaire`, `type`) VALUES
+(2, 1, 3, 680, NULL, NULL, 1, 'A-2020-1', 1, 1440, '2020-06-06 15:46:46', '2020-06-05 00:00:00', '2020-06-06 15:46:46', 1, 0, 11, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -58,6 +66,15 @@ CREATE TABLE `abonnement_sous_secteur` (
   `abonnement_id` int(11) NOT NULL,
   `sous_secteur_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `abonnement_sous_secteur`
+--
+
+INSERT INTO `abonnement_sous_secteur` (`abonnement_id`, `sous_secteur_id`) VALUES
+(2, 6),
+(2, 7),
+(2, 8);
 
 -- --------------------------------------------------------
 
@@ -278,7 +295,10 @@ INSERT INTO `acheteur` (`id`, `pays_id`, `ville_id`, `societe`, `parent2`, `civi
 (663, 144, 1, 'TGCC', NULL, '', NULL, '+212 522 23 88 93', 'www.tgcc.ma/', 'TGCC est présente, depuis plus d’une vingtaine d’années dans le secteur de la construction au Maroc. Elle capitalise, à son actif, de nombreuses références et ouvrages d’envergure.', NULL, 11, 0, 0, NULL),
 (665, 144, 34, 'SGIEA', NULL, '', NULL, '+212 619 200 256', '', '- Vente et Installations /maintenance, appareillages électrique et instrumentation, quincailleries, plomberie, chauffage, climatisation\r\n- Formation professionnelle en électricité, instrumentation/automatisme et Formation en projet industriel \r\n- Import et Export matériel et activités électriques', NULL, 11, 0, 0, NULL),
 (670, 144, 1, 'Acheteur test', NULL, 'M.', '123456789954412', '', '', '', 1, 11, 2, 1, NULL),
-(676, 144, 1, 'Ducimus dolor venia', NULL, 'M.', '123456789123456', '', '', '', 2, 1, 2, 1, NULL);
+(676, 144, 1, 'Ducimus dolor venia', NULL, 'M.', '123456789123456', '', '', '', 2, 1, 2, 1, NULL),
+(679, 144, 1, 'Acheteur 1', NULL, 'Mlle', '001538435000080', '+212523331144', 'https://forums.commentcamarche', 'Presentation 1', 4, 11, 2, 1, 'A-679828c'),
+(682, 144, 1, 'Acheteur 2', NULL, 'M.', '123456789123456', '+212622151213', 'http://www.3finudstrie.com', '', 1, 11, 2, 1, 'A-6827827'),
+(683, 75, 33, 'Acheteur 3  ', NULL, 'M.', NULL, '+33522113348', 'https://forums.commentcamarche', 'Présentation\n\n\n', 6, 11, 2, 1, 'A-683dd3d');
 
 -- --------------------------------------------------------
 
@@ -458,7 +478,10 @@ CREATE TABLE `attachement` (
 --
 
 INSERT INTO `attachement` (`id`, `url`, `file_size`, `type`) VALUES
-(1, '5ece49383adab522796908.png', 30820, 'image/png');
+(1, '5ece49383adab522796908.png', 30820, 'image/png'),
+(3, '5eda5ac97d09d106594679.jpg', 8864, 'image/jpeg'),
+(4, '5eda5dc86ec78367745550.png', 30820, 'image/png'),
+(5, '5eda624843b40770153304.png', 38731, 'image/png');
 
 -- --------------------------------------------------------
 
@@ -470,6 +493,13 @@ CREATE TABLE `avatar` (
   `id` int(11) NOT NULL,
   `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `avatar`
+--
+
+INSERT INTO `avatar` (`id`, `url`) VALUES
+(1, '5eda4f418aba8704646613.jpg');
 
 -- --------------------------------------------------------
 
@@ -486,6 +516,14 @@ CREATE TABLE `black_listes` (
   `deblacklister` datetime DEFAULT NULL,
   `etat` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `black_listes`
+--
+
+INSERT INTO `black_listes` (`id`, `fournisseur_id`, `raison`, `created`, `acheteur_id`, `deblacklister`, `etat`) VALUES
+(1, 680, 'Testeee', '2020-06-05 17:13:17', 682, '2020-06-06 14:38:53', 0),
+(2, 684, 'azertyu', '2020-06-05 17:13:42', 682, '2020-06-06 14:39:02', 0);
 
 -- --------------------------------------------------------
 
@@ -1042,7 +1080,8 @@ INSERT INTO `categorie` (`id`, `name`, `del`, `slug`) VALUES
 (559, 'STATION DE REMPLISSAGE', 0, 'station-de-remplissage'),
 (560, 'Paletiseur', 0, 'paletiseur'),
 (561, 'Ensachageuse', 0, 'ensachageuse'),
-(562, 'Secteur_test2_deleted-562', 1, 'secteur-test2-deleted-562');
+(562, 'Secteur_test2_deleted-562', 1, 'secteur-test2-deleted-562'),
+(563, 'produit', 0, 'produit');
 
 -- --------------------------------------------------------
 
@@ -1060,8 +1099,544 @@ CREATE TABLE `categorie_sous_secteur` (
 --
 
 INSERT INTO `categorie_sous_secteur` (`categorie_id`, `sous_secteur_id`) VALUES
-(562, 6),
-(562, 7);
+(1, 177),
+(2, 177),
+(3, 177),
+(4, 298),
+(5, 298),
+(6, 298),
+(7, 298),
+(8, 298),
+(9, 298),
+(10, 298),
+(11, 299),
+(12, 301),
+(13, 301),
+(14, 301),
+(15, 179),
+(16, 179),
+(17, 179),
+(18, 180),
+(19, 181),
+(20, 182),
+(21, 141),
+(22, 141),
+(23, 142),
+(24, 143),
+(25, 143),
+(26, 144),
+(27, 145),
+(28, 146),
+(29, 270),
+(30, 270),
+(31, 270),
+(32, 270),
+(33, 270),
+(34, 270),
+(35, 270),
+(36, 270),
+(37, 286),
+(38, 287),
+(39, 80),
+(40, 81),
+(41, 81),
+(42, 82),
+(43, 63),
+(44, 63),
+(45, 64),
+(46, 65),
+(47, 65),
+(48, 83),
+(49, 84),
+(50, 85),
+(51, 98),
+(52, 99),
+(53, 100),
+(54, 100),
+(55, 101),
+(56, 102),
+(57, 102),
+(58, 103),
+(59, 104),
+(60, 105),
+(61, 106),
+(62, 106),
+(63, 107),
+(64, 108),
+(65, 109),
+(66, 110),
+(67, 111),
+(68, 112),
+(69, 113),
+(70, 114),
+(71, 115),
+(72, 116),
+(73, 116),
+(74, 117),
+(75, 117),
+(76, 118),
+(77, 119),
+(78, 119),
+(79, 120),
+(80, 120),
+(81, 120),
+(82, 121),
+(83, 121),
+(84, 121),
+(85, 122),
+(86, 123),
+(87, 124),
+(88, 125),
+(89, 126),
+(90, 127),
+(91, 128),
+(92, 129),
+(93, 130),
+(94, 131),
+(95, 132),
+(96, 148),
+(97, 149),
+(98, 150),
+(99, 151),
+(100, 152),
+(101, 153),
+(102, 154),
+(103, 155),
+(104, 156),
+(105, 156),
+(106, 258),
+(107, 259),
+(108, 259),
+(109, 260),
+(110, 261),
+(111, 261),
+(112, 262),
+(113, 262),
+(114, 229),
+(115, 229),
+(116, 230),
+(117, 231),
+(118, 232),
+(119, 233),
+(120, 234),
+(121, 235),
+(122, 252),
+(123, 6),
+(124, 7),
+(125, 8),
+(126, 9),
+(127, 10),
+(128, 11),
+(129, 12),
+(130, 271),
+(131, 272),
+(132, 273),
+(133, 269),
+(134, 269),
+(135, 269),
+(136, 204),
+(137, 205),
+(138, 206),
+(139, 70),
+(140, 70),
+(141, 70),
+(143, 71),
+(144, 71),
+(145, 72),
+(146, 73),
+(147, 74),
+(148, 75),
+(149, 75),
+(150, 75),
+(151, 76),
+(152, 76),
+(153, 77),
+(154, 78),
+(155, 79),
+(156, 254),
+(157, 86),
+(158, 86),
+(159, 87),
+(160, 88),
+(161, 89),
+(162, 90),
+(163, 91),
+(164, 92),
+(165, 93),
+(166, 94),
+(167, 95),
+(168, 95),
+(169, 96),
+(170, 97),
+(173, 298),
+(174, 298),
+(175, 298),
+(176, 298),
+(177, 298),
+(178, 298),
+(179, 298),
+(180, 298),
+(181, 298),
+(182, 298),
+(183, 298),
+(184, 298),
+(185, 298),
+(186, 298),
+(187, 298),
+(188, 159),
+(189, 159),
+(190, 159),
+(191, 159),
+(192, 159),
+(193, 159),
+(194, 159),
+(195, 159),
+(196, 159),
+(197, 159),
+(198, 159),
+(199, 159),
+(200, 159),
+(201, 159),
+(202, 159),
+(203, 159),
+(204, 159),
+(205, 160),
+(206, 160),
+(207, 160),
+(208, 160),
+(209, 160),
+(210, 160),
+(212, 160),
+(213, 160),
+(214, 160),
+(216, 160),
+(218, 160),
+(219, 160),
+(220, 160),
+(221, 160),
+(222, 38),
+(223, 38),
+(224, 38),
+(225, 38),
+(226, 38),
+(227, 38),
+(228, 38),
+(229, 39),
+(230, 40),
+(231, 41),
+(232, 42),
+(233, 43),
+(234, 44),
+(235, 45),
+(236, 46),
+(237, 47),
+(238, 48),
+(239, 49),
+(242, 133),
+(243, 134),
+(244, 135),
+(245, 136),
+(246, 137),
+(247, 138),
+(248, 139),
+(249, 140),
+(250, 157),
+(251, 158),
+(252, 161),
+(253, 162),
+(254, 163),
+(255, 274),
+(256, 275),
+(257, 276),
+(258, 164),
+(259, 165),
+(260, 166),
+(261, 167),
+(262, 168),
+(263, 169),
+(264, 170),
+(265, 171),
+(266, 172),
+(267, 173),
+(268, 174),
+(269, 183),
+(270, 184),
+(271, 185),
+(272, 186),
+(273, 207),
+(274, 208),
+(275, 209),
+(276, 253),
+(277, 210),
+(278, 236),
+(279, 237),
+(280, 238),
+(281, 239),
+(282, 240),
+(283, 256),
+(284, 257),
+(285, 263),
+(286, 264),
+(287, 265),
+(288, 266),
+(289, 267),
+(290, 37),
+(291, 36),
+(292, 35),
+(293, 34),
+(294, 50),
+(295, 51),
+(296, 52),
+(297, 53),
+(298, 54),
+(299, 55),
+(300, 56),
+(301, 57),
+(302, 58),
+(303, 59),
+(304, 60),
+(305, 61),
+(307, 66),
+(308, 67),
+(309, 68),
+(310, 69),
+(311, 187),
+(312, 188),
+(313, 189),
+(314, 190),
+(315, 191),
+(317, 192),
+(318, 193),
+(319, 194),
+(320, 195),
+(321, 196),
+(322, 197),
+(323, 198),
+(324, 199),
+(325, 200),
+(327, 202),
+(328, 203),
+(329, 211),
+(330, 212),
+(331, 213),
+(332, 225),
+(333, 226),
+(334, 227),
+(335, 228),
+(336, 214),
+(337, 215),
+(338, 216),
+(339, 217),
+(340, 218),
+(341, 219),
+(342, 220),
+(343, 221),
+(344, 222),
+(345, 223),
+(346, 224),
+(347, 13),
+(348, 14),
+(349, 15),
+(350, 16),
+(351, 17),
+(352, 18),
+(353, 19),
+(354, 20),
+(355, 21),
+(356, 22),
+(357, 23),
+(358, 24),
+(359, 25),
+(360, 26),
+(361, 27),
+(362, 28),
+(363, 29),
+(364, 30),
+(365, 31),
+(366, 32),
+(367, 33),
+(368, 288),
+(369, 288),
+(370, 289),
+(371, 290),
+(372, 290),
+(373, 290),
+(374, 290),
+(375, 290),
+(376, 291),
+(377, 291),
+(378, 291),
+(379, 292),
+(380, 292),
+(381, 293),
+(382, 293),
+(383, 293),
+(384, 293),
+(385, 294),
+(386, 294),
+(387, 295),
+(388, 295),
+(389, 295),
+(390, 295),
+(391, 295),
+(392, 295),
+(393, 295),
+(394, 295),
+(395, 296),
+(396, 296),
+(397, 296),
+(398, 296),
+(399, 296),
+(400, 296),
+(401, 296),
+(402, 296),
+(403, 296),
+(404, 298),
+(405, 299),
+(408, 301),
+(409, 179),
+(410, 180),
+(411, 181),
+(413, 296),
+(414, 299),
+(415, 32),
+(416, 33),
+(417, 28),
+(418, 29),
+(419, 30),
+(420, 47),
+(421, 311),
+(422, 329),
+(423, 330),
+(424, 331),
+(425, 338),
+(426, 339),
+(427, 306),
+(428, 321),
+(429, 321),
+(430, 321),
+(431, 321),
+(432, 322),
+(433, 332),
+(434, 341),
+(435, 340),
+(436, 325),
+(437, 326),
+(438, 327),
+(439, 328),
+(440, 71),
+(441, 71),
+(442, 356),
+(443, 316),
+(444, 317),
+(448, 319),
+(449, 320),
+(450, 255),
+(451, 355),
+(452, 355),
+(453, 353),
+(454, 354),
+(455, 297),
+(456, 315),
+(457, 333),
+(458, 334),
+(459, 312),
+(460, 335),
+(461, 336),
+(462, 337),
+(463, 343),
+(464, 344),
+(465, 323),
+(466, 324),
+(467, 357),
+(468, 342),
+(469, 345),
+(470, 346),
+(471, 347),
+(472, 348),
+(473, 349),
+(474, 350),
+(475, 351),
+(476, 352),
+(477, 313),
+(478, 314),
+(479, 307),
+(480, 308),
+(481, 309),
+(482, 249),
+(483, 250),
+(484, 251),
+(485, 357),
+(486, 358),
+(493, 364),
+(494, 365),
+(495, 366),
+(496, 367),
+(497, 368),
+(498, 369),
+(499, 370),
+(500, 371),
+(501, 373),
+(502, 372),
+(503, 374),
+(504, 375),
+(505, 376),
+(506, 377),
+(507, 378),
+(508, 379),
+(509, 380),
+(510, 381),
+(511, 382),
+(512, 383),
+(513, 384),
+(514, 385),
+(515, 390),
+(516, 386),
+(517, 387),
+(518, 388),
+(519, 389),
+(520, 391),
+(521, 392),
+(522, 393),
+(523, 394),
+(524, 395),
+(525, 396),
+(526, 397),
+(527, 398),
+(528, 399),
+(529, 400),
+(530, 401),
+(531, 402),
+(532, 403),
+(533, 404),
+(534, 405),
+(535, 406),
+(536, 407),
+(537, 408),
+(538, 409),
+(539, 410),
+(540, 411),
+(541, 412),
+(542, 413),
+(543, 414),
+(544, 415),
+(545, 416),
+(546, 417),
+(548, 342),
+(549, 342),
+(550, 342),
+(551, 342),
+(552, 342),
+(553, 342),
+(554, 418),
+(555, 419),
+(556, 419),
+(557, 420),
+(558, 75),
+(559, 421),
+(560, 421),
+(561, 421),
+(563, 422);
 
 -- --------------------------------------------------------
 
@@ -1102,7 +1677,7 @@ CREATE TABLE `condition_generale` (
 --
 
 INSERT INTO `condition_generale` (`id`, `titre`, `contenu`, `slug`) VALUES
-(1, 'Conditions générales', '<p><strong>***Conditions Générales d\'Utilisation du site lesachatsindustriels ***</strong></p><p>&nbsp;</p><p>Les présentes conditions générales d’utilisation du site Internet lesachatsindustriels (ci-après le « Site ») ont pour objet de régir les droits et obligations de la Société \"3F Industrie\" éditrice et propriétaire du site (ci-après « lesachatsindustriels ») et de l’utilisateur (ci-après l’« Utilisateur ») du Site dans le cadre des prestations de services fournies par le site www.lesachatsindustriels.com. Par conséquence, toute utilisation, consultation du Site ou inscription sur le Site implique l’adhésion pleine et entière de l’Utilisateur aux présentes conditions générales d’utilisation.</p><p>&nbsp;</p><p><strong>***ARTICLE 1 – Le concept***</strong></p><p>&nbsp;</p><p>1.1. Le Site a pour objet principal la mise en relation de sociétés (les Acheteurs) préalablement inscrites sur le site souhaitant trouver des fournisseurs de leurs produits ou services, ces derniers (Les Fournisseurs) qui sont eux aussi préalablement inscrits sur le Site se disent capable de fournir le produit ou service demandé par l’acheteur dans les meilleures conditions. Les Acheteurs, les fournisseurs (Produit / service) ainsi que les sous-traitants sont ci- après dénommés les Utilisateurs ou individuellement l’Utilisateur.<br>1.2. L\'enregistrement sur lesachatsindustriels en tant que Fournisseur engage ce dernier une fois qu’il décide de participer à un Appel d’offre, à fournir le produit ou service pour lequel il s’est inscrit comme fournisseur.<br>1.3. L\'enregistrement sur lesachatsindustriels en tant qu’Acheteur engage ce dernier à ne pas lancer de fausse demande de prix, il s’engage à ce que ses demandes soient fondées sur un besoin réel et réalisable.</p><p>&nbsp;</p><p><strong>***ARTICLE 2 – Du côté de l’utilisation du Site par les Acheteurs***</strong></p><p>&nbsp;</p><p>2.1. Les Acheteurs est obligé de créer un compte utilisateur contenant ses données d’identification, telles que demandées sur le Site (ci-après l’Identification).<br>2.2. Tout Acheteur est tenu de fournir, lors de son inscription sur le Site une Identification exacte, complète et à jour permettant de le contacter.<br>2.3. \"3F Industrie\" ne possède pas les moyens de contrôler l’exactitude des informations fournie par l’Acheteur lors de son inscription ni les autres informations éventuellement communiquées ultérieurement par l’Acheteur et disponibles sur le Site.<br>2.4. \"3F Industrie\" se réserve le droit de rendre \"Invalide\" tous compte d’acheteur s’il s’avère en non-conformité avec la déontologie du site web www.lesachatsindustriels.com. Tout plan ou dessins accompagnant les appels d\'offre des acheteurs, sera automatiquement modifier voir supprimé s’ils dissimulent ou mentionnent en quoique ce soit une indication ou un signe pouvant permettre d\'identifier la provenance de l\'appel d\'offre.<br>2.5. L’Acheteur s’engage à mettre à jour l’Identification le concernant en cas de modification de cette dernière.<br>2.6. \"3F Industrie\" à travers son site web lesachatsindustriels se réserve le droit de diffuser les coordonnées de tout utilisateur de ce site ceux des Acheteurs au divers Fournisseurs, et ceux des Fournisseurs au divers Acheteurs ou à d’autres utilisateurs<br>2.7 \"3F Industrie\" ne saurait en conséquence être tenue pour responsable des inconvénients et des inexactitudes qui pourraient être transmises de façon délibérée ou par erreur par les utilisateurs (Acheteur / Fournisseur).<br>2.8. L’acheteur s’engage à diffuser ses Appels d’Offres avec comme but de réaliser des transactions d\'achat potentielles, et à ne pas soumettre des Appels d\'Offres avec comme objectif de consulter et/ou comparer les prix ou propositions de ses propres concurrents.</p><p>&nbsp;</p><p><strong>***ARTICLE 3 - Du côté de l’utilisation du Site par les Fournisseurs***</strong></p><p>&nbsp;</p><p>3.1. L’accès au Site et son utilisation par le fournisseur est totalement gratuite sauf quand ce dernier est intéressé par un appel d’offre et veux voir les coordonnées de celui qui l’a lancé, néanmoins ce dernier est obligé de créer un compte utilisateur contenant ses données d’identification, telles que demandées sur le Site (ci-après l’Identification).<br>3.2. Tout Fournisseur est tenu de fournir, lors de son inscription sur le Site, une Identification exacte, complète et à jour permettant de le contacter.<br>3.3. \"3F Industrie\" ne possède pas les moyens de contrôler l’exactitude des informations fournies par le Fournisseur lors de son inscription ni les autres informations éventuellement communiquées ultérieurement par le Fournisseur et disponibles sur le Site.<br>3.4. Si lors de la consultation ou de l’utilisation du Site, le Fournisseur constate que l’Identification fournie par un autre Utilisateur est inexacte, le Fournisseur pourra le signaler en adressant un email à administrateur@lesachatsindustriels.com<br>3.5. \"3F Industrie\" à travers son site web lesachatsindustriels se réserve le droit de diffuser les coordonnées de tout utilisateur de ce site, ceux des Acheteurs au divers Fournisseurs, et ceux des Fournisseurs au divers Acheteurs ou à d’autres utilisateurs<br>3.6. \"3F Industrie\" ne saurait en conséquence être tenue pour responsable des inconvénients et des inexactitudes qui pourraient être transmise de façon délibérée ou par erreur par les utilisateurs (Acheteur / Fournisseur).</p><p>&nbsp;</p><p><strong>***ARTICLE 4 – Règles de Paiement***</strong></p><p>&nbsp;</p><p>4.1. Les jetons, packs, les bannières publicitaires et les campagnes publicitaires peuvent être vendues séparément, ou ensembles cela dépendra des clients et de leurs souhaits.<br>4.2. \"3F Industrie\" se réserve le droit de modifier à tout moment ces tarifs.<br>4.3. Le règlement n’est pris en compte qu’une fois que notre compte bancaire soit crédité du montant figurant dans la facture correspondant à cet achat. Le payement ne peut en aucun cas et sous aucune condition être remboursé. Les Packs Crédits ne sont pas transférables entre Fournisseur ou d’un Utilisateur à un autre.</p><p>&nbsp;</p><p><strong>***ARTICLE 5 - Confidentialité des Données***</strong></p><p>&nbsp;</p><p>5.1. L’Utilisateur s’engage à respecter les droits de propriété intellectuelle liés à toutes informations auxquelles il aura accès dans le cadre de l\'utilisation du site lesachatsindustriels<br>5.2. Tout Fournisseur s’engage à conserver confidentielles et à faire conserver confidentielles par son personnel, toutes les données auxquelles il a accès dans le cadre de l’utilisation du Site, sauf accord écrit de l’Acheteur pour divulguer ces données.<br>5.3. Le Fournisseur s’interdit, sauf accord préalable de \"3F Industrie\", et quel que soit le résultat de la mise en relation effectuée par l’intermédiaire du site lesachatsindustriels de :<br>- reproduire les données à d’autres fins que l’étude de l’offre de l’Acheteur,<br>- vendre les données directement ou indirectement.</p><p>&nbsp;</p><p><strong>***ARTICLE 6 - Blocage ou suppression du compte de l’Utilisateur***</strong></p><p>&nbsp;</p><p>6. \"3F Industrie\" se réserve le droit de bloquer ou de supprimer, à tout moment et sans préavis, le compte d’un Utilisateur, Acheteur, Fournisseur ou Société de services, sans avoir à s’en justifier, en cas de violation de tout ou partie des présentes conditions générales et/ou en cas d’inactivité du compte de l’Utilisateur pendant une durée de 12 mois.</p><p>&nbsp;</p><p><strong>***ARTICLE 7 – Garanties***</strong></p><p>&nbsp;</p><p>7.1. Les données figurant dans la base de données de www.lesachatsindustriels.com sont déclaratives et fournies par les Utilisateurs, tiers par rapport à \"3F Industrie\". Dès lors \"3F Industrie\" ne garantit ni l’exactitude, ni la fiabilité des données communiquées par les Utilisateurs ni la solvabilité de ces derniers et ne peut en aucun cas en être tenue pour responsable.<br>7.2. \"3F Industrie\" ne pourra encourir une quelconque responsabilité en cas d’utilisation des Identifications non conformes à l’objet du service ou du fait des résultats qui pourraient être obtenus par l\'usage des Identifications.<br>7.3. \"3F Industrie\" est et demeure un tiers par rapport aux Utilisateurs. Dès lors, la responsabilité de son site www.lesachatsindustriels.com ne pourra pas être engagée du fait d’inexécutions contractuelles ou de mauvaise exécution des contrats conclus entre Utilisateurs.<br>7.4. La communication des plans du produit qu’il souhaite faire fabriquer est faite aux risques et périls de l’Acheteur.<br>7.5. Lors de la consultation du Site, l’Utilisateur peut, par l’usage des liens hypertextes mis en place par www.lesachatsindustriels, accéder à d’autres sites Internet ou serveurs partenaires sur lesquels www.lesachatsindustriels.com n’exerce aucun contrôle.<br>Les sites Internet cibles étant susceptibles d’évoluer librement sans l’intervention ou l’autorisation de \"3F Industrie\", l’Utilisateur reconnaît expressément que la responsabilité de \"3F Industrie\" résultant du contenu des sites Internet cibles est exclue.<br>7.6. Tout accord conclu par un Utilisateur avec des partenaires sur le site web www.lesachatsindustriels se fait sous sa seule responsabilité, sans que la responsabilité de \"3F Industrie\" ne puisse être engagée pour quelque raison que ce soit.</p><p>&nbsp;</p><p><strong>***Article 8 - Droits de propriété intellectuelle***</strong></p><p>&nbsp;</p><p>8.1. La marque «LESACHATSINDUSTRIELS» et les noms de domaine lesachatsindustriels.com, lesachatsindustriels.fr, lesachatsindustriels.ma, sont la propriété de \"3F Industrie\". Toute utilisation du nom LESACHATSINDUSTRIELS est interdite sans l’autorisation préalable et écrite de \"3F Industrie\".<br>8.2. Ce site et son contenu sont protégés, au sens du Code de la propriété intellectuelle, en particulier par les droits d\'auteur et de marques.<br>8.3. En application du Code de la Propriété Intellectuelle et, plus généralement, des traités et accords internationaux comportant des dispositions relatives à la protection des droits d\'auteurs, l’Utilisateur s’interdit de reproduire même partiellement, vendre, distribuer, émettre, diffuser, adapter, modifier, publier, communiquer intégralement ou partiellement, sous quelque forme que ce soit la présentation ou l\'organisation du Site sans autorisation préalable et écrite de \"3F Industrie\"<br>8.4. Toute violation des droits et obligations ci-dessus énumérés constituerait une contrefaçon des droits de propriété intellectuelle de \"3F Industrie\".</p><p>&nbsp;</p><p><strong>***ARTICLE 9 - Accès au Site et modifications sur lesachatsindustriels***</strong></p><p>&nbsp;</p><p>9.1. L\'accès à tout ou partie du Site pourra être suspendu ou supprimé sur simple décision de \"3F Industrie\" en cas de force majeure, de difficultés informatiques ou techniques, de difficultés liées à la structure des réseaux de télécommunications, de blocage des réseaux de télécommunications, de grève, d’état d’urgence national ou local, d’intempéries sans que cette liste ne soit exhaustive.<br>9.2. De même, l\'accès au Site pourra être interrompu pour des raisons de maintenance.<br>9.3. \"3F Industrie\" se réserve le droit de modifier ou de faire évoluer à tout moment, les fenêtres du Site lesachatsindustriels, ses fonctionnalités, les services, leur prix ou les conditions d\'utilisation qui lui sont applicables, et cela sans notification préalable d\'aucune sorte et sans que l’Utilisateur puisse invoquer un quelconque préjudice.</p><p>&nbsp;</p><p><strong>***ARTICLE 10 - Données personnelles***</strong></p><p>&nbsp;</p><p>10.1. Données personnelles<br>10.1.1. \"3F Industrie\" peut collecter et enregistrer des informations relatives à l’Utilisateur, personne physique ou morale, constituant des données à caractère personnel. Ces données sont enregistrées dans une base de données interne.<br>10.1.2. \"3F Industrie\" à travers son site web www.lesachatsindustriels.com se réserve le droit de commercialiser les coordonnées téléphoniques, postales et/ou électroniques collectées auprès des Utilisateurs dans le cadre de ses services pour des opérations de mailing ciblées et d’envoie d’Alerte. Toutefois, \"3F Industrie\" ne garantit pas la fiabilité et l’exactitude des données recueillies et ne peut dès lors engager une quelconque responsabilité en cas de non délivrance des envois adressés.<br>10.1.3. Lors de son inscription, l’Utilisateur pourra s’opposer à la communication à des tiers et à l’utilisation par \"3F Industrie\" de ses coordonnées.<br>10.2. Les cookies<br>10.2.1. Dans le cadre de la consultation ou de l’utilisation du Site, www.lesachatsindustriels.com peut conserver certaines données concernant l’Utilisateur, pour les besoins du bon fonctionnement des services proposés ainsi qu’à des fins statistiques.<br>10.2.2. L\'activation de cette fonction n\'est pas nécessaire pour visiter le Site.<br>10.3. Autres données de connexion Lors de toute consultation du Site, www.lesachatsindustriels.com collecte certaines données concernant l’Utilisateur, à savoir l’adresse IP, la date et la durée de sa visite et le matériel technique utilisé (système d\'exploitation, navigateur…). Ces informations qui sont rendues anonymes, ne sont collectées sur le serveur de www.lesachatsindustriels.com et utilisées qu’à des fins statistiques.</p><p>&nbsp;</p><p><strong>***ARTICLE 11 - Défauts de paiements***</strong></p><p>&nbsp;</p><p>11. En cas de défaut ou de litige nés du paiement par un Utilisateur des services proposés par Lesachatsindustriels, avec l’aide de ses partenaires financiers, \"3F Industrie\" se réserve le droit à effectuer toutes démarches ou enquêtes nécessaires à la récupération de sa créance.</p><p>&nbsp;</p><p><strong>***ARTICLE 12 - Loi applicable et compétence***</strong></p><p>&nbsp;</p><p>12.1. Les présentes conditions générales d’utilisation et tout contrat conclu en vertu des présentes sont soumis au droit Marocain.<br>12.2. Tout litige relatif à la validité, à l’interprétation et/ou exécution des présentes et de tout contrat est soumis à la compétence des Tribunaux de commerce de Casablanca – Maroc.<br>12.3. Malgré les traductions des présentes conditions générales en anglais, allemand, et autres langues qui pourraient être proposées ultérieurement, l’Utilisateur reconnaît que seule la version en langue française fera foi entre lui et \"3F Industrie\".</p>', 'conditions-generales'),
+(1, 'Conditions générales', '<p><strong>***Conditions Générales d\'Utilisation du site&nbsp;lesachatsindustriels&nbsp;***</strong></p><p>&nbsp;</p><p>Les présentes conditions générales d’utilisation du site Internet&nbsp;lesachatsindustriels&nbsp;(ci-après le « Site ») ont pour objet de régir les droits et obligations de la Société&nbsp;\"7e-sky\"&nbsp;éditrice et propriétaire du site (ci-après «&nbsp;lesachatsindustriels&nbsp;») et de l’utilisateur (ci-après l’« Utilisateur ») du Site dans le cadre des prestations de services fournies par le site&nbsp;www.lesachatsindustriels.com. Par conséquence, toute utilisation, consultation du Site ou inscription sur le Site implique l’adhésion pleine et entière de l’Utilisateur aux présentes conditions générales d’utilisation.</p><p>&nbsp;</p><p><strong>***ARTICLE 1 – Le concept***</strong></p><p>&nbsp;</p><p>1.1. Le Site a pour objet principal la mise en relation de sociétés (les Acheteurs) préalablement inscrites sur le site souhaitant trouver des fournisseurs de leurs produits ou services, ces derniers (Les Fournisseurs) qui sont eux aussi préalablement inscrits sur le Site se disent capable de fournir le produit ou service demandé par l’acheteur dans les meilleures conditions. Les Acheteurs, les fournisseurs (Produit / service) ainsi que les sous-traitants sont ci- après dénommés les Utilisateurs ou individuellement l’Utilisateur.<br>1.2. L\'enregistrement sur&nbsp;lesachatsindustriels&nbsp;en tant que Fournisseur engage ce dernier une fois qu’il décide de participer à un Appel d’offre, à fournir le produit ou service pour lequel il s’est inscrit comme fournisseur.<br>1.3. L\'enregistrement sur&nbsp;lesachatsindustriels&nbsp;en tant qu’Acheteur engage ce dernier à ne pas lancer de fausse demande de prix, il s’engage à ce que ses demandes soient fondées sur un besoin réel et réalisable.</p><p>&nbsp;</p><p><strong>***ARTICLE 2 – Du côté de l’utilisation du Site par les Acheteurs***</strong></p><p>&nbsp;</p><p>2.1. Les Acheteurs sont obligés de créer un compte utilisateur contenant ses données d’identification, telles que demandées sur le Site (ci-après l’Identification).<br>2.2. Tout Acheteur est tenu de fournir, lors de son inscription sur le Site une Identification exacte, complète et à jour permettant de le contacter.<br>2.3.&nbsp;\"7e-sky\"&nbsp;ne possède pas les moyens de contrôler l’exactitude des informations fournies par l’Acheteur lors de son inscription ni les autres informations éventuellement communiquées ultérieurement par l’Acheteur et disponibles sur le Site.<br>2.4.&nbsp;\"7e-sky\"&nbsp;se réserve le droit de rendre \"Invalide\" tous compte d’acheteur s’il s’avère en non-conformité avec la déontologie du site web www.lesachatsindustriels.com. Tout plan ou dessins accompagnant les appels d\'offre des acheteurs, sera automatiquement modifier voir supprimé s’ils dissimulent ou mentionnent en quoique ce soit une indication ou un signe pouvant permettre d\'identifier la provenance de l\'appel d\'offre.<br>2.5. L’Acheteur s’engage à mettre à jour l’Identification le concernant en cas de modification de cette dernière.<br>2.6.&nbsp;\"7e-sky\"&nbsp;à travers son site web&nbsp;lesachatsindustriels&nbsp;se réserve le droit de diffuser les coordonnées de tout utilisateur de ce site ceux des Acheteurs au divers Fournisseurs, et ceux des Fournisseurs aux divers Acheteurs ou à d’autres utilisateurs<br>2.7&nbsp;\"7e-sky\"&nbsp;ne saurait en conséquence être tenue pour responsable des inconvénients et des inexactitudes qui pourraient être transmises de façon délibérée ou par erreur par les utilisateurs (Acheteur / Fournisseur).<br>2.8. L’acheteur s’engage à diffuser ses Appels d’Offres avec comme but de réaliser des transactions d\'achat potentielles, et à ne pas soumettre des Appels d\'Offres avec comme objectif de consulter et/ou comparer les prix ou propositions de ses propres concurrents.</p><p><br><br><strong>***ARTICLE 3 - Du côté de l’utilisation du Site par les Fournisseurs***</strong></p><p>&nbsp;</p><p>3.1. L’accès au Site et son utilisation par le fournisseur est totalement gratuite sauf quand ce dernier est intéressé par un appel d’offre et veux voir les coordonnées de celui qui l’a lancé, néanmoins ce dernier est obligé de créer un compte utilisateur contenant ses données d’identification, telles que demandées sur le Site (ci-après l’Identification).<br>3.2. Tout Fournisseur est tenu de fournir, lors de son inscription sur le Site, une Identification exacte, complète et à jour permettant de le contacter.<br>3.3.&nbsp;\"7e-sky\"&nbsp;ne possède pas les moyens de contrôler l’exactitude des informations fournies par le Fournisseur lors de son inscription ni les autres informations éventuellement communiquées ultérieurement par le Fournisseur et disponibles sur le Site.<br>3.4. Si lors de la consultation ou de l’utilisation du Site, le Fournisseur constate que l’Identification fournie par un autre Utilisateur est inexacte, le Fournisseur pourra le signaler en adressant un email à administrateur@lesachatsindustriels.com<br>3.5.&nbsp;\"7e-sky\"&nbsp;à travers son site web&nbsp;lesachatsindustriels&nbsp;se réserve le droit de diffuser les coordonnées de tout utilisateur de ce site, ceux des Acheteurs au divers Fournisseurs, et ceux des Fournisseurs au divers Acheteurs ou à d’autres utilisateurs<br>3.6.&nbsp;\"7e-sky\"&nbsp;ne saurait en conséquence être tenue pour responsable des inconvénients et des inexactitudes qui pourraient être transmise de façon délibérée ou par erreur par les utilisateurs (Acheteur / Fournisseur).</p><p>&nbsp;</p><p><strong>***ARTICLE 4 – Règles de Paiement***</strong></p><p>&nbsp;</p><p>4.1. Les jetons, packs, les bannières publicitaires et les campagnes publicitaires peuvent être vendues séparément, ou ensemble cela dépendra des clients et de leurs souhaits.<br>4.2.&nbsp;\"7e-sky\"&nbsp;se réserve le droit de modifier à tout moment ses tarifs.<br>4.3. Le règlement n’est pris en compte qu’une fois que notre compte bancaire soit crédité du montant figurant dans la facture correspondant à cet achat. Le paiement ne peut en aucun cas et sous aucune condition être remboursé. Les Packs Crédits ne sont pas transférables entre Fournisseur ou d’un Utilisateur à un autre.</p><p><br><br><strong>***ARTICLE 5 - Confidentialité des Données***</strong></p><p>&nbsp;</p><p>5.1. L’Utilisateur s’engage à respecter les droits de propriété intellectuelle liés à toutes informations auxquelles il aura accès dans le cadre de l\'utilisation du site&nbsp;lesachatsindustriels<br>5.2. Tout Fournisseur s’engage à conserver confidentielles et à faire conserver confidentielles par son personnel, toutes les données auxquelles il a accès dans le cadre de l’utilisation du Site, sauf accord écrit de l’Acheteur pour divulguer ces données.<br>5.3. Le Fournisseur s’interdit, sauf accord préalable de&nbsp;\"7e-sky\", et quel que soit le résultat de la mise en relation effectuée par l’intermédiaire du site&nbsp;lesachatsindustriels&nbsp;de :<br>- reproduire les données à d’autres fins que l’étude de l’offre de l’Acheteur,<br>- vendre les données directement ou indirectement.</p><p><br><br><strong>***ARTICLE 6 - Blocage ou suppression du compte de l’Utilisateur***</strong></p><p>&nbsp;</p><p>6.&nbsp;\"7e-sky\"&nbsp;se réserve le droit de bloquer ou de supprimer, à tout moment et sans préavis, le compte d’un Utilisateur, Acheteur, Fournisseur ou Société de service, sans avoir à s’en justifier, en cas de violation de tout ou partie des présentes conditions générales et/ou en cas d’inactivité du compte de l’Utilisateur pendant une durée de 12 mois.<br><br><br>&nbsp;</p><p><strong>***ARTICLE 7 – Garanties***</strong></p><p>&nbsp;</p><p>7.1. Les données figurant dans la base de données de&nbsp;www.lesachatsindustriels.com&nbsp;sont déclaratives et fournies par les Utilisateurs, tiers par rapport à&nbsp;\"7e-sky\". Dès lors&nbsp;\"7e-sky\"&nbsp;ne garantit ni l’exactitude, ni la fiabilité des données communiquées par les Utilisateurs ni la solvabilité de ces derniers et ne peut en aucun cas en être tenue pour responsable.<br>7.2.&nbsp;\"7e-sky\"&nbsp;ne pourra encourir une quelconque responsabilité en cas d’utilisation des Identifications non conformes à l’objet du service ou du fait des résultats qui pourraient être obtenus par l\'usage des Identifications.<br>7.3.&nbsp;\"7e-sky\"&nbsp;est, et demeure, un tiers par rapport aux Utilisateurs. Dès lors, la responsabilité de son site&nbsp;www.lesachatsindustriels.com&nbsp;ne pourra pas être engagée du fait d’inexécutions contractuelles ou de mauvaise exécution des contrats conclus entre Utilisateurs.<br>7.4. La communication des plans du produit qu’il souhaite faire fabriquer est exposée aux risques et périls de l’Acheteur.<br>7.5. Lors de la consultation du Site, l’Utilisateur peut, par l’usage des liens hypertextes mis en place par www.lesachatsindustriels, accéder à d’autres sites Internet ou serveurs partenaires sur lesquels&nbsp;www.lesachatsindustriels.com&nbsp;n’exerce aucun contrôle.<br>Les sites Internet cibles étant susceptibles d’évoluer librement sans l’intervention ou l’autorisation de&nbsp;\"7e-sky\", l’Utilisateur reconnaît expressément que la responsabilité de&nbsp;\"7e-sky\"&nbsp;résultant du contenu des sites Internet cibles est exclue.<br>7.6. Tout accord conclu par un Utilisateur avec des partenaires sur le site web www.lesachatsindustriels se fait sous sa seule responsabilité, sans que la responsabilité de&nbsp;\"7e-sky\"&nbsp;ne puisse être engagée pour des raisons quelconques.</p><p><br><br><strong>***Article 8 - Droits de propriété intellectuelle***</strong></p><p>&nbsp;</p><p>8.1. La marque&nbsp;«LESACHATSINDUSTRIELS»&nbsp;et les noms de domaine&nbsp;lesachatsindustriels.com, lesachatsindustriels.fr, lesachatsindustriels.ma,&nbsp;sont la propriété de&nbsp;\"7e-sky\".&nbsp;Toute utilisation du nom&nbsp;LESACHATSINDUSTRIELS&nbsp;est interdite sans l’autorisation préalable et écrite de&nbsp;\"7e-sky\".<br>8.2. Ce site et son contenu sont protégés, au sens du Code de la propriété intellectuelle, en particulier par les droits d\'auteur et de marques.<br>8.3. En application du Code de la Propriété Intellectuelle et, plus généralement, des traités et accords internationaux comportant des dispositions relatives à la protection des droits d\'auteurs, l’Utilisateur s’interdit de reproduire même partiellement, vendre, distribuer, émettre, diffuser, adapter, modifier, publier, communiquer intégralement ou partiellement, sous quelque forme que ce soit la présentation ou l\'organisation du Site sans autorisation préalable et écrite de&nbsp;\"7e-sky\"</p><p><br>8.4. Toute violation des droits et obligations ci-dessus énumérés constituerait une contrefaçon des droits de propriété intellectuelle de&nbsp;\"7e-sky\".</p><p><br><br><strong>***ARTICLE 9 - Accès au Site et modifications sur&nbsp;lesachatsindustriels***</strong></p><p>&nbsp;</p><p>9.1. L\'accès à tout ou partie du Site pourra être suspendu ou supprimé sur simple décision de&nbsp;\"7e-sky\"&nbsp;en cas de force majeure, de difficultés informatiques ou techniques, de difficultés liées à la structure des réseaux de télécommunications, de blocage des réseaux de télécommunications, de grève, d’état d’urgence national ou local, d’intempéries sans que cette liste ne soit exhaustive.<br>9.2. De même, l\'accès au Site pourra être interrompu pour des raisons de maintenance.<br>9.3.&nbsp;\"7e-sky\"&nbsp;se réserve le droit de modifier ou de faire évoluer à tout moment, les fenêtres du Site&nbsp;lesachatsindustriels, ses fonctionnalités, les services, leur prix ou les conditions d\'utilisation qui lui sont applicables, et cela sans notification préalable d\'aucune sorte et sans que l’Utilisateur puisse invoquer un quelconque préjudice.</p><p><br><br><strong>***ARTICLE 10 - Données personnelles***</strong></p><p>&nbsp;</p><p>10.1. Données personnelles<br>10.1.1.&nbsp;\"7e-sky\"&nbsp;peut collecter et enregistrer des informations relatives à l’Utilisateur, personne physique ou morale, constituant des données à caractère personnel. Ces données sont enregistrées dans une base de données internes.<br>10.1.2.&nbsp;\"7e-sky\"&nbsp;à travers son site web&nbsp;www.lesachatsindustriels.com&nbsp;se réserve le droit de commercialiser les coordonnées téléphoniques, postales et/ou électroniques collectées auprès des Utilisateurs dans le cadre de ses services pour des opérations de mailing ciblées et d’envoi d’Alerte. Toutefois,&nbsp;\"7e-sky\"&nbsp;ne garantit pas la fiabilité et l’exactitude des données recueillies et ne peut dès lors engager une quelconque responsabilité en cas de non délivrance des envois adressés.<br>10.1.3. Lors de son inscription, l’Utilisateur pourra s’opposer à la communication à des tiers et à l’utilisation par&nbsp;\"7e-sky\"&nbsp;de ses coordonnées.<br>10.2. Les cookies<br>10.2.1. Dans le cadre de la consultation ou de l’utilisation du Site,&nbsp;www.lesachatsindustriels.com&nbsp;peut conserver certaines données concernant l’Utilisateur, pour les besoins du bon fonctionnement des services proposés ainsi qu’à des fins statistiques.<br>10.2.2. L\'activation de cette fonction n\'est pas nécessaire pour visiter le Site.<br>10.3. Autres données de connexion Lors de toute consultation du Site,&nbsp;www.lesachatsindustriels.com&nbsp;collecte certaines données concernant l’Utilisateur, à savoir l’adresse IP, la date et la durée de sa visite et le matériel technique utilisé (système d\'exploitation, navigateur…). Ces informations qui sont rendues anonymes, ne sont collectées sur le serveur de&nbsp;www.lesachatsindustriels.com&nbsp;et utilisées qu’à des fins statistiques.</p><p><br><strong>***ARTICLE 11 - Défauts de paiements***</strong></p><p>&nbsp;</p><p>11. En cas de défaut ou de litige nés du paiement par un Utilisateur des services proposés par&nbsp;Lesachatsindustriels, avec l’aide de ses partenaires financiers,&nbsp;\"7e-sky\"&nbsp;se réserve le droit à effectuer toutes démarches ou enquêtes nécessaires à la récupération de sa créance.</p><p>&nbsp;</p><p><strong>***ARTICLE 12 - Loi applicable et compétence***</strong></p><p>&nbsp;</p><p>12.1. Les présentes conditions générales d’utilisation et tout contrat conclu en vertu des présentes sont soumis au droit Marocain.<br>12.2. Tout litige relatif à la validité, à l’interprétation et/ou exécution des présentes et de tout contrat est soumis à la compétence des Tribunaux de Commerce de Casablanca – Maroc.<br>12.3. Malgré les traductions des présentes conditions générales en anglais, allemand, et autres langues qui pourraient être proposées ultérieurement, l’Utilisateur reconnaît que seule la version en langue française fera foi entre lui et&nbsp;\"7e-sky\".</p><p>&nbsp;</p>', 'conditions-generales'),
 (2, 'Facturation', '<p>Contactez le département financier à propos de la facturation.<br><br><strong>Téléphone</strong> : +212-522.36.57.97.<br><strong>Fax</strong> : +212-522.36.57.94.<br><strong>Email</strong>: <a href=\"mailto:adherent@lesachatsindustriels.com\">adherent@lesachatsindustriels.com</a></p><p><strong>Coordonnées bancaires pour régler vos factures</strong><br><br><br><strong>Par virement bancaire Au :</strong><br><br>3F industrie<br>ATTIJARIWAFA BANK<br>CENTRE D\'AFFAIRE CASA PORTE D\'ANFA<br>Casablanca, Maroc<br><br><strong>Numéro du compte Bancaire</strong> : 007 780 000 4095 00000 254 292</p>', 'facturation');
 
 -- --------------------------------------------------------
@@ -1174,17 +1749,19 @@ CREATE TABLE `demande_abonnement` (
   `mode_id` int(11) DEFAULT NULL,
   `duree_id` int(11) DEFAULT NULL,
   `prix` double NOT NULL,
-  `currency` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL
+  `currency` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `demande_abonnement`
 --
 
-INSERT INTO `demande_abonnement` (`id`, `offre_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `reference`, `statut`, `created`, `mode_id`, `duree_id`, `prix`, `currency`) VALUES
-(1, 3, 2, NULL, NULL, 'D-2020-1', 0, '2020-05-20 13:17:30', 1, 1, 4320, 'DHS'),
-(2, 1, 2, NULL, NULL, 'D-2020-2', 0, '2020-05-29 14:21:09', 1, 1, 1440, 'DHS'),
-(3, 1, 2, NULL, NULL, 'D-2020-3', 0, '2020-05-29 16:47:42', 1, 1, 144, 'EUR');
+INSERT INTO `demande_abonnement` (`id`, `offre_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `reference`, `statut`, `created`, `mode_id`, `duree_id`, `prix`, `currency`, `type`) VALUES
+(2, 1, 2, NULL, NULL, 'D-2020-1', 1, '2020-06-05 13:47:32', 1, 1, 120, 'EUR', 0),
+(3, 1, 680, NULL, NULL, 'D-2020-2', 1, '2020-06-06 15:40:07', 1, 1, 1440, 'DHS', 0),
+(4, 1, 680, NULL, NULL, 'D-2020-3', 0, '2020-06-08 11:20:35', 1, 1, 1440, 'DHS', 1),
+(5, 1, 680, NULL, NULL, 'D-2020-4', 0, '2020-06-08 16:22:11', 1, 1, 1440, 'DHS', 0);
 
 -- --------------------------------------------------------
 
@@ -1204,14 +1781,17 @@ CREATE TABLE `demande_abonnement_sous_secteur` (
 INSERT INTO `demande_abonnement_sous_secteur` (`demande_abonnement_id`, `sous_secteur_id`) VALUES
 (2, 6),
 (2, 7),
-(2, 8),
-(2, 9),
-(2, 11),
 (3, 6),
-(3, 14),
-(3, 262),
-(3, 311),
-(3, 315);
+(3, 7),
+(3, 8),
+(4, 6),
+(4, 7),
+(4, 8),
+(4, 13),
+(4, 15),
+(5, 6),
+(5, 7),
+(5, 8);
 
 -- --------------------------------------------------------
 
@@ -1240,134 +1820,142 @@ CREATE TABLE `demande_achat` (
   `titre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pays` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ville` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL
+  `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `localisation` smallint(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `demande_achat`
 --
 
-INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `budget`, `del`, `motif_rejet_id`, `currency_id`, `titre`, `pays`, `ville`, `slug`) VALUES
-(89, 40, 1, '2009-89', 'Achat de materiel informatique', '2016-12-06 00:00:00', 1, 0, NULL, '2009-04-02 17:11:51', '2009-12-06 13:26:09', 1, 0, 0, 0, NULL, 11, 'Demande de devis #89', 'Maroc', 'Casablanca', 'demande-devis-89'),
-(100, 3, 1, '2009-100', 'ACHATS D\'ASSENCEUR TYPE 450 KG 5 NIVEAUX 1 M/S', '2016-12-09 00:00:00', 1, 0, NULL, '2009-05-26 10:30:51', '2017-12-08 16:28:54', 1, 0, 0, 0, NULL, 11, 'Demande de devis #100', 'Maroc', 'Casablanca', 'demande-devis-100'),
-(101, 53, 1, '2009-101', 'BESOIN DE SURVEILLANCE ET GARDIENAGE', '2016-06-30 00:00:00', 1, 0, NULL, '2009-06-01 19:50:58', '2009-06-01 19:52:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #101', 'Maroc', 'Rabat', 'demande-devis-101'),
-(102, 3, 1, '2009-102', 'ACHATS DE MATIERE PREMIERE PLASTIQUE PPE, QTE 10T/3MOIS', '2016-06-24 00:00:00', 1, 0, NULL, '2009-06-03 00:27:48', '2009-07-14 19:54:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #102', 'Maroc', 'Casablanca', 'demande-devis-102'),
-(103, 3, 1, '2009-103', 'BESOIN EN RAYONNAGE CONVENTIONNEL POUR 2000 PALETTES.', '2016-06-29 00:00:00', 1, 0, NULL, '2009-06-28 16:35:43', '2009-06-28 16:36:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #103', 'Maroc', 'Casablanca', 'demande-devis-103'),
-(104, 3, 1, '2009-104', 'BESOIN EN NIVELEUR DE QUAI POUR NOTRE CLIENT BASE A TANGER, POUR UNE QUANTITE DE 5 NIVELEURS.', '2016-02-11 00:00:00', 1, 0, NULL, '2009-06-28 16:38:39', '2010-02-19 11:51:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #104', 'Maroc', 'Casablanca', 'demande-devis-104'),
-(105, 3, 1, '2009-105', 'Location ou Achat de conteneur 20 pieds climatisé pour stockage\r\ndes produits chimique pendant 3 mois.', '2016-08-10 00:00:00', 1, 0, NULL, '2009-06-28 16:48:29', '2010-03-25 10:33:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #105', 'Maroc', 'Casablanca', 'demande-devis-105'),
-(106, 3, 1, '2009-106', 'Tanger Free Zone: Chapiteaux de 888m2 sol 74metre longueur et 12 mètre\r\nlargeur pour prestation RAMADAN 2009.\r\n120 Tables rondes.\r\n1200 Chaises pour tables.\r\nClient Basé Sur Tanger, Votre Offre HT, HD.', '2016-07-30 00:00:00', 1, 0, NULL, '2009-06-30 13:34:25', '2009-07-14 19:55:06', 1, 0, 0, 0, NULL, 11, 'Demande de devis #106', 'Maroc', 'Casablanca', 'demande-devis-106'),
-(107, 58, 1, '2009-107', 'location  des chapitaux de 888m2 sol 74m longeur et 12 m de largeur pour prestation RAMADAN 2009 ( 1 mois) avec 120 tables rondes et 1200 chaises.\r\n\r\nMerci de noter que nous somme un groupe multinationale, installer dans la zone franche d\'exportation de Tanger.', '2016-07-10 00:00:00', 1, 0, NULL, '2009-07-01 08:56:06', '2009-07-07 13:34:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #107', 'Maroc', 'Kenitra', 'demande-devis-107'),
-(108, 68, 1, '2009-108', 'PERCEUSE PNEUMATIQUE \r\nB33\r\nFACOM QUANTITE 02', '2016-07-01 00:00:00', 1, 0, NULL, '2009-07-02 15:37:37', '2009-07-02 15:48:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #108', 'Maroc', 'Casablanca', 'demande-devis-108'),
-(113, 78, 1, '2009-113', 'APPEL D’OFFRE LOCATION CAMION LONGUE DUREE\r\nNous vous prions de nous faire parvenir votre meilleure offre de prix pour location d\'un camion avec cabine en bon état de 14t sous les conditions suivantes :\r\n\r\nPayement: 60 jours après date facture\r\nLivraison : A domicile\r\nService : 24/24 - 6/7 = Le service doit être assure par 2 chauffeur (24/24) qui doivent être instruit\r\nTravail dimanche : nous aurons éventuellement besoin du camion le dimanche (merci de préciser le cout sup. Jour/nuit.)\r\nGasoil : inclus\r\nPanne : en cas de panne du camion dépasse 2h, il fait faire un remplacement immédiat du camion, \r\nPermanence : les deux chauffeurs doivent être permanents sur notre site pour assurer les mouvements.\r\nIl faut tabler l\'offre sur  2500 km/mois. Et confirmer le cout des km sup.\r\nAssurance obligatoire : RC+ AT+Assurance marchandise couvrant 300.000dhs de dommage.\r\n\r\n\r\nNB : ce camion va travailler essentiellement dans la zone franche et éventuellement il fera des déplacements vers TAZA, Casa.', '2016-07-15 00:00:00', 1, 0, NULL, '2009-07-10 12:30:26', '2009-07-10 12:44:27', 1, 0, 0, 0, NULL, 11, 'Demande de devis #113', 'Maroc', 'Tanger', 'demande-devis-113'),
-(114, 83, 1, '2009-114', 'Ponts de chargement en aluminium avec une charge utile de 1200 kg.', '2016-09-14 00:00:00', 1, 0, NULL, '2009-07-14 17:19:09', '2009-08-18 17:33:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #114', 'Maroc', 'Casablanca', 'demande-devis-114'),
-(115, 102, 1, '2009-115', 'Bache d\'eau pour secourir l\'eau de l\'ONEP de cap.5m3 en inox 316 L avec système de chloration et déchloration , système de surpression , filtres....', '2016-09-18 00:00:00', 1, 0, NULL, '2009-08-11 09:51:59', '2009-09-11 10:35:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #115', 'Maroc', 'Casablanca', 'demande-devis-115'),
-(116, 102, 1, '2009-116', 'Deux aspirateurs de dimensions 50 cm * 50 cm , robuste pour aspirer l\'air chaud d\'une salle de 100 m2', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-11 09:54:43', '2009-10-29 11:42:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #116', 'Maroc', 'Casablanca', 'demande-devis-116'),
-(117, 102, 1, '2009-117', 'Bac de lavage en inox 304 L divisé trois compartiments pour usage agro-alimentaire de longeur2500 mm , largeur 400 mm , hauteur 850 mm.', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-11 09:58:17', '2009-10-29 11:42:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #117', 'Maroc', 'Casablanca', 'demande-devis-117'),
-(118, 102, 1, '2009-118', 'Porte métallique de 4.3 * 5 m avec moteur et bouton marche arrêt.', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 15:51:37', '2009-10-29 11:41:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #118', 'Maroc', 'Casablanca', 'demande-devis-118'),
-(119, 102, 1, '2009-119', '01 Gerbeur 1500 kg , température d\'utilisation =-25°C , rayon de braquage : le minimum possible , fourche : 1200mm , hauteur à atteindre :4500 mm', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 15:59:03', '2010-03-29 15:19:21', 1, 0, 0, 0, NULL, 11, 'Demande de devis #119', 'Maroc', 'Casablanca', 'demande-devis-119'),
-(120, 102, 1, '2009-120', '01 Gerbeur 1500 kg , température d\'utilisation =  T ambiante , hauteur à atteidre 4.5 metres , Rayon de braquage: le moins encombrant possible. ', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 16:02:21', '2010-03-29 15:18:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #120', 'Maroc', 'Casablanca', 'demande-devis-120'),
-(121, 102, 1, '2009-121', '06 transpalettes galvanisées , capacité en kg : 2500 kg , descente : par poigné , longeur des fourches : 1150 mm', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 16:06:58', '2009-10-29 11:39:24', 1, 0, 0, 0, NULL, 11, 'Demande de devis #121', 'Maroc', 'Casablanca', 'demande-devis-121'),
-(122, 143, 1, '2009-122', 'cable de skipe metalique 22MM', '2016-08-25 00:00:00', 1, 0, NULL, '2009-08-24 11:00:19', '2009-08-24 11:38:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #122', 'Maroc', 'Marrakech', 'demande-devis-122'),
-(123, 143, 1, '2009-123', '05 CAMIONS  3,5T-7T-8T \r\nETAT NEUF', '2016-09-15 00:00:00', 1, 0, NULL, '2009-08-25 11:00:30', '2009-09-12 14:04:57', 1, 0, 0, 0, NULL, 11, 'Demande de devis #123', 'Maroc', 'Marrakech', 'demande-devis-123'),
-(124, 143, 1, '2009-124', '01 ONDULEUR POUR PC MGE 600VA', '2016-08-27 00:00:00', 1, 0, NULL, '2009-08-25 11:02:37', '2009-09-11 10:31:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #124', 'Maroc', 'Marrakech', 'demande-devis-124'),
-(125, 146, 1, '2009-125', 'Nous recherchons 10 rallonges 4 poste+terre (long:5m)\r\nmarque LEGRAND 3500W', '2016-09-10 00:00:00', 1, 0, NULL, '2009-08-25 12:23:19', '2009-09-17 21:31:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #125', 'Maroc', 'Casablanca', 'demande-devis-125'),
-(126, 143, 1, '2009-126', '01 PICK UP NEUVE', '2016-09-10 00:00:00', 1, 0, NULL, '2009-09-01 14:27:45', '2009-09-11 10:34:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #126', 'Maroc', 'Marrakech', 'demande-devis-126'),
-(127, 143, 1, '2009-127', '20 VOITURES UTILITAIRES EQUIVALENT A BERLIN ESPACE OU DACIA ', '2016-09-15 00:00:00', 1, 0, NULL, '2009-09-01 14:29:40', '2009-09-12 14:04:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #127', 'Maroc', 'Marrakech', 'demande-devis-127'),
-(128, 166, 1, '2009-128', 'Besoin de matériel informatique et électrique suivant:\r\n\r\n> Cordons informatiques de 10ML (prix pour les CAT6 et les CAT5).....................   Qté 30.\r\n> Câble électrique (courbe C, section 6mm2, constitué de deux files intérieur en rouge (-)  et bleu(+) ) ................................Qté 300ML.\r\n> Disjoncteur unipolaire 10A avec embouts 6mm2.....................................Qté 30.\r\n> Prix des Jarretières optiques d\'environ 10M avec connecteurs. \r\n\r\n> Switch 24ports, similaire au Switch Cisco Catalyst 3750 ME avec module d\'alimentation en 48V DC.\r\n\r\nUne demande directe et officielle sera envoyée après consultation des réponses.', '2016-09-08 00:00:00', 1, 0, NULL, '2009-09-02 11:56:54', '2009-09-11 10:30:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #128', 'Maroc', 'Casablanca', 'demande-devis-128'),
-(129, 143, 1, '2009-129', 'Besoin en :\r\n\r\n01UN : CARTE POUR PILOTE BOSCH 324A2871837001390 \r\n01UN : CARTE POUR PILOTE BOSCH 4176A1911837001391\r\n01UN : CARTE POUR PILOTE BOSCH 1435A3831837001378\r\n', '2016-09-07 00:00:00', 1, 0, NULL, '2009-09-03 09:40:56', '2009-09-03 09:49:35', 1, 0, 0, 0, NULL, 11, 'Demande de devis #129', 'Maroc', 'Marrakech', 'demande-devis-129'),
-(130, 89, 1, '2009-130', ' besoin d’une unité moderne de trituration des olives (système continu): fourniture, installation et mise en marche et avoir une capacité de production de 350 Kg d’olives par heure et travaillant sous une tension de service de 380 volts à trois fil ', '2016-09-30 00:00:00', 1, 0, NULL, '2009-09-09 01:57:45', '2009-09-09 09:32:32', 1, 0, 0, 0, NULL, 11, 'Demande de devis #130', 'Maroc', 'Ouezzane', 'demande-devis-130'),
-(131, 179, 1, '2009-131', 'Veuillez trouver ci-dessous la liste de notre besoin en matériels informatiques pour notre  nouvelle filière qui sera basée sur  BENI MELLAL.\r\n\r\n04- UC DX2400 CORE 2 DUO 2,8/3G/250G SANS ECRAN\r\n\r\n06- DX2390MT 2,5/1G/160 + TFT 19\"\r\n\r\n01- Imp couleur A3 officejet7103	\r\n01- Imp laser couleur A4 1515N	\r\n02- Imp matricielle EPSON LQ300+	\r\n04- Imp laser Mono chrome A4 3010	\r\n10- Support de l\'unité centrale en metal\r\n	\r\n03- Onduleur 1000v MGE NOVA 1250	\r\n\r\n01- Fax brother 2820	\r\n\r\n02- Swtch 8 port 3COM	\r\n', '2016-09-15 00:00:00', 1, 0, NULL, '2009-09-09 11:11:00', '2009-09-14 15:08:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #131', 'Maroc', 'Marrakech', 'demande-devis-131'),
-(135, 185, 1, '2009-135', 'Besoin en belets pour boisson chaude et froide, taille moyenne, à utilisation fréquente. \r\n1ère Quantité à livrer: 450 Unité.', '2016-09-26 00:00:00', 1, 0, NULL, '2009-09-23 17:45:53', '2009-09-25 12:10:50', 1, 0, 0, 0, NULL, 11, 'Demande de devis #135', 'Maroc', 'Tanger', 'demande-devis-135'),
-(136, 58, 1, '2009-136', 'Besoin en Audit par un organisme externe ( certifié HACCP) vis à vis  notre sous-traitant de gestion de notre cantine .', '2016-09-30 00:00:00', 1, 0, NULL, '2009-09-24 15:59:32', '2009-09-25 14:23:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #136', 'Maroc', 'Kenitra', 'demande-devis-136'),
-(137, 185, 1, '2009-137', 'NOUS AVONS BESOIN DE PRODUITS DE LA MARQUE PARKER:\r\nGARNITURE SM 551472/1AX \r\nGARNITURE WRM 472519\r\nANNEAU DE GUIDE I/DRW 60\r\nGarniture code E/GR 0850\r\nGarniture code E/GR 0900\r\nAnneau de guidage type I/DWR 40/2\r\nAnneau de guidage type I/DWR 55\r\nAnneau de guidage type I/DWR 60\r\nAnneau de guidage type E/DWR 30/2\r\nGarniture \r\nGarniture type WRM 118 149\r\nGarniture type MU/P 4230\r\nGarniture type I/DWR 30/2\r\nGarniture type DBM 216 153\r\nRACLEUR WRM 314346  \r\nQTE 1 DE CHAQUE PRODUIT', '2016-10-05 00:00:00', 1, 0, NULL, '2009-09-25 10:59:35', '2009-09-25 11:26:21', 1, 0, 0, 0, NULL, 11, 'Demande de devis #137', 'Maroc', 'Tanger', 'demande-devis-137'),
-(138, 185, 1, '2009-138', 'Nous avons besoin de:\r\nCourroie transport dentée 985H30M.M B30mm L2501,9mm\r\nLA MARQUE BANDO POUR EQUIPEMENT ETIREUSE DE LA PRESSE', '2016-10-05 00:00:00', 1, 0, NULL, '2009-09-25 11:02:37', '2009-09-25 11:27:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #138', 'Maroc', 'Tanger', 'demande-devis-138'),
-(139, 77, 1, '2009-139', 'BESOIN EN PIGNONS VOIR FICHE JOINTE', '2016-09-25 00:00:00', 1, 0, NULL, '2009-09-26 17:19:23', '2009-09-26 17:21:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #139', 'Maroc', 'Mohammadia', 'demande-devis-139'),
-(140, 77, 1, '2009-140', 'Besoin en Rayonnage métallique type léger selon plan ci-joint.', '2016-10-10 00:00:00', 1, 0, NULL, '2009-09-28 14:56:10', '2009-09-28 14:56:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #140', 'Maroc', 'Mohammadia', 'demande-devis-140'),
-(141, 143, 1, '2009-141', '01 tendeuse pour jardin type T.51 XP MARQUE WOLF OU EQUIVALENTE', '2016-10-07 00:00:00', 1, 0, NULL, '2009-09-28 14:56:18', '2009-09-30 15:46:41', 1, 0, 0, 0, NULL, 11, 'Demande de devis #141', 'Maroc', 'Marrakech', 'demande-devis-141'),
-(143, 77, 1, '2009-143', 'Besoin en 100 Vestiaires métalliques à 02 portes/ 02 cases – 198x30x50 CM. EP 7/10.', '2016-10-13 00:00:00', 1, 0, NULL, '2009-10-02 23:16:32', '2009-10-08 16:50:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #143', 'Maroc', 'Mohammadia', 'demande-devis-143'),
-(144, 185, 1, '2009-144', 'Besoin en Prestation de nettoyage au sein de notre administration.\r\nCette demande est réservée aux sociétés basées sur la ville de Tanger.', '2016-10-12 00:00:00', 1, 0, NULL, '2009-10-06 11:52:18', '2009-10-06 19:13:59', 1, 0, 0, 0, NULL, 11, 'Demande de devis #144', 'Maroc', 'Tanger', 'demande-devis-144'),
-(145, 208, 1, '2009-145', 'Merci de nous faire votre proposition pour la construction d\'un hangar avec les dimensions suivantes:\r\nLargeur: 13.24m\r\nLongueur:24m avec travées de 6m\r\nHauteur 5 a 6m\r\nToit de préférence en charpente', '2016-10-31 00:00:00', 1, 0, NULL, '2009-10-17 06:42:45', '2009-10-17 12:38:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #145', 'Maroc', 'Casablanca', 'demande-devis-145'),
-(146, 185, 1, '2009-146', 'Je vous mets ci-joint une liste des pièces de rechange  dont je vous demande de bien vouloir nous faire une offre commerciale complète comprenant vos délais de livraison de chaque produit.', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-19 15:10:40', '2009-10-19 15:56:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #146', 'Maroc', 'Tanger', 'demande-devis-146'),
-(147, 211, 1, '2009-147', 'TAPIS RHINO-BAND D\r\nlisières bouclage DG\r\nMatière : acier doux ecroui\r\n1 tapis de 40mx2.30m', '2016-10-30 00:00:00', 1, 0, NULL, '2009-10-20 10:17:26', '2009-10-21 12:28:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #147', 'Maroc', 'Casablanca', 'demande-devis-147'),
-(148, 211, 1, '2009-148', 'Duplex souple imprimé 2 à 5 couleurs différentes laizes de 90 à 525mm.\r\n20T/3mois', '2016-10-30 00:00:00', 1, 0, NULL, '2009-10-20 10:24:05', '2009-10-21 14:15:44', 1, 0, 0, 0, NULL, 11, 'Demande de devis #148', 'Maroc', 'Casablanca', 'demande-devis-148'),
-(149, 212, 1, '2009-149', 'Cherchons prestataire pour réaliser des travaux d\'éclairage (diagnostic des causes de dysfonctionnement + réparation) dans un entrepot de  10 000 m2 en activité, hauteur sous plafond de environ 11 m. \r\nLe prestataire qui nous contactera devra étre assuré et montrer ses habilitations électrique, intervention sur site certifé ISO...', '2016-10-31 00:00:00', 1, 0, NULL, '2009-10-20 17:05:48', '2009-10-30 11:53:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #149', 'Maroc', 'Casablanca', 'demande-devis-149'),
-(150, 213, 1, '2009-150', 'Nous souhaitons réaliser 2 installations racking : une de 2500 EPR en rack à accumulation et l’autre de 2.000 EPR en rack conventionnel. Détail des plans et gabarit palette en pièce jointe.', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-20 17:34:25', '2009-10-20 22:56:40', 1, 0, 0, 0, NULL, 11, 'Demande de devis #150', 'Maroc', 'Casablanca', 'demande-devis-150'),
-(151, 214, 1, '2009-151', 'Achat du Logiciel Autocad 2009 avec licence mono poste', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-21 13:19:14', '2009-10-21 13:40:14', 1, 0, 0, 0, NULL, 11, 'Demande de devis #151', 'Maroc', 'Casablanca', 'demande-devis-151'),
-(152, 185, 1, '2009-152', 'Equipement pour dépoussierage des sols en 50mm\r\nBesoin Urgent', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-22 09:15:18', '2009-10-22 10:49:10', 1, 0, 0, 0, NULL, 11, 'Demande de devis #152', 'Maroc', 'Tanger', 'demande-devis-152'),
-(153, 77, 1, '2009-153', 'Nous cherchons des fabricants de palettes fumigées ( anti-feux) pour export par avion Dim palette 800x1000. EN ADMISSION TEMPORAIRE.\r\nQté mensuelle environ 100 \r\n\r\n', '2016-11-03 00:00:00', 1, 0, NULL, '2009-10-24 16:44:03', '2009-10-27 11:48:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #153', 'Maroc', 'Mohammadia', 'demande-devis-153'),
-(154, 207, 1, '2009-154', 'Merci de nos communiquer votre offre de prix pour la fourniture des motoréducteur  arbre creux suivantes en respectant le type indiquer sur la photo ci jointe:\r\n          2- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:1 CV Vitesse de sortie 10 tr/min.\r\n          2- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:2 CV Vitesse de sortie 40à50 tr/min.\r\n          1- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:3 CV Vitesse de sortie 40à50 tr/min.\r\n* Moto réducteur à 2 ou 3 trains. \r\n* Moteur triphasé accouplé.', '2016-11-10 00:00:00', 1, 0, NULL, '2009-10-28 10:39:01', '2009-10-28 16:13:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #154', 'Maroc', 'Casablanca', 'demande-devis-154'),
-(155, 185, 1, '2009-155', 'Nous Cherchons un fournisseur sur la zone de Tanger, qui peut nous fournir des flexibles et des composants pneumatiques pour un budget d’achat annuel de plus de 300 000,00 Dhs.\r\nNous consommons des composants tels que :\r\nLes raccords, les limiteurs de débits les flexibles, les pompes à graisses …\r\nNous exigeant la disponibilité de stock, le respect des délais de livraisons ainsi que la bonne santé financière du fournisseur.', '2016-11-10 00:00:00', 1, 0, NULL, '2009-10-29 12:36:13', '2009-11-09 08:57:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #155', 'Maroc', 'Tanger', 'demande-devis-155'),
-(156, 234, 1, '2009-156', 'Besoin en rayonnage selon plan ci-joint.\r\nLe nombre de traves ainsi que le détail du besoin est sur le plan.\r\nMeilleures salutations.\r\n', '2016-11-21 00:00:00', 1, 0, NULL, '2009-11-05 10:26:29', '2009-11-12 12:39:29', 1, 0, 0, 0, NULL, 11, 'Demande de devis #156', 'Maroc', 'Casablanca', 'demande-devis-156'),
-(157, 58, 1, '2009-157', 'BESOIN EN USTENSILES DE CUISINE SELON LISTE CI-JOINTE SUR LE LIEN SUIVANT: \r\nhttp://www.lesachatsindustriels.com/ImageDemande/AC_8620Q274_DP_UC.pdf\r\n', '2016-11-19 00:00:00', 1, 0, NULL, '2009-11-13 11:33:39', '2009-11-16 15:24:11', 1, 0, 0, 0, NULL, 11, 'Demande de devis #157', 'Maroc', 'Kenitra', 'demande-devis-157'),
-(158, 185, 1, '2009-158', 'Besoin en Matériel informatique : Le prestataire devra faire un diagnostique et audit du parc existant, et la proposition selon état du matériel du remplacement. Ceci comprend nos deux sites une cinquantaine sur Tanger ainsi qu’une cinquantaine sur nos agences sur Casablanca.\r\nAU TOTAL 100 MACHINES ENTRE PC PORTABLE ET PC FIXE.', '2016-11-25 00:00:00', 1, 0, NULL, '2009-11-13 16:15:35', '2009-11-23 11:26:47', 1, 0, 0, 0, NULL, 11, 'Demande de devis #158', 'Maroc', 'Tanger', 'demande-devis-158'),
-(159, 242, 1, '2009-159', 'Cherche organisme de formation  pour thèmes: Cariste - Secouriste au travail - Equipiers de premières intervention ', '2016-11-30 00:00:00', 1, 0, NULL, '2009-11-23 15:07:59', '2009-11-25 10:07:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #159', 'Maroc', 'Casablanca', 'demande-devis-159'),
-(160, 242, 1, '2009-160', 'Besoin organisme pour réalisation de l\'ingénierie de formation conformément aux exigences de l\'OFPPT ', '2016-11-30 00:00:00', 1, 0, NULL, '2009-11-23 17:42:07', '2009-11-24 11:59:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #160', 'Maroc', 'Casablanca', 'demande-devis-160'),
-(161, 77, 1, '2009-161', 'Travaux mécaniques sur une grosse machine.\r\n(Voir liste des travaux en fichier ci-joint)', '2016-12-08 00:00:00', 1, 0, NULL, '2009-11-26 11:16:38', '2009-11-26 11:17:29', 1, 0, 0, 0, NULL, 11, 'Demande de devis #161', 'Maroc', 'Mohammadia', 'demande-devis-161'),
-(162, 251, 1, '2009-162', 'AMENAGEMENT D\'UN ESPACE D\'ACCUEIL\r\nACHATS DE MEUBLES : \r\n-	Nombre de Chaises : 1200 (plusieurs gammes)\r\n-	Nombre de Tables : 180 (1,5 m de diamètre, prévue pour un service à table pour 10 personnes assises)\r\n\r\n', '2016-12-16 00:00:00', 1, 0, NULL, '2009-12-02 12:54:41', '2009-12-09 17:54:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #162', 'Maroc', 'Marrakech', 'demande-devis-162'),
-(163, 264, 1, '2009-163', 'Nous avons besoin d’une presse à comprimés de  préférence de marque \"Courtoy\", fonctionnant en euronormes BB avec un  minimum de 30 stations et pouvant atteindre une capacité de 300.000 cph d\'âge  <= à 17 ans.\r\n Si vous avez des offres correspondant de manière + ou - exacte à  ce besoin, je vous prie de bien vouloir me contacter dès que possible avec vos  meilleures offres de prix, délais, services et transport.\r\nMerci d\'avance', '2017-02-01 00:00:00', 1, 0, NULL, '2009-12-14 10:43:00', '2009-12-14 10:54:20', 1, 0, 0, 0, NULL, 11, 'Demande de devis #163', 'Maroc', 'Bouskoura', 'demande-devis-163'),
-(164, 264, 1, '2009-164', 'Nous avons besoin de 25 paires de potelets de séparation en inox avec ruban pour délimiter des zones au sein de notre ligne de production.\r\nHauteur: entre 100 et 130 cm\r\nTaille ruban: 200 cm', '2017-01-29 00:00:00', 1, 0, NULL, '2009-12-14 14:37:41', '2009-12-17 16:52:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #164', 'Maroc', 'Bouskoura', 'demande-devis-164'),
-(165, 264, 1, '2009-165', 'Nous avons besoin d\'une solution  complète pour l\'équipement d’une blanchisserie industrielle (calendre de repassage, machine à laver 30 kg, séchoir à linge, table à repasser, pressoir à vapeur...). Ce qu\'il faudrait pour constituer une blanchisserie industrielle en interne pour une entreprise de 350 ouvriers et techniciens.\r\nNous somme Ouvert à toute proposition en lots égalant ou dépassant ce besoin.', '2017-02-12 00:00:00', 1, 0, NULL, '2009-12-15 14:31:00', '2009-12-17 14:58:56', 1, 0, 0, 0, NULL, 11, 'Demande de devis #165', 'Maroc', 'Bouskoura', 'demande-devis-165'),
-(166, 58, 1, '2009-166', 'Nous avons besoin de 85m2 de Film antireflet blanc à coller sur nos vitres et portes vitrés.', '2016-12-25 00:00:00', 1, 0, NULL, '2009-12-22 11:27:09', '2009-12-22 11:59:39', 1, 0, 0, 0, NULL, 11, 'Demande de devis #166', 'Maroc', 'Kenitra', 'demande-devis-166'),
-(167, 58, 1, '2009-167', 'Nous avons besoin de faire la numérotation de nos 25 transpalettes manuels par agrafage.', '2016-12-28 00:00:00', 1, 0, NULL, '2009-12-22 18:57:30', '2009-12-24 15:02:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #167', 'Maroc', 'Kenitra', 'demande-devis-167'),
-(168, 287, 1, '2009-168', '* Vidéo enregistreur avec et sans connectivité ;\r\n\r\n* Caméra à usage extérieur, Portée 25 m IR 24 Led et plus \r\n\r\n* Caméra dôme Portée 25 m IR 24 Led et plus ', '2016-12-09 00:00:00', 1, 0, NULL, '2009-12-30 12:55:17', '2010-02-15 18:33:50', 1, 0, 0, 0, NULL, 11, 'Demande de devis #168', 'Maroc', 'Casablanca', 'demande-devis-168'),
-(169, 77, 1, '2010-169', 'Nous avons besoin de :\r\n08 Molettes selon plans, photos et le descriptif des textes à graver.\r\n\r\nNB : Les textes en noir  doivent être gravés sur la molette par contre nous aurons besoin d’un  module de chiffre interchangeable (texte en rouge) : 2010 pour l’année.\r\n', '2017-01-20 00:00:00', 1, 0, NULL, '2010-01-04 10:32:50', '2010-03-25 15:47:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #169', 'Maroc', 'Mohammadia', 'demande-devis-169'),
-(170, 293, 1, '2010-170', 'Nous souhaitons recevoir les meilleures offres pour la fourniture suivante:\r\nProfilés UAP130 : 120ml.\r\nPlat 50x5mm : 24ml.\r\nTôle ép. 2.5mm : 630m2.\r\nCornière 30x30x3 : 60ml.\r\n1260m2 de laine de roche ép 50mm, B353 ROCLAINE (température limite 650 °C)\r\nMerci d’avance.', '2017-01-17 00:00:00', 1, 0, NULL, '2010-01-08 09:55:32', '2010-01-08 10:02:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #170', 'Maroc', 'Casablanca', 'demande-devis-170'),
-(171, 272, 1, '2010-171', 'Nous avons besoin de deux nacelles suspendues motorisées au moyen de treuils électriques, la vitesse d’élévation est en moyenne de 9 m/min. Chaque plateforme devra être constituée  de deux modules en aluminium de 3 mètres chacune. \r\nLes systèmes de suspension doivent être adaptés à un accrochage sur des supports chariots installés sur les toitures du bâtiment.\r\nLes treuils doivent avoir une capacité de 2000 Kg et doivent être alimentés par du 220 Volts en monophasé et 380 Volts en triphasé.\r\nLes câbles des treuils auront une longueur de 100 m par treuil.\r\nTous les équipements doivent être conformes à la réglementation en vigueur, les échafaudages volants et les plateformes suspendues motorisées doivent être  reconnus par les professionnels des contrôles techniques et les organismes de prévention comme la référence en matière de sécurité pour l\'élévation du personnel effectuant des travaux légers.\r\n', '2017-03-10 00:00:00', 1, 0, NULL, '2010-01-08 11:12:26', '2010-02-23 17:07:31', 1, 0, 0, 0, NULL, 11, 'Demande de devis #171', 'Maroc', 'Casablanca', 'demande-devis-171'),
-(172, 58, 1, '2010-172', 'Bonjour,\r\n\r\nNous avons besoin de faire un diagnostiquer de l’état du matériel de notre cuisine.\r\n\r\nDe plus  nous comptons sur vous de nous fournir votre offre de prix de maintenance dont le cadre d’un contrat annuel.\r\n	\r\nDans l’attente de confirmation de  votre visite début de la semaine prochaine.', '2017-01-27 00:00:00', 1, 0, NULL, '2010-01-19 12:44:41', '2010-01-20 10:07:39', 1, 0, 0, 0, NULL, 11, 'Demande de devis #172', 'Maroc', 'Kenitra', 'demande-devis-172'),
-(176, 264, 1, '2010-176', 'Nous avons besoin de 2 générateurs de courant Diesel 600-800 kVA.\r\nDELAI PROROGE (VOIR NOUVELLE DATE)', '2017-02-20 00:00:00', 1, 0, NULL, '2010-02-03 15:50:59', '2010-02-15 14:32:32', 1, 0, 0, 0, NULL, 11, 'Demande de devis #176', 'Maroc', 'Bouskoura', 'demande-devis-176'),
-(177, 264, 1, '2010-177', 'Nous avons besoin d\'un calibreur tamiseur de marque Frewitt à tamis oscillant modèle MF-6.\r\n\r\nDélai prorogé (Voir nouvelle date)', '2017-02-20 00:00:00', 1, 0, NULL, '2010-02-04 08:47:45', '2010-03-11 17:25:30', 1, 0, 0, 0, NULL, 11, 'Demande de devis #177', 'Maroc', 'Bouskoura', 'demande-devis-177'),
-(187, 77, 1, '2010-187', 'Le présent marché a pour objet la réalisation d’une machine de roulage de contreplaqués pour nos besoins en fûts de Diamètre 200 mm, Largeur 500 mm, Épaisseur 3 mm.\r\nLa feuille du contreplaqué est trempée dans de l’eau chaude et passe ensuite à la machine de roulage cylindrique.\r\nLa jonction des extrémités du fût se fait à l’aide d’une languette placée en dessous de la jointure et le maintien est assuré par des agrafes (Voir photos).\r\nLa présente demande doit être réalisée suivant nos données (Description ; Photos … ) et dans les règles de l’art.\r\nL’Entrepreneur devra présenter à notre société un plan de réalisation de la machine établi suivant nos données et ne pourra  être mis en exécution qu’après acceptation  par ordre de service délivré par nos soins. \r\nL’Entrepreneur devra respecter le délai de réalisation sur lequel nous nous mettrons d’accord.\r\n\r\n(Voir pièdes jointes).', '2017-03-10 00:00:00', 1, 0, NULL, '2010-02-23 15:34:24', '2010-03-04 15:46:09', 1, 0, 0, 0, NULL, 11, 'Demande de devis #187', 'Maroc', 'Mohammadia', 'demande-devis-187'),
-(191, 318, 1, '2010-191', 'Nous avons besoin d’une entreprise spécialisée dans la sécurité (Matériels et services) qui peut nous accompagner pour élaborer un plan de sécurité (plan d’évacuation, formation 1er secours…) et pouvoir l’exécuter dans les règles de l’art.\r\nL’entreprise intéressée devra être conventionnée et certifiée auprès des compagnies d’assurances et disposera de tout agrément nécessaire délivré par les administrations et fédérations compétentes.', '2017-03-11 00:00:00', 1, 0, NULL, '2010-02-24 11:46:05', '2010-04-01 17:56:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #191', 'Maroc', 'Casablanca', 'demande-devis-191'),
-(192, 320, 1, '2010-192', '*****DATE PROROGER*****\r\n\r\nCloutier d’encadrement de Ciol : \r\nPoids : corps 3.67kgs (8.07Ibs) en aluminium\r\nCorps du magnésium 3.38kgs (7.43Ibs)\r\nCapacité du magasin : 225-300 Clous\r\nDiamètre de jambe : 2.3-2.9mm (0.092 \" - 0.113 \")\r\nLongueur des clous : 45mm-70mm (1-3/4 \"--2-3/4 \")\r\nOpération : 5-7kgs/cm2 (70-100psi) \r\n\r\nQuantité = 05 unité\r\n\r\n(Voir photo ci-jointe) ', '2017-03-31 00:00:00', 1, 0, NULL, '2010-02-24 12:28:52', '2010-03-25 08:58:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #192', 'Maroc', 'Meknes', 'demande-devis-192'),
-(194, 306, 1, '2010-194', 'Sachet Biodégradable \r\n(Voir détail sur le PDF ci-joint)', '2017-03-26 00:00:00', 1, 0, NULL, '2010-02-25 14:13:23', '2010-02-25 17:32:07', 1, 0, 0, 0, NULL, 11, 'Demande de devis #194', 'Maroc', 'Casablanca', 'demande-devis-194'),
-(195, 335, 1, '2010-195', '>>>>>  DELAI PROLONGE  <<<<<\r\nNous avons besoin de deux (02) GERBEURS équivalant au model en fichier ci-joint fonctionnant en \r\nHauteur mât abaissé Inférieur à 2,20m.\r\nCharge à porter = 1,5 T.\r\nHauteur mât déployé= 3 m.\r\nTempérature Négative -18°C.\r\n\r\nQuantité= 02.\r\n\r\n\r\n(Voir fichier attaché)', '2017-04-24 00:00:00', 1, 0, NULL, '2010-03-12 17:03:30', '2010-04-14 10:24:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #195', 'Maroc', 'Rabat', 'demande-devis-195'),
-(196, 351, 1, '2010-196', 'PEINTURE resistant à l\'eau, avec sechage rapide, non inflammable, couleur noir (finition peu intense) Pour marquage exterieure des pipes sous marins', '2017-03-30 00:00:00', 1, 0, NULL, '2010-03-25 11:29:12', '2010-03-29 09:55:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #196', 'France', 'Caissargues', 'demande-devis-196'),
-(197, 355, 1, '2010-197', 'Nous avons besoin d\'une solution de rayonnage mixte Accumulation et conventionnel selon plan ci-joint.\r\nDim palette 800x1200x1600 poids 1000Kg.', '2017-04-09 00:00:00', 1, 0, NULL, '2010-03-25 17:18:40', '2010-03-31 17:29:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #197', 'Maroc', 'Casablanca', 'demande-devis-197'),
-(201, 335, 1, '2010-201', 'Nous aurons besoin de thermomètre à sonde pour contrôler la température à la réception des produits congelés. \r\nNombre demandé : 3 thermomètres à sonde pour mesurer la température à cœur des produits congelés à la réception.', '2017-04-10 00:00:00', 1, 0, NULL, '2010-03-26 11:48:58', '2010-03-26 11:54:00', 1, 0, 0, 0, NULL, 11, 'Demande de devis #201', 'Maroc', 'Rabat', 'demande-devis-201'),
-(204, 358, 1, '2010-204', 'Produit de nettoyage industriel des pièces mécaniques.\r\nNon nocif aux intervenants ni à l\'environnement\r\nAgrée par la CEE, certifié ISO ou DIN.\r\nA joindre une notice en français ou en anglais', '2017-05-01 00:00:00', 1, 0, NULL, '2010-03-27 09:43:09', '2010-03-29 09:52:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #204', 'Maroc', 'Temara', 'demande-devis-204'),
-(208, 3, 1, '2010-208', 'Je recherche des fournisseurs capables de me réaliser les 3 pièces selon plans ci-joint.\r\nLa technologie pressentie est : MOULAGE CONTACT (sinon moulage basse pression)', '2017-04-24 00:00:00', 1, 0, NULL, '2010-04-09 15:34:41', '2010-04-23 11:39:55', 1, 0, 0, 0, NULL, 11, 'Demande de devis #208', 'Maroc', 'Casablanca', 'demande-devis-208'),
-(216, 335, 1, '2010-216', 'Extincteur CO² 5 kg. Quantité 08.\r\nRIA. Quantité 04.\r\nCentrale d’alarme. Quantité 01.\r\nBatterie rechargeable 12V, 7,2 Ah. Quantité 01.\r\nBatterie 12V, 2,2 Ah. Quantité 01.\r\nDétecteur IR de mouvement. Quantité 04.\r\nSirène extérieure. Quantité 01.', '2017-04-25 00:00:00', 1, 0, NULL, '2010-04-15 17:10:26', '2010-04-23 11:40:14', 1, 0, 0, 0, NULL, 11, 'Demande de devis #216', 'Maroc', 'Rabat', 'demande-devis-216'),
-(217, 58, 1, '2010-217', 'Nous avons besoin de tourniquet et pointeuse voir demande ci-jointe\r\n\r\nAchats du Matériel en DDP /CIF/EX WORK.', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-21 10:01:12', '2010-05-03 09:47:18', 1, 0, 0, 0, NULL, 11, 'Demande de devis #217', 'Maroc', 'Kenitra', 'demande-devis-217'),
-(219, 58, 1, '2010-219', 'MATERIEL INFORMATIQUE ( VOIR DETAIL CI-JOINT)', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-22 08:47:59', '2010-05-03 09:48:31', 1, 0, 0, 0, NULL, 11, 'Demande de devis #219', 'Maroc', 'Kenitra', 'demande-devis-219'),
-(221, 58, 1, '2010-221', 'PC industriels. PC core duo 1,66 MHZ, 1 GB Ram sans Disque dur mais avec Mémoire Compact FLASH (Windows ou Linux) écran tactile.', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-23 17:53:14', '2010-05-03 09:47:52', 1, 0, 0, 0, NULL, 11, 'Demande de devis #221', 'Maroc', 'Kenitra', 'demande-devis-221'),
-(222, 77, 1, '2010-222', 'Bonjour,\r\nje vous prie de bien vouloir me faire votre meilleure offre de prix et délai pour la fourniture de une station mobile de carburant d’une capacité de 10 T équivalent au model ci-joint', '2017-05-08 00:00:00', 1, 0, NULL, '2010-04-26 17:46:53', '2010-04-26 17:47:59', 1, 0, 0, 0, NULL, 11, 'Demande de devis #222', 'Maroc', 'Mohammadia', 'demande-devis-222'),
-(223, 391, 1, '2010-223', ' Pierre de bien vouloir nous communiquer votre meilleure offre concernant le rayonnage lourd a palette ainsi que la note de calcule correspondante .\r\n10 éléments des dimensions suivante:\r\n\r\n    DIM: L 20 x H 6 m\r\n\r\n   nombre de niveau : quatre \r\n\r\n   capacité totale de stockage : 700 palettes\r\n-- ', '2017-05-05 00:00:00', 1, 0, NULL, '2010-04-27 10:36:54', '2010-05-06 10:53:46', 1, 0, 0, 0, NULL, 11, 'Demande de devis #223', 'Maroc', 'Agadir', 'demande-devis-223'),
-(226, 402, 1, '2010-226', 'Nous cherchons une société étrangère pour nous fournir les contreplaqués selon le cahier des charges en fichier ci-joint.\r\nMeilleures salutations.', '2017-05-31 00:00:00', 1, 0, NULL, '2010-05-18 19:57:55', '2010-05-19 11:37:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #226', 'Maroc', 'Oujda', 'demande-devis-226'),
-(228, 422, 1, '2010-228', 'Prière de me communiquer votre meilleure offre de prix pour les articles cités en pièce jointe.\r\n\r\nLa Quantité : 100 pour chaque article. Autrement dit :\r\n* 100 Automatisme pour portes battantes.\r\n\r\n* 100 Sélecteur \r\n\r\n* 100 Bouton poussoir \r\n\r\n* 100 Télécommande \r\n\r\n* 100 Serrure pêne piston \r\n\r\nN\'hésitez pas à nous contacter pour plus d\'informations.', '2017-06-15 00:00:00', 1, 0, NULL, '2010-06-09 10:15:27', '2010-06-09 10:59:26', 1, 0, 0, 0, NULL, 11, 'Demande de devis #228', 'Maroc', 'Casablanca', 'demande-devis-228'),
-(237, 428, 1, '2010-237', 'ROUE DN200 MM PIVOTANTE AVEC FRIEN (EN CAOUTCHOUC OU EN PEHD)\r\nQté : 08 Uté\r\nPJ : Photo descriptive de l\'utilisation des dites roues.', '2017-06-25 00:00:00', 1, 0, NULL, '2010-06-22 17:34:37', '2010-06-22 17:34:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #237', 'Maroc', 'Casablanca', 'demande-devis-237'),
-(238, 58, 1, '2010-238', 'Conteneur pour utiliser comme atelier de maintenance. Dimension min 5m*2.5m.\r\nEquipé de climatiseur, fenêtre, et table pour 4 techniciens.', '2017-07-24 00:00:00', 1, 0, NULL, '2010-07-14 11:07:56', '2010-07-22 17:08:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #238', 'Maroc', 'Kenitra', 'demande-devis-238'),
-(240, 452, 1, '2010-240', 'Recherchons d\'urgence la location du matériel ci-dessous:\r\n- Chariot télescopique tout terrain rotatif à fort tonnage \"5,5t\" hauteur non spécifiée, de marque Manitou (de préférence).\r\nDurée de location: 1 mois\r\nFull Service.\r\nConducteur(s) compris 7j/7\r\n30 à 40 Km /j.', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-15 09:54:42', '2010-07-20 15:59:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #240', 'Maroc', 'Tanger', 'demande-devis-240'),
-(241, 452, 1, '2010-241', 'Recherchons d\'urgence la location du matériel ci-dessous:\r\n- Camion plateau 13m. En Option avec ridelle.\r\nDurée de location: 1 mois\r\nFull Service.\r\nConducteur(s) compris 7j/7\r\n30 à 40 Km /j.', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-15 12:28:30', '2010-07-20 15:58:08', 1, 0, 0, 0, NULL, 11, 'Demande de devis #241', 'Maroc', 'Tanger', 'demande-devis-241'),
-(242, 452, 1, '2010-242', 'Recherchons d\'urgence la location du matériel ci-dessous :\r\nChariot élévateur: avec conducteur à charge\r\n- Capacité de charge nominale : 4 tonnes\r\n- tablier à déplacement latéral,\r\n- type: diesel \" carburant à votre charge\",\r\n- Hauteur de levée : 3 à 4 mètres,\r\n- Mât triplex grande visibilité,\r\n- Horaire de travail: 24h/24h , 7j/7j\r\n- Durée de location: un mois avec possibilité de prolongation', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-16 11:53:55', '2010-07-20 15:58:43', 1, 0, 0, 0, NULL, 11, 'Demande de devis #242', 'Maroc', 'Tanger', 'demande-devis-242'),
-(243, 385, 1, '2010-243', 'Bande Modulaire Blanche UNI-228 mm x 100 (ml) pour convoyeur transportant du poisson.\r\n(Voir photos ci-jointe)', '2017-08-07 00:00:00', 1, 0, NULL, '2010-07-22 16:35:40', '2010-08-02 13:36:18', 1, 0, 0, 0, NULL, 11, 'Demande de devis #243', 'Maroc', 'Agadir', 'demande-devis-243'),
-(244, 385, 1, '2010-244', '1 - Eléctropompe de GRUNDFOSS 5.5 KW 2900 tr/min CR 16', '2017-08-04 00:00:00', 1, 0, NULL, '2010-07-27 18:12:26', '2010-07-28 11:57:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #244', 'Maroc', 'Agadir', 'demande-devis-244'),
-(245, 385, 1, '2010-245', '25 l huile shell CASSIDA FLUIDE G 150', '2017-08-04 00:00:00', 1, 0, NULL, '2010-07-27 18:18:22', '2010-07-28 11:57:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #245', 'Maroc', 'Agadir', 'demande-devis-245'),
-(246, 460, 1, '2010-246', 'Recherche fournisseur huile végétale ', '2017-09-03 00:00:00', 1, 0, NULL, '2010-08-25 12:56:37', '2010-08-27 12:29:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #246', 'France', 'Sainte-Florence', 'demande-devis-246'),
-(247, 460, 1, '2010-247', 'Recherche fournisseurs pour étudie la mise en place étiquettes RFID', '2017-10-10 00:00:00', 1, 0, NULL, '2010-08-25 12:57:31', '2010-08-25 17:29:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #247', 'France', 'Sainte-Florence', 'demande-devis-247'),
-(248, 473, 1, '2011-248', '10.000 GRILLES DE CUISSON DIMENSION EXT : L600-P400-H90 mm \r\nCouleur : Gris .\r\nCaisse : Fond & Parois ajourés.\r\nCes grilles sont utilisées dans les bac de cuisson : cuisson en Saumure ( Eau + sel à 4 ° baumé ) chauffée à 90 °C, et le temps peut varier de 20 à 30 minutes. \r\ngrilles  nettoyées à la soude caustique dans une eau chauffée à 60° C.\r\n( photo ci-joint)\r\n', '2017-04-13 00:00:00', 1, 0, NULL, '2011-04-05 14:46:02', '2011-04-05 16:10:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #248', 'Maroc', 'Agadir', 'demande-devis-248'),
-(250, 478, 1, '2011-250', 'Besoin de Pate de Paprika pour production de sauce! Ci dessous spécification:\r\nMatière première: paprika rouge fraiche et naturelle\r\nTransformation: concentre sous vide ou réfrigéré\r\nSans additif, ni colorant\r\nBrix: 13 a 15°\r\nDensité: 1,02GR/CM3 8,5° DE BRIX\r\nQuantité: 2 TONNES', '2017-12-02 00:00:00', 1, 0, NULL, '2011-06-17 10:22:41', '2011-06-17 15:03:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #250', 'Maroc', 'Berrechid', 'demande-devis-250'),
-(251, 480, 1, '2011-251', 'Je vous remercie de bien nous faire parvenir une meilleur offre de prix de la référence ci-dessous :\r\n \r\n\r\n8034102:  Bd 0.5x12 DIN 1791- CuFe 0.1P F44                  \r\n\r\nQT : 1000kg\r\n\r\n', '2017-08-21 00:00:00', 1, 0, NULL, '2011-08-10 15:46:42', '2011-08-10 16:04:17', 1, 0, 0, 0, NULL, 11, 'Demande de devis #251', 'Maroc', 'Tanger', 'demande-devis-251'),
-(302, 3, 1, '2018-302', 'Bonjour\r\nje vous remercie de bien nous faire parvenir une meilleur offre de prix pour la demande ci_joint ', '2018-01-31 00:00:00', 1, 0, NULL, '2018-01-15 16:25:25', '2018-01-25 16:24:24', 1, 0, 0, 0, NULL, 11, 'Demande de devis #302', 'Maroc', 'Casablanca', 'demande-devis-302'),
-(308, 571, 1, '2018-308', 'bonjour;\r\nmerci de nous faire parvenir votre meilleur offre de prix pour les articles en pièces jointe:', '2018-02-02 00:00:00', 1, 0, NULL, '2018-01-29 15:30:29', '2018-02-01 17:22:38', 1, 0, 0, 0, NULL, 11, 'Demande de devis #308', 'Maroc', 'Casablanca', 'demande-devis-308'),
-(314, 3, 1, '2019-314', 'j ia besoin d un rayonnage  2 m de hauteur ', '2019-06-01 00:00:00', 1, 0, NULL, '2019-05-29 16:34:45', '2019-07-08 17:47:43', 1, 0, 0, 0, NULL, 11, 'Demande de devis #314', 'Maroc', 'Casablanca', 'demande-devis-314'),
-(323, 621, 1, '2019-323', '2 panneaux de brassage \r\n24 prises informatique murale \r\n2 passe câbles \r\nArmoire informatique \r\n1 collier de serrage 300 blanche ', '2019-10-30 00:00:00', 1, 0, NULL, '2019-10-22 20:47:23', '2019-10-25 10:27:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #323', 'Maroc', 'Sale', 'demande-devis-323'),
-(324, 630, 1, '2019-324', 'Je cherche des fournisseurs pour la location d\'un chariot élévateur de 3T semaine prochaine pour 1 jour et la semaine d\'après aussi 1 jour', '2019-11-11 00:00:00', 1, 0, NULL, '2019-10-24 11:23:56', '2019-10-24 11:35:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #324', 'Maroc', 'Casablanca', 'demande-devis-324'),
-(325, 628, 1, '2019-325', 'besoin d\'un pyromètre optique type IGAR 6 advanced ', '2019-11-06 00:00:00', 1, 0, NULL, '2019-10-25 10:50:53', '2019-11-04 10:43:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #325', 'Maroc', 'Casablanca', 'demande-devis-325'),
-(326, 622, 1, '2019-326', 'demande de prix 2 tôles noires\r\nDimensions ; 2000*1000*12 mm', '2019-11-03 00:00:00', 1, 0, NULL, '2019-10-25 11:22:16', '2019-10-25 15:52:51', 1, 0, 0, 0, NULL, 11, 'Demande de devis #326', 'Maroc', 'Kenitra', 'demande-devis-326'),
-(327, 632, 1, '2019-327', 'Besoin 8 casques de protection casco petzl vertex Best\r\n', '2019-11-05 00:00:00', 1, 0, NULL, '2019-10-28 19:36:55', '2019-11-05 12:53:55', 1, 0, 0, 0, NULL, 11, 'Demande de devis #327', 'Maroc', 'Khenifra', 'demande-devis-327'),
-(331, 629, 1, '2019-331', 'Bonjour,\r\nJe cherche des fournisseurs pour 5 pince de mesure de terre numérique modele 4200 de marque KYORITSU.', '2019-11-08 00:00:00', 1, 0, NULL, '2019-10-29 19:09:20', '2019-11-05 10:16:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #331', 'Maroc', 'Casablanca', 'demande-devis-331'),
-(332, 629, 1, '2019-332', 'bonjour,\r\n\r\nJe cherche ce ventilateur en urgence :\r\nVENTILATEUR HÉLICOÏDE 630mm et 220v', '2019-11-06 00:00:00', 1, 0, NULL, '2019-10-30 22:00:19', '2019-11-05 11:52:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #332', 'Maroc', 'Casablanca', 'demande-devis-332'),
-(333, 643, 1, '2019-333', 'Nous vous demandons de bien vouloir nous faire parvenir, vos meilleures conditions de prix et délai concernant les articles ci-dessous en pièce jointe', '2019-11-05 00:00:00', 1, 0, NULL, '2019-11-01 20:01:01', '2019-11-07 11:09:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #333', 'Maroc', 'El jadida', 'demande-devis-333'),
-(334, 646, 1, '2019-334', ' \r\n\r\n1. Hepc20 push fit male adaptor  x12pcs\r\n\r\n2.Hepc2o push fit female adaptor x 4pcs\r\n\r\n3.Hepc2o pipe inserts  all in 12mm diameter x 85pcs', '2019-11-18 00:00:00', 1, 0, NULL, '2019-11-12 17:04:55', '2019-11-18 15:41:22', 1, 0, 0, 0, NULL, 11, 'Demande de devis #334', 'Maroc', 'El jadida', 'demande-devis-334'),
-(335, 653, 1, '2019-335', 'Bonjour,\r\nMerci de me parvenir le prix REVENDEUR pour :\r\n* 1000 Graisseur en acier inoxydable M10 45° et 90° \r\nCordialement.', '2020-01-01 00:00:00', 1, 0, NULL, '2019-12-03 12:26:07', '2019-12-04 11:22:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #335', 'Maroc', 'Laâyoune', 'demande-devis-335'),
-(336, 653, 1, '2019-336', 'Bonjour,\r\n\r\nMerci de me parvenir votre meilleur offre de prix revendeur Pour :\r\n* 1 - Appareil junction courroie 12 cm. \r\n\r\nCordialement. \r\n ', '2020-01-01 00:00:00', 1, 0, NULL, '2019-12-19 11:11:00', '2019-12-20 15:26:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #336', 'Maroc', 'Laâyoune', 'demande-devis-336'),
-(337, 663, 1, '2020-337', 'Bonjour \r\nNous aurons besoin Des Barres de seuil à visser, en acier inox brossé type DINAC 4.5 cm de largeur (Au niveau des transitions d\'un type de revêtement à un autre) Quantité: 170ml\r\nNez de marche de profils antidérapants de type Passage (Profilé angle L45x1.5 aluminium stair nosing 6060 T5 20 microns anodisée avec insert minéral hautement\r\nantidérapant épousant parfaitement le nez de marche ) Quantité: 80ml\r\nCordialement', '2020-02-18 00:00:00', 1, 0, NULL, '2020-02-04 09:34:53', '2020-02-04 15:19:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #337', 'Maroc', 'Casablanca', 'demande-devis-337'),
-(338, 663, 1, '2020-338', 'Bonjour,\r\nMerci de m\'envoyer votre meilleures offre de prix, pour un profilé U ( U Channels) en Aluminium, DIM:20*50mm ép:10/10 ou bien 20/10mm, selon la disponibilité des profilés\r\nQuantité: 2000ml', '2020-02-11 00:00:00', 1, 0, NULL, '2020-02-04 09:52:08', '2020-02-04 15:18:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #338', 'Maroc', 'Casablanca', 'demande-devis-338'),
-(340, 663, 1, '2020-340', 'Bonjour,\r\nMerci de m\'envoyer votre meilleures offre de prix, pour des Boîtes d\'attente pour le béton armé de type GAMMBOX 2 , Fiche technique en pièce joint\r\nQuantité: 6500ml', '2020-02-10 00:00:00', 1, 0, NULL, '2020-02-04 12:17:55', '2020-02-04 15:18:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #340', 'Maroc', 'Casablanca', 'demande-devis-340'),
-(342, 3, 1, '2020-342', 'chariot élevateur ', '2020-03-27 00:00:00', 1, 0, NULL, '2020-03-16 14:19:32', '2020-03-16 14:30:51', 1, 0, 0, 0, NULL, 11, 'Demande de devis #342', 'Maroc', 'Casablanca', 'demande-devis-342'),
-(344, 3, 1, '2020-344', 'Besoin en rayonnage ', '2020-04-03 00:00:00', 1, 0, NULL, '2020-03-23 09:41:00', '2020-03-23 09:41:00', 1, 0, 0, 0, NULL, 11, 'Demande de devis #344', 'Maroc', 'Casablanca', 'demande-devis-344'),
-(345, 3, 1, '2020-345', 'Demande de chambre froide', '2020-04-24 00:00:00', 1, 0, NULL, '2020-04-02 18:30:05', '2020-04-02 18:30:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #345', 'Maroc', 'Casablanca', 'demande-devis-345'),
-(347, 676, 1, '2020-7', 'Doloribus impedit a', '2020-06-10 12:04:00', 1, 0, 0, '2020-05-27 13:04:43', '2020-05-27 13:48:37', 0, 0, 0, 0, NULL, 1, 'Fugiat nemo dolorem', 'Maroc', 'Casablanca', 'fugiat-nemo-dolorem');
+INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `description`, `date_expiration`, `is_public`, `nbr_visite`, `nbr_share`, `created`, `date_modification`, `is_alerted`, `is_anonyme`, `budget`, `del`, `motif_rejet_id`, `currency_id`, `titre`, `pays`, `ville`, `slug`, `localisation`) VALUES
+(89, 40, 1, '2009-89', 'Achat de materiel informatique', '2016-12-06 00:00:00', 1, 0, NULL, '2009-04-02 17:11:51', '2009-12-06 13:26:09', 1, 0, 0, 0, NULL, 11, 'Demande de devis #89', 'Maroc', 'Casablanca', 'demande-devis-89', 1),
+(100, 3, 1, '2009-100', 'ACHATS D\'ASSENCEUR TYPE 450 KG 5 NIVEAUX 1 M/S', '2016-12-09 00:00:00', 1, 0, NULL, '2009-05-26 10:30:51', '2017-12-08 16:28:54', 1, 0, 0, 0, NULL, 11, 'Demande de devis #100', 'Maroc', 'Casablanca', 'demande-devis-100', 1),
+(101, 53, 1, '2009-101', 'BESOIN DE SURVEILLANCE ET GARDIENAGE', '2016-06-30 00:00:00', 1, 0, NULL, '2009-06-01 19:50:58', '2009-06-01 19:52:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #101', 'Maroc', 'Rabat', 'demande-devis-101', 1),
+(102, 3, 1, '2009-102', 'ACHATS DE MATIERE PREMIERE PLASTIQUE PPE, QTE 10T/3MOIS', '2016-06-24 00:00:00', 1, 0, NULL, '2009-06-03 00:27:48', '2009-07-14 19:54:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #102', 'Maroc', 'Casablanca', 'demande-devis-102', 1),
+(103, 3, 1, '2009-103', 'BESOIN EN RAYONNAGE CONVENTIONNEL POUR 2000 PALETTES.', '2016-06-29 00:00:00', 1, 0, NULL, '2009-06-28 16:35:43', '2009-06-28 16:36:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #103', 'Maroc', 'Casablanca', 'demande-devis-103', 1),
+(104, 3, 1, '2009-104', 'BESOIN EN NIVELEUR DE QUAI POUR NOTRE CLIENT BASE A TANGER, POUR UNE QUANTITE DE 5 NIVELEURS.', '2016-02-11 00:00:00', 1, 0, NULL, '2009-06-28 16:38:39', '2010-02-19 11:51:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #104', 'Maroc', 'Casablanca', 'demande-devis-104', 1),
+(105, 3, 1, '2009-105', 'Location ou Achat de conteneur 20 pieds climatisé pour stockage\r\ndes produits chimique pendant 3 mois.', '2016-08-10 00:00:00', 1, 0, NULL, '2009-06-28 16:48:29', '2010-03-25 10:33:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #105', 'Maroc', 'Casablanca', 'demande-devis-105', 1),
+(106, 3, 1, '2009-106', 'Tanger Free Zone: Chapiteaux de 888m2 sol 74metre longueur et 12 mètre\r\nlargeur pour prestation RAMADAN 2009.\r\n120 Tables rondes.\r\n1200 Chaises pour tables.\r\nClient Basé Sur Tanger, Votre Offre HT, HD.', '2016-07-30 00:00:00', 1, 0, NULL, '2009-06-30 13:34:25', '2009-07-14 19:55:06', 1, 0, 0, 0, NULL, 11, 'Demande de devis #106', 'Maroc', 'Casablanca', 'demande-devis-106', 1),
+(107, 58, 1, '2009-107', 'location  des chapitaux de 888m2 sol 74m longeur et 12 m de largeur pour prestation RAMADAN 2009 ( 1 mois) avec 120 tables rondes et 1200 chaises.\r\n\r\nMerci de noter que nous somme un groupe multinationale, installer dans la zone franche d\'exportation de Tanger.', '2016-07-10 00:00:00', 1, 0, NULL, '2009-07-01 08:56:06', '2009-07-07 13:34:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #107', 'Maroc', 'Kenitra', 'demande-devis-107', 1),
+(108, 68, 1, '2009-108', 'PERCEUSE PNEUMATIQUE \r\nB33\r\nFACOM QUANTITE 02', '2016-07-01 00:00:00', 1, 0, NULL, '2009-07-02 15:37:37', '2009-07-02 15:48:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #108', 'Maroc', 'Casablanca', 'demande-devis-108', 1),
+(113, 78, 1, '2009-113', 'APPEL D’OFFRE LOCATION CAMION LONGUE DUREE\r\nNous vous prions de nous faire parvenir votre meilleure offre de prix pour location d\'un camion avec cabine en bon état de 14t sous les conditions suivantes :\r\n\r\nPayement: 60 jours après date facture\r\nLivraison : A domicile\r\nService : 24/24 - 6/7 = Le service doit être assure par 2 chauffeur (24/24) qui doivent être instruit\r\nTravail dimanche : nous aurons éventuellement besoin du camion le dimanche (merci de préciser le cout sup. Jour/nuit.)\r\nGasoil : inclus\r\nPanne : en cas de panne du camion dépasse 2h, il fait faire un remplacement immédiat du camion, \r\nPermanence : les deux chauffeurs doivent être permanents sur notre site pour assurer les mouvements.\r\nIl faut tabler l\'offre sur  2500 km/mois. Et confirmer le cout des km sup.\r\nAssurance obligatoire : RC+ AT+Assurance marchandise couvrant 300.000dhs de dommage.\r\n\r\n\r\nNB : ce camion va travailler essentiellement dans la zone franche et éventuellement il fera des déplacements vers TAZA, Casa.', '2016-07-15 00:00:00', 1, 0, NULL, '2009-07-10 12:30:26', '2009-07-10 12:44:27', 1, 0, 0, 0, NULL, 11, 'Demande de devis #113', 'Maroc', 'Tanger', 'demande-devis-113', 1),
+(114, 83, 1, '2009-114', 'Ponts de chargement en aluminium avec une charge utile de 1200 kg.', '2016-09-14 00:00:00', 1, 0, NULL, '2009-07-14 17:19:09', '2009-08-18 17:33:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #114', 'Maroc', 'Casablanca', 'demande-devis-114', 1),
+(115, 102, 1, '2009-115', 'Bache d\'eau pour secourir l\'eau de l\'ONEP de cap.5m3 en inox 316 L avec système de chloration et déchloration , système de surpression , filtres....', '2016-09-18 00:00:00', 1, 0, NULL, '2009-08-11 09:51:59', '2009-09-11 10:35:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #115', 'Maroc', 'Casablanca', 'demande-devis-115', 1),
+(116, 102, 1, '2009-116', 'Deux aspirateurs de dimensions 50 cm * 50 cm , robuste pour aspirer l\'air chaud d\'une salle de 100 m2', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-11 09:54:43', '2009-10-29 11:42:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #116', 'Maroc', 'Casablanca', 'demande-devis-116', 1),
+(117, 102, 1, '2009-117', 'Bac de lavage en inox 304 L divisé trois compartiments pour usage agro-alimentaire de longeur2500 mm , largeur 400 mm , hauteur 850 mm.', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-11 09:58:17', '2009-10-29 11:42:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #117', 'Maroc', 'Casablanca', 'demande-devis-117', 1),
+(118, 102, 1, '2009-118', 'Porte métallique de 4.3 * 5 m avec moteur et bouton marche arrêt.', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 15:51:37', '2009-10-29 11:41:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #118', 'Maroc', 'Casablanca', 'demande-devis-118', 1),
+(119, 102, 1, '2009-119', '01 Gerbeur 1500 kg , température d\'utilisation =-25°C , rayon de braquage : le minimum possible , fourche : 1200mm , hauteur à atteindre :4500 mm', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 15:59:03', '2010-03-29 15:19:21', 1, 0, 0, 0, NULL, 11, 'Demande de devis #119', 'Maroc', 'Casablanca', 'demande-devis-119', 1),
+(120, 102, 1, '2009-120', '01 Gerbeur 1500 kg , température d\'utilisation =  T ambiante , hauteur à atteidre 4.5 metres , Rayon de braquage: le moins encombrant possible. ', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 16:02:21', '2010-03-29 15:18:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #120', 'Maroc', 'Casablanca', 'demande-devis-120', 1),
+(121, 102, 1, '2009-121', '06 transpalettes galvanisées , capacité en kg : 2500 kg , descente : par poigné , longeur des fourches : 1150 mm', '2016-10-29 00:00:00', 1, 0, NULL, '2009-08-13 16:06:58', '2009-10-29 11:39:24', 1, 0, 0, 0, NULL, 11, 'Demande de devis #121', 'Maroc', 'Casablanca', 'demande-devis-121', 1),
+(122, 143, 1, '2009-122', 'cable de skipe metalique 22MM', '2016-08-25 00:00:00', 1, 0, NULL, '2009-08-24 11:00:19', '2009-08-24 11:38:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #122', 'Maroc', 'Marrakech', 'demande-devis-122', 1),
+(123, 143, 1, '2009-123', '05 CAMIONS  3,5T-7T-8T \r\nETAT NEUF', '2016-09-15 00:00:00', 1, 0, NULL, '2009-08-25 11:00:30', '2009-09-12 14:04:57', 1, 0, 0, 0, NULL, 11, 'Demande de devis #123', 'Maroc', 'Marrakech', 'demande-devis-123', 1),
+(124, 143, 1, '2009-124', '01 ONDULEUR POUR PC MGE 600VA', '2016-08-27 00:00:00', 1, 0, NULL, '2009-08-25 11:02:37', '2009-09-11 10:31:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #124', 'Maroc', 'Marrakech', 'demande-devis-124', 1),
+(125, 146, 1, '2009-125', 'Nous recherchons 10 rallonges 4 poste+terre (long:5m)\r\nmarque LEGRAND 3500W', '2016-09-10 00:00:00', 1, 0, NULL, '2009-08-25 12:23:19', '2009-09-17 21:31:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #125', 'Maroc', 'Casablanca', 'demande-devis-125', 1),
+(126, 143, 1, '2009-126', '01 PICK UP NEUVE', '2016-09-10 00:00:00', 1, 0, NULL, '2009-09-01 14:27:45', '2009-09-11 10:34:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #126', 'Maroc', 'Marrakech', 'demande-devis-126', 1),
+(127, 143, 1, '2009-127', '20 VOITURES UTILITAIRES EQUIVALENT A BERLIN ESPACE OU DACIA ', '2016-09-15 00:00:00', 1, 0, NULL, '2009-09-01 14:29:40', '2009-09-12 14:04:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #127', 'Maroc', 'Marrakech', 'demande-devis-127', 1),
+(128, 166, 1, '2009-128', 'Besoin de matériel informatique et électrique suivant:\r\n\r\n> Cordons informatiques de 10ML (prix pour les CAT6 et les CAT5).....................   Qté 30.\r\n> Câble électrique (courbe C, section 6mm2, constitué de deux files intérieur en rouge (-)  et bleu(+) ) ................................Qté 300ML.\r\n> Disjoncteur unipolaire 10A avec embouts 6mm2.....................................Qté 30.\r\n> Prix des Jarretières optiques d\'environ 10M avec connecteurs. \r\n\r\n> Switch 24ports, similaire au Switch Cisco Catalyst 3750 ME avec module d\'alimentation en 48V DC.\r\n\r\nUne demande directe et officielle sera envoyée après consultation des réponses.', '2016-09-08 00:00:00', 1, 0, NULL, '2009-09-02 11:56:54', '2009-09-11 10:30:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #128', 'Maroc', 'Casablanca', 'demande-devis-128', 1),
+(129, 143, 1, '2009-129', 'Besoin en :\r\n\r\n01UN : CARTE POUR PILOTE BOSCH 324A2871837001390 \r\n01UN : CARTE POUR PILOTE BOSCH 4176A1911837001391\r\n01UN : CARTE POUR PILOTE BOSCH 1435A3831837001378\r\n', '2016-09-07 00:00:00', 1, 0, NULL, '2009-09-03 09:40:56', '2009-09-03 09:49:35', 1, 0, 0, 0, NULL, 11, 'Demande de devis #129', 'Maroc', 'Marrakech', 'demande-devis-129', 1),
+(130, 89, 1, '2009-130', ' besoin d’une unité moderne de trituration des olives (système continu): fourniture, installation et mise en marche et avoir une capacité de production de 350 Kg d’olives par heure et travaillant sous une tension de service de 380 volts à trois fil ', '2016-09-30 00:00:00', 1, 0, NULL, '2009-09-09 01:57:45', '2009-09-09 09:32:32', 1, 0, 0, 0, NULL, 11, 'Demande de devis #130', 'Maroc', 'Ouezzane', 'demande-devis-130', 1),
+(131, 179, 1, '2009-131', 'Veuillez trouver ci-dessous la liste de notre besoin en matériels informatiques pour notre  nouvelle filière qui sera basée sur  BENI MELLAL.\r\n\r\n04- UC DX2400 CORE 2 DUO 2,8/3G/250G SANS ECRAN\r\n\r\n06- DX2390MT 2,5/1G/160 + TFT 19\"\r\n\r\n01- Imp couleur A3 officejet7103	\r\n01- Imp laser couleur A4 1515N	\r\n02- Imp matricielle EPSON LQ300+	\r\n04- Imp laser Mono chrome A4 3010	\r\n10- Support de l\'unité centrale en metal\r\n	\r\n03- Onduleur 1000v MGE NOVA 1250	\r\n\r\n01- Fax brother 2820	\r\n\r\n02- Swtch 8 port 3COM	\r\n', '2016-09-15 00:00:00', 1, 0, NULL, '2009-09-09 11:11:00', '2009-09-14 15:08:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #131', 'Maroc', 'Marrakech', 'demande-devis-131', 1),
+(135, 185, 1, '2009-135', 'Besoin en belets pour boisson chaude et froide, taille moyenne, à utilisation fréquente. \r\n1ère Quantité à livrer: 450 Unité.', '2016-09-26 00:00:00', 1, 0, NULL, '2009-09-23 17:45:53', '2009-09-25 12:10:50', 1, 0, 0, 0, NULL, 11, 'Demande de devis #135', 'Maroc', 'Tanger', 'demande-devis-135', 1),
+(136, 58, 1, '2009-136', 'Besoin en Audit par un organisme externe ( certifié HACCP) vis à vis  notre sous-traitant de gestion de notre cantine .', '2016-09-30 00:00:00', 1, 0, NULL, '2009-09-24 15:59:32', '2009-09-25 14:23:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #136', 'Maroc', 'Kenitra', 'demande-devis-136', 1),
+(137, 185, 1, '2009-137', 'NOUS AVONS BESOIN DE PRODUITS DE LA MARQUE PARKER:\r\nGARNITURE SM 551472/1AX \r\nGARNITURE WRM 472519\r\nANNEAU DE GUIDE I/DRW 60\r\nGarniture code E/GR 0850\r\nGarniture code E/GR 0900\r\nAnneau de guidage type I/DWR 40/2\r\nAnneau de guidage type I/DWR 55\r\nAnneau de guidage type I/DWR 60\r\nAnneau de guidage type E/DWR 30/2\r\nGarniture \r\nGarniture type WRM 118 149\r\nGarniture type MU/P 4230\r\nGarniture type I/DWR 30/2\r\nGarniture type DBM 216 153\r\nRACLEUR WRM 314346  \r\nQTE 1 DE CHAQUE PRODUIT', '2016-10-05 00:00:00', 1, 0, NULL, '2009-09-25 10:59:35', '2009-09-25 11:26:21', 1, 0, 0, 0, NULL, 11, 'Demande de devis #137', 'Maroc', 'Tanger', 'demande-devis-137', 1),
+(138, 185, 1, '2009-138', 'Nous avons besoin de:\r\nCourroie transport dentée 985H30M.M B30mm L2501,9mm\r\nLA MARQUE BANDO POUR EQUIPEMENT ETIREUSE DE LA PRESSE', '2016-10-05 00:00:00', 1, 0, NULL, '2009-09-25 11:02:37', '2009-09-25 11:27:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #138', 'Maroc', 'Tanger', 'demande-devis-138', 1),
+(139, 77, 1, '2009-139', 'BESOIN EN PIGNONS VOIR FICHE JOINTE', '2016-09-25 00:00:00', 1, 0, NULL, '2009-09-26 17:19:23', '2009-09-26 17:21:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #139', 'Maroc', 'Mohammadia', 'demande-devis-139', 1),
+(140, 77, 1, '2009-140', 'Besoin en Rayonnage métallique type léger selon plan ci-joint.', '2016-10-10 00:00:00', 1, 0, NULL, '2009-09-28 14:56:10', '2009-09-28 14:56:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #140', 'Maroc', 'Mohammadia', 'demande-devis-140', 1),
+(141, 143, 1, '2009-141', '01 tendeuse pour jardin type T.51 XP MARQUE WOLF OU EQUIVALENTE', '2016-10-07 00:00:00', 1, 0, NULL, '2009-09-28 14:56:18', '2009-09-30 15:46:41', 1, 0, 0, 0, NULL, 11, 'Demande de devis #141', 'Maroc', 'Marrakech', 'demande-devis-141', 1),
+(143, 77, 1, '2009-143', 'Besoin en 100 Vestiaires métalliques à 02 portes/ 02 cases – 198x30x50 CM. EP 7/10.', '2016-10-13 00:00:00', 1, 0, NULL, '2009-10-02 23:16:32', '2009-10-08 16:50:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #143', 'Maroc', 'Mohammadia', 'demande-devis-143', 1),
+(144, 185, 1, '2009-144', 'Besoin en Prestation de nettoyage au sein de notre administration.\r\nCette demande est réservée aux sociétés basées sur la ville de Tanger.', '2016-10-12 00:00:00', 1, 0, NULL, '2009-10-06 11:52:18', '2009-10-06 19:13:59', 1, 0, 0, 0, NULL, 11, 'Demande de devis #144', 'Maroc', 'Tanger', 'demande-devis-144', 1),
+(145, 208, 1, '2009-145', 'Merci de nous faire votre proposition pour la construction d\'un hangar avec les dimensions suivantes:\r\nLargeur: 13.24m\r\nLongueur:24m avec travées de 6m\r\nHauteur 5 a 6m\r\nToit de préférence en charpente', '2016-10-31 00:00:00', 1, 0, NULL, '2009-10-17 06:42:45', '2009-10-17 12:38:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #145', 'Maroc', 'Casablanca', 'demande-devis-145', 1),
+(146, 185, 1, '2009-146', 'Je vous mets ci-joint une liste des pièces de rechange  dont je vous demande de bien vouloir nous faire une offre commerciale complète comprenant vos délais de livraison de chaque produit.', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-19 15:10:40', '2009-10-19 15:56:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #146', 'Maroc', 'Tanger', 'demande-devis-146', 1),
+(147, 211, 1, '2009-147', 'TAPIS RHINO-BAND D\r\nlisières bouclage DG\r\nMatière : acier doux ecroui\r\n1 tapis de 40mx2.30m', '2016-10-30 00:00:00', 1, 0, NULL, '2009-10-20 10:17:26', '2009-10-21 12:28:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #147', 'Maroc', 'Casablanca', 'demande-devis-147', 1),
+(148, 211, 1, '2009-148', 'Duplex souple imprimé 2 à 5 couleurs différentes laizes de 90 à 525mm.\r\n20T/3mois', '2016-10-30 00:00:00', 1, 0, NULL, '2009-10-20 10:24:05', '2009-10-21 14:15:44', 1, 0, 0, 0, NULL, 11, 'Demande de devis #148', 'Maroc', 'Casablanca', 'demande-devis-148', 1),
+(149, 212, 1, '2009-149', 'Cherchons prestataire pour réaliser des travaux d\'éclairage (diagnostic des causes de dysfonctionnement + réparation) dans un entrepot de  10 000 m2 en activité, hauteur sous plafond de environ 11 m. \r\nLe prestataire qui nous contactera devra étre assuré et montrer ses habilitations électrique, intervention sur site certifé ISO...', '2016-10-31 00:00:00', 1, 0, NULL, '2009-10-20 17:05:48', '2009-10-30 11:53:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #149', 'Maroc', 'Casablanca', 'demande-devis-149', 1),
+(150, 213, 1, '2009-150', 'Nous souhaitons réaliser 2 installations racking : une de 2500 EPR en rack à accumulation et l’autre de 2.000 EPR en rack conventionnel. Détail des plans et gabarit palette en pièce jointe.', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-20 17:34:25', '2009-10-20 22:56:40', 1, 0, 0, 0, NULL, 11, 'Demande de devis #150', 'Maroc', 'Casablanca', 'demande-devis-150', 1),
+(151, 214, 1, '2009-151', 'Achat du Logiciel Autocad 2009 avec licence mono poste', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-21 13:19:14', '2009-10-21 13:40:14', 1, 0, 0, 0, NULL, 11, 'Demande de devis #151', 'Maroc', 'Casablanca', 'demande-devis-151', 1),
+(152, 185, 1, '2009-152', 'Equipement pour dépoussierage des sols en 50mm\r\nBesoin Urgent', '2016-10-23 00:00:00', 1, 0, NULL, '2009-10-22 09:15:18', '2009-10-22 10:49:10', 1, 0, 0, 0, NULL, 11, 'Demande de devis #152', 'Maroc', 'Tanger', 'demande-devis-152', 1),
+(153, 77, 1, '2009-153', 'Nous cherchons des fabricants de palettes fumigées ( anti-feux) pour export par avion Dim palette 800x1000. EN ADMISSION TEMPORAIRE.\r\nQté mensuelle environ 100 \r\n\r\n', '2016-11-03 00:00:00', 1, 0, NULL, '2009-10-24 16:44:03', '2009-10-27 11:48:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #153', 'Maroc', 'Mohammadia', 'demande-devis-153', 1),
+(154, 207, 1, '2009-154', 'Merci de nos communiquer votre offre de prix pour la fourniture des motoréducteur  arbre creux suivantes en respectant le type indiquer sur la photo ci jointe:\r\n          2- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:1 CV Vitesse de sortie 10 tr/min.\r\n          2- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:2 CV Vitesse de sortie 40à50 tr/min.\r\n          1- Motoréducteurs à train parallèle (voir photo ci jointe)  Puissance:3 CV Vitesse de sortie 40à50 tr/min.\r\n* Moto réducteur à 2 ou 3 trains. \r\n* Moteur triphasé accouplé.', '2016-11-10 00:00:00', 1, 0, NULL, '2009-10-28 10:39:01', '2009-10-28 16:13:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #154', 'Maroc', 'Casablanca', 'demande-devis-154', 1),
+(155, 185, 1, '2009-155', 'Nous Cherchons un fournisseur sur la zone de Tanger, qui peut nous fournir des flexibles et des composants pneumatiques pour un budget d’achat annuel de plus de 300 000,00 Dhs.\r\nNous consommons des composants tels que :\r\nLes raccords, les limiteurs de débits les flexibles, les pompes à graisses …\r\nNous exigeant la disponibilité de stock, le respect des délais de livraisons ainsi que la bonne santé financière du fournisseur.', '2016-11-10 00:00:00', 1, 0, NULL, '2009-10-29 12:36:13', '2009-11-09 08:57:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #155', 'Maroc', 'Tanger', 'demande-devis-155', 1),
+(156, 234, 1, '2009-156', 'Besoin en rayonnage selon plan ci-joint.\r\nLe nombre de traves ainsi que le détail du besoin est sur le plan.\r\nMeilleures salutations.\r\n', '2016-11-21 00:00:00', 1, 0, NULL, '2009-11-05 10:26:29', '2009-11-12 12:39:29', 1, 0, 0, 0, NULL, 11, 'Demande de devis #156', 'Maroc', 'Casablanca', 'demande-devis-156', 1),
+(157, 58, 1, '2009-157', 'BESOIN EN USTENSILES DE CUISINE SELON LISTE CI-JOINTE SUR LE LIEN SUIVANT: \r\nhttp://www.lesachatsindustriels.com/ImageDemande/AC_8620Q274_DP_UC.pdf\r\n', '2016-11-19 00:00:00', 1, 0, NULL, '2009-11-13 11:33:39', '2009-11-16 15:24:11', 1, 0, 0, 0, NULL, 11, 'Demande de devis #157', 'Maroc', 'Kenitra', 'demande-devis-157', 1),
+(158, 185, 1, '2009-158', 'Besoin en Matériel informatique : Le prestataire devra faire un diagnostique et audit du parc existant, et la proposition selon état du matériel du remplacement. Ceci comprend nos deux sites une cinquantaine sur Tanger ainsi qu’une cinquantaine sur nos agences sur Casablanca.\r\nAU TOTAL 100 MACHINES ENTRE PC PORTABLE ET PC FIXE.', '2016-11-25 00:00:00', 1, 0, NULL, '2009-11-13 16:15:35', '2009-11-23 11:26:47', 1, 0, 0, 0, NULL, 11, 'Demande de devis #158', 'Maroc', 'Tanger', 'demande-devis-158', 1),
+(159, 242, 1, '2009-159', 'Cherche organisme de formation  pour thèmes: Cariste - Secouriste au travail - Equipiers de premières intervention ', '2016-11-30 00:00:00', 1, 0, NULL, '2009-11-23 15:07:59', '2009-11-25 10:07:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #159', 'Maroc', 'Casablanca', 'demande-devis-159', 1),
+(160, 242, 1, '2009-160', 'Besoin organisme pour réalisation de l\'ingénierie de formation conformément aux exigences de l\'OFPPT ', '2016-11-30 00:00:00', 1, 0, NULL, '2009-11-23 17:42:07', '2009-11-24 11:59:19', 1, 0, 0, 0, NULL, 11, 'Demande de devis #160', 'Maroc', 'Casablanca', 'demande-devis-160', 1),
+(161, 77, 1, '2009-161', 'Travaux mécaniques sur une grosse machine.\r\n(Voir liste des travaux en fichier ci-joint)', '2016-12-08 00:00:00', 1, 0, NULL, '2009-11-26 11:16:38', '2009-11-26 11:17:29', 1, 0, 0, 0, NULL, 11, 'Demande de devis #161', 'Maroc', 'Mohammadia', 'demande-devis-161', 1),
+(162, 251, 1, '2009-162', 'AMENAGEMENT D\'UN ESPACE D\'ACCUEIL\r\nACHATS DE MEUBLES : \r\n-	Nombre de Chaises : 1200 (plusieurs gammes)\r\n-	Nombre de Tables : 180 (1,5 m de diamètre, prévue pour un service à table pour 10 personnes assises)\r\n\r\n', '2016-12-16 00:00:00', 1, 0, NULL, '2009-12-02 12:54:41', '2009-12-09 17:54:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #162', 'Maroc', 'Marrakech', 'demande-devis-162', 1),
+(163, 264, 1, '2009-163', 'Nous avons besoin d’une presse à comprimés de  préférence de marque \"Courtoy\", fonctionnant en euronormes BB avec un  minimum de 30 stations et pouvant atteindre une capacité de 300.000 cph d\'âge  <= à 17 ans.\r\n Si vous avez des offres correspondant de manière + ou - exacte à  ce besoin, je vous prie de bien vouloir me contacter dès que possible avec vos  meilleures offres de prix, délais, services et transport.\r\nMerci d\'avance', '2017-02-01 00:00:00', 1, 0, NULL, '2009-12-14 10:43:00', '2009-12-14 10:54:20', 1, 0, 0, 0, NULL, 11, 'Demande de devis #163', 'Maroc', 'Bouskoura', 'demande-devis-163', 1),
+(164, 264, 1, '2009-164', 'Nous avons besoin de 25 paires de potelets de séparation en inox avec ruban pour délimiter des zones au sein de notre ligne de production.\r\nHauteur: entre 100 et 130 cm\r\nTaille ruban: 200 cm', '2017-01-29 00:00:00', 1, 0, NULL, '2009-12-14 14:37:41', '2009-12-17 16:52:48', 1, 0, 0, 0, NULL, 11, 'Demande de devis #164', 'Maroc', 'Bouskoura', 'demande-devis-164', 1),
+(165, 264, 1, '2009-165', 'Nous avons besoin d\'une solution  complète pour l\'équipement d’une blanchisserie industrielle (calendre de repassage, machine à laver 30 kg, séchoir à linge, table à repasser, pressoir à vapeur...). Ce qu\'il faudrait pour constituer une blanchisserie industrielle en interne pour une entreprise de 350 ouvriers et techniciens.\r\nNous somme Ouvert à toute proposition en lots égalant ou dépassant ce besoin.', '2017-02-12 00:00:00', 1, 0, NULL, '2009-12-15 14:31:00', '2009-12-17 14:58:56', 1, 0, 0, 0, NULL, 11, 'Demande de devis #165', 'Maroc', 'Bouskoura', 'demande-devis-165', 1),
+(166, 58, 1, '2009-166', 'Nous avons besoin de 85m2 de Film antireflet blanc à coller sur nos vitres et portes vitrés.', '2016-12-25 00:00:00', 1, 0, NULL, '2009-12-22 11:27:09', '2009-12-22 11:59:39', 1, 0, 0, 0, NULL, 11, 'Demande de devis #166', 'Maroc', 'Kenitra', 'demande-devis-166', 1),
+(167, 58, 1, '2009-167', 'Nous avons besoin de faire la numérotation de nos 25 transpalettes manuels par agrafage.', '2016-12-28 00:00:00', 1, 0, NULL, '2009-12-22 18:57:30', '2009-12-24 15:02:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #167', 'Maroc', 'Kenitra', 'demande-devis-167', 1),
+(168, 287, 1, '2009-168', '* Vidéo enregistreur avec et sans connectivité ;\r\n\r\n* Caméra à usage extérieur, Portée 25 m IR 24 Led et plus \r\n\r\n* Caméra dôme Portée 25 m IR 24 Led et plus ', '2016-12-09 00:00:00', 1, 0, NULL, '2009-12-30 12:55:17', '2010-02-15 18:33:50', 1, 0, 0, 0, NULL, 11, 'Demande de devis #168', 'Maroc', 'Casablanca', 'demande-devis-168', 1),
+(169, 77, 1, '2010-169', 'Nous avons besoin de :\r\n08 Molettes selon plans, photos et le descriptif des textes à graver.\r\n\r\nNB : Les textes en noir  doivent être gravés sur la molette par contre nous aurons besoin d’un  module de chiffre interchangeable (texte en rouge) : 2010 pour l’année.\r\n', '2017-01-20 00:00:00', 1, 0, NULL, '2010-01-04 10:32:50', '2010-03-25 15:47:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #169', 'Maroc', 'Mohammadia', 'demande-devis-169', 1),
+(170, 293, 1, '2010-170', 'Nous souhaitons recevoir les meilleures offres pour la fourniture suivante:\r\nProfilés UAP130 : 120ml.\r\nPlat 50x5mm : 24ml.\r\nTôle ép. 2.5mm : 630m2.\r\nCornière 30x30x3 : 60ml.\r\n1260m2 de laine de roche ép 50mm, B353 ROCLAINE (température limite 650 °C)\r\nMerci d’avance.', '2017-01-17 00:00:00', 1, 0, NULL, '2010-01-08 09:55:32', '2010-01-08 10:02:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #170', 'Maroc', 'Casablanca', 'demande-devis-170', 1),
+(171, 272, 1, '2010-171', 'Nous avons besoin de deux nacelles suspendues motorisées au moyen de treuils électriques, la vitesse d’élévation est en moyenne de 9 m/min. Chaque plateforme devra être constituée  de deux modules en aluminium de 3 mètres chacune. \r\nLes systèmes de suspension doivent être adaptés à un accrochage sur des supports chariots installés sur les toitures du bâtiment.\r\nLes treuils doivent avoir une capacité de 2000 Kg et doivent être alimentés par du 220 Volts en monophasé et 380 Volts en triphasé.\r\nLes câbles des treuils auront une longueur de 100 m par treuil.\r\nTous les équipements doivent être conformes à la réglementation en vigueur, les échafaudages volants et les plateformes suspendues motorisées doivent être  reconnus par les professionnels des contrôles techniques et les organismes de prévention comme la référence en matière de sécurité pour l\'élévation du personnel effectuant des travaux légers.\r\n', '2017-03-10 00:00:00', 1, 0, NULL, '2010-01-08 11:12:26', '2010-02-23 17:07:31', 1, 0, 0, 0, NULL, 11, 'Demande de devis #171', 'Maroc', 'Casablanca', 'demande-devis-171', 1),
+(172, 58, 1, '2010-172', 'Bonjour,\r\n\r\nNous avons besoin de faire un diagnostiquer de l’état du matériel de notre cuisine.\r\n\r\nDe plus  nous comptons sur vous de nous fournir votre offre de prix de maintenance dont le cadre d’un contrat annuel.\r\n	\r\nDans l’attente de confirmation de  votre visite début de la semaine prochaine.', '2017-01-27 00:00:00', 1, 0, NULL, '2010-01-19 12:44:41', '2010-01-20 10:07:39', 1, 0, 0, 0, NULL, 11, 'Demande de devis #172', 'Maroc', 'Kenitra', 'demande-devis-172', 1),
+(176, 264, 1, '2010-176', 'Nous avons besoin de 2 générateurs de courant Diesel 600-800 kVA.\r\nDELAI PROROGE (VOIR NOUVELLE DATE)', '2017-02-20 00:00:00', 1, 0, NULL, '2010-02-03 15:50:59', '2010-02-15 14:32:32', 1, 0, 0, 0, NULL, 11, 'Demande de devis #176', 'Maroc', 'Bouskoura', 'demande-devis-176', 1),
+(177, 264, 1, '2010-177', 'Nous avons besoin d\'un calibreur tamiseur de marque Frewitt à tamis oscillant modèle MF-6.\r\n\r\nDélai prorogé (Voir nouvelle date)', '2017-02-20 00:00:00', 1, 0, NULL, '2010-02-04 08:47:45', '2010-03-11 17:25:30', 1, 0, 0, 0, NULL, 11, 'Demande de devis #177', 'Maroc', 'Bouskoura', 'demande-devis-177', 1),
+(187, 77, 1, '2010-187', 'Le présent marché a pour objet la réalisation d’une machine de roulage de contreplaqués pour nos besoins en fûts de Diamètre 200 mm, Largeur 500 mm, Épaisseur 3 mm.\r\nLa feuille du contreplaqué est trempée dans de l’eau chaude et passe ensuite à la machine de roulage cylindrique.\r\nLa jonction des extrémités du fût se fait à l’aide d’une languette placée en dessous de la jointure et le maintien est assuré par des agrafes (Voir photos).\r\nLa présente demande doit être réalisée suivant nos données (Description ; Photos … ) et dans les règles de l’art.\r\nL’Entrepreneur devra présenter à notre société un plan de réalisation de la machine établi suivant nos données et ne pourra  être mis en exécution qu’après acceptation  par ordre de service délivré par nos soins. \r\nL’Entrepreneur devra respecter le délai de réalisation sur lequel nous nous mettrons d’accord.\r\n\r\n(Voir pièdes jointes).', '2017-03-10 00:00:00', 1, 0, NULL, '2010-02-23 15:34:24', '2010-03-04 15:46:09', 1, 0, 0, 0, NULL, 11, 'Demande de devis #187', 'Maroc', 'Mohammadia', 'demande-devis-187', 1),
+(191, 318, 1, '2010-191', 'Nous avons besoin d’une entreprise spécialisée dans la sécurité (Matériels et services) qui peut nous accompagner pour élaborer un plan de sécurité (plan d’évacuation, formation 1er secours…) et pouvoir l’exécuter dans les règles de l’art.\r\nL’entreprise intéressée devra être conventionnée et certifiée auprès des compagnies d’assurances et disposera de tout agrément nécessaire délivré par les administrations et fédérations compétentes.', '2017-03-11 00:00:00', 1, 0, NULL, '2010-02-24 11:46:05', '2010-04-01 17:56:12', 1, 0, 0, 0, NULL, 11, 'Demande de devis #191', 'Maroc', 'Casablanca', 'demande-devis-191', 1),
+(192, 320, 1, '2010-192', '*****DATE PROROGER*****\r\n\r\nCloutier d’encadrement de Ciol : \r\nPoids : corps 3.67kgs (8.07Ibs) en aluminium\r\nCorps du magnésium 3.38kgs (7.43Ibs)\r\nCapacité du magasin : 225-300 Clous\r\nDiamètre de jambe : 2.3-2.9mm (0.092 \" - 0.113 \")\r\nLongueur des clous : 45mm-70mm (1-3/4 \"--2-3/4 \")\r\nOpération : 5-7kgs/cm2 (70-100psi) \r\n\r\nQuantité = 05 unité\r\n\r\n(Voir photo ci-jointe) ', '2017-03-31 00:00:00', 1, 0, NULL, '2010-02-24 12:28:52', '2010-03-25 08:58:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #192', 'Maroc', 'Meknes', 'demande-devis-192', 1),
+(194, 306, 1, '2010-194', 'Sachet Biodégradable \r\n(Voir détail sur le PDF ci-joint)', '2017-03-26 00:00:00', 1, 0, NULL, '2010-02-25 14:13:23', '2010-02-25 17:32:07', 1, 0, 0, 0, NULL, 11, 'Demande de devis #194', 'Maroc', 'Casablanca', 'demande-devis-194', 1),
+(195, 335, 1, '2010-195', '>>>>>  DELAI PROLONGE  <<<<<\r\nNous avons besoin de deux (02) GERBEURS équivalant au model en fichier ci-joint fonctionnant en \r\nHauteur mât abaissé Inférieur à 2,20m.\r\nCharge à porter = 1,5 T.\r\nHauteur mât déployé= 3 m.\r\nTempérature Négative -18°C.\r\n\r\nQuantité= 02.\r\n\r\n\r\n(Voir fichier attaché)', '2017-04-24 00:00:00', 1, 0, NULL, '2010-03-12 17:03:30', '2010-04-14 10:24:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #195', 'Maroc', 'Rabat', 'demande-devis-195', 1),
+(196, 351, 1, '2010-196', 'PEINTURE resistant à l\'eau, avec sechage rapide, non inflammable, couleur noir (finition peu intense) Pour marquage exterieure des pipes sous marins', '2017-03-30 00:00:00', 1, 0, NULL, '2010-03-25 11:29:12', '2010-03-29 09:55:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #196', 'France', 'Caissargues', 'demande-devis-196', 1),
+(197, 355, 1, '2010-197', 'Nous avons besoin d\'une solution de rayonnage mixte Accumulation et conventionnel selon plan ci-joint.\r\nDim palette 800x1200x1600 poids 1000Kg.', '2017-04-09 00:00:00', 1, 0, NULL, '2010-03-25 17:18:40', '2010-03-31 17:29:45', 1, 0, 0, 0, NULL, 11, 'Demande de devis #197', 'Maroc', 'Casablanca', 'demande-devis-197', 1),
+(201, 335, 1, '2010-201', 'Nous aurons besoin de thermomètre à sonde pour contrôler la température à la réception des produits congelés. \r\nNombre demandé : 3 thermomètres à sonde pour mesurer la température à cœur des produits congelés à la réception.', '2017-04-10 00:00:00', 1, 0, NULL, '2010-03-26 11:48:58', '2010-03-26 11:54:00', 1, 0, 0, 0, NULL, 11, 'Demande de devis #201', 'Maroc', 'Rabat', 'demande-devis-201', 1),
+(204, 358, 1, '2010-204', 'Produit de nettoyage industriel des pièces mécaniques.\r\nNon nocif aux intervenants ni à l\'environnement\r\nAgrée par la CEE, certifié ISO ou DIN.\r\nA joindre une notice en français ou en anglais', '2017-05-01 00:00:00', 1, 0, NULL, '2010-03-27 09:43:09', '2010-03-29 09:52:42', 1, 0, 0, 0, NULL, 11, 'Demande de devis #204', 'Maroc', 'Temara', 'demande-devis-204', 1),
+(208, 3, 1, '2010-208', 'Je recherche des fournisseurs capables de me réaliser les 3 pièces selon plans ci-joint.\r\nLa technologie pressentie est : MOULAGE CONTACT (sinon moulage basse pression)', '2017-04-24 00:00:00', 1, 0, NULL, '2010-04-09 15:34:41', '2010-04-23 11:39:55', 1, 0, 0, 0, NULL, 11, 'Demande de devis #208', 'Maroc', 'Casablanca', 'demande-devis-208', 1),
+(216, 335, 1, '2010-216', 'Extincteur CO² 5 kg. Quantité 08.\r\nRIA. Quantité 04.\r\nCentrale d’alarme. Quantité 01.\r\nBatterie rechargeable 12V, 7,2 Ah. Quantité 01.\r\nBatterie 12V, 2,2 Ah. Quantité 01.\r\nDétecteur IR de mouvement. Quantité 04.\r\nSirène extérieure. Quantité 01.', '2017-04-25 00:00:00', 1, 0, NULL, '2010-04-15 17:10:26', '2010-04-23 11:40:14', 1, 0, 0, 0, NULL, 11, 'Demande de devis #216', 'Maroc', 'Rabat', 'demande-devis-216', 1),
+(217, 58, 1, '2010-217', 'Nous avons besoin de tourniquet et pointeuse voir demande ci-jointe\r\n\r\nAchats du Matériel en DDP /CIF/EX WORK.', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-21 10:01:12', '2010-05-03 09:47:18', 1, 0, 0, 0, NULL, 11, 'Demande de devis #217', 'Maroc', 'Kenitra', 'demande-devis-217', 1),
+(219, 58, 1, '2010-219', 'MATERIEL INFORMATIQUE ( VOIR DETAIL CI-JOINT)', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-22 08:47:59', '2010-05-03 09:48:31', 1, 0, 0, 0, NULL, 11, 'Demande de devis #219', 'Maroc', 'Kenitra', 'demande-devis-219', 1),
+(221, 58, 1, '2010-221', 'PC industriels. PC core duo 1,66 MHZ, 1 GB Ram sans Disque dur mais avec Mémoire Compact FLASH (Windows ou Linux) écran tactile.', '2017-05-11 00:00:00', 1, 0, NULL, '2010-04-23 17:53:14', '2010-05-03 09:47:52', 1, 0, 0, 0, NULL, 11, 'Demande de devis #221', 'Maroc', 'Kenitra', 'demande-devis-221', 1),
+(222, 77, 1, '2010-222', 'Bonjour,\r\nje vous prie de bien vouloir me faire votre meilleure offre de prix et délai pour la fourniture de une station mobile de carburant d’une capacité de 10 T équivalent au model ci-joint', '2017-05-08 00:00:00', 1, 0, NULL, '2010-04-26 17:46:53', '2010-04-26 17:47:59', 1, 0, 0, 0, NULL, 11, 'Demande de devis #222', 'Maroc', 'Mohammadia', 'demande-devis-222', 1),
+(223, 391, 1, '2010-223', ' Pierre de bien vouloir nous communiquer votre meilleure offre concernant le rayonnage lourd a palette ainsi que la note de calcule correspondante .\r\n10 éléments des dimensions suivante:\r\n\r\n    DIM: L 20 x H 6 m\r\n\r\n   nombre de niveau : quatre \r\n\r\n   capacité totale de stockage : 700 palettes\r\n-- ', '2017-05-05 00:00:00', 1, 0, NULL, '2010-04-27 10:36:54', '2010-05-06 10:53:46', 1, 0, 0, 0, NULL, 11, 'Demande de devis #223', 'Maroc', 'Agadir', 'demande-devis-223', 1),
+(226, 402, 1, '2010-226', 'Nous cherchons une société étrangère pour nous fournir les contreplaqués selon le cahier des charges en fichier ci-joint.\r\nMeilleures salutations.', '2017-05-31 00:00:00', 1, 0, NULL, '2010-05-18 19:57:55', '2010-05-19 11:37:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #226', 'Maroc', 'Oujda', 'demande-devis-226', 1),
+(228, 422, 1, '2010-228', 'Prière de me communiquer votre meilleure offre de prix pour les articles cités en pièce jointe.\r\n\r\nLa Quantité : 100 pour chaque article. Autrement dit :\r\n* 100 Automatisme pour portes battantes.\r\n\r\n* 100 Sélecteur \r\n\r\n* 100 Bouton poussoir \r\n\r\n* 100 Télécommande \r\n\r\n* 100 Serrure pêne piston \r\n\r\nN\'hésitez pas à nous contacter pour plus d\'informations.', '2017-06-15 00:00:00', 1, 0, NULL, '2010-06-09 10:15:27', '2010-06-09 10:59:26', 1, 0, 0, 0, NULL, 11, 'Demande de devis #228', 'Maroc', 'Casablanca', 'demande-devis-228', 1),
+(237, 428, 1, '2010-237', 'ROUE DN200 MM PIVOTANTE AVEC FRIEN (EN CAOUTCHOUC OU EN PEHD)\r\nQté : 08 Uté\r\nPJ : Photo descriptive de l\'utilisation des dites roues.', '2017-06-25 00:00:00', 1, 0, NULL, '2010-06-22 17:34:37', '2010-06-22 17:34:37', 1, 0, 0, 0, NULL, 11, 'Demande de devis #237', 'Maroc', 'Casablanca', 'demande-devis-237', 1),
+(238, 58, 1, '2010-238', 'Conteneur pour utiliser comme atelier de maintenance. Dimension min 5m*2.5m.\r\nEquipé de climatiseur, fenêtre, et table pour 4 techniciens.', '2017-07-24 00:00:00', 1, 0, NULL, '2010-07-14 11:07:56', '2010-07-22 17:08:16', 1, 0, 0, 0, NULL, 11, 'Demande de devis #238', 'Maroc', 'Kenitra', 'demande-devis-238', 1),
+(240, 452, 1, '2010-240', 'Recherchons d\'urgence la location du matériel ci-dessous:\r\n- Chariot télescopique tout terrain rotatif à fort tonnage \"5,5t\" hauteur non spécifiée, de marque Manitou (de préférence).\r\nDurée de location: 1 mois\r\nFull Service.\r\nConducteur(s) compris 7j/7\r\n30 à 40 Km /j.', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-15 09:54:42', '2010-07-20 15:59:03', 1, 0, 0, 0, NULL, 11, 'Demande de devis #240', 'Maroc', 'Tanger', 'demande-devis-240', 1),
+(241, 452, 1, '2010-241', 'Recherchons d\'urgence la location du matériel ci-dessous:\r\n- Camion plateau 13m. En Option avec ridelle.\r\nDurée de location: 1 mois\r\nFull Service.\r\nConducteur(s) compris 7j/7\r\n30 à 40 Km /j.', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-15 12:28:30', '2010-07-20 15:58:08', 1, 0, 0, 0, NULL, 11, 'Demande de devis #241', 'Maroc', 'Tanger', 'demande-devis-241', 1),
+(242, 452, 1, '2010-242', 'Recherchons d\'urgence la location du matériel ci-dessous :\r\nChariot élévateur: avec conducteur à charge\r\n- Capacité de charge nominale : 4 tonnes\r\n- tablier à déplacement latéral,\r\n- type: diesel \" carburant à votre charge\",\r\n- Hauteur de levée : 3 à 4 mètres,\r\n- Mât triplex grande visibilité,\r\n- Horaire de travail: 24h/24h , 7j/7j\r\n- Durée de location: un mois avec possibilité de prolongation', '2017-07-20 00:00:00', 1, 0, NULL, '2010-07-16 11:53:55', '2010-07-20 15:58:43', 1, 0, 0, 0, NULL, 11, 'Demande de devis #242', 'Maroc', 'Tanger', 'demande-devis-242', 1),
+(243, 385, 1, '2010-243', 'Bande Modulaire Blanche UNI-228 mm x 100 (ml) pour convoyeur transportant du poisson.\r\n(Voir photos ci-jointe)', '2017-08-07 00:00:00', 1, 0, NULL, '2010-07-22 16:35:40', '2010-08-02 13:36:18', 1, 0, 0, 0, NULL, 11, 'Demande de devis #243', 'Maroc', 'Agadir', 'demande-devis-243', 1),
+(244, 385, 1, '2010-244', '1 - Eléctropompe de GRUNDFOSS 5.5 KW 2900 tr/min CR 16', '2017-08-04 00:00:00', 1, 0, NULL, '2010-07-27 18:12:26', '2010-07-28 11:57:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #244', 'Maroc', 'Agadir', 'demande-devis-244', 1),
+(245, 385, 1, '2010-245', '25 l huile shell CASSIDA FLUIDE G 150', '2017-08-04 00:00:00', 1, 0, NULL, '2010-07-27 18:18:22', '2010-07-28 11:57:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #245', 'Maroc', 'Agadir', 'demande-devis-245', 1),
+(246, 460, 1, '2010-246', 'Recherche fournisseur huile végétale ', '2017-09-03 00:00:00', 1, 0, NULL, '2010-08-25 12:56:37', '2010-08-27 12:29:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #246', 'France', 'Sainte-Florence', 'demande-devis-246', 1),
+(247, 460, 1, '2010-247', 'Recherche fournisseurs pour étudie la mise en place étiquettes RFID', '2017-10-10 00:00:00', 1, 0, NULL, '2010-08-25 12:57:31', '2010-08-25 17:29:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #247', 'France', 'Sainte-Florence', 'demande-devis-247', 1),
+(248, 473, 1, '2011-248', '10.000 GRILLES DE CUISSON DIMENSION EXT : L600-P400-H90 mm \r\nCouleur : Gris .\r\nCaisse : Fond & Parois ajourés.\r\nCes grilles sont utilisées dans les bac de cuisson : cuisson en Saumure ( Eau + sel à 4 ° baumé ) chauffée à 90 °C, et le temps peut varier de 20 à 30 minutes. \r\ngrilles  nettoyées à la soude caustique dans une eau chauffée à 60° C.\r\n( photo ci-joint)\r\n', '2017-04-13 00:00:00', 1, 0, NULL, '2011-04-05 14:46:02', '2011-04-05 16:10:34', 1, 0, 0, 0, NULL, 11, 'Demande de devis #248', 'Maroc', 'Agadir', 'demande-devis-248', 1),
+(250, 478, 1, '2011-250', 'Besoin de Pate de Paprika pour production de sauce! Ci dessous spécification:\r\nMatière première: paprika rouge fraiche et naturelle\r\nTransformation: concentre sous vide ou réfrigéré\r\nSans additif, ni colorant\r\nBrix: 13 a 15°\r\nDensité: 1,02GR/CM3 8,5° DE BRIX\r\nQuantité: 2 TONNES', '2017-12-02 00:00:00', 1, 0, NULL, '2011-06-17 10:22:41', '2011-06-17 15:03:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #250', 'Maroc', 'Berrechid', 'demande-devis-250', 1),
+(251, 480, 1, '2011-251', 'Je vous remercie de bien nous faire parvenir une meilleur offre de prix de la référence ci-dessous :\r\n \r\n\r\n8034102:  Bd 0.5x12 DIN 1791- CuFe 0.1P F44                  \r\n\r\nQT : 1000kg\r\n\r\n', '2017-08-21 00:00:00', 1, 0, NULL, '2011-08-10 15:46:42', '2011-08-10 16:04:17', 1, 0, 0, 0, NULL, 11, 'Demande de devis #251', 'Maroc', 'Tanger', 'demande-devis-251', 1),
+(302, 3, 1, '2018-302', 'Bonjour\r\nje vous remercie de bien nous faire parvenir une meilleur offre de prix pour la demande ci_joint ', '2018-01-31 00:00:00', 1, 0, NULL, '2018-01-15 16:25:25', '2018-01-25 16:24:24', 1, 0, 0, 0, NULL, 11, 'Demande de devis #302', 'Maroc', 'Casablanca', 'demande-devis-302', 1),
+(308, 571, 1, '2018-308', 'bonjour;\r\nmerci de nous faire parvenir votre meilleur offre de prix pour les articles en pièces jointe:', '2018-02-02 00:00:00', 1, 0, NULL, '2018-01-29 15:30:29', '2018-02-01 17:22:38', 1, 0, 0, 0, NULL, 11, 'Demande de devis #308', 'Maroc', 'Casablanca', 'demande-devis-308', 1),
+(314, 3, 1, '2019-314', 'j ia besoin d un rayonnage  2 m de hauteur ', '2019-06-01 00:00:00', 1, 0, NULL, '2019-05-29 16:34:45', '2019-07-08 17:47:43', 1, 0, 0, 0, NULL, 11, 'Demande de devis #314', 'Maroc', 'Casablanca', 'demande-devis-314', 1),
+(323, 621, 1, '2019-323', '2 panneaux de brassage \r\n24 prises informatique murale \r\n2 passe câbles \r\nArmoire informatique \r\n1 collier de serrage 300 blanche ', '2019-10-30 00:00:00', 1, 0, NULL, '2019-10-22 20:47:23', '2019-10-25 10:27:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #323', 'Maroc', 'Sale', 'demande-devis-323', 1),
+(324, 630, 1, '2019-324', 'Je cherche des fournisseurs pour la location d\'un chariot élévateur de 3T semaine prochaine pour 1 jour et la semaine d\'après aussi 1 jour', '2019-11-11 00:00:00', 1, 0, NULL, '2019-10-24 11:23:56', '2019-10-24 11:35:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #324', 'Maroc', 'Casablanca', 'demande-devis-324', 1),
+(325, 628, 1, '2019-325', 'besoin d\'un pyromètre optique type IGAR 6 advanced ', '2019-11-06 00:00:00', 1, 0, NULL, '2019-10-25 10:50:53', '2019-11-04 10:43:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #325', 'Maroc', 'Casablanca', 'demande-devis-325', 1),
+(326, 622, 1, '2019-326', 'demande de prix 2 tôles noires\r\nDimensions ; 2000*1000*12 mm', '2019-11-03 00:00:00', 1, 0, NULL, '2019-10-25 11:22:16', '2019-10-25 15:52:51', 1, 0, 0, 0, NULL, 11, 'Demande de devis #326', 'Maroc', 'Kenitra', 'demande-devis-326', 1),
+(327, 632, 1, '2019-327', 'Besoin 8 casques de protection casco petzl vertex Best\r\n', '2019-11-05 00:00:00', 1, 0, NULL, '2019-10-28 19:36:55', '2019-11-05 12:53:55', 1, 0, 0, 0, NULL, 11, 'Demande de devis #327', 'Maroc', 'Khenifra', 'demande-devis-327', 1),
+(331, 629, 1, '2019-331', 'Bonjour,\r\nJe cherche des fournisseurs pour 5 pince de mesure de terre numérique modele 4200 de marque KYORITSU.', '2019-11-08 00:00:00', 1, 0, NULL, '2019-10-29 19:09:20', '2019-11-05 10:16:25', 1, 0, 0, 0, NULL, 11, 'Demande de devis #331', 'Maroc', 'Casablanca', 'demande-devis-331', 1),
+(332, 629, 1, '2019-332', 'bonjour,\r\n\r\nJe cherche ce ventilateur en urgence :\r\nVENTILATEUR HÉLICOÏDE 630mm et 220v', '2019-11-06 00:00:00', 1, 0, NULL, '2019-10-30 22:00:19', '2019-11-05 11:52:36', 1, 0, 0, 0, NULL, 11, 'Demande de devis #332', 'Maroc', 'Casablanca', 'demande-devis-332', 1),
+(333, 643, 1, '2019-333', 'Nous vous demandons de bien vouloir nous faire parvenir, vos meilleures conditions de prix et délai concernant les articles ci-dessous en pièce jointe', '2019-11-05 00:00:00', 1, 0, NULL, '2019-11-01 20:01:01', '2019-11-07 11:09:58', 1, 0, 0, 0, NULL, 11, 'Demande de devis #333', 'Maroc', 'El jadida', 'demande-devis-333', 1),
+(334, 646, 1, '2019-334', ' \r\n\r\n1. Hepc20 push fit male adaptor  x12pcs\r\n\r\n2.Hepc2o push fit female adaptor x 4pcs\r\n\r\n3.Hepc2o pipe inserts  all in 12mm diameter x 85pcs', '2019-11-18 00:00:00', 1, 0, NULL, '2019-11-12 17:04:55', '2019-11-18 15:41:22', 1, 0, 0, 0, NULL, 11, 'Demande de devis #334', 'Maroc', 'El jadida', 'demande-devis-334', 1),
+(335, 653, 1, '2019-335', 'Bonjour,\r\nMerci de me parvenir le prix REVENDEUR pour :\r\n* 1000 Graisseur en acier inoxydable M10 45° et 90° \r\nCordialement.', '2020-01-01 00:00:00', 1, 0, NULL, '2019-12-03 12:26:07', '2019-12-04 11:22:04', 1, 0, 0, 0, NULL, 11, 'Demande de devis #335', 'Maroc', 'Laâyoune', 'demande-devis-335', 1),
+(336, 653, 1, '2019-336', 'Bonjour,\r\n\r\nMerci de me parvenir votre meilleur offre de prix revendeur Pour :\r\n* 1 - Appareil junction courroie 12 cm. \r\n\r\nCordialement. \r\n ', '2020-01-01 00:00:00', 1, 0, NULL, '2019-12-19 11:11:00', '2019-12-20 15:26:33', 1, 0, 0, 0, NULL, 11, 'Demande de devis #336', 'Maroc', 'Laâyoune', 'demande-devis-336', 1),
+(337, 663, 1, '2020-337', 'Bonjour \r\nNous aurons besoin Des Barres de seuil à visser, en acier inox brossé type DINAC 4.5 cm de largeur (Au niveau des transitions d\'un type de revêtement à un autre) Quantité: 170ml\r\nNez de marche de profils antidérapants de type Passage (Profilé angle L45x1.5 aluminium stair nosing 6060 T5 20 microns anodisée avec insert minéral hautement\r\nantidérapant épousant parfaitement le nez de marche ) Quantité: 80ml\r\nCordialement', '2020-02-18 00:00:00', 1, 0, NULL, '2020-02-04 09:34:53', '2020-02-04 15:19:28', 1, 0, 0, 0, NULL, 11, 'Demande de devis #337', 'Maroc', 'Casablanca', 'demande-devis-337', 1),
+(338, 663, 1, '2020-338', 'Bonjour,\r\nMerci de m\'envoyer votre meilleures offre de prix, pour un profilé U ( U Channels) en Aluminium, DIM:20*50mm ép:10/10 ou bien 20/10mm, selon la disponibilité des profilés\r\nQuantité: 2000ml', '2020-02-11 00:00:00', 1, 0, NULL, '2020-02-04 09:52:08', '2020-02-04 15:18:49', 1, 0, 0, 0, NULL, 11, 'Demande de devis #338', 'Maroc', 'Casablanca', 'demande-devis-338', 1),
+(340, 663, 1, '2020-340', 'Bonjour,\r\nMerci de m\'envoyer votre meilleures offre de prix, pour des Boîtes d\'attente pour le béton armé de type GAMMBOX 2 , Fiche technique en pièce joint\r\nQuantité: 6500ml', '2020-02-10 00:00:00', 1, 0, NULL, '2020-02-04 12:17:55', '2020-02-04 15:18:01', 1, 0, 0, 0, NULL, 11, 'Demande de devis #340', 'Maroc', 'Casablanca', 'demande-devis-340', 1),
+(342, 3, 1, '2020-342', 'chariot élevateur ', '2020-03-27 00:00:00', 1, 0, NULL, '2020-03-16 14:19:32', '2020-03-16 14:30:51', 1, 0, 0, 0, NULL, 11, 'Demande de devis #342', 'Maroc', 'Casablanca', 'demande-devis-342', 1),
+(344, 3, 1, '2020-344', 'Besoin en rayonnage ', '2020-04-03 00:00:00', 1, 0, NULL, '2020-03-23 09:41:00', '2020-03-23 09:41:00', 1, 0, 0, 0, NULL, 11, 'Demande de devis #344', 'Maroc', 'Casablanca', 'demande-devis-344', 1),
+(345, 3, 1, '2020-345', 'Demande de chambre froide', '2020-04-24 00:00:00', 1, 0, NULL, '2020-04-02 18:30:05', '2020-04-02 18:30:05', 1, 0, 0, 0, NULL, 11, 'Demande de devis #345', 'Maroc', 'Casablanca', 'demande-devis-345', 1),
+(347, 676, 1, '2020-7', 'Doloribus impedit a', '2020-06-10 12:04:00', 1, 0, 0, '2020-05-27 13:04:43', '2020-05-27 13:48:37', 0, 0, 0, 0, NULL, 1, 'Fugiat nemo dolorem', 'Maroc', 'Casablanca', 'fugiat-nemo-dolorem', 1),
+(348, 682, 1, '2020-8', 'Perspiciatis a inve', '2020-06-11 15:45:00', 1, 0, 0, '2020-06-05 16:46:43', '2020-06-05 16:51:20', 1, 0, 47, 0, NULL, 11, 'Necessitatibus ut eu', 'Maroc', 'Casablanca', 'necessitatibus-ut-eu', 1),
+(349, 682, 1, '2020-9', 'Aut eiusmod aliquém ', '2020-06-24 15:59:00', 1, 0, 0, '2020-06-05 17:00:00', '2020-06-05 17:10:02', 1, 1, 11, 0, NULL, 11, 'Exercitationem sint', 'Maroc', 'Casablanca', 'exercitationem-sint', 1),
+(350, 682, 1, '2020-10', 'Molestias odit ex sof', '2020-06-21 16:02:00', 1, 0, 0, '2020-06-05 17:02:17', '2020-06-05 17:10:15', 0, 1, 39, 0, NULL, 11, 'Laborum Ut officiis', 'Maroc', 'Casablanca', 'laborum-ut-officiis', 1),
+(351, 682, 1, '2020-11', 'Nesciunt beatae con', '2020-06-12 16:18:00', 1, 0, 0, '2020-06-05 17:18:54', '2020-06-05 17:19:26', 1, 0, 28, 0, NULL, 11, 'Sint sint non eos al', 'Maroc', 'Casablanca', 'sint-sint-non-eos-al', 1),
+(352, 682, 1, '2020-12', 'Placeat vitae conse', '2020-06-26 16:14:00', 1, 0, 0, '2020-06-07 17:14:57', '2020-06-07 20:56:08', 1, 0, 34, 0, NULL, 11, 'Qui nulla quis ut ea', 'Maroc', 'Casablanca', 'qui-nulla-quis-ut-ea', 1),
+(353, 682, 1, '2020-13', 'Sint totam qui do co', '2020-06-17 20:58:00', 1, 0, 0, '2020-06-07 20:58:48', '2020-06-07 21:10:08', 1, 0, 92, 0, NULL, 11, 'Dolorem aut enim off', 'Maroc', 'Casablanca', 'dolorem-aut-enim-off', 2),
+(354, 682, 1, '2020-14', 'Nostrum deleniti dol', '2020-06-17 15:52:00', 1, 0, 0, '2020-06-08 16:52:44', '2020-06-08 16:59:07', 1, 1, 7, 0, NULL, 11, 'Ut cupiditate praese', 'Maroc', 'Casablanca', 'ut-cupiditate-praese', 1);
 
 -- --------------------------------------------------------
 
@@ -1385,7 +1973,10 @@ CREATE TABLE `demande_achat_attachement` (
 --
 
 INSERT INTO `demande_achat_attachement` (`demande_achat_id`, `attachement_id`) VALUES
-(347, 1);
+(347, 1),
+(348, 3),
+(349, 4),
+(351, 5);
 
 -- --------------------------------------------------------
 
@@ -1429,7 +2020,14 @@ CREATE TABLE `demande_ha_categories` (
 
 INSERT INTO `demande_ha_categories` (`demande_achat_id`, `categorie_id`) VALUES
 (347, 24),
-(347, 47);
+(347, 47),
+(348, 30),
+(349, 30),
+(350, 34),
+(351, 30),
+(352, 549),
+(353, 110),
+(354, 110);
 
 -- --------------------------------------------------------
 
@@ -1450,7 +2048,7 @@ CREATE TABLE `demande_jeton` (
 --
 
 INSERT INTO `demande_jeton` (`id`, `fournisseur_id`, `nbr_jeton`, `is_use`, `created`) VALUES
-(1, 2, 5, 0, '2020-05-28 13:55:00');
+(2, 680, 5, 1, '2020-06-06 14:26:37');
 
 -- --------------------------------------------------------
 
@@ -1470,6 +2068,13 @@ CREATE TABLE `detail_visite` (
   `personnel_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `detail_visite`
+--
+
+INSERT INTO `detail_visite` (`id`, `fournisseur_id`, `demande_id`, `created`, `date_rec`, `is_send`, `budget`, `statut`, `personnel_id`) VALUES
+(1, 680, 351, '2020-06-06 14:40:01', '2020-06-13 14:40:01', 0, 250, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -1482,6 +2087,24 @@ CREATE TABLE `diffusion_demande` (
   `demande_id` int(11) DEFAULT NULL,
   `date_diffusion` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `diffusion_demande`
+--
+
+INSERT INTO `diffusion_demande` (`id`, `fournisseur_id`, `demande_id`, `date_diffusion`) VALUES
+(1, 2, 348, '2020-06-05 16:51:20'),
+(2, 674, 348, '2020-06-05 16:51:20'),
+(3, 680, 348, '2020-06-05 16:51:20'),
+(4, 2, 349, '2020-06-05 17:01:37'),
+(5, 674, 349, '2020-06-05 17:01:37'),
+(6, 680, 349, '2020-06-05 17:01:37'),
+(7, 2, 351, '2020-06-05 17:19:26'),
+(8, 674, 351, '2020-06-05 17:19:26'),
+(9, 674, 352, '2020-06-07 20:53:52'),
+(10, 674, 352, '2020-06-07 20:56:08'),
+(11, 680, 353, '2020-06-07 21:01:28'),
+(12, 680, 354, '2020-06-08 16:56:01');
 
 -- --------------------------------------------------------
 
@@ -1522,19 +2145,36 @@ CREATE TABLE `faq` (
 --
 
 INSERT INTO `faq` (`id`, `question`, `reponse`, `categorie_id`) VALUES
-(1, 'Qu’est ce que Les Achats Industriels?', 'Les Achats Industriels est une place de marché qui permet aux Acheteurs et aux Fournisseurs de se rencontrer dans une même plate-forme (électronique).\nNous nous positionnons en tant qu\'intermédiaire entre les deux parties afin de faciliter aux uns et aux autres de vendre ou/et d’acheter de manière fluide, économique, rapide, sans limites géographique .', 2),
-(2, 'Comment fonctionne Les Achats Industriels?', 'L’Acheteur remplit un champ dans le questionnaire RFQ en précisant ses besoins d\'achat, il peut éventuellement joindre des fichiers (seul le format jpeg, jpg, doc, excel ou pdf sont permis à condition que la taille totale des fichiers ne dépasse pas 1 Méga Octet).\nTout fichier qui contient des éléments qui peuvent faire identifier son émetteur sera rectifié si  possible par l’administrateur ou simplement bloqué, l’expéditeur sera dans ce cas prévenue par e-mail afin qu’il produise un autre fichier valable.\nEnsuite, et après validation de l’administrateur, la demande de devis sera automatiquement envoyée aux Fournisseurs produisant le service ou produit recherché par l’Acheteur.\nEnfin, l’Acheteur sera contacté directement par plusieurs Fournisseurs et n’aura qu’à choisir celui qu’il jugera le plus adéquat.\nEn tant qu\'Acheteur, il vous suffit donc de saisir votre demande de devis sur le formulaire RFQ, et le reste se fait de façon automatique jusqu\'à la réception des contacts Fournisseurs.', 2),
-(5, 'Qu’est ce qu’un acheteur pour Les Achats Industriels ?', 'S’identifier en tant qu’Acheteur pour Les Achats Industriels c’est pouvoir lancer des demandes de devis et se faire repérer par les Fournisseurs sans difficulté. On peut s’enregistrer Acheteur pour un simple besoin comme pour un besoin important, il suffit de remplir un formulaire Acheteur et faire passer des demandes de devis. Vous recevrez des offres de Fournisseurs dont vous ignorez peut-être l’existence  ou même de vos propres Fournisseurs en découvrant qu’ils proposent de nouveaux produits très demandés dans votre activité, ces offres vous pouvez les comparer pour choisir le Fournisseur qui vous convient.\nToute société peut s’identifier dans notre site en tant qu’Acheteur et Fournisseur en même temps, il faut juste fournir un email différent pour chaque profil.', 3),
-(6, ' Je suis ACHETEUR, et je suis aussi FOURNISSEUR puis-je m’identifier en tant que FOURNISSEUR ?', 'C’est tout à fait possible, il suffit de se réenregistrer en tant que Fournisseur et suivre les étapes de l’enregistrement.', 3),
-(7, 'Comment lancer une demande de devis ?', 'L’Acheteur remplit un champ dans le questionnaire RFQ en précisant ses besoins d\'achat, il peut éventuellement joindre des fichiers (seul le format jpeg, jpg, doc, excel ou pdf qui sont permis sans que la taille totale des fichiers ne dépasse pas 1 Méga Octet) Tout fichier qui contient des éléments qui peuvent faire identifier son émetteur sera rectifié si  possible par l’administrateur ou simplement bloqué, l’expéditeur sera dans ce cas prévenue par e-mail afin qu’il produise un autre fichier valable.', 3),
-(8, 'Quelles sont les étapes pour s\'enregistrer en tant qu\'acheteur ?', 'Pour s\'enregistrer dans le site en tant qu’Acheteur, il suffit de remplit le formulaire Acheteur avec ses rubriques Information générale et Information utilisateur, se sont des questions qui vous identifient en tant qu’Acheteur (les questions en (*) sont des champs obligatoires à remplir), vous devez indiquer une adresse e-mail valable qui sera prise comme identifiant et choisir un mot de passe. Les conditions d’utilisation doivent être lu et accepter pour valider l’enregistrement. Vous recevrez un message avec un lien sur l’adresse e-mail que vous avez communiquée, vous devez cliquer dessus pour confirmer votre demande d’enregistrement. Une fois confirmée, vous pouvez lancer des demandes de devis et gérer votre compte Acheteur.', 3),
-(9, ' Comment ma demande de devis arrivera-t-elle aux fournisseurs ?', 'Une fois que vous avez un besoin, et que vous voulez lancer votre demande de prix, il faudra bien choisir l’activité à laquelle votre produit ou service appartient sur la fiche RFQ, si votre produit / service fait partie d’une famille de produit / service sélectionnez la afin d’élargir le nombre de Fournisseurs qui peuvent être intéressé  par votre demande. Dans le cas ou vous ne trouvez pas de correspondant à votre demande, envoyer nous un e-mail à Administrateur@lesachatsindutriels.com expliquant le produit / service que vous chercher, vous pouvez joindre des fichiers (seul le format jpeg, jpg, doc, excel ou pdf sont permis sans que la taille totale des fichiers ne dépasse pas 1 Méga Octet) sans se faire identifier par le Fournisseur. Une fois que votre demande est envoyée, elle sera validée par l’administrateur du site Les Achats Industriels est aussitôt envoyée aux Fournisseurs qui sont enregistré dans notre base de donnée.', 3),
-(10, 'Qu’est ce qu’un Fournisseur pour Les Achats Industriels ?', 'S’identifier en tant que Fournisseur pour Les Achats Industriels c’est être capable de répondre à un besoin qui peut être demandé par un Acheteur et de le lui fournir dans les meilleures conditions. S’identifier en tant que Fournisseur permet de recevoir des demandes de devis précises dans le domaine de compétence choisi par ce dernier lors de l’enregistrement, ce choix peut être modifié par l’utilisateur soit en ajoutant ou en retirant des domaines d’activités. Etre Fournisseur sur Les Achats Industriels c’est se donner la possibilité de répondre à des demandes de devis et de booster les consultations clients.', 4),
+(1, 'Qu’est ce que Les Achats Industriels?', 'Les Achats Industriels est une place de marché qui permet aux Acheteurs et aux Fournisseurs de se rencontrer dans une même plate-forme (électronique).\nNous nous positionnons en tant qu\'intermédiaire entre les deux parties afin de faciliter aux uns et aux autres de vendre ou/et d’acheter de manière fluide, économique, rapide, sans limites géographique .\n', 2),
+(2, 'Comment fonctionne Les Achats Industriels?', 'L’Acheteur remplit un champ dans le questionnaire RFQ en précisant ses besoins d\'achat, il peut éventuellement joindre des fichiers (seul le format jpeg, jpg, doc, excel ou pdf sont permis à condition que la taille totale des fichiers ne dépasse pas 1 Méga Octet).\nTout fichier qui contient des éléments qui peuvent faire identifier son émetteur sera rectifié si  possible par l’administrateur ou simplement bloqué, l’expéditeur sera dans ce cas prévenue par e-mail afin qu’il produise un autre fichier valable.\nEnsuite, et après validation de l’administrateur, la demande de devis sera automatiquement envoyée aux Fournisseurs produisant le service ou produit recherché par l’Acheteur.\nEnfin, l’Acheteur sera contacté directement par plusieurs Fournisseurs et n’aura qu’à choisir celui qu’il jugera le plus adéquat.\nEn tant qu\'Acheteur, il vous suffit donc de saisir votre demande de devis sur le formulaire RFQ, et le reste se fait de façon automatique jusqu\'à la réception des contacts Fournisseurs.\n', 2),
+(5, 'Qu’est ce qu’un acheteur pour Les Achats Industriels ?', 'S’identifier en tant qu’Acheteur pour Les Achats Industriels c’est pouvoir lancer des demandes de devis et se faire repérer par les Fournisseurs sans difficulté. On peut s’enregistrer Acheteur pour un simple besoin comme pour un besoin important, il suffit de remplir un formulaire Acheteur et faire passer des demandes de devis. Vous recevrez des offres de Fournisseurs dont vous ignorez peut-être l’existence  ou même de vos propres Fournisseurs en découvrant qu’ils proposent de nouveaux produits très demandés dans votre activité, ces offres vous pouvez les comparer pour choisir le Fournisseur qui vous convient.\nToute société peut s’identifier dans notre site en tant qu’Acheteur et Fournisseur en même temps, il faut juste fournir un email différent pour chaque profil.\n', 3),
+(6, ' Je suis ACHETEUR, et je suis aussi FOURNISSEUR puis-je m’identifier en tant que FOURNISSEUR ?', 'C’est tout à fait possible, il suffit de se réenregistrer en tant que Fournisseur et suivre les étapes de l’enregistrement.\nToute société peut s’identifier dans notre site en tant qu’Acheteur et Fournisseur en même temps, il faut juste fournir un email différent pour chaque profil.  \n', 3),
+(7, 'Comment lancer une demande de devis ?', 'L’Acheteur remplit un champ dans le questionnaire RFQ en précisant ses besoins d\'achat, il peut éventuellement joindre des fichiers (seul le format jpeg, jpg, doc, excel ou pdf qui sont permis sans que la taille totale des fichiers ne dépasse pas 1 Méga Octet) Tout fichier qui contient des éléments qui peuvent faire identifier son émetteur sera rectifié si  possible par l’administrateur ou simplement bloqué, l’expéditeur sera dans ce cas prévenue par e-mail afin qu’il produise un autre fichier valable.\nEnsuite, et après validation par l’administrateur du site Les Achats Industriels, la demande de devis sera automatiquement envoyée aux Fournisseurs produisant le service ou produit recherché par l’Acheteur Enfin, l’Acheteur sera contacté directement par plusieurs Fournisseurs et n’aura qu’à choisir celui qu’il jugera le plus adéquat.\nEn tant qu\'Acheteur, il vous suffit donc de saisir votre demande de devis sur le formulaire RFQ, et le reste se fait de façon automatique jusqu\'à la réception des contacts Fournisseurs.\n', 3),
+(8, 'Quelles sont les étapes pour s\'enregistrer en tant qu\'acheteur ?', 'Pour s\'enregistrer dans le site en tant qu’Acheteur, il suffit de remplir le formulaire Acheteur avec ses rubriques Information générale et Information utilisateur, ce sont des questions qui vous identifient en tant qu’Acheteur (les questions en (*) sont des champs obligatoires à remplir), vous devez indiquer une adresse e-mail valable qui sera prise comme identifiant et choisir un mot de passe. Les conditions d’utilisation doivent être lues et acceptées pour valider l’enregistrement. Vous recevrez un message avec un lien sur l’adresse e-mail que vous avez communiquée, vous devez cliquer dessus pour confirmer votre demande d’enregistrement. Une fois confirmée, vous pouvez lancer des demandes de devis et gérer votre compte Acheteur.\nEn cas de problème ou de difficultés liés à l’enregistrement veuillez nous contacter au :\nTel: +212.522.36.57.97\nE-mail : Administrateur@lesachatsindustriels.com\n', 3),
+(9, ' Comment ma demande de devis arrivera-t-elle aux fournisseurs ?', 'Une fois que vous avez un besoin, et que vous voulez lancer votre demande de prix, il faudra bien choisir l’activité à laquelle votre produit ou service appartient sur la fiche RFQ, si votre produit / service fait partie d’une famille de produit / service sélectionnez la afin d’élargir le nombre de Fournisseurs qui peuvent être intéressés  par votre demande. Dans le cas où vous ne trouvez pas de correspondant à votre demande, envoyez-nous un e-mail à Administrateur@lesachatsindutriels.com expliquant le produit / service que vous cherchez, vous pouvez joindre des fichiers (seul le format jpeg, jpg, doc, excel ou pdf sont permis sans que la taille totale des fichiers ne dépasse pas 1 Méga Octet) sans se faire identifier par le Fournisseur. Une fois que votre demande est envoyée, elle sera validée par l’administrateur du site Les Achats Industriels est aussitôt envoyée aux Fournisseurs qui sont enregistrés dans notre base de donnée.', 3),
+(10, 'Qu’est ce qu’un Fournisseur pour Les Achats Industriels ?', 'S’identifier en tant que Fournisseur pour Les Achats Industriels c’est être capable de répondre à un besoin qui peut être demandé par un Acheteur et de le lui fournir dans les meilleures conditions. S’identifier en tant que Fournisseur permet de recevoir des demandes de devis précises dans le domaine de compétence choisi par ce dernier lors de l’enregistrement, ce choix peut être modifié par l’utilisateur soit en ajoutant ou en retirant des domaines d’activités. Etre Fournisseur  sur Les Achats Industriels c’est se donner la possibilité de répondre à des demandes de devis et de booster les consultations clients.', 4),
 (11, 'Je suis Fournisseur, et je suis aussi des Acheteur puis-je m’identifier en tant que Acheteur?', 'c\'est tout à fait possible, il suffit de se réenregistrer en tant que Acheteur et suivre les étapes de l’enregistrement.', 4),
-(12, 'Comment recevoir une demande de devis ?', 'En vous identifiant en tant que Fournisseur vous devez choisir avec précision le ou les domaines d’activités où vous êtes compétant et vous ne recevrez que des demandes de devis relatives à votre domaine d’activité. Une fois que vous êtes identifié en tant que Fournisseur, vous recevrais un e-mail qui vous renseigne sur la demande lancée par l’Acheteur en vous indiquant le libellé, les quantités demandés ou même des images ou plans relatifs au produit demandé GRATUITEMENT.', 4),
-(13, 'Quelle est la différence entre un acheteur et un fournisseur?', 'Les membres de la communauté «  Les Achats Industriels » sont constitués de Fournisseurs et d\'Acheteurs. En tant qu\'Acheteur, vous avez la possibilité d\'envoyer une demande de prix, de comparer les différentes offres des différents Fournisseurs et (si vous trouvez chaussure à votre pied) de désigner un vainqueur pour finaliser votre achat. Ceci constitue les droits afférents à l\'Acheteur.', 4),
-(14, 'Je dispose de (un) ou plusieurs produit(s) est ce que je dois m’inscrire plusieurs fois ?', 'Si vous avez plusieurs produits ou plusieurs services, il vous suffit de vous enregistrer qu’une seule fois, dans ce cas il faudra  cocher les cases correspondant aux divers produits ou service que vous êtes capable de fournir dans les meilleures conditions, aussi il ne faut pas oublier que vous serez évalué par les Acheteurs sur la qualité de votre produit ou service.', 4),
-(15, 'Si je suis intéressé par une demande de devis, comment je peux participer ?', 'Si je suis intéressé par une demande de devis, comment je peux participer ?', 4);
+(12, 'Comment recevoir une demande de devis ?', 'En vous identifiant en tant que Fournisseur  vous devez choisir avec précision le ou les domaines d’activités où vous êtes compétent et vous ne recevrez que des demandes de devis relatives à votre domaine d’activité. Une fois que vous vous êtes identifié en tant que Fournisseur, vous recevrez un e-mail qui vous renseigne sur la demande lancée par l’Acheteur  en vous indiquant le libellé, les quantités demandées ou même des images ou plans relatifs au produit demandé GRATUITEMENT.\nUne fois que vous décidez de répondre à la demande de prix vous devez payer un droit fixe qui ne change pas quelque soit l’enjeu du projet, ce qui vous donnera accès aux coordonnées de l’Acheteur, et c’est à vous de convaincre votre prospect pour décrocher le bon de commande.\n', 4),
+(13, 'Quelle est la différence entre un acheteur et un fournisseur?', 'Les membres de la communauté «  Les Achats Industriels » sont constitués de Fournisseurs et d\'Acheteurs. En tant qu\'Acheteur, vous avez la possibilité d\'envoyer une demande de prix, de comparer les différentes offres des différents Fournisseurs et (si vous trouvez chaussure à votre pied) de désigner un vainqueur pour finaliser votre achat. Ceci constitue les droits afférents à l\'Acheteur.\nEn tant que prestataire de services, vous êtes considéré comme un Fournisseur. Ce dernier peut répondre à toute demande de prix, mais seulement dans son domaine d\'expertise. Les Fournisseurs auront également la possibilité, comme les Acheteurs, de faire des demandes de prix.\n', 4),
+(14, 'Je dispose de (un) ou plusieurs produit(s) est ce que je dois m’inscrire plusieurs fois ?', 'Si vous avez plusieurs produits ou plusieurs services, il vous suffit de vous enregistrer qu’une seule fois, dans ce cas, il faudra cocher les cases correspondant aux divers produits ou service que vous êtes capable de fournir dans les meilleures conditions, aussi il ne faut pas oublier que vous serez évalué par les Acheteurs sur la qualité de votre produit ou service.\nVous pouvez modifier ou changer en ajoutant ou en vous retirant des activités que vous désirez.\n', 4),
+(15, 'Si je suis intéressé par une demande de devis, comment je peux participer ?', 'Pour répondre à la demande de devis qui vous intéresse, c’est très facile et rapide.\nUne fois que vous décidez de participer à cet appel d’offre vous devez payer un droit fixe qui ne change pas quelque soit l’enjeu du projet, ensuite vous recevrez les coordonnées du demandeur, et c’est à vous de convaincre votre prospect pour décrocher le bon de commande.\nPour que vous soyez plus réactif vis-à-vis de vos prospect et répondre dans les plus brefs délais, nous vous conseillons d’acquérir des Jetons Virtuels prépayés \"JvP\" pour avoir accès rapide aux coordonnées de l’Acheteur, et avoir une longueur d’avance sur les autres Fournisseurs.\nLes jetons virtuels Jv, n’ont pas de durée limitée, au contraire, il faut garder des jetons en réserve et en quantité suffisante pour les utiliser par les commerciaux, surtout que souvent la procédure administrative (en interne) pour les acquérir prend du temps.', 4),
+(16, 'Est-ce que le temps de réponse peut être maitrisé ?', 'Toute demande de devis à une durée de validité (date de clôture), seul l’Acheteur peut la fixer, la modifier ou simplement la bloquer. Le temps de réponse dépend de la réactivité des Fournisseurs.', 3),
+(17, 'Peut-on changer les détails de ma demande de devis ?', 'Toute demande de devis peut être modifiée par l’acheteur il peut aussi la bloquer pour qu’elle ne soit plus en cours.', 3),
+(18, 'Comment se fera le contact avec le fournisseur ?', 'Une fois que votre demande de devis arrive au Fournisseur ce dernier vous contactera directement sans intermédiaire, est c’est ça notre objectif.', 3),
+(19, 'Suis-je libre de choisir mes fournisseurs ?', 'Vous devez respecter la durée de validité avant de clôturer votre demande afin de permettre à un grand nombre de Fournisseurs  le temps de réponse. Si vous avez choisi un Fournisseur avant la date de clôture, Il faudra bloquer la demande de devis en question, cette action témoignera de votre sérieux et sera un des critères de qualification et d’évaluation de l’Acheteur.', 3),
+(20, 'Est-ce que mes informations personnelles serons vues par les fournisseurs ?', 'En toute évidence, les informations des demandeurs de devis seront mises à disposition des Fournisseurs  pour que ces derniers puissent les contacter.', 3),
+(21, 'Puis-je modifier mes informations personnelles ?', 'Vous êtes libre de modifier vos informations personnelles à tout moment, seul votre identifiant (adresse e-mail) reste inchangé.\n', 3),
+(22, 'Est-ce que je resterai dépendant de Les Achats Industriels ?', 'Les Achats Industriels est une place de marché  qui a comme rôle de mettre en contact les Acheteurs et les Fournisseurs.  La durée de vie d’une demande de devis commence lors de sa validation par l’administrateur et se termine soit à la clôture de la demande soit par l’Acheteur lui-même, ensuite elle reste archivée et visible dans notre site Les Achats Industriels.\nSi l’Acheteur décide de ne plus passer par notre site web il est libre de le faire à tout moment.\n', 3),
+(23, 'Est-ce que je peux répondre à des demandes de devis en étant un ACHETEUR ?', 'Non, pour répondre à une demande de prix il faut que vous vous identifiez en tant que Fournisseur  du produit ou service recherché par l’Acheteur.', 3),
+(24, 'Comment puis-je communiquer avec un ACHETEUR ?', 'Une fois que vous vous identifiez en tant que Fournisseur, vous serez considérez Fournisseur et vous bénéficierez  des mêmes avantages que tout Fournisseur.', 3),
+(25, 'Est-ce que je dispose suffisamment de temps pour répondre aux demandes de devis ?', 'Les demandes de devis sont générées par les Acheteurs, chaque demande dispose d’un délai qui peut être différent de celui des autres demandes de devis. C’est le degré d’urgence à effectuer l’achat qui défini le délai fixé par l’Acheteur dans sa demande de prix.\nDans le cas où vous souhaitez une prolongation de temps de réponse, vous devez envoyer une demande par e-mail à l’Acheteur et nous mettre en copie afin de suivre les modifications avec vous.\n', 4),
+(26, 'Ai-je la possibilité de répondre à plusieurs demandes de devis ?', 'C’est tout à fait possible, nous vous conseillons d’acquérir des jetons virtuels prépayés pour que vous ayez sur le champ les coordonnées des Acheteurs qui ont lancé les demandes qui vous intéressent.', 4),
+(27, 'Combien coûtent les Jetons virtuels \"Jv\" ?', 'Les Jv\"P\" ou Jetons virtuels Prépayés, sont vendus en pack de 10 Jv au prix de 5000,00 Dhs HT soit 500 €, le paiement peut se faire par chèque, virement ou carte bancaire, un paiement n’est valide qu’une fois que notre compte bancaire soit crédité.\nLes Jv\"S\" ou Jetons virtuels Spontanés, sont vendus en unité au prix de 800 Dhs HT soit 80 €, le paiement peut se faire par chèque, virement ou carte bancaire, un paiement n’est valide qu’une fois que notre compte bancaire soit crédité.\n', 4),
+(28, 'Quelles sont les modalités de paiement ?', 'Le paiement peut se faire soit par chèque, virement ou carte bancaire, un paiement n’est valide qu’une fois que notre compte bancaire soit crédité.', 4),
+(29, 'Si je veux répondre à une nouvelle demande de devis comment je serais averti ?', 'La réception de demandes de devis (sans les coordonnées des demandeurs) se fait automatiquement une fois que vous vous identifiez comme Fournisseur pour une activité. De ce fait, pour un Fournisseur qui dispose de plusieurs activités et services il doit s’identifier pour toutes les activités et services qu’il est capable de fournir.', 4),
+(30, 'Puis-je modifier mes informations personnelles ?', 'Bien évidement, à tout moment vous pouvez changer vos informations personnelles.', 4),
+(31, 'Est-ce que je peux lancer des demandes de devis en étant un fournisseur ?', 'Tout Fournisseur peut s’identifier en tant que Acheteur  puisque chaque Fournisseur est lui même Acheteur pour d’autres Fournisseurs.', 4),
+(32, 'Comment puis-je communiquer avec un Acheteur ?', 'Une fois que vous vous connectez en tant que Acheteur, vous serez considéré Acheteur et vous bénéficierez des mêmes avantages que tout Acheteur, même si vous êtes déjà inscrit comme Fournisseur.', 4);
 
 -- --------------------------------------------------------
 
@@ -1552,9 +2192,9 @@ CREATE TABLE `faq_categorie` (
 --
 
 INSERT INTO `faq_categorie` (`id`, `name`) VALUES
-(2, 'Générale'),
-(3, 'Acheteur'),
-(4, 'Fournisseur');
+(2, 'Général'),
+(3, 'Acheteurs'),
+(4, 'Fournisseurs');
 
 -- --------------------------------------------------------
 
@@ -1575,7 +2215,11 @@ CREATE TABLE `fiche` (
 
 INSERT INTO `fiche` (`id`, `url`, `file_size`, `type`) VALUES
 (5, 'PANNEAU SOLAIRE FREE WATER_FREEWATER-FICHETECHNIQUE-ODA280W.pdf', 0, NULL),
-(7, 'Neant_PresentationPROTECTIONUNIT.pdf', 0, NULL);
+(7, 'Neant_PresentationPROTECTIONUNIT.pdf', 0, NULL),
+(8, '5ed8fff998df8339062544.pdf', 142995, 'application/pdf'),
+(9, '5ed90057b3cfc549317303.pdf', 142995, 'application/pdf'),
+(10, '5ed900dbcf63a325620144.pdf', 142995, 'application/pdf'),
+(11, '5edb99bec338c349901378.pdf', 97055, 'application/pdf');
 
 -- --------------------------------------------------------
 
@@ -1608,7 +2252,7 @@ CREATE TABLE `fournisseur` (
 --
 
 INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `ice`, `fix`, `website`, `description`, `currency_id`, `slug`, `phone_vu`, `visite`, `societe_lower`, `step`, `is_complet`, `code_client`) VALUES
-(2, 144, 1, '3F Industrie', 'M.', '001531606000066', '0522365797', 'http://www.3finudstrie.com', '3F Industrie a choisi de se positionner sur le secteur de la logistique en mettant à la disposition de ce dernier les meilleures fournisseurs tout en respectant les normes les plus sévères et les plus demandées par les donneurs d’ordres les plus exigeants. Notre objectif est d’offrir à nos clients une qualité de service qui s’inscrit dans une amélioration continue.\n\nRayonnage et système de stockage : Rayonnage à palettes : Conventionnel, Accumulation, Mobile, Dynamique. Rayonnage pour archive, charge légère et lourde plateforme sur deux ou trois niveaux pour une optimisation maximale rayonnage cantilever pour des charges longues, lourdes et volumineuses.\n\nRayonnage mobile pour archive documents et œuvres d’art. Intervention sur tout type de rayonnage pour démontage remontage et divers modifications de niveaux ou d’implantation. Notre savoir-faire nous a permis d’avoir la confiance de nombreuses entreprises dans différents secteurs d’activité : Alimentaire, Industriel, Logistique, Distribution…', 1, '3f-industrie', 1, 84, '3f industrie', 0, 0, NULL),
+(2, 144, 1, '3F Industrie', 'M.', '001531606000066', '0522365797', 'http://www.3finudstrie.com', '3F Industrie a choisi de se positionner sur le secteur de la logistique en mettant à la disposition de ce dernier les meilleures fournisseurs tout en respectant les normes les plus sévères et les plus demandées par les donneurs d’ordres les plus exigeants. Notre objectif est d’offrir à nos clients une qualité de service qui s’inscrit dans une amélioration continue.\n\nRayonnage et système de stockage : Rayonnage à palettes : Conventionnel, Accumulation, Mobile, Dynamique. Rayonnage pour archive, charge légère et lourde plateforme sur deux ou trois niveaux pour une optimisation maximale rayonnage cantilever pour des charges longues, lourdes et volumineuses.\n\nRayonnage mobile pour archive documents et œuvres d’art. Intervention sur tout type de rayonnage pour démontage remontage et divers modifications de niveaux ou d’implantation. Notre savoir-faire nous a permis d’avoir la confiance de nombreuses entreprises dans différents secteurs d’activité : Alimentaire, Industriel, Logistique, Distribution…', 1, '3f-industrie', 1, 126, '3f industrie', 0, 0, NULL),
 (49, 144, 1, 'thyssenkrupp elevator maroc', '', NULL, '212522204505', '', NULL, 11, 'thyssenkrupp-elevator-maroc', 0, 0, 'thyssenkrupp elevator maroc', 0, 0, NULL),
 (55, 144, 1, 'Le Carton', '', NULL, '212522204505', '', NULL, 11, 'le-carton', 0, 0, 'le carton', 0, 0, NULL),
 (56, 144, 1, 'Imprimerie Sabri', '', NULL, '212522902037', '', NULL, 11, 'imprimerie-sabri', 0, 0, 'imprimerie sabri', 0, 0, NULL),
@@ -1885,7 +2529,12 @@ INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `
 (674, 144, 1, 'Quia quam velit dic', 'M.', '123456789954412', '', 'https://www.pikegijiwu.org.uk', 'Hic voluptatum aut v', 1, 'quia-quam-velit-dic', 0, 14, 'quia quam velit dic', 3, 1, NULL),
 (675, 144, 1, 'Ut itaque beatae quo', 'M.', '123456789954412', '', 'https://www.vifocijumoxar.tv', 'Unde incididunt nesc', 1, 'ut-itaque-beatae-quo', 0, 0, 'ut itaque beatae quo', 3, 1, NULL),
 (677, 144, 1, 'Quaerat qui tenetur ', 'M.', '123456789123456', '', '', '', 1, 'quaerat-qui-tenetur', 0, 0, 'quaerat qui tenetur ', 3, 1, 'F-677620e'),
-(678, NULL, NULL, 'Ut eveniet ad in do', 'M.', NULL, NULL, NULL, NULL, NULL, 'ut-eveniet-ad-in-do', 0, 0, 'ut eveniet ad in do', 1, 0, NULL);
+(678, NULL, NULL, 'Ut eveniet ad in do', 'M.', NULL, NULL, NULL, NULL, NULL, 'ut-eveniet-ad-in-do', 0, 0, 'ut eveniet ad in do', 1, 0, NULL),
+(680, 4, 55, 'Fournisseur 1', 'M.', NULL, '+212522151213', 'http://www.3fi.com', 'Présentation', 11, 'fournisseur-1', 0, 74, 'fournisseur 1', 3, 1, 'F-680a299'),
+(681, 144, 1, 'Fournisseur 2 ', 'Mme', '001527438000082', '+212522113344', 'https://forums.commentcamarche', 'Presentation ', 11, 'acheteur-2', 0, 1, 'acheteur 2 ', 3, 1, 'F-681e781'),
+(684, 75, 33, 'Fournisseur 3', 'M.', NULL, '', 'https://www.lesachatsindustrie', '', 1, 'fournisseur-3', 0, 3, 'fournisseur 3', 3, 1, 'F-6845f24'),
+(685, 144, 1, '3F Industrie', 'M.', '123456789123456', '', '', '', 11, '3f-industrie-1', 0, 0, '3f industrie', 3, 1, 'F-6855a41'),
+(686, 75, 33, '3F Industrie', 'M.', NULL, '', '', '', 1, '3f-industrie-2', 0, 0, '3f industrie', 3, 1, 'F-686303c');
 
 -- --------------------------------------------------------
 
@@ -1903,6 +2552,10 @@ CREATE TABLE `fournisseur_categories` (
 --
 
 INSERT INTO `fournisseur_categories` (`fournisseur_id`, `categorie_id`) VALUES
+(2, 30),
+(2, 31),
+(2, 32),
+(2, 33),
 (674, 24),
 (674, 30),
 (674, 31),
@@ -1911,7 +2564,26 @@ INSERT INTO `fournisseur_categories` (`fournisseur_id`, `categorie_id`) VALUES
 (674, 549),
 (675, 468),
 (675, 548),
-(677, 31);
+(677, 31),
+(680, 24),
+(680, 30),
+(680, 31),
+(680, 32),
+(680, 34),
+(680, 110),
+(680, 268),
+(680, 286),
+(681, 32),
+(681, 33),
+(681, 34),
+(681, 131),
+(681, 133),
+(681, 550),
+(684, 37),
+(684, 73),
+(685, 34),
+(686, 30),
+(686, 31);
 
 -- --------------------------------------------------------
 
@@ -1933,7 +2605,11 @@ CREATE TABLE `historique_visite` (
 INSERT INTO `historique_visite` (`id`, `fournisseur_id`, `demande_id`, `created`) VALUES
 (1, 2, 345, '2020-05-14 11:01:24'),
 (2, 2, 340, '2020-05-14 11:07:19'),
-(3, 674, 347, '2020-05-27 14:02:22');
+(3, 674, 347, '2020-05-27 14:02:22'),
+(4, 680, 351, '2020-06-05 17:23:11'),
+(5, 680, 350, '2020-06-05 17:26:21'),
+(6, 686, 349, '2020-06-06 21:10:42'),
+(7, 680, 354, '2020-06-08 16:57:01');
 
 -- --------------------------------------------------------
 
@@ -1995,7 +2671,13 @@ INSERT INTO `image_produit` (`id`, `url`) VALUES
 (55, 'equilibrage_centrifugpouliecorr.jpg'),
 (56, 'PANNEAU SOLAIRE FREE WATER_panneausolaire280W.jpg'),
 (57, 'Huile de Figue de Barbarie_figue.jpg'),
-(58, 'neant_Sans-titre-1.jpg');
+(58, 'neant_Sans-titre-1.jpg'),
+(59, '5ed8ffef4fbff435818301.png'),
+(60, '5ed9005050f01168369131.png'),
+(61, '5ed900d5cc623610167196.png'),
+(62, '5edb90d7ebe8e716632113.jpg'),
+(63, '5edb9192606c6081110533.jpg'),
+(64, '5edb99b804358277105556.png');
 
 -- --------------------------------------------------------
 
@@ -2007,6 +2689,14 @@ CREATE TABLE `image_secteur` (
   `id` int(11) NOT NULL,
   `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `image_secteur`
+--
+
+INSERT INTO `image_secteur` (`id`, `url`) VALUES
+(1, '5ee2346bce4d8647812996.png'),
+(2, '5ee236921cb08507020193.png');
 
 -- --------------------------------------------------------
 
@@ -2026,6 +2716,13 @@ CREATE TABLE `jeton` (
   `del` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `jeton`
+--
+
+INSERT INTO `jeton` (`id`, `fournisseur_id`, `paiement_id`, `demande_id`, `nbr_jeton`, `prix`, `is_payed`, `created`, `del`) VALUES
+(1, 680, 1, 2, 5, 500, 1, '2020-06-06 14:31:43', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -2042,9 +2739,15 @@ CREATE TABLE `migration_versions` (
 --
 
 INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
+('20200520111008', '2020-06-07 15:03:55'),
 ('20200527145954', '2020-05-27 15:00:00'),
 ('20200528101704', '2020-05-28 10:17:11'),
-('20200529103958', '2020-05-29 10:40:03');
+('20200529103958', '2020-05-29 10:40:03'),
+('20200601090617', '2020-06-01 09:06:26'),
+('20200601113723', '2020-06-01 11:37:27'),
+('20200602100240', '2020-06-02 10:02:45'),
+('20200603145109', '2020-06-03 14:51:17'),
+('20200607150435', '2020-06-07 15:04:42');
 
 -- --------------------------------------------------------
 
@@ -2062,8 +2765,7 @@ CREATE TABLE `motif` (
 --
 
 INSERT INTO `motif` (`id`, `name`) VALUES
-(1, 'Motif de description2'),
-(3, 'Designation');
+(4, 'Desciption incorrecte ');
 
 -- --------------------------------------------------------
 
@@ -2086,9 +2788,9 @@ CREATE TABLE `offre` (
 --
 
 INSERT INTO `offre` (`id`, `name`, `prix_mad`, `prix_eur`, `image_offre`, `nb_activite`, `description`) VALUES
-(1, 'Pack Classique', 100, 10, 'string', 5, '5 Activités à choisir'),
-(2, 'Pack Business', 200, 20, 'string', 10, '10 Activités à choisir'),
-(3, 'Pack Gold', 300, 30, 'string', 20, '20 Activités à choisir');
+(1, 'Pack Classic', 100, 10, 'string', 5, 'Jusqu\'à 5 activités à choisir'),
+(2, 'Pack Business', 200, 20, 'string', 10, 'Jusqu\'à 10 activités à choisir'),
+(3, 'Pack Gold', 300, 30, 'string', 20, 'Jusqu\'à 20 activités à choisir');
 
 -- --------------------------------------------------------
 
@@ -2385,6 +3087,13 @@ CREATE TABLE `personnel` (
   `fullName` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `personnel`
+--
+
+INSERT INTO `personnel` (`id`, `fournisseur_id`, `email`, `phone`, `del`, `created`, `fullName`) VALUES
+(1, 680, 'webmaster@3findustrie.com', '+212696318051', 0, '2020-06-06 15:57:39', 'YOUNESS ARBOUH');
+
 -- --------------------------------------------------------
 
 --
@@ -2414,56 +3123,68 @@ CREATE TABLE `produit` (
   `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone_vu` int(11) NOT NULL,
   `titre_lower` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ville_id` int(11) DEFAULT NULL
+  `ville_id` int(11) DEFAULT NULL,
+  `free` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `produit`
 --
 
-INSERT INTO `produit` (`id`, `secteur_id`, `sous_secteurs_id`, `fournisseur_id`, `fiche_technique_id`, `reference`, `description`, `pu`, `del`, `is_select`, `is_valid`, `created`, `videos`, `categorie_id`, `featured_image_id_id`, `titre`, `currency_id`, `date_validation`, `pays_id`, `slug`, `phone_vu`, `titre_lower`, `ville_id`) VALUES
-(47, 39, 32, 2, NULL, 'Ligne Boul Indu', 'ligne de boulangerie de très bonne occasion.', 0, 0, 1, 1, '2010-06-06 16:15:45', '', 367, 14, 'Ligne Boul Indu', 12, '2010-06-06 16:15:45', 144, 'ligne-boul-indu', 0, 'ligne boul indu', 1),
-(49, 34, 321, 2, NULL, 'PRO H DM ', 'PRO H DM - MACHINE A PROJETER AVEC POMPE A VIS ET FONCTIONNEMENT HYDRAULIQUE \r\nLe meilleur de l’hydraulique et de l’électromécanique pour une machine unique de par sa conception. \r\nElle garantit le meilleur avantage technico-économique durant toutes les phases de travail. Elle est équipée d’un circuit hydraulique innovateur Hydrotronic qui garantit des prestations maximales avec des consommations réduites. \r\nLa technologie Turbosol la plus évoluée pour les professionnels de l’enduit. ', 0, 0, 1, 1, '2010-06-06 16:46:28', '', 430, 15, 'PRO H DM ', 12, '2010-06-06 16:46:28', 144, 'pro-h-dm', 0, 'pro hdm ', 1),
-(50, 11, 142, 2, NULL, 'CEE', 'Avec le GenEX, les accélérations, la capacité en rampes et la stabilité sont remarquables. La bi-motorisation, permet une meilleute traction, particulièrement sur sols inégaux et humides. La vitesse de chaque moteur est adaptée proportionnellement en fonction de l\'angle de braquage. Le braquage des roues arríère est supérieur de 101° aux autres chariots et s\'inscrit dans une épure parfaite. Les freins à disques à bain d\'huile, complètement étanches, garantissent un freinage parfait et constant, ', 0, 0, 1, 1, '2010-06-06 16:54:49', '', 23, 16, 'CEE', 12, '2010-06-06 16:54:49', 144, 'cee', 0, 'cee', 1),
-(52, 9, 301, 2, NULL, 'iMac', 'iMac 24\" - Core 2 Duo 2,8 GHz : 2  de mémoire vive - 500  de disque dur - Graveur DVD Superdrive 8X double couche - carte graphique ATI Radeon HD 2600 Pro 256 Mo ', 0, 0, 1, 1, '2010-06-06 17:15:17', '', 408, 17, 'iMac', 12, '2010-06-06 17:15:17', 144, 'imac', 0, 'imac', 1),
-(53, 11, 142, 2, NULL, 'CED', 'Les séries H2.0-3.5FT sont les solutions pour vos applications exigentes. Une large gamme de chariots, de transmissions et d’options sont disponibles, ainsi vous pouvez facilement configurer le chariot correspondant à vos besoins spécifiques. \r\n\r\nCette série est disponible avec les configurations Fortens, Fortens Advance et Fortens Advance Plus. Plusieurs choix de moteurs sont possibles : 2.6L & 3.3L Diesel ou 2.0L, 2.2L &2.4L Gaz, combiné avec les transmissions powershift ou Duramatch™, et avec', 0, 0, 1, 1, '2010-06-06 17:22:31', '', 23, 18, 'CED', 12, '2010-06-06 17:22:31', 144, 'ced', 0, 'ced', 1),
-(54, 19, 234, 2, NULL, 'S132', 'MATERIEL DE SECURITE CONTRE LE FEU', 0, 0, 0, 1, '2010-06-09 15:24:11', '', 120, 19, 'S132', 12, '2010-06-09 15:24:11', 144, 's132', 0, 's132', 1),
-(55, 9, 177, 424, NULL, 'METAPACE T1 AVEC INTERFACE', 'Imprimante thermique Metapace T-1, Complète\r\nImprimante thermique ultra-rapide, imprime sur\r\npapier thermique 80 mm, massicot, inclus:\r\nbuzzer, couvercle anti-projections, crayon de\r\nnettoyage, bloc d\'alimentation, port tiroir-caisse,\r\ncâbles et interfaces', 3000, 0, 0, 1, '2010-06-09 16:20:48', '', 1, 20, 'METAPACE T1 AVEC INTERFACE', 11, '2010-06-09 16:20:48', 144, 'metapace-t1-avec-interface', 0, 'metapace t1 avec interface', 31),
-(56, 19, 229, 421, NULL, 'COSO ', 'centrale d\'alarme comprend des accesoires.', 3580, 0, 0, 1, '2010-06-09 17:43:03', '', 114, 21, 'COSO ', 11, '2010-06-09 17:43:03', 144, 'coso', 0, 'coso ', 1),
-(57, 9, 177, 427, NULL, 'Imprimante', 'imprimante laser presque neuf brother mfc 7420 4 en 1 (imprimante + scanner + photocopieur + fax)', 0, 0, 0, 1, '2010-06-11 18:07:31', '', 1, 22, 'Imprimante', 12, '2010-06-11 18:07:31', 144, 'imprimante', 0, 'imprimante', 1),
-(58, 9, 179, 427, NULL, 'Mac Pc', 'Macbook blanc intel core 2 duo 2.13ghz/pross, 2gb/ram, 160gb/hdd, carte graphic nvidia, webcam, tres bon etat, avec chargeur d\'origine, clavier azerty', 0, 0, 0, 1, '2010-06-11 18:10:17', '', 409, 23, 'Mac Pc', 12, '2010-06-11 18:10:17', 144, 'mac-pc', 0, 'mac pc', 1),
-(59, 9, 179, 427, NULL, 'ordinateur hp', 'Pc portable hp processeur amd turion 64x2 1,6 ghz * ecran 17\" x black résolution 1440x900 * disque de 60  * mémoire 1024 mo ddr2 * graphic nvedia ge force 6100 128 mo * graveur cd/dvd * réseaux ethernet/wifi sans fil *lecteur de cartes 5 en 1 * webcam incorporée acer orbicam à 225°de rotation *windows vista cd d\'insatall et mise a jour + drivers * chargeur * c\'est accompagné d\'une souris logitech sans fil ', 0, 0, 0, 1, '2010-06-11 18:14:39', '', 16, 24, 'ordinateur hp', 12, '2010-06-11 18:14:39', 144, 'ordinateur-hp', 0, 'ordinateur hp', 1),
-(60, 9, 180, 427, NULL, 'Pc Mac', 'Macbook blanc intel core 2 duo 2.13ghz/pross, 2gb/ram, 160gb/hdd, carte graphic nvidia, webcam, tres bon etat, avec chargeur d\'origine, clavier azerty,', 0, 0, 0, 1, '2010-06-11 18:17:00', '', 18, 25, 'Pc Mac', 12, '2010-06-11 18:17:00', 144, 'pc-mac', 0, 'pc mac', 1),
-(61, 11, 142, 427, NULL, 'CE', 'la capacité en rampes et la stabilité sont remarquables. La bi-motorisation, permet une meilleute traction, particulièrement sur sols inégaux et humides. La vitesse de chaque moteur est adaptée proportionnellement en fonction de l\'angle de braquage. Le braquage des roues arríère est supérieur de 101° aux autres chariots et s\'inscrit dans une épure parfaite. Les freins à disques à bain d\'huile, complètement étanches, garantissent un freinage parfait et constant,', 0, 0, 0, 1, '2010-06-11 18:20:46', '', 23, 26, 'CE', 12, '2010-06-11 18:20:46', 144, 'ce', 0, 'ce', 1),
-(62, 56, 256, 427, NULL, 'Lvu', 'Pour tous vos besoins de mobilité, Avis vous propose un large choix de véhicules de location : location d\'utilitaire, location de voiture prestige.', 0, 0, 0, 1, '2010-06-11 18:28:32', '', 283, 27, 'Lvu', 12, '2010-06-11 18:28:32', 144, 'lvu', 0, 'lvu', 1),
-(81, 11, 270, 2, NULL, 'Rayonnage mobile', 'Cette solution de rayonnage mobile vous permet d\'optimiser au maximum votre espace de stockage.\r\nCette solution est idéale pour tous ceux qui veulent accéder à n\'importe quelle palette à tout moment.', 0, 0, 0, 1, '2010-06-25 11:44:44', '', 34, 28, 'Rayonnage mobile', 12, '2010-06-25 11:44:44', 144, 'rayonnage-mobile', 0, 'rayonnage mobile', 1),
-(82, 11, 270, 2, NULL, 'Rayonnage compact', 'Idéal pour stocker des produits du même type. Cette solution vous permet de réduire au maximum les allées de circulation.', 0, 0, 0, 1, '2010-06-25 11:48:14', '', 33, 29, 'Rayonnage compact', 12, '2010-06-25 11:48:14', 144, 'rayonnage-compact', 0, 'rayonnage compact', 1),
-(85, 4, 82, 450, NULL, 'GS55', 'Machine d\'emballage sous film rétractable.\r\nMarque SIAT\r\nOrigine Italie\r\n', 0, 0, 0, 1, '2010-07-24 10:31:36', '', 42, 30, 'GS55', 12, '2010-07-24 10:31:36', 144, 'gs55', 0, 'gs55', 1),
-(86, 4, 82, 450, NULL, 'SYNTH', 'Machine d\'emballage sous film retractable\r\nMarque SIAT\r\nModele SYNTH\r\n', 0, 0, 0, 1, '2010-07-24 10:35:42', '', 42, 31, 'SYNTH', 12, '2010-07-24 10:35:42', 144, 'synth', 0, 'synth', 1),
-(87, 61, 342, 2, NULL, 'Rayonnage conventionnel', 'Rayonnage conventionnel, ce type vous permet l\'accés directe à n\'importe quelle palette.', 0, 0, 0, 1, '2011-04-11 16:16:15', '', 33, 32, 'Rayonnage conventionnel', 12, '2011-04-11 16:16:15', 144, 'rayonnage-conventionnel', 0, 'rayonnage conventionnel', 1),
-(88, 4, 82, 2, NULL, 'Palettiseur', 'PALLETISEUR AUTOMATIQUE DE SACS D\'HAUTE PRODUCTION\r\nLes palettiseurs ILERPAL à couches à niveau d’entrée élevé et avec plateforme mobile sont conçus pour fournir le maximum d\'avantages pendant beaucoup d’années avec une maintenance minimale.\r\n\r\nLa série ILERPAL permet palettiser une large gamme de produits en plusieurs formats et aussi en différents niveaux de production. \r\n\r\nLa douceur de l\'opération élimine les démarrages et les arrêts brusques, élargissant ainsi la vie des parties mécanique', 0, 0, 0, 1, '2011-04-11 16:27:19', '', 42, 33, 'Palettiseur', 12, '2011-04-11 16:27:19', 144, 'palettiseur', 0, 'palettiseur', 1),
-(89, 11, 420, 2, NULL, 'SPEED', 'Speed WMS est un progiciel de gestion d’entrepôt (Warehouse Management System) permettant de rationaliser les processus de fonctionnement de l\'entrepôt. \r\nLe système permet de faire des gains de productivité sur des axes multiples. Le logiciel de gestion de stock devient un facteur de différenciation..', 0, 0, 0, 1, '2011-04-11 17:26:43', '', 557, 34, 'SPEED', 12, '2011-04-11 17:26:43', 144, 'speed', 0, 'speed', 1),
-(90, 11, 270, 2, NULL, 'Rayonnage conventionnel sl9000', 'Ce système a été conçu pour le stockage de charges palettisées et s\'adapte à toutes charges et hauteurs. Il offre de multiples applications : classique, mobile, accumulation, dynamique, desservis par transstockeurs, chariots bi et tridirectionnels, etc....', 0, 0, 0, 1, '2011-04-11 19:31:01', '', 33, 35, 'Rayonnage conventionnel sl9000', 12, '2011-04-11 19:31:01', 144, 'rayonnage-conventionnel-sl9000', 0, 'rayonnage conventionnel sl9000', 1),
-(91, 11, 270, 2, NULL, 'Rack mobile', 'Ces rayonnages mobiles se déplacent sur des rails et permettent ainsi de profiter au maximum de l\'espace disponible. Indépendamment de leur emplacement, ce système permet d\'accéder à l’ensemble des documents ou produits par un seul couloir de service. Un système modulaire et évolutif.', 0, 0, 0, 1, '2011-04-11 19:33:51', '', 34, 36, 'Rack mobile', 12, '2011-04-11 19:33:51', 144, 'rack-mobile', 0, 'rack mobile', 1),
-(92, 11, 270, 2, NULL, 'SL 3000', 'Système modulaire, esthétique, universel, fonctionnel, résistant, garantissant une qualité et une sécurité d’utilisation optimales. Ses caractéristiques et sa conception lui permettent d’offrir tout une gamme d’alternatives pour bureaux, bibliothèques, musées, hôpitaux, établissements scolaires et autres institutions.', 0, 0, 0, 1, '2011-04-11 19:58:07', '', 31, 37, 'SL 3000', 12, '2011-04-11 19:58:07', 144, 'sl-3000', 0, 'sl 3000', 1),
-(95, 11, 270, 2, NULL, 'Dynamique', 'Ce système repose sur le principe de la gravité. Les palettes chargées au point le plus haut de la ligne descendent mécaniquement sur des rouleaux vers le point le plus bas. La vitesse est contrôlée par des rouleaux freineurs à chaque place palette. Système P.E.-P.S. : premier entré, premier sorti.', 0, 0, 0, 1, '2011-04-11 20:03:59', '', 35, 40, 'Dynamique', 12, '2011-04-11 20:03:59', 144, 'dynamique', 0, 'dynamique', 1),
-(97, 4, 82, 2, NULL, 'Banderoleuse', 'BANDEROLEUSE À PLATEAU TOURNANT \r\n•	Modules principaux:\r\n•	Table tournante : loge le système de découpe et de soudage du film. Le convoyeur à rouleaux est placé sur la table.\r\n•	Colonne verticale supportant la bobine de film. Incorpore l’armoire de commande et l’interface opérateur par écran tactile.', 0, 0, 0, 1, '2011-04-11 22:40:08', '', 42, 42, 'Banderoleuse', 12, '2011-04-11 22:40:08', 144, 'banderoleuse', 0, 'banderoleuse', 1),
-(98, 4, 421, 2, NULL, 'ILERBIG ', 'Station de remplissage de BIG BAGS, avec alimentation palette vide automatique.', 0, 0, 0, 1, '2011-04-27 18:07:56', '', 559, 43, 'ILERBIG ', 12, '2011-04-27 18:07:56', 144, 'ilerbig', 0, 'ilerbig ', 1),
-(99, 4, 421, 2, NULL, 'ILERFIL ABG ABT', 'Les ensacheuses ILERFIL ABG/ABT sont conçues pour les industries nécessitant un ensachage précis et rapide, avec une installation compacte et un investissement réduit.\r\n\r\nLes différentes problématiques existant sur les lignes d\'ensachage industriel ont été prises en compte lors de la conception de nos machines.', 0, 0, 0, 1, '2011-04-27 18:15:04', '', 561, 44, 'ILERFIL ABG ABT', 12, '2011-04-27 18:15:04', 144, 'ilerfil-abg-abt', 0, 'ilerfil abg abt', 1),
-(100, 4, 421, 2, NULL, 'ILERFIL ABG ABSD', 'Ligne d’ensachage semi-automatique, idéale pour l’industrie agroalimentaire, la chimie fine ou toute application requérant un pesage de haute précision et un nettoyage aisé lors des changements de produits.', 0, 0, 0, 1, '2011-04-27 18:16:50', '', 561, 45, 'ILERFIL ABG ABSD', 12, '2011-04-27 18:16:50', 144, 'ilerfil-abg-absd', 0, 'ilerfil abg absd', 1),
-(101, 4, 421, 2, NULL, 'ILERFIL ABG ABT2', 'ENSACHEUSE POIDS BRUT POUR SACS DE GUEULE OUVERTE\r\nLes ensacheuses ILERFIL ABG/ABT sont conçues pour les industries nécessitant un ensachage précis et rapide, avec une installation compacte et un investissement réduit.', 0, 0, 0, 1, '2011-04-27 18:19:35', '', 561, 46, 'ILERFIL ABG ABT', 12, '2011-04-27 18:19:35', 144, 'ilerfil-abg-abt2', 0, 'ilerfil abg abt', 1),
-(102, 4, 421, 2, NULL, 'ILERBAG V', 'ENSACHEUSE FFS VERTICALE POUR FILM PE\r\nSolution pour les industries à la recherche d’une fiabilité accrue, de polyvalence, d’un niveau d’automatisation élevé et d’autonomie pour les process d’ensachage, le tout assorti d’une baisse significative des coûts d’ensachage.', 0, 0, 0, 1, '2011-04-27 18:24:05', '', 561, 47, 'ILERBAG V', 12, '2011-04-27 18:24:05', 144, 'ilerbag-v', 0, 'ilerbag v', 1),
-(103, 4, 421, 2, NULL, 'ILERBAG H', 'ENSACHEUSE FFS HORIZONTALE À BOBINE TUBULAIRE\r\nSolution pour les industries à la recherche d’une fiabilité accrue, de polyvalence, d’un niveau d’automatisation élevé et d’autonomie pour les process d’ensachage, le tout assorti d’une baisse significative des coûts d’ensachage', 0, 0, 0, 1, '2011-04-27 18:26:30', '', 561, 48, 'ILERBAG H', 12, '2011-04-27 18:26:30', 144, 'ilerbag-h', 0, 'ilerbag h', 1),
-(104, 4, 421, 2, NULL, 'ROBOSAC 800', 'PALETTISEUR À NIVEAU D’ENTRÉE ÉLEVÉ AVEC GRAPPIN ROBOTISÉ\r\nLes palettiseurs ROBOSAC 800, à niveau d’entrée élevé avec grappin motorisé, sont conçus pour assurer un service optimal pendant de longues années et avec un entretien minimal.\r\nLes équipements de TMI permettent de palettiser une gamme étendue de produits dans plusieurs formats et à différents niveaux de production. Ils sont conçus pour assurer un service optimal pendant de longues années et avec un entretien minimal.\r\n\r\nLe fonctionnemen', 0, 0, 0, 1, '2011-04-27 18:29:36', '', 560, 49, 'ROBOSAC 800', 12, '2011-04-27 18:29:36', 144, 'robosac-800', 0, 'robosac 800', 1),
-(105, 4, 421, 2, NULL, 'ROBOSAC P4', 'ROBOSAC P4 permet la palettisation d\'une large gamme de produits sous différents formats. Sa conception prévoit des configurations allant de la simple palettisation au sol à la ligne de palettisation entièrement automatisée. Design compact, optimisation de l’encombrement et retour rapide sur investissement. Précis, silencieux, robuste et sans entretien, le palettiseur ROBOSAC P4 est conçu pour assurer un service optimal pendant de longues années en milieu industriel.\r\nPour les industries qui req', 0, 0, 0, 1, '2011-04-27 18:32:20', '', 560, 50, 'ROBOSAC P4', 12, '2011-04-27 18:32:20', 144, 'robosac-p4', 0, 'robosac p4', 1),
-(106, 4, 421, 2, NULL, 'ROBOT PALLETISEUR', 'CARACTÉRISTIQUES\r\nCellules flexibles de palettisation au moyen de robots industriels. Polyvalent pour la palettisation de sacs, cartons, bidons et la manutention de palettes.\r\nPossibilité d\'assister à plusieurs stations de manipulation simultanément.\r\nDépôt des sacs par grappin de type central ou latéral selon le sac et les mosaïques à palettiser.\r\nAdaptabilité pour la manutention de différents types d’emballages.\r\nFlexibilité pour conduire diverses lignes d’emballages en formant plusieurs palet', 0, 0, 0, 1, '2011-04-27 18:37:24', '', 560, 51, 'ROBOT PALLETISEUR', 12, '2011-04-27 18:37:24', 144, 'robot-palletiseur', 0, 'robot palletiseur', 1),
-(107, 4, 421, 2, NULL, 'ILERPAL BRICKPAL', 'PALLETISEUR AUTOMATIQUE DE SACS D\'HAUTE PRODUCTION\r\nLes palettiseurs ILERPAL à couches à niveau d’entrée élevé et avec plateforme mobile sont conçus pour fournir le maximum d\'avantages pendant beaucoup d’années avec une maintenance minimale.\r\n\r\nLa série ILERPAL permet palettiser une large gamme de produits en plusieurs formats et aussi en différents niveaux de production. \r\n\r\nLa douceur de l\'opération élimine les démarrages et les arrêts brusques, élargissant ainsi la vie des parties mécaniques.', 0, 0, 0, 1, '2011-04-27 19:03:17', '', 560, 52, 'ILERPAL BRICKPAL', 12, '2011-04-27 19:03:17', 144, 'ilerpal-brickpal', 0, 'ilerpal brickpal', 1),
-(108, 38, 9, 485, NULL, 'PORTES MDF NID D\'ABEILLES', 'Portes MDF nid d\'abeilles , dimension sur mesure .', 583, 0, 0, 1, '2011-10-03 11:36:36', '', 126, 53, 'PORTES MDF NID D\'ABEILLES', 11, '2011-10-03 11:36:36', 144, 'portes-mdf-nid-dabeilles', 0, 'portes mdf nid d\'abeilles', 1),
-(109, 74, 417, 488, NULL, 'Centrale à béton', 'Centrale à Béton: Malaxeur 3M/cube fini, 3 silos 80 tonnes, 5 trémies de 25M/cube, salle de commande, Marque SICOMA année 2006.', 0, 0, 0, 1, '2011-10-17 11:12:29', '', 546, 54, 'Centrale à béton', 12, '2011-10-17 11:12:29', 144, 'centrale-a-beton', 0, 'centrale à béton', 35),
-(126, 47, 333, 575, NULL, 'Equilibrage', 'équilibrage et réparation ventilateur sur site.\r\nanalyse vibratoire des machines tournantes.\r\nalignement laser.\r\nthermographie.', 0, 0, 0, 1, '2018-02-20 17:47:49', '', 457, 55, 'Equilibrage', 12, '2018-02-20 17:47:49', 144, 'equilibrage', 0, 'equilibrage', 1),
-(152, 5, 84, 612, 5, 'PANNEAU SOLAIRE FREE WATER', 'PANNEAU SOLAIRE FREE WATER', 1000, 0, 0, 1, '2019-06-24 18:54:50', '', 49, 56, 'PANNEAU SOLAIRE FREE WATER', 11, '2019-06-24 18:54:50', 144, 'panneau-solaire-free-water', 0, 'panneau solaire free water', 9),
-(153, 50, 398, 614, NULL, 'Huile de Figue de Barbarie', 'Huile de pépins de Figue de Barbarie certifiée Bio ECOCERT, USDA', 270, 0, 0, 1, '2019-06-26 16:00:13', '', 527, 57, 'Huile de Figue de Barbarie', 1, '2019-06-26 16:00:13', 144, 'huile-de-figue-de-barbarie', 0, 'huile de figue de barbarie', 12),
-(158, 19, 233, 619, 7, 'Néant', 'Sécurité - Gardiennage - Hôtesse d\'accueil - Nettoyage - Jardinage - Voiturier - Opérateur vidéosurveillance', 0, 0, 0, 1, '2019-09-25 13:03:09', '', 119, 58, 'Néant', 12, '2019-09-25 13:03:09', 144, 'neant', 0, 'néant', 1);
+INSERT INTO `produit` (`id`, `secteur_id`, `sous_secteurs_id`, `fournisseur_id`, `fiche_technique_id`, `reference`, `description`, `pu`, `del`, `is_select`, `is_valid`, `created`, `videos`, `categorie_id`, `featured_image_id_id`, `titre`, `currency_id`, `date_validation`, `pays_id`, `slug`, `phone_vu`, `titre_lower`, `ville_id`, `free`) VALUES
+(47, 39, 32, 2, NULL, 'Ligne Boul Indu', 'ligne de boulangerie de très bonne occasion.', 0, 0, 1, 1, '2010-06-06 16:15:45', '', 367, 14, 'Ligne Boul Indu', 12, '2010-06-06 16:15:45', 144, 'ligne-boul-indu', 0, 'ligne boul indu', 1, 1),
+(49, 34, 321, 2, NULL, 'PRO H DM ', 'PRO H DM - MACHINE A PROJETER AVEC POMPE A VIS ET FONCTIONNEMENT HYDRAULIQUE \r\nLe meilleur de l’hydraulique et de l’électromécanique pour une machine unique de par sa conception. \r\nElle garantit le meilleur avantage technico-économique durant toutes les phases de travail. Elle est équipée d’un circuit hydraulique innovateur Hydrotronic qui garantit des prestations maximales avec des consommations réduites. \r\nLa technologie Turbosol la plus évoluée pour les professionnels de l’enduit. ', 0, 0, 1, 1, '2010-06-06 16:46:28', '', 430, 15, 'PRO H DM ', 12, '2010-06-06 16:46:28', 144, 'pro-h-dm', 0, 'pro hdm ', 1, 0),
+(50, 11, 142, 2, NULL, 'CEE', 'Avec le GenEX, les accélérations, la capacité en rampes et la stabilité sont remarquables. La bi-motorisation, permet une meilleute traction, particulièrement sur sols inégaux et humides. La vitesse de chaque moteur est adaptée proportionnellement en fonction de l\'angle de braquage. Le braquage des roues arríère est supérieur de 101° aux autres chariots et s\'inscrit dans une épure parfaite. Les freins à disques à bain d\'huile, complètement étanches, garantissent un freinage parfait et constant, ', 0, 0, 1, 1, '2010-06-06 16:54:49', '', 23, 16, 'CEE', 12, '2010-06-06 16:54:49', 144, 'cee', 0, 'cee', 1, 0),
+(52, 9, 301, 2, NULL, 'iMac', 'iMac 24\" - Core 2 Duo 2,8 GHz : 2  de mémoire vive - 500  de disque dur - Graveur DVD Superdrive 8X double couche - carte graphique ATI Radeon HD 2600 Pro 256 Mo ', 0, 0, 1, 1, '2010-06-06 17:15:17', '', 408, 17, 'iMac', 12, '2010-06-06 17:15:17', 144, 'imac', 0, 'imac', 1, 0),
+(53, 11, 142, 2, NULL, 'CED', 'Les séries H2.0-3.5FT sont les solutions pour vos applications exigentes. Une large gamme de chariots, de transmissions et d’options sont disponibles, ainsi vous pouvez facilement configurer le chariot correspondant à vos besoins spécifiques. \r\n\r\nCette série est disponible avec les configurations Fortens, Fortens Advance et Fortens Advance Plus. Plusieurs choix de moteurs sont possibles : 2.6L & 3.3L Diesel ou 2.0L, 2.2L &2.4L Gaz, combiné avec les transmissions powershift ou Duramatch™, et avec', 0, 0, 1, 1, '2010-06-06 17:22:31', '', 23, 18, 'CED', 12, '2010-06-06 17:22:31', 144, 'ced', 0, 'ced', 1, 0),
+(54, 19, 234, 2, NULL, 'S132', 'MATERIEL DE SECURITE CONTRE LE FEU', 0, 0, 0, 1, '2010-06-09 15:24:11', '', 120, 19, 'S132', 12, '2010-06-09 15:24:11', 144, 's132', 0, 's132', 1, 0),
+(55, 9, 177, 424, NULL, 'METAPACE T1 AVEC INTERFACE', 'Imprimante thermique Metapace T-1, Complète\r\nImprimante thermique ultra-rapide, imprime sur\r\npapier thermique 80 mm, massicot, inclus:\r\nbuzzer, couvercle anti-projections, crayon de\r\nnettoyage, bloc d\'alimentation, port tiroir-caisse,\r\ncâbles et interfaces', 3000, 0, 0, 1, '2010-06-09 16:20:48', '', 1, 20, 'METAPACE T1 AVEC INTERFACE', 11, '2010-06-09 16:20:48', 144, 'metapace-t1-avec-interface', 0, 'metapace t1 avec interface', 31, 0),
+(56, 19, 229, 421, NULL, 'COSO ', 'centrale d\'alarme comprend des accesoires.', 3580, 0, 0, 1, '2010-06-09 17:43:03', '', 114, 21, 'COSO ', 11, '2010-06-09 17:43:03', 144, 'coso', 0, 'coso ', 1, 0),
+(57, 9, 177, 427, NULL, 'Imprimante', 'imprimante laser presque neuf brother mfc 7420 4 en 1 (imprimante + scanner + photocopieur + fax)', 0, 0, 0, 1, '2010-06-11 18:07:31', '', 1, 22, 'Imprimante', 12, '2010-06-11 18:07:31', 144, 'imprimante', 0, 'imprimante', 1, 0),
+(58, 9, 179, 427, NULL, 'Mac Pc', 'Macbook blanc intel core 2 duo 2.13ghz/pross, 2gb/ram, 160gb/hdd, carte graphic nvidia, webcam, tres bon etat, avec chargeur d\'origine, clavier azerty', 0, 0, 0, 1, '2010-06-11 18:10:17', '', 409, 23, 'Mac Pc', 12, '2010-06-11 18:10:17', 144, 'mac-pc', 0, 'mac pc', 1, 0),
+(59, 9, 179, 427, NULL, 'ordinateur hp', 'Pc portable hp processeur amd turion 64x2 1,6 ghz * ecran 17\" x black résolution 1440x900 * disque de 60  * mémoire 1024 mo ddr2 * graphic nvedia ge force 6100 128 mo * graveur cd/dvd * réseaux ethernet/wifi sans fil *lecteur de cartes 5 en 1 * webcam incorporée acer orbicam à 225°de rotation *windows vista cd d\'insatall et mise a jour + drivers * chargeur * c\'est accompagné d\'une souris logitech sans fil ', 0, 0, 0, 1, '2010-06-11 18:14:39', '', 16, 24, 'ordinateur hp', 12, '2010-06-11 18:14:39', 144, 'ordinateur-hp', 0, 'ordinateur hp', 1, 0),
+(60, 9, 180, 427, NULL, 'Pc Mac', 'Macbook blanc intel core 2 duo 2.13ghz/pross, 2gb/ram, 160gb/hdd, carte graphic nvidia, webcam, tres bon etat, avec chargeur d\'origine, clavier azerty,', 0, 0, 0, 1, '2010-06-11 18:17:00', '', 18, 25, 'Pc Mac', 12, '2010-06-11 18:17:00', 144, 'pc-mac', 0, 'pc mac', 1, 0),
+(61, 11, 142, 427, NULL, 'CE', 'la capacité en rampes et la stabilité sont remarquables. La bi-motorisation, permet une meilleute traction, particulièrement sur sols inégaux et humides. La vitesse de chaque moteur est adaptée proportionnellement en fonction de l\'angle de braquage. Le braquage des roues arríère est supérieur de 101° aux autres chariots et s\'inscrit dans une épure parfaite. Les freins à disques à bain d\'huile, complètement étanches, garantissent un freinage parfait et constant,', 0, 0, 0, 1, '2010-06-11 18:20:46', '', 23, 26, 'CE', 12, '2010-06-11 18:20:46', 144, 'ce', 0, 'ce', 1, 0),
+(62, 56, 256, 427, NULL, 'Lvu', 'Pour tous vos besoins de mobilité, Avis vous propose un large choix de véhicules de location : location d\'utilitaire, location de voiture prestige.', 0, 0, 0, 1, '2010-06-11 18:28:32', '', 283, 27, 'Lvu', 12, '2010-06-11 18:28:32', 144, 'lvu', 0, 'lvu', 1, 0),
+(81, 11, 270, 2, NULL, 'Rayonnage mobile', 'Cette solution de rayonnage mobile vous permet d\'optimiser au maximum votre espace de stockage.\r\nCette solution est idéale pour tous ceux qui veulent accéder à n\'importe quelle palette à tout moment.', 0, 0, 0, 1, '2010-06-25 11:44:44', '', 34, 28, 'Rayonnage mobile', 12, '2010-06-25 11:44:44', 144, 'rayonnage-mobile', 0, 'rayonnage mobile', 1, 0),
+(82, 11, 270, 2, NULL, 'Rayonnage compact', 'Idéal pour stocker des produits du même type. Cette solution vous permet de réduire au maximum les allées de circulation.', 0, 0, 0, 1, '2010-06-25 11:48:14', '', 33, 29, 'Rayonnage compact', 12, '2010-06-25 11:48:14', 144, 'rayonnage-compact', 0, 'rayonnage compact', 1, 0),
+(85, 4, 82, 450, NULL, 'GS55', 'Machine d\'emballage sous film rétractable.\r\nMarque SIAT\r\nOrigine Italie\r\n', 0, 0, 0, 1, '2010-07-24 10:31:36', '', 42, 30, 'GS55', 12, '2010-07-24 10:31:36', 144, 'gs55', 0, 'gs55', 1, 0),
+(86, 4, 82, 450, NULL, 'SYNTH', 'Machine d\'emballage sous film retractable\r\nMarque SIAT\r\nModele SYNTH\r\n', 0, 0, 0, 1, '2010-07-24 10:35:42', '', 42, 31, 'SYNTH', 12, '2010-07-24 10:35:42', 144, 'synth', 0, 'synth', 1, 0),
+(87, 61, 342, 2, NULL, 'Rayonnage conventionnel', 'Rayonnage conventionnel, ce type vous permet l\'accés directe à n\'importe quelle palette.', 0, 0, 0, 1, '2011-04-11 16:16:15', '', 33, 32, 'Rayonnage conventionnel', 12, '2011-04-11 16:16:15', 144, 'rayonnage-conventionnel', 0, 'rayonnage conventionnel', 1, 0),
+(88, 4, 82, 2, NULL, 'Palettiseur', 'PALLETISEUR AUTOMATIQUE DE SACS D\'HAUTE PRODUCTION\r\nLes palettiseurs ILERPAL à couches à niveau d’entrée élevé et avec plateforme mobile sont conçus pour fournir le maximum d\'avantages pendant beaucoup d’années avec une maintenance minimale.\r\n\r\nLa série ILERPAL permet palettiser une large gamme de produits en plusieurs formats et aussi en différents niveaux de production. \r\n\r\nLa douceur de l\'opération élimine les démarrages et les arrêts brusques, élargissant ainsi la vie des parties mécanique', 0, 0, 0, 1, '2011-04-11 16:27:19', '', 42, 33, 'Palettiseur', 12, '2011-04-11 16:27:19', 144, 'palettiseur', 0, 'palettiseur', 1, 0),
+(89, 11, 420, 2, NULL, 'SPEED', 'Speed WMS est un progiciel de gestion d’entrepôt (Warehouse Management System) permettant de rationaliser les processus de fonctionnement de l\'entrepôt. \r\nLe système permet de faire des gains de productivité sur des axes multiples. Le logiciel de gestion de stock devient un facteur de différenciation..', 0, 0, 0, 1, '2011-04-11 17:26:43', '', 557, 34, 'SPEED', 12, '2011-04-11 17:26:43', 144, 'speed', 0, 'speed', 1, 0),
+(90, 11, 270, 2, NULL, 'Rayonnage conventionnel sl9000', 'Ce système a été conçu pour le stockage de charges palettisées et s\'adapte à toutes charges et hauteurs. Il offre de multiples applications : classique, mobile, accumulation, dynamique, desservis par transstockeurs, chariots bi et tridirectionnels, etc....', 0, 0, 0, 1, '2011-04-11 19:31:01', '', 33, 35, 'Rayonnage conventionnel sl9000', 12, '2011-04-11 19:31:01', 144, 'rayonnage-conventionnel-sl9000', 0, 'rayonnage conventionnel sl9000', 1, 0),
+(91, 11, 270, 2, NULL, 'Rack mobile', 'Ces rayonnages mobiles se déplacent sur des rails et permettent ainsi de profiter au maximum de l\'espace disponible. Indépendamment de leur emplacement, ce système permet d\'accéder à l’ensemble des documents ou produits par un seul couloir de service. Un système modulaire et évolutif.', 0, 0, 0, 1, '2011-04-11 19:33:51', '', 34, 36, 'Rack mobile', 12, '2011-04-11 19:33:51', 144, 'rack-mobile', 0, 'rack mobile', 1, 0),
+(92, 11, 270, 2, NULL, 'SL 3000', 'Système modulaire, esthétique, universel, fonctionnel, résistant, garantissant une qualité et une sécurité d’utilisation optimales. Ses caractéristiques et sa conception lui permettent d’offrir tout une gamme d’alternatives pour bureaux, bibliothèques, musées, hôpitaux, établissements scolaires et autres institutions.', 0, 0, 0, 1, '2011-04-11 19:58:07', '', 31, 37, 'SL 3000', 12, '2011-04-11 19:58:07', 144, 'sl-3000', 0, 'sl 3000', 1, 0),
+(95, 11, 270, 2, NULL, 'Dynamique', 'Ce système repose sur le principe de la gravité. Les palettes chargées au point le plus haut de la ligne descendent mécaniquement sur des rouleaux vers le point le plus bas. La vitesse est contrôlée par des rouleaux freineurs à chaque place palette. Système P.E.-P.S. : premier entré, premier sorti.', 0, 0, 0, 1, '2011-04-11 20:03:59', '', 35, 40, 'Dynamique', 12, '2011-04-11 20:03:59', 144, 'dynamique', 0, 'dynamique', 1, 0),
+(97, 4, 82, 2, NULL, 'Banderoleuse', 'BANDEROLEUSE À PLATEAU TOURNANT \r\n•	Modules principaux:\r\n•	Table tournante : loge le système de découpe et de soudage du film. Le convoyeur à rouleaux est placé sur la table.\r\n•	Colonne verticale supportant la bobine de film. Incorpore l’armoire de commande et l’interface opérateur par écran tactile.', 0, 0, 0, 1, '2011-04-11 22:40:08', '', 42, 42, 'Banderoleuse', 12, '2011-04-11 22:40:08', 144, 'banderoleuse', 0, 'banderoleuse', 1, 0),
+(98, 4, 421, 2, NULL, 'ILERBIG ', 'Station de remplissage de BIG BAGS, avec alimentation palette vide automatique.', 0, 0, 0, 1, '2011-04-27 18:07:56', '', 559, 43, 'ILERBIG ', 12, '2011-04-27 18:07:56', 144, 'ilerbig', 0, 'ilerbig ', 1, 0),
+(99, 4, 421, 2, NULL, 'ILERFIL ABG ABT', 'Les ensacheuses ILERFIL ABG/ABT sont conçues pour les industries nécessitant un ensachage précis et rapide, avec une installation compacte et un investissement réduit.\r\n\r\nLes différentes problématiques existant sur les lignes d\'ensachage industriel ont été prises en compte lors de la conception de nos machines.', 0, 0, 0, 1, '2011-04-27 18:15:04', '', 561, 44, 'ILERFIL ABG ABT', 12, '2011-04-27 18:15:04', 144, 'ilerfil-abg-abt', 0, 'ilerfil abg abt', 1, 0),
+(100, 4, 421, 2, NULL, 'ILERFIL ABG ABSD', 'Ligne d’ensachage semi-automatique, idéale pour l’industrie agroalimentaire, la chimie fine ou toute application requérant un pesage de haute précision et un nettoyage aisé lors des changements de produits.', 0, 0, 0, 1, '2011-04-27 18:16:50', '', 561, 45, 'ILERFIL ABG ABSD', 12, '2011-04-27 18:16:50', 144, 'ilerfil-abg-absd', 0, 'ilerfil abg absd', 1, 0),
+(101, 4, 421, 2, NULL, 'ILERFIL ABG ABT2', 'ENSACHEUSE POIDS BRUT POUR SACS DE GUEULE OUVERTE\r\nLes ensacheuses ILERFIL ABG/ABT sont conçues pour les industries nécessitant un ensachage précis et rapide, avec une installation compacte et un investissement réduit.', 0, 0, 0, 1, '2011-04-27 18:19:35', '', 561, 46, 'ILERFIL ABG ABT', 12, '2011-04-27 18:19:35', 144, 'ilerfil-abg-abt2', 0, 'ilerfil abg abt', 1, 0),
+(102, 4, 421, 2, NULL, 'ILERBAG V', 'ENSACHEUSE FFS VERTICALE POUR FILM PE\r\nSolution pour les industries à la recherche d’une fiabilité accrue, de polyvalence, d’un niveau d’automatisation élevé et d’autonomie pour les process d’ensachage, le tout assorti d’une baisse significative des coûts d’ensachage.', 0, 0, 0, 1, '2011-04-27 18:24:05', '', 561, 47, 'ILERBAG V', 12, '2011-04-27 18:24:05', 144, 'ilerbag-v', 0, 'ilerbag v', 1, 0),
+(103, 4, 421, 2, NULL, 'ILERBAG H', 'ENSACHEUSE FFS HORIZONTALE À BOBINE TUBULAIRE\r\nSolution pour les industries à la recherche d’une fiabilité accrue, de polyvalence, d’un niveau d’automatisation élevé et d’autonomie pour les process d’ensachage, le tout assorti d’une baisse significative des coûts d’ensachage', 0, 0, 0, 1, '2011-04-27 18:26:30', '', 561, 48, 'ILERBAG H', 12, '2011-04-27 18:26:30', 144, 'ilerbag-h', 1, 'ilerbag h', 1, 0),
+(104, 4, 421, 2, NULL, 'ROBOSAC 800', 'PALETTISEUR À NIVEAU D’ENTRÉE ÉLEVÉ AVEC GRAPPIN ROBOTISÉ\r\nLes palettiseurs ROBOSAC 800, à niveau d’entrée élevé avec grappin motorisé, sont conçus pour assurer un service optimal pendant de longues années et avec un entretien minimal.\r\nLes équipements de TMI permettent de palettiser une gamme étendue de produits dans plusieurs formats et à différents niveaux de production. Ils sont conçus pour assurer un service optimal pendant de longues années et avec un entretien minimal.\r\n\r\nLe fonctionnemen', 0, 0, 0, 1, '2011-04-27 18:29:36', '', 560, 49, 'ROBOSAC 800', 12, '2011-04-27 18:29:36', 144, 'robosac-800', 0, 'robosac 800', 1, 0),
+(105, 4, 421, 2, NULL, 'ROBOSAC P4', 'ROBOSAC P4 permet la palettisation d\'une large gamme de produits sous différents formats. Sa conception prévoit des configurations allant de la simple palettisation au sol à la ligne de palettisation entièrement automatisée. Design compact, optimisation de l’encombrement et retour rapide sur investissement. Précis, silencieux, robuste et sans entretien, le palettiseur ROBOSAC P4 est conçu pour assurer un service optimal pendant de longues années en milieu industriel.\r\nPour les industries qui req', 0, 0, 0, 1, '2011-04-27 18:32:20', '', 560, 50, 'ROBOSAC P4', 12, '2011-04-27 18:32:20', 144, 'robosac-p4', 0, 'robosac p4', 1, 0),
+(106, 4, 421, 2, NULL, 'ROBOT PALLETISEUR', 'CARACTÉRISTIQUES\r\nCellules flexibles de palettisation au moyen de robots industriels. Polyvalent pour la palettisation de sacs, cartons, bidons et la manutention de palettes.\r\nPossibilité d\'assister à plusieurs stations de manipulation simultanément.\r\nDépôt des sacs par grappin de type central ou latéral selon le sac et les mosaïques à palettiser.\r\nAdaptabilité pour la manutention de différents types d’emballages.\r\nFlexibilité pour conduire diverses lignes d’emballages en formant plusieurs palet', 0, 0, 0, 1, '2011-04-27 18:37:24', '', 560, 51, 'ROBOT PALLETISEUR', 12, '2011-04-27 18:37:24', 144, 'robot-palletiseur', 0, 'robot palletiseur', 1, 0),
+(107, 4, 421, 2, NULL, 'ILERPAL BRICKPAL', 'PALLETISEUR AUTOMATIQUE DE SACS D\'HAUTE PRODUCTION\r\nLes palettiseurs ILERPAL à couches à niveau d’entrée élevé et avec plateforme mobile sont conçus pour fournir le maximum d\'avantages pendant beaucoup d’années avec une maintenance minimale.\r\n\r\nLa série ILERPAL permet palettiser une large gamme de produits en plusieurs formats et aussi en différents niveaux de production. \r\n\r\nLa douceur de l\'opération élimine les démarrages et les arrêts brusques, élargissant ainsi la vie des parties mécaniques.', 0, 0, 0, 1, '2011-04-27 19:03:17', '', 560, 52, 'ILERPAL BRICKPAL', 12, '2011-04-27 19:03:17', 144, 'ilerpal-brickpal', 0, 'ilerpal brickpal', 1, 0),
+(108, 38, 9, 485, NULL, 'PORTES MDF NID D\'ABEILLES', 'Portes MDF nid d\'abeilles , dimension sur mesure .', 583, 0, 0, 1, '2011-10-03 11:36:36', '', 126, 53, 'PORTES MDF NID D\'ABEILLES', 11, '2011-10-03 11:36:36', 144, 'portes-mdf-nid-dabeilles', 0, 'portes mdf nid d\'abeilles', 1, 0),
+(109, 74, 417, 488, NULL, 'Centrale à béton', 'Centrale à Béton: Malaxeur 3M/cube fini, 3 silos 80 tonnes, 5 trémies de 25M/cube, salle de commande, Marque SICOMA année 2006.', 0, 0, 0, 1, '2011-10-17 11:12:29', '', 546, 54, 'Centrale à béton', 12, '2011-10-17 11:12:29', 144, 'centrale-a-beton', 0, 'centrale à béton', 35, 0),
+(126, 47, 333, 575, NULL, 'Equilibrage', 'équilibrage et réparation ventilateur sur site.\r\nanalyse vibratoire des machines tournantes.\r\nalignement laser.\r\nthermographie.', 0, 0, 0, 1, '2018-02-20 17:47:49', '', 457, 55, 'Equilibrage', 12, '2018-02-20 17:47:49', 144, 'equilibrage', 0, 'equilibrage', 1, 0),
+(152, 5, 84, 612, 5, 'PANNEAU SOLAIRE FREE WATER', 'PANNEAU SOLAIRE FREE WATER', 1000, 0, 0, 1, '2019-06-24 18:54:50', '', 49, 56, 'PANNEAU SOLAIRE FREE WATER', 11, '2019-06-24 18:54:50', 144, 'panneau-solaire-free-water', 0, 'panneau solaire free water', 9, 0),
+(153, 50, 398, 614, NULL, 'Huile de Figue de Barbarie', 'Huile de pépins de Figue de Barbarie certifiée Bio ECOCERT, USDA', 270, 0, 0, 1, '2019-06-26 16:00:13', '', 527, 57, 'Huile de Figue de Barbarie', 1, '2019-06-26 16:00:13', 144, 'huile-de-figue-de-barbarie', 0, 'huile de figue de barbarie', 12, 0),
+(158, 19, 233, 619, 7, 'Néant', 'Sécurité - Gardiennage - Hôtesse d\'accueil - Nettoyage - Jardinage - Voiturier - Opérateur vidéosurveillance', 0, 0, 0, 1, '2019-09-25 13:03:09', '', 119, 58, 'Néant', 12, '2019-09-25 13:03:09', 144, 'neant', 0, 'néant', 1, 0),
+(159, 1, 50, 2, 10, 'Omnis adipisicing co', 'Id quos do aspernatu', 26, 1, 0, 0, '2020-06-04 16:10:54', 'TblwGcIbZnM', 294, 61, 'Repudiandae ut porro', 1, NULL, 144, 'repudiandae-ut-porro', 0, 'repudiandae ut porro', 1, 1),
+(160, 1, 50, 2, 10, 'Omnis adipisicing co', 'Id quos do aspernatu', 26, 1, 0, 0, '2020-06-04 16:10:54', 'TblwGcIbZnM', 294, 61, 'Repudiandae ut porro', 1, NULL, 144, 'repudiandae-ut-porro-1', 0, 'repudiandae ut porro', 1, 1),
+(161, 1, 50, 2, 10, 'Omnis adipisicing co', 'Id quos do aspernatu', 26, 0, 0, 0, '2020-06-04 16:10:54', 'TblwGcIbZnM', 294, 61, 'Repudiandae ut porro', 1, NULL, 144, 'repudiandae-ut-porro-2', 0, 'repudiandae ut porro', 1, 1),
+(162, 1, 50, 2, 10, 'Omnis adipisicing co', 'Id quos do aspernatu', 26, 0, 0, 0, '2020-06-04 16:10:54', 'TblwGcIbZnM', 294, 61, 'Repudiandae ut porro', 1, NULL, 144, 'repudiandae-ut-porro-4', 0, 'repudiandae ut porro', 1, 1),
+(163, 1, 50, 2, 10, 'Omnis adipisicing co', 'Id quos do aspernatu', 26, 0, 0, 0, '2020-06-04 16:10:54', 'TblwGcIbZnM', 294, 61, 'Repudiandae ut porro', 1, NULL, 144, 'repudiandae-ut-porro-5', 0, 'repudiandae ut porro', 1, 1),
+(164, 1, 50, 680, NULL, '3423', 'TEEEEEEEEST', 4555, 0, 0, 0, '2020-06-06 14:49:40', NULL, 294, 62, 'Familliarisation moteur / Propulseur', 11, NULL, 144, 'familliarisation-moteur-propulseur', 0, 'familliarisation moteur / propulseur', 1, 1),
+(165, 1, 50, 680, 11, 'abcde', 'Familliarisation moteur / Propulseur', 0, 0, 0, 0, '2020-06-06 15:27:51', 'TblwGcIbZnM', 294, NULL, 'Familliarisation moteur / Propulseur', 11, NULL, 144, 'familliarisation-moteur-propulseur-1', 0, 'familliarisation moteur / propulseur', 1, 1),
+(166, 2, 63, 680, NULL, 'aaaaa0s', 'Familliarisation avion ( M & H )', 0, 0, 0, 0, '2020-06-06 15:28:29', NULL, 43, NULL, 'Familliarisation avion ( M & H )', 11, NULL, 144, 'familliarisation-avion-m-h', 0, 'familliarisation avion ( m & h )', 1, 1),
+(167, 2, 64, 680, NULL, 'xwsss', 'LEGISLATION INTERNATIONALE (ICAO) EN MATIERE D\'AVIATION', 0, 0, 0, 0, '2020-06-06 15:30:02', NULL, 45, NULL, 'LEGISLATION INTERNATIONALE (ICAO) EN MATIERE D\'AVIATION', 11, NULL, 144, 'legislation-internationale-icao-en-matiere-daviation', 0, 'legislation internationale (icao) en matiere d\'aviation', 1, 1),
+(168, 3, 67, 680, NULL, 'dsd3', 'Organisme de maintenance maintien de la navigabilité ( ou part 145 )', 0, 0, 0, 0, '2020-06-06 15:30:31', NULL, 308, NULL, 'Organisme de maintenance maintien de la navigabilité ( ou part 145 )', 11, NULL, 144, 'organisme-de-maintenance-maintien-de-la-navigabilite-ou-part-145', 0, 'organisme de maintenance maintien de la navigabilité ( ou part 145 )', 1, 1),
+(169, 38, 6, 680, NULL, 'ddddd', 'Familliarisation moteur / Propulseur,', 0, 0, 0, 0, '2020-06-06 15:51:31', NULL, 123, NULL, 'Familliarisation moteur / Propulseur,', 11, NULL, 144, 'familliarisation-moteur-propulseur-2', 0, 'familliarisation moteur / propulseur,', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -2522,7 +3243,10 @@ INSERT INTO `produit_image_produit` (`produit_id`, `image_produit_id`) VALUES
 (126, 55),
 (152, 56),
 (153, 57),
-(158, 58);
+(158, 58),
+(159, 61),
+(164, 62),
+(165, 64);
 
 -- --------------------------------------------------------
 
@@ -2610,7 +3334,8 @@ INSERT INTO `secteur` (`id`, `name`, `del`, `slug`, `image_id`) VALUES
 (75, 'Froid et Climatisation', 0, 'froid-et-climatisation', NULL),
 (77, 'Autre', 0, 'autre', NULL),
 (78, 'Centre commercial', 0, 'centre-commercial', NULL),
-(79, 'Education', 0, 'education', NULL);
+(79, 'Education', 0, 'education', NULL),
+(80, 'test', 0, 'test', NULL);
 
 -- --------------------------------------------------------
 
@@ -3040,7 +3765,8 @@ INSERT INTO `sous_secteur` (`id`, `name`, `del`, `secteur_id`, `slug`, `name_low
 (418, 'Centre commercial', 0, 78, 'centre-commercial', 'centre commercial'),
 (419, 'Université', 0, 79, 'universite', 'université'),
 (420, 'Logiciel', 0, 11, 'logiciel', 'logiciel'),
-(421, 'Machine et Equipement', 0, 4, 'machine-et-equipement', 'machine et equipement');
+(421, 'Machine et Equipement', 0, 4, 'machine-et-equipement', 'machine et equipement'),
+(422, 'test', 0, 80, 'test', 'test');
 
 -- --------------------------------------------------------
 
@@ -3064,7 +3790,8 @@ CREATE TABLE `suggestion_secteur` (
 --
 
 INSERT INTO `suggestion_secteur` (`id`, `user_id`, `secteur`, `sous_secteur`, `categorie`, `page_suggestion`, `etat`, `created`) VALUES
-(1, 2, 'test', 'test', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-05-29 14:33:01');
+(1, 2, 'test', 'test', NULL, 'Demande Offre d\'abonnement fournisseur', 0, '2020-05-29 14:33:01'),
+(2, 2, 'Bureautique & Mobilier', 'Caisse enregistreuse ', 'test', 'Ajout produit par fournisseur', 0, '2020-06-05 13:05:54');
 
 -- --------------------------------------------------------
 
@@ -3103,7 +3830,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`, `password`, `del`, `isactif`, `created`, `first_name`, `last_name`, `username`, `discr`, `roles`, `password_change_date`, `parent1`, `confirmation_token`, `avatar_id`, `redirect`, `password_reset_date`, `forgot_token`) VALUES
 (1, '36, rue imam al boukhari maarif', '', 20370, '+212696318051', 'youness.arbouh55@gmail.com', '$2y$13$H./PWBuS/z5G4Zb2vnhUUeecSGafd4WpT6HOKJdB2aLajgV2sV57q', 0, 1, '2019-08-06 10:59:17', 'YOUNESS', 'ARBOUH', 'unessami1253', 'Admin', 'ROLE_ADMIN', 1569857840, NULL, 'lcL6@PnSmZRYWhJ0iWbX8cygti4tnj', NULL, '/dashboard', NULL, NULL),
-(2, '36, rue imam al boukhari maarif', '', NULL, '0661355218', '3findustrie@gmail.com', '$2y$13$KNOAsj3DxNN2nyx6Pad1yOQ7h7GGyBN/FLp1yeoeG8svFByBjDhxa', 0, 1, '2020-04-09 16:55:02', 'Younes', 'HALOUI', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, 'vfi0q1qzwSDjLM701p6NdGwZfVjYDy', NULL, '/dashboard', '2020-05-14 10:12:08', NULL),
+(2, '36, rue imam al boukhari maarif', '', 27000, '0661355218', '3findustrie@gmail.com', '$2y$13$KNOAsj3DxNN2nyx6Pad1yOQ7h7GGyBN/FLp1yeoeG8svFByBjDhxa', 0, 1, '2020-04-09 16:55:02', 'Younes', 'HALOUI', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, 'vfi0q1qzwSDjLM701p6NdGwZfVjYDy', NULL, '/dashboard', '2020-05-14 10:12:08', NULL),
 (3, '36, rue imam al boukhari maarif', '', NULL, '0661355218', 'achats@lesachatsindustriels.com', '$2y$13$jdyfrXnAVHfMYrAvrGbF4OIfYdfKel/qLRWhxth8mvQuLx59Geuhu', 0, 1, '2020-04-09 17:21:23', 'YOUNESS', 'HALOUI', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'gd4sUnPLZo6nn4S9iuc.WfkQ.LaNla', NULL, '/dashboard_ac', NULL, NULL),
 (40, '248 Bd Med 5', '', 20000, '0522898977', 'mounsif.brahim@gmail.com', '', 0, 0, '2009-04-02 11:55:54', 'Ibrahim', 'Mounsif', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (49, '16 rue Al bouhtouri', '', 20500, '212661685117', 'abderrahim.chtouane@thyssenkrupp.ma', '', 0, 0, '2009-05-26 10:22:35', 'ABDERRAHIM', 'CHTOUANE', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
@@ -3576,7 +4303,15 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (675, 'Consequatur magnam l', 'Accusamus neque pari', NULL, '+212677889900', 'kysujybyw@mailinator.net', '$2y$13$ihA.jfM/Hu.2veEbcagvnO1.VvABIlAY3K.dmwloIP.hH2wbJ2Nlm', 0, 1, '2020-05-26 02:12:29', 'Wade', 'Santos', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (676, '36, rue imam al boukhari maarif', '', NULL, '+212677889900', 'tucunidu@mailinator.com', '$2y$13$sarvOMBEVeuC5Zf3ZBBQ2uXV0LWdn8WtAbTj3PyhSYgx811eo6NBm', 0, 1, '2020-05-27 12:33:35', 'Suki', 'Lindsay', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac', NULL, NULL),
 (677, '36, rue imam al boukhari maarif', '', NULL, '+212655447788', 'sanenuja@mailinator.com', '$2y$13$MKiX54sI5e/G5WHxXuOOZuSuz20jk4/NPpUuOojulTANR0bOwNqwu', 0, 1, '2020-05-28 12:12:30', 'Blaze', 'Vinson', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
-(678, NULL, NULL, NULL, '+212633221144', 'hozyzylube@mailinator.com', '$2y$13$6fprhHFNJQCLE63qiao/c.7SVGN2ee5/f7vngHUAbdVy3c8kSoJtC', 0, 1, '2020-05-28 13:19:31', 'Lisandra', 'Thomas', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, NULL, NULL, '/register/fournisseur', NULL, NULL);
+(678, NULL, NULL, NULL, '+212633221144', 'hozyzylube@mailinator.com', '$2y$13$6fprhHFNJQCLE63qiao/c.7SVGN2ee5/f7vngHUAbdVy3c8kSoJtC', 0, 1, '2020-05-28 13:19:31', 'Lisandra', 'Thomas', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, NULL, NULL, '/register/fournisseur', NULL, NULL),
+(679, 'adresse 1 2', '', NULL, '+212668936900', 'maria@7e-sky.com', '$2y$13$CASEnr8vuOGo2WxKnI9nq.9FSjKI9ASDGvD.IxVWf9dJT7tWF0evG', 0, 1, '2020-06-05 15:50:08', 'Maria', 'RHAITI', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, 1, '/dashboard_ac', NULL, NULL),
+(680, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'it.3findustrie@gmail.com', '$2y$13$uByAHiUGjdhEmn1pvBeoWeckb6X2R8de26AD59iVyRXS1G23kOW8u', 0, 1, '2020-06-05 16:02:51', 'Youness', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(681, 'adresse 1 2', '', NULL, '+212668936900', 'maria.rhaiti@lesachatsindustriels.com', '$2y$13$nSNMvo1Suo1OCk4fUXz.vepJaREUhgLE1lFblmiRBcR4H3XdjSm.O', 0, 1, '2020-06-05 16:03:43', 'Maria', 'Rhaiti', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(682, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'ha1@3findustrie.com', '$2y$13$wDlkV0UN8hct4MdEkk38FeFq7WFkkgW921uolU/s53/OgJeHHYwMi', 0, 1, '2020-06-05 16:19:56', 'YOUNESS', 'ARBOUH', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac', NULL, NULL),
+(683, 'adresse 1 2', '', NULL, '+212668936900', 'maria.rhaiti@7e-sky.com', '$2y$13$sNVSMK52mcvlaCZ8RkXOHeKFx0ilqq7CrrwRMSREBfInh9XEaiADS', 0, 1, '2020-06-05 16:24:33', 'Maria ', 'Rhaiti', NULL, 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac', NULL, NULL),
+(684, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'frs2@3findustrie.com', '$2y$13$ilKL3UXu8qGlb1cJqo/VhecGWg.3M0/pd4/vttddnvv.h/ruSO9vC', 0, 1, '2020-06-05 16:26:57', 'YOUNESS', 'ARBOUH', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(685, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'youness.arbouhD@gmail.com', '$2y$13$5wk4HdwyL6QBL.cyGmvDqOs7hK3gQi.YdmBd9si71ln5q2siPrvYW', 0, 1, '2020-06-06 20:22:37', 'ARBOUH', 'Youness', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(686, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'youness.arboussh@gmail.com', '$2y$13$FsYLsEv8Qsdb6GKXMP9J8uq2diyOYe9fF5I1ApMWEVxWRG5GIOY82', 0, 1, '2020-06-06 20:57:50', 'ARBOUH', 'Youness', NULL, 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -3954,8 +4689,8 @@ ALTER TABLE `fournisseur`
   ADD KEY `IDX_369ECA32A6E44244` (`pays_id`),
   ADD KEY `IDX_369ECA32A73F0036` (`ville_id`),
   ADD KEY `IDX_369ECA3238248176` (`currency_id`),
-  ADD KEY `indexe_societe` (`societe_lower`(191)),
-  ADD KEY `indexe_fournisseur` (`societe`(191));
+  ADD KEY `indexe_fournisseur` (`societe`(191)),
+  ADD KEY `indexe_societe` (`societe_lower`(191));
 
 --
 -- Index pour la table `fournisseur_categories`
@@ -4132,7 +4867,7 @@ ALTER TABLE `zone_commercial_pays`
 -- AUTO_INCREMENT pour la table `abonnement`
 --
 ALTER TABLE `abonnement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `actualite`
@@ -4150,25 +4885,25 @@ ALTER TABLE `actualite_image`
 -- AUTO_INCREMENT pour la table `attachement`
 --
 ALTER TABLE `attachement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `avatar`
 --
 ALTER TABLE `avatar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `black_listes`
 --
 ALTER TABLE `black_listes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `categorie`
 --
 ALTER TABLE `categorie`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=563;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=564;
 
 --
 -- AUTO_INCREMENT pour la table `condition_generale`
@@ -4192,13 +4927,13 @@ ALTER TABLE `currency`
 -- AUTO_INCREMENT pour la table `demande_abonnement`
 --
 ALTER TABLE `demande_abonnement`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=348;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=355;
 
 --
 -- AUTO_INCREMENT pour la table `demande_devis`
@@ -4210,19 +4945,19 @@ ALTER TABLE `demande_devis`
 -- AUTO_INCREMENT pour la table `demande_jeton`
 --
 ALTER TABLE `demande_jeton`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `detail_visite`
 --
 ALTER TABLE `detail_visite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT pour la table `duree`
@@ -4234,7 +4969,7 @@ ALTER TABLE `duree`
 -- AUTO_INCREMENT pour la table `faq`
 --
 ALTER TABLE `faq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT pour la table `faq_categorie`
@@ -4246,37 +4981,37 @@ ALTER TABLE `faq_categorie`
 -- AUTO_INCREMENT pour la table `fiche`
 --
 ALTER TABLE `fiche`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `historique_visite`
 --
 ALTER TABLE `historique_visite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `image_produit`
 --
 ALTER TABLE `image_produit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT pour la table `image_secteur`
 --
 ALTER TABLE `image_secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `jeton`
 --
 ALTER TABLE `jeton`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `motif`
 --
 ALTER TABLE `motif`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `offre`
@@ -4300,19 +5035,19 @@ ALTER TABLE `pays`
 -- AUTO_INCREMENT pour la table `personnel`
 --
 ALTER TABLE `personnel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `produit`
 --
 ALTER TABLE `produit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=159;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=170;
 
 --
 -- AUTO_INCREMENT pour la table `secteur`
 --
 ALTER TABLE `secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT pour la table `select_produit`
@@ -4324,19 +5059,19 @@ ALTER TABLE `select_produit`
 -- AUTO_INCREMENT pour la table `sous_secteur`
 --
 ALTER TABLE `sous_secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=422;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=423;
 
 --
 -- AUTO_INCREMENT pour la table `suggestion_secteur`
 --
 ALTER TABLE `suggestion_secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=679;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=687;
 
 --
 -- AUTO_INCREMENT pour la table `ville`
