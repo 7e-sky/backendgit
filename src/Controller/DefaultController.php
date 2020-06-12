@@ -136,7 +136,7 @@ class DefaultController extends AbstractController
         $qb = $em_secteur->createQueryBuilder('s')
             ->where('s.del=0')
             //->orderBy('s.name','asc')
-            ->setMaxResults(10)
+            ->setMaxResults(12)
             ->select('s.id,s.name,s.slug');
         $query = $qb->getQuery();
         $secteurs = $query->getResult();
@@ -145,8 +145,6 @@ class DefaultController extends AbstractController
             foreach ($secteurs as $secteur) {
                 $qb = $em_sous_secteur->createQueryBuilder('ss')
                     ->where('ss.del=0')
-
-                    ->andWhere('ss.parent is null')
                     ->andWhere('ss.secteur = :secteur')
                     //->orderBy('ss.name','asc')
                     ->setMaxResults(4)
@@ -158,8 +156,9 @@ class DefaultController extends AbstractController
                     $array = [];
                     foreach ($sous_secteurs as $sous_secteur) {
                         $qb = $em_categorie->createQueryBuilder('c')
+                            ->join('c.sousSecteurs','s')
                             ->where('c.del=0')
-                            ->andWhere('c.sousSecteur = :sousSecteur')
+                            ->andWhere('s.id in (:sousSecteur)')
                             //->orderBy('c.name','asc')
                             ->setMaxResults(4)
                             ->setParameter('sousSecteur', $sous_secteur['id'])
@@ -200,7 +199,6 @@ class DefaultController extends AbstractController
             foreach ($secteurs as $secteur) {
                 $qb = $em_sous_secteur->createQueryBuilder('ss')
                     ->where('ss.del=0')
-                    ->andWhere('ss.parent is null')
                     ->andWhere('ss.secteur = :secteur')
                     ->orderBy('ss.name','asc')
                     ->setMaxResults(4)
@@ -275,7 +273,6 @@ class DefaultController extends AbstractController
         $qb = $em_sous_secteur->createQueryBuilder('s')
             ->join('s.secteur', 'secteur')
             ->where('s.del=0')
-            ->andWhere('s.parent IS NULL')
             ->andWhere('s.nameLower LIKE CONCAT(\'%%\',:name, \'%%\')')
             ->orderBy('s.name','asc')
             ->setParameter('name', $searchText)
@@ -542,11 +539,11 @@ class DefaultController extends AbstractController
 
 
         if ($sousSecteur) {
-            $qb->select('categorie.name,categorie.slug,count(p.id) as count');
+            $qb->select('categorie.name,categorie.slug,count(distinct p.id) as count');
         } else if ($secteur) {
-            $qb->select('sousSecteurs.name,sousSecteurs.slug,count(p.id) as count');
+            $qb->select('sousSecteurs.name,sousSecteurs.slug,count(distinct p.id) as count');
         } else {
-            $qb->select('secteur.name,secteur.slug,count(p.id) as count');
+            $qb->select('secteur.name,secteur.slug,count(distinct p.id) as count');
         }
         $qb->orderBy('count','desc');
 
@@ -577,6 +574,7 @@ class DefaultController extends AbstractController
     {
         $secteur = $request->query->get('secteur', null);
         $sousSecteur = $request->query->get('sousSecteur', null);
+        $categorie = $request->query->get('categorie', null);
         $pays = $request->query->get('pays', null);
         $q = $request->query->get('q', null);
 
@@ -598,7 +596,8 @@ class DefaultController extends AbstractController
             $qb->join('p.ville', 'ville');
         }
         if ($secteur) {
-            $qb->join('p.sousSecteurs', 'sousSecteurs');
+            $qb->join('p.categories', 'categories');
+            $qb->join('categories.sousSecteurs', 'sousSecteurs');
             $qb->join('sousSecteurs.secteur', 'secteur');
         }
 
@@ -613,6 +612,9 @@ class DefaultController extends AbstractController
         }
         if ($pays) {
             $qb->andWhere('pays.slug = :slug_pays');
+        }
+        if ($categorie) {
+            $qb->andWhere('categories.slug = :slug_categories');
         }
         if ($sousSecteur) {
             $qb->andWhere('sousSecteurs.slug = :slug_activite');
@@ -633,7 +635,9 @@ class DefaultController extends AbstractController
         if ($pays) {
             $qb->setParameter('slug_pays', $pays);
         }
-
+        if ($categorie) {
+            $qb->setParameter('slug_categories', $categorie);
+        }
         if ($sousSecteur) {
             $qb->setParameter('slug_activite', $sousSecteur);
         }
@@ -665,6 +669,7 @@ class DefaultController extends AbstractController
     public function getCountFournisseurParCategorie(Request $request)
     {
         $secteur = $request->query->get('secteur', null);
+        $sousSecteur = $request->query->get('sousSecteur', null);
         $pays = $request->query->get('pays', null);
         $ville = $request->query->get('ville', null);
         $q = $request->query->get('q', null);
@@ -679,7 +684,8 @@ class DefaultController extends AbstractController
 
         // Jointures
         $qb = $em->createQueryBuilder('p')
-            ->join('p.sousSecteurs', 'sousSecteurs')
+            ->join('p.categories', 'categories')
+            ->join('categories.sousSecteurs', 'sousSecteurs')
             ->join('sousSecteurs.secteur', 'secteur');
 
         if ($pays) {
@@ -693,6 +699,9 @@ class DefaultController extends AbstractController
         $qb->andWhere('p.isactif=1');
 
 
+        if ($sousSecteur) {
+            $qb->andWhere('sousSecteurs.slug = :slug_activite');
+        }
         if ($secteur) {
             $qb->andWhere('secteur.slug = :slug_secteur');
         }
@@ -707,7 +716,9 @@ class DefaultController extends AbstractController
         }
 
         // Group by
-        if ($secteur) {
+        if ($sousSecteur) {
+            $qb->groupBy('categories');
+        } else if ($secteur) {
             $qb->groupBy('sousSecteurs');
         } else {
             $qb->groupBy('secteur');
@@ -715,7 +726,9 @@ class DefaultController extends AbstractController
 
         //set Parametres
 
-
+        if ($sousSecteur) {
+            $qb->setParameter('slug_activite', $sousSecteur);
+        }
         if ($secteur) {
             $qb->setParameter('slug_secteur', $secteur);
         }
@@ -729,7 +742,9 @@ class DefaultController extends AbstractController
             $qb->setParameter('q', $q);
         }
 
-        if ($secteur) {
+        if ($sousSecteur) {
+            $qb->select('categories.name,categories.slug,count(distinct p.id) as count');
+        } else if ($secteur) {
             $qb->select('sousSecteurs.name,sousSecteurs.slug,count(distinct p.id) as count');
         } else {
             $qb->select('secteur.name,secteur.slug,count(distinct p.id) as count');
@@ -765,6 +780,7 @@ class DefaultController extends AbstractController
     {
         $secteur = $request->query->get('secteur', null);
         $sousSecteur = $request->query->get('sousSecteur', null);
+        $categorie = $request->query->get('categorie', null);
         $pays = $request->query->get('pays', null);
 
         $result = null;
@@ -780,7 +796,8 @@ class DefaultController extends AbstractController
             $qb->join('acheteur.ville', 'ville');
         }
         if ($secteur) {
-            $qb->join('p.sousSecteurs', 'sousSecteurs');
+            $qb->join('p.categories', 'categories');
+            $qb->join('categories.sousSecteurs', 'sousSecteurs');
             $qb->join('sousSecteurs.secteur', 'secteur');
         }
 
@@ -791,6 +808,9 @@ class DefaultController extends AbstractController
 
         if ($pays) {
             $qb->andWhere('pays.slug = :slug_pays');
+        }
+        if ($categorie) {
+            $qb->andWhere('categories.slug = :slug_categories');
         }
         if ($sousSecteur) {
             $qb->andWhere('sousSecteurs.slug = :slug_activite');
@@ -808,6 +828,9 @@ class DefaultController extends AbstractController
 
         if ($pays) {
             $qb->setParameter('slug_pays', $pays);
+        }
+        if ($categorie) {
+            $qb->setParameter('slug_categories', $categorie);
         }
         if ($sousSecteur) {
             $qb->setParameter('slug_activite', $sousSecteur);
@@ -839,6 +862,7 @@ class DefaultController extends AbstractController
     public function getCountDemandesAchatsParCategorie(Request $request)
     {
         $secteur = $request->query->get('secteur', null);
+        $sousSecteur = $request->query->get('sousSecteur', null);
         $pays = $request->query->get('pays', null);
         $ville = $request->query->get('ville', null);
 
@@ -847,7 +871,8 @@ class DefaultController extends AbstractController
 
         // Jointures
         $qb = $em->createQueryBuilder('p')
-            ->join('p.sousSecteurs', 'sousSecteurs')
+            ->join('p.categories', 'categories')
+            ->join('categories.sousSecteurs', 'sousSecteurs')
             ->join('sousSecteurs.secteur', 'secteur');
 
         if ($pays) {
@@ -858,11 +883,14 @@ class DefaultController extends AbstractController
             }
         }
 
+
         // Where condition
         $qb->where('p.del=0');
         $qb->andWhere('p.isPublic=1');
 
-
+        if ($sousSecteur) {
+            $qb->andWhere('sousSecteurs.slug = :slug_activite');
+        }
         if ($secteur) {
             $qb->andWhere('secteur.slug = :slug_secteur');
         }
@@ -874,7 +902,9 @@ class DefaultController extends AbstractController
         }
 
         // Group by
-        if ($secteur) {
+        if ($sousSecteur) {
+            $qb->groupBy('categories');
+        } else if ($secteur) {
             $qb->groupBy('sousSecteurs');
         } else {
             $qb->groupBy('secteur');
@@ -882,7 +912,9 @@ class DefaultController extends AbstractController
 
         //set Parametres
 
-
+        if ($sousSecteur) {
+            $qb->setParameter('slug_activite', $sousSecteur);
+        }
         if ($secteur) {
             $qb->setParameter('slug_secteur', $secteur);
         }
@@ -893,7 +925,9 @@ class DefaultController extends AbstractController
             }
         }
 
-        if ($secteur) {
+        if ($sousSecteur) {
+            $qb->select('categories.name,categories.slug,count(distinct p.id) as count');
+        } else if ($secteur) {
             $qb->select('sousSecteurs.name,sousSecteurs.slug,count(distinct p.id) as count');
         } else {
             $qb->select('secteur.name,secteur.slug,count(distinct p.id) as count');

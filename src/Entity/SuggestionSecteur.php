@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Interfaces\CreatedEntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
+ * @ApiFilter(
+ *     BooleanFilter::class,properties={"etat"}
+ * )
  * @ApiResource(
+ *
  *     collectionOperations={
  *          "post"={
  *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')",
@@ -26,8 +32,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get"={
  *              "access_control"="is_granted('ROLE_ADMIN')",
  *              "normalization_context"={"groups"={"sugg-secteur:get-all"}}
- *          }
- *     },
+ *          },
+ *          "put"={
+ *                   "access_control"="is_granted('ROLE_ADMIN')",
+ *                },
+ *          "delete"={
+ *                   "access_control"="is_granted('ROLE_ADMIN')",
+ *               }
+ *          },
  *     attributes={"pagination_enabled"=false},
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SuggestionSecteurRepository")

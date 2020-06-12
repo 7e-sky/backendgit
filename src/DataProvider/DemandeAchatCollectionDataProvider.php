@@ -77,7 +77,7 @@ final class DemandeAchatCollectionDataProvider implements CollectionDataProvider
                         ->where('s.id in (:categories_id)')
                         ->andWhere('o.statut = 1')
                         ->andWhere('o.isPublic = 1')
-                        ->andWhere('o.localisation = 1 OR ( o.localisation = 2 AND a.pays = :pays) ')
+                        ->andWhere('o.localisation = 1 OR ( o.localisation = 2 AND a.pays = :pays) OR ( o.localisation = 3 AND a.pays <> :pays) ')
                         ->andWhere('s.del = 0')
                         ->setParameter('categories_id', $categories_id)
                         ->setParameter('pays', $fournisseur->getPays());

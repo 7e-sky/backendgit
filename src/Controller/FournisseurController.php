@@ -127,7 +127,7 @@ class FournisseurController extends AbstractController
                     ->innerJoin('d.acheteur', 'a')
                     ->where('s.id in (:categories_id)')
                     ->andWhere('d.statut = 1')
-                    ->andWhere('d.localisation = 1 OR ( d.localisation = 2 AND a.pays = :pays) ')
+                    ->andWhere('d.localisation = 1 OR ( d.localisation = 2 AND a.pays = :pays) OR ( d.localisation = 3 AND a.pays <> :pays)')
                     ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
                     ->andWhere('d.del = 0')
                     ->setParameter('categories_id', $categories_id)
@@ -260,7 +260,7 @@ class FournisseurController extends AbstractController
                     ->andWhere('d.statut = :searchTerm')
                     ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
                     ->andWhere('d.del = 0')
-                    ->andWhere('d.localisation = 1 OR ( d.localisation = 2 AND a.pays = :pays) ')
+                    ->andWhere('d.localisation = 1 OR ( d.localisation = 2 AND a.pays = :pays) OR ( d.localisation = 3 AND a.pays <> :pays)')
                     ->andWhere('d.dateExpiration >= CURRENT_TIMESTAMP()')
                     ->andWhere('d.del = 0')
                     ->setParameter('searchTerm', 1)
@@ -357,7 +357,7 @@ class FournisseurController extends AbstractController
 
 
             $data = [
-                'labels' => ['En cours', 'Gagner', 'Perdue'],
+                'labels' => ['En cours', 'Gagnée', 'Perdue'],
                 'datasets' => [
                     [
                         'data' => [$demande_cours, $demande_gagner, $demande_visite],

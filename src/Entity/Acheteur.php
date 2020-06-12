@@ -89,7 +89,7 @@ class Acheteur extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"visit:get-all","get","put","post","get-from-demande"})
+     * @Groups({"sugg-secteur:get-all","visit:get-all","get","put","post","get-from-demande"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      * @Assert\Regex(

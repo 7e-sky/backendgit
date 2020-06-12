@@ -15,9 +15,16 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiFilter(OrderFilter::class, properties={"name"})
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *     "name":"partial",
+ *      }
+ * )
  * @ApiFilter(
  *     BooleanFilter::class,properties={"del"}
  * )
