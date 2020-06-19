@@ -157,7 +157,7 @@ class Mailer
             'email/bienvenue.html.twig', ['user' => $user]
         );
         //send e-mail
-        $message = (new \Swift_Message('Bienvenue à lesachatsindustriels.com'))
+        $message = (new \Swift_Message('Bienvenue sur lesachatsindustriels.com'))
             ->setFrom($this->admin_email)
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');

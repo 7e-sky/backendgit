@@ -60,6 +60,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     "societe": "partial",
  *     "societeLower": "start",
  *     "categories.slug": "exact",
+ *     "step": "exact",
  *     "pays.slug": "exact",
  *     "ville.slug": "exact",
  *     "categories.sousSecteurs.secteur.slug": "exact",
@@ -110,7 +111,6 @@ class Fournisseur extends User
      * @ORM\ManyToMany(targetEntity="Categorie", inversedBy="fournisseurs")
      * @ORM\JoinTable(name="fournisseur_categories")
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
-     * @Assert\NotBlank(groups={"putValidation"})
      * @ApiSubresource(maxDepth=1)
      */
     private $categories;
@@ -255,6 +255,18 @@ class Fournisseur extends User
      *
      */
     private $codeClient;
+
+    /**
+     * @ORM\Column(type="string", length=50,nullable=true)
+     * @Groups({"get","put","post"})
+     */
+    private $autreVille;
+
+    /**
+     * @ORM\Column(type="string", length=250,nullable=true)
+     * @Groups({"get","put","post"})
+     */
+    private $autreCategories;
 
     public function __construct()
     {
@@ -505,8 +517,37 @@ class Fournisseur extends User
         $this->codeClient = $codeClient;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAutreVille()
+    {
+        return $this->autreVille;
+    }
 
+    /**
+     * @param mixed $autreVille
+     */
+    public function setAutreVille($autreVille): void
+    {
+        $this->autreVille = $autreVille;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getAutreCategories()
+    {
+        return $this->autreCategories;
+    }
+
+    /**
+     * @param mixed $autreCategories
+     */
+    public function setAutreCategories($autreCategories): void
+    {
+        $this->autreCategories = $autreCategories;
+    }
 
 
 }

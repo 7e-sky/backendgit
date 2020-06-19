@@ -107,7 +107,6 @@ class UserRegisterSubscriber implements EventSubscriberInterface
             if ($user->getSociete()) {
                 $user->setSocieteLower(mb_strtolower($user->getSociete()));
             }
-
             //Set Confirmation Token
             $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
             // Send email confirmation to Fournisseur

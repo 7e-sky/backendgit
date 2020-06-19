@@ -188,6 +188,13 @@ class Acheteur extends User
      */
     private $codeClient;
 
+
+    /**
+     * @ORM\Column(type="string", length=50,nullable=true)
+     * @Groups({"get","put","post"})
+     */
+    private $autreVille;
+
     public function __construct()
     {
         parent::__construct();
@@ -348,6 +355,22 @@ class Acheteur extends User
     public function setCodeClient($codeClient): void
     {
         $this->codeClient = $codeClient;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAutreVille()
+    {
+        return $this->autreVille;
+    }
+
+    /**
+     * @param mixed $autreVille
+     */
+    public function setAutreVille($autreVille): void
+    {
+        $this->autreVille = $autreVille;
     }
 
 
