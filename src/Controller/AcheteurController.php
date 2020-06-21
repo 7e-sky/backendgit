@@ -9,7 +9,9 @@
 namespace App\Controller;
 
 
+use App\Entity\Acheteur;
 use App\Entity\DemandeAchat;
+use App\Entity\Ville;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,6 +35,22 @@ class AcheteurController extends AbstractController
     {
 
         $this->tokenStorage = $tokenStorage;
+    }
+
+    /**
+     * @Route("/acheteur-admin")
+     */
+    public function getCountAutreVilleAcount()
+    {
+
+
+        $ville = $this->getDoctrine()->getManager()->getRepository(Ville::class)->find(113);
+
+        $result = $this->getDoctrine()->getManager()->getRepository(Acheteur::class)->count(['del'=>false,'ville'=>$ville]);
+
+        return $this->json($result);
+
+
     }
 
     /**

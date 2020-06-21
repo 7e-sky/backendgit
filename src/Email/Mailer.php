@@ -48,7 +48,8 @@ class Mailer
     private $blackListesRepository;
 
 
-    private $admin_email = 'dev@7e-sky.com';
+    private $admin_email = 'administrateur@lesachatsindustriels.com';
+    private $adherent_email = 'adherent@lesachatsindustriels.com';
 
 
     public function __construct(
@@ -79,7 +80,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Inscription ' . $profile . ' sur lesachatsindustriels.com'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->adherent_email,'Les Achats Industriels')
             ->setTo('administrateur@lesachatsindustriels.com')
             ->setBody($body, 'text/html');
 
@@ -94,13 +95,13 @@ class Mailer
             'email/newSocieteAlert.html.twig', ['user' => $user, 'profile' => $profile]
         );
         $cc = [];
-        array_push($cc, 'administrateur@lesachatsindustriels.com');
+        array_push($cc, $this->admin_email);
         if ($parent->getParent1())
             array_push($cc, $parent->getParent1()->getEmail());
 
         //send e-mail
         $message = (new \Swift_Message('Inscription ' . $profile . ' sur lesachatsindustriels.com'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->adherent_email,'Les Achats Industriels')
             ->setTo($parent->getEmail())
             ->setCc($cc)
             ->setBody($body, 'text/html');
@@ -122,7 +123,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Réinitialiser votre mot de passe'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
@@ -142,7 +143,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Vérifiez votre adresse email'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->adherent_email,'Les Achats Industriels')
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
@@ -158,7 +159,7 @@ class Mailer
         );
         //send e-mail
         $message = (new \Swift_Message('Bienvenue sur lesachatsindustriels.com'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->adherent_email,'Les Achats Industriels')
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
@@ -177,7 +178,7 @@ class Mailer
         );
         //send e-mail
         $message = (new \Swift_Message('Votre demande est validée | Les Achats Industriels'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($demande->getAcheteur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -231,7 +232,7 @@ class Mailer
 
             if (!$trouve) {
                 $message = (new \Swift_Message('Demande de devis'))
-                    ->setFrom($this->admin_email)
+                    ->setFrom($this->admin_email,'Les Achats Industriels')
                     ->setTo($fournisseur->getEmail())
                     ->setBody($body, 'text/html');
 
@@ -270,7 +271,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Affectation Email'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($personnel->getEmail())
             ->setCc($fournisseur->getEmail())
             ->setBody($body, 'text/html');
@@ -300,7 +301,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Demande d\'information | Les Achats Industriels'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($message->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -323,7 +324,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Demande de devis | Les Achats Industriels'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($demandeDevis->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -341,7 +342,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Validation du produit Réf. ' . $produit->getReference()))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($produit->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -365,7 +366,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Activation de l\'abonnement  ' . $abonnement->getOffre()->getName()))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($abonnement->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -383,7 +384,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Commande Réf. ' . $demande->getReference()))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($demande->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -403,7 +404,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($demandeAbonnement->getCommercial()->getEmail())
             ->setCc([$demandeAbonnement->getZone()->getEmail(), 'administrateur@lesachatsindustriels.com'])
             ->setBody($body, 'text/html');
@@ -424,7 +425,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
-            ->setFrom($this->admin_email)
+            ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($demandeAbonnement->getZone()->getEmail())
             ->setCc('administrateur@lesachatsindustriels.com')
             ->setBody($body, 'text/html');
@@ -444,8 +445,8 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
-            ->setFrom($this->admin_email)
-            ->setTo('administrateur@lesachatsindustriels.com')
+            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setTo($this->admin_email)
             ->setBody($body, 'text/html');
 
         $this->mailer->send($message);

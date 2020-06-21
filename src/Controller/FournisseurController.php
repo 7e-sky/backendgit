@@ -18,6 +18,7 @@ use App\Entity\Fournisseur;
 use App\Entity\Jeton;
 use App\Entity\Personnel;
 use App\Entity\Produit;
+use App\Entity\Ville;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -66,6 +67,27 @@ class FournisseurController extends AbstractController
     }
 
     /**
+     * @Route("/fournisseurs-admin")
+     */
+    public function getCountAutreVilleAcount()
+    {
+
+
+        $em = $this->getDoctrine()->getManager()->getRepository(Fournisseur::class);
+        $ville = $this->getDoctrine()->getManager()->getRepository(Ville::class)->find(113);
+
+        $qb = $em->createQueryBuilder('f')
+            ->where('f.ville = :ville OR f.autreCategories IS NOT NULL')
+            ->andWhere('f.del = false')
+            ->setParameter('ville', $ville)
+            ->select('f');
+        $query = $qb->getQuery()->getResult();
+        return $this->json(count($query));
+
+
+    }
+
+    /**
      * @Route("/messages")
      */
     public function getCountMessageNonVu()
@@ -95,6 +117,7 @@ class FournisseurController extends AbstractController
         $fournisseur = $this->tokenStorage->getToken()->getUser();
 
         $result = $this->getDoctrine()->getManager()->getRepository(DemandeDevis::class)->count(['del'=>false,'statut'=>true,"fournisseur"=>$fournisseur,"isRead"=>false]);
+
 
         return $this->json($result);
 

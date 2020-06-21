@@ -63,6 +63,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     "step": "exact",
  *     "pays.slug": "exact",
  *     "ville.slug": "exact",
+ *     "ville.name": "partial",
  *     "categories.sousSecteurs.secteur.slug": "exact",
  *     "categories.sousSecteurs.slug": "exact",
  *     "phone": "partial",
