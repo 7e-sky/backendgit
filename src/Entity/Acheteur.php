@@ -195,6 +195,13 @@ class Acheteur extends User
      */
     private $autreVille;
 
+    /**
+     * @ORM\Column(type="string", length=10,nullable=true)
+     * @Groups({"get","put","post"})
+     */
+    private $autreCurrency;
+
+
     public function __construct()
     {
         parent::__construct();
@@ -371,6 +378,22 @@ class Acheteur extends User
     public function setAutreVille($autreVille): void
     {
         $this->autreVille = $autreVille;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAutreCurrency()
+    {
+        return $this->autreCurrency;
+    }
+
+    /**
+     * @param mixed $autreCurrency
+     */
+    public function setAutreCurrency($autreCurrency): void
+    {
+        $this->autreCurrency = $autreCurrency;
     }
 
 

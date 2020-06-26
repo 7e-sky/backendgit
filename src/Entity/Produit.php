@@ -120,7 +120,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     private $titreLower;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Secteur")
+     * @ORM\ManyToOne(targetEntity="Secteur",inversedBy="produits")
      * @Groups({"produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $secteur;

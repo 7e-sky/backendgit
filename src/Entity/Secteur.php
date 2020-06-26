@@ -97,9 +97,14 @@ class Secteur
     private $sousSecteurs;
 
     /**
+     * @ORM\OneToMany(targetEntity="Produit", mappedBy="secteur")
+     */
+    private $produits;
+
+    /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=128, unique=true)
-     * @Groups({"produit:get-from-fournisseur","sous-secteur:get-all","produit:get-all","secteur:get-all"})
+     * @Groups({"produit:get-from-fournisseur","sous-secteur:get-all","produit:get-all","secteur:get-all","get"})
      */
     private $slug;
 
@@ -166,6 +171,23 @@ class Secteur
     {
         return $this->slug;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProduits()
+    {
+        return $this->produits;
+    }
+
+    /**
+     * @param mixed $produits
+     */
+    public function setProduits($produits): void
+    {
+        $this->produits = $produits;
+    }
+
 
 
 

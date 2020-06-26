@@ -106,11 +106,11 @@ class AbonnementSubscriber implements EventSubscriberInterface
 
             $prixOffre = $entity->getOffre()->getPrixMad();
 
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS') {
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'MAD') {
                 $entity->setCurrency($this->currencyRepository->findOneBy(['name' => 'EUR']));
                 $prixOffre = $entity->getOffre()->getPrixEur();
             } else
-                $entity->setCurrency($this->currencyRepository->findOneBy(['name' => 'DHS']));
+                $entity->setCurrency($this->currencyRepository->findOneBy(['name' => 'MAD']));
 
             $remiseOffre = 0;
             if ($entity->getDuree()->getRemise()) {
@@ -132,7 +132,7 @@ class AbonnementSubscriber implements EventSubscriberInterface
 
             //HT + TVA = TTC
             $ttc = $prixHT + ($prixHT * 0.2);
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS') {
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'MAD') {
                 $ttc = $prixHT;
             }
 
@@ -181,7 +181,7 @@ class AbonnementSubscriber implements EventSubscriberInterface
 
 
             $prixOffre = $abonnement->getOffre()->getPrixMad();
-            if ($abonnement->getCurrency() && $abonnement->getCurrency()->getName() !== 'DHS')
+            if ($abonnement->getCurrency() && $abonnement->getCurrency()->getName() !== 'MAD')
                 $prixOffre = $abonnement->getOffre()->getPrixEur();
 
             $remiseOffre = 0;
@@ -205,7 +205,7 @@ class AbonnementSubscriber implements EventSubscriberInterface
             //HT + TVA = TTC
             $ttc = $prixHT + ($prixHT * 0.2);
 
-            if ($abonnement->getCurrency() && $abonnement->getCurrency()->getName() !== 'DHS')
+            if ($abonnement->getCurrency() && $abonnement->getCurrency()->getName() !== 'MAD')
                 $ttc = $prixHT;
 
             $abonnement->setPrix($ttc);

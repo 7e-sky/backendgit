@@ -188,7 +188,7 @@
                             <tr>
                                 <td align="center" style="font-size:0px;padding:10px 25px;padding-bottom:40px;word-break:break-word;">
 
-                                    <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:28px;font-weight:bold;line-height:1;text-align:center;color:#555;">
+                                    <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:28px;font-weight:bold;line-height:1;text-align:center;color:green;text-transform: uppercase">
                                         Demande validée
                                     </div>
 
@@ -198,9 +198,22 @@
                             <tr>
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 
+
                                     <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:left;color:#555;">
-                                        Bonjour {{ demande.acheteur.firstName~' '~demande.acheteur.lastName }}!<br />
-                                        Votre demande <strong>({{ demande.titre }})</strong> a été validée ! <br>
+                                        Bonjour {{ demande.acheteur.firstName~' '~demande.acheteur.lastName }},<br /><br />
+                                        Votre demande est validée! <br> <br>
+                                        {% if demande.motifRejet %}
+                                            <strong>Motif de rejet : </strong> {{ demande.motifRejet.name }}<br> <br>
+                                        {% endif %}
+                                        <h4>Détails de votre demande d'achat :</h4>
+                                        <ul>
+                                            <li><strong>Titre : </strong>{{ demande.titre }}</li>
+                                            <li><strong>Description : </strong>{{ demande.description }}</li>
+                                            <li><strong>Date de création : </strong>{{ demande.created|date("d/m/Y") }}
+                                            </li>
+                                            <li><strong>Date d'éxpiration : </strong>{{ demande.dateExpiration|date("d/m/Y") }}
+                                            </li>
+                                        </ul>
                                     </div>
 
                                 </td>
@@ -217,12 +230,16 @@
 														{#line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">#}
                                                     {#Voir ma demande#}
                                                 {#</a>#}
-                                                <a href="https://www.lesachatsindustriels.com/demandes/{{demande.id}}"
-                                                style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;
+                                                {#<a href="https://www.lesachatsindustriels.com/demandes/{{demande.id}}"#}
+                                                {#style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;#}
+                                                {#line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">#}
+                                                {#Voir ma demande#}
+                                                {#</a>#}
+                                                <a href="https://lesachatsindustriels.com/demandes/{{demande.id}}"
+                                                   style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;
                                                 line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">
-                                                Voir ma demande
+                                                    Voir ma demande
                                                 </a>
-
                                             </td>
                                         </tr>
                                     </table>

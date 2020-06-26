@@ -107,8 +107,8 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             $entity->setReference($this->getRef());
             $prixOffre = $entity->getOffre()->getPrixMad();
 
-            $entity->setCurrency('DHS');
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS') {
+            $entity->setCurrency('MAD');
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'MAD') {
                 $prixOffre = $entity->getOffre()->getPrixEur();
                 $entity->setCurrency('EUR');
             }
@@ -128,7 +128,7 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             //HT + TVA = TTC
             $ttc = $prixHT + ($prixHT * 0.2);
 
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS') {
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'MAD') {
                 $ttc = $prixHT;
             }
 
@@ -208,10 +208,10 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             $abonnement->setSousSecteurs($entity->getSousSecteurs());
             $abonnement->setCreated(new \DateTime());
 
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS')
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'MAD')
                 $abonnement->setCurrency($this->currencyRepository->findOneBy(['name' => 'EUR']));
             else
-                $abonnement->setCurrency($this->currencyRepository->findOneBy(['name' => 'DHS']));
+                $abonnement->setCurrency($this->currencyRepository->findOneBy(['name' => 'MAD']));
 
 
             if ($entity->getFournisseur()->getCurrency())
@@ -219,7 +219,7 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
 
             $prixOffre = $entity->getOffre()->getPrixMad();
 
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS')
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'MAD')
                 $prixOffre = $entity->getOffre()->getPrixEur();
 
             $remiseOffre = 0;
@@ -244,7 +244,7 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             //HT + TVA = TTC
             $ttc = $prixHT + ($prixHT * 0.2);
 
-            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'DHS')
+            if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'MAD')
                 $ttc = $prixHT;
 
             $abonnement->setPrix($ttc);

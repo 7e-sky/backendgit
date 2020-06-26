@@ -77,13 +77,13 @@ class SousSecteur
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"categorie:get-all","selectProduit:get-all","sous-secteur:get-all","secteur:get-all","get"})
+     * @Groups({"get","categorie:get-all","selectProduit:get-all","sous-secteur:get-all","secteur:get-all"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=150)
-     * @Groups({"categorie:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-item","dmdAbonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","sous-secteur:get-all","secteur:get-all","get","put","post"})
+     * @Groups({"get","categorie:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-item","dmdAbonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","sous-secteur:get-all","secteur:get-all","put","post"})
      * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
@@ -98,7 +98,7 @@ class SousSecteur
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur", inversedBy="sousSecteurs")
-     * @Groups({"dmdAbonnement:get-item","abonnement:get-all","sous-secteur:get-all","post","put"})
+     * @Groups({"dmdAbonnement:get-item","abonnement:get-all","sous-secteur:get-all","post","put","get"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $secteur;
@@ -125,6 +125,12 @@ class SousSecteur
      * @ApiSubresource(maxDepth=1)
      */
     private $categories;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Produit", mappedBy="sousSecteurs")
+     */
+    private $produits;
+
 
     /*
     /**
@@ -213,6 +219,24 @@ class SousSecteur
     {
         return $this->categories;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProduits()
+    {
+        return $this->produits;
+    }
+
+    /**
+     * @param mixed $produits
+     */
+    public function setProduits($produits): void
+    {
+        $this->produits = $produits;
+    }
+
+
 
 
 }

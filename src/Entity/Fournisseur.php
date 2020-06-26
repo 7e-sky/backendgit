@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
@@ -137,7 +138,6 @@ class Fournisseur extends User
     private $societeLower;
 
 
-
     /**
      * @ORM\Column(type="string", length=5)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
@@ -244,12 +244,12 @@ class Fournisseur extends User
     /**
      * @ORM\Column(type="integer")
      */
-    private $phone_vu=0;
+    private $phone_vu = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $visite=0;
+    private $visite = 0;
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
@@ -268,6 +268,13 @@ class Fournisseur extends User
      * @Groups({"get","put","post"})
      */
     private $autreCategories;
+
+    /**
+     * @ORM\Column(type="string", length=10,nullable=true)
+     * @Groups({"get","put","post"})
+     */
+    private $autreCurrency;
+
 
     public function __construct()
     {
@@ -306,12 +313,12 @@ class Fournisseur extends User
         $this->ville = $ville;
     }
 
-    public function getPersonnels() : Collection
+    public function getPersonnels(): Collection
     {
         return $this->personnels;
     }
 
-    public function getCommandes() : Collection
+    public function getCommandes(): Collection
     {
         return $this->commandes;
     }
@@ -401,7 +408,7 @@ class Fournisseur extends User
         return $this->produits;
     }
 
-    public function getDemandes() : Collection
+    public function getDemandes(): Collection
     {
         return $this->demandes;
     }
@@ -416,15 +423,16 @@ class Fournisseur extends User
         $this->currency = $currency;
     }
 
-    public function getDemandeAbonnement() : Collection
+    public function getDemandeAbonnement(): Collection
     {
         return $this->demandeAbonnement;
     }
 
-    public function getAbonnements() : Collection
+    public function getAbonnements(): Collection
     {
         return $this->abonnements;
     }
+
     public function getSlug()
     {
         return $this->slug;
@@ -549,6 +557,23 @@ class Fournisseur extends User
     {
         $this->autreCategories = $autreCategories;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAutreCurrency()
+    {
+        return $this->autreCurrency;
+    }
+
+    /**
+     * @param mixed $autreCurrency
+     */
+    public function setAutreCurrency($autreCurrency): void
+    {
+        $this->autreCurrency = $autreCurrency;
+    }
+
 
 
 }

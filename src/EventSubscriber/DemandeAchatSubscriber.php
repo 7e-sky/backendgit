@@ -137,6 +137,9 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
                     $this->mailer->alerterAcheteur($demande);
                 }
             }
+            if ($demande->getStatut() === 2) {
+                $this->mailer->DemandeRefuserAcheteur($demande);
+            }
         }
 
 //        if($demande->getStatut() === 1 && $demande->sendEmail){

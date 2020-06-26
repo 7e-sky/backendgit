@@ -94,7 +94,7 @@ class Categorie
     /**
      * @ORM\ManyToMany(targetEntity="SousSecteur",inversedBy="categories")
      * @ORM\JoinTable(name="categorie_sous_secteur")
-     * @Groups({"categorie:get-all","post","put"})
+     * @Groups({"categorie:get-all","post","put","get"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      */
     private $sousSecteurs;
@@ -114,10 +114,16 @@ class Categorie
 
     /**
      * @Gedmo\Slug(fields={"name"})
-     * @Groups({"categorie:get-all","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur"})
+     * @Groups({"categorie:get-all","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","get"})
      * @ORM\Column(length=128, unique=true)
      */
     private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Produit", mappedBy="categorie")
+     */
+    private $produits;
+
 
     public function __construct()
     {
@@ -196,6 +202,24 @@ class Categorie
     {
         return $this->slug;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProduits()
+    {
+        return $this->produits;
+    }
+
+    /**
+     * @param mixed $produits
+     */
+    public function setProduits($produits): void
+    {
+        $this->produits = $produits;
+    }
+
+
 
 
 }

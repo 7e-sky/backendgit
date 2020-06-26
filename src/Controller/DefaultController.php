@@ -134,35 +134,44 @@ class DefaultController extends AbstractController
         $em_categorie = $this->getDoctrine()->getManager()->getRepository(Categorie::class);
 
         $qb = $em_secteur->createQueryBuilder('s')
+            ->leftJoin('s.produits', 'p')
             ->where('s.del=0')
-            //->orderBy('s.name','asc')
+            ->andWhere('p.del=0 or p.del IS NULL')
+            ->groupBy('s.id')
+            ->orderBy('count', 'desc')
             ->setMaxResults(12)
-            ->select('s.id,s.name,s.slug');
+            ->select('s.id,s.name,s.slug,count(p.id) as count');
         $query = $qb->getQuery();
         $secteurs = $query->getResult();
         $response = [];
         if ($secteurs) {
             foreach ($secteurs as $secteur) {
                 $qb = $em_sous_secteur->createQueryBuilder('ss')
+                    ->leftJoin('ss.produits', 'p')
                     ->where('ss.del=0')
+                    ->andWhere('p.del=0 or p.del IS NULL')
                     ->andWhere('ss.secteur = :secteur')
-                    //->orderBy('ss.name','asc')
+                    ->groupBy('ss.id')
+                    ->orderBy('count', 'desc')
                     ->setMaxResults(4)
                     ->setParameter('secteur', $secteur['id'])
-                    ->select('ss.id,ss.name,ss.slug');
+                    ->select('ss.id,ss.name,ss.slug,count(p.id) as count');
                 $query = $qb->getQuery();
                 $sous_secteurs = $query->getResult();
                 if ($sous_secteurs) {
                     $array = [];
                     foreach ($sous_secteurs as $sous_secteur) {
                         $qb = $em_categorie->createQueryBuilder('c')
-                            ->join('c.sousSecteurs','s')
+                            ->join('c.sousSecteurs', 's')
+                            ->leftJoin('c.produits', 'p')
                             ->where('c.del=0')
                             ->andWhere('s.id in (:sousSecteur)')
-                            //->orderBy('c.name','asc')
+                            ->andWhere('p.del=0 or p.del IS NULL')
+                            ->groupBy('c.id')
+                            ->orderBy('count', 'desc')
                             ->setMaxResults(4)
                             ->setParameter('sousSecteur', $sous_secteur['id'])
-                            ->select('c.id,c.name,c.slug');
+                            ->select('c.id,c.name,c.slug,count(p.id) as count');
                         $query = $qb->getQuery();
                         $categories = $query->getResult();
                         if ($categories) {
@@ -190,7 +199,7 @@ class DefaultController extends AbstractController
         $qb = $em_secteur->createQueryBuilder('s')
             ->leftJoin('s.image', 'image')
             ->where('s.del=0')
-            ->orderBy('s.name','asc')
+            ->orderBy('s.name', 'asc')
             ->select('s.id,s.name,s.slug,image.url');
         $query = $qb->getQuery();
         $secteurs = $query->getResult();
@@ -198,19 +207,74 @@ class DefaultController extends AbstractController
         if ($secteurs) {
             foreach ($secteurs as $secteur) {
                 $qb = $em_sous_secteur->createQueryBuilder('ss')
+                    ->join('ss.secteur', 's')
+                    ->leftJoin('ss.produits', 'p')
                     ->where('ss.del=0')
-                    ->andWhere('ss.secteur = :secteur')
-                    ->orderBy('ss.name','asc')
+                    ->andWhere('s.id in (:secteur)')
+                    ->andWhere('p.del=0 or p.del IS NULL')
+                    ->groupBy('ss.id')
+                    ->orderBy('ss.name', 'asc')
                     ->setMaxResults(4)
                     ->setParameter('secteur', $secteur['id'])
-                    ->select('ss.id,ss.name,ss.slug');
+                    ->select('ss.id,ss.name,ss.slug,count(p.id) as count');
                 $query = $qb->getQuery();
                 $sous_secteurs = $query->getResult();
-                if ($sous_secteurs) {
-                    $secteur['sousSecteurs'] = $sous_secteurs;
-                }
+                $secteur['sousSecteurs'] = $sous_secteurs;
                 array_push($response, $secteur);
             }
+        }
+        return $this->json($response);
+
+    }
+
+    /**
+     * @Route("/api/parcourir_activites/{id}")
+     */
+    public function getActivites(Secteur $secteur)
+    {
+        $em_sous_secteur = $this->getDoctrine()->getManager()->getRepository(SousSecteur::class);
+        $response = [];
+        if ($secteur) {
+            $qb = $em_sous_secteur->createQueryBuilder('ss')
+                ->join('ss.secteur', 's')
+                ->leftJoin('ss.produits', 'p')
+                ->where('ss.del=0')
+                ->andWhere('ss.secteur = :secteur')
+                ->andWhere('p.del=0 or p.del IS NULL')
+                ->groupBy('ss.id')
+                ->orderBy('ss.name', 'asc')
+                ->setParameter('secteur', $secteur)
+                ->select('ss.id,ss.name,ss.slug,count(p.id) as count');
+            $query = $qb->getQuery();
+            $sous_secteurs = $query->getResult();
+            $response = $sous_secteurs;
+        }
+        return $this->json($response);
+
+    }
+
+    /**
+     * @Route("/api/parcourir_categories/{id}")
+     */
+    public function getCategories(SousSecteur $sousSecteur)
+    {
+        $em_categorie = $this->getDoctrine()->getManager()->getRepository(Categorie::class);
+        $response = [];
+        if ($sousSecteur) {
+            $qb = $em_categorie->createQueryBuilder('c')
+                ->join('c.sousSecteurs', 's')
+                ->leftJoin('c.produits', 'p')
+                ->where('c.del=0')
+                ->andWhere('s.id in (:sousSecteur)')
+                ->andWhere('p.del=0 or p.del IS NULL')
+                ->groupBy('c.id')
+                ->orderBy('c.name', 'asc')
+                ->setMaxResults(4)
+                ->setParameter('sousSecteur', $sousSecteur->getId())
+                ->select('c.id,c.name,c.slug,count(p.id) as count');
+            $query = $qb->getQuery();
+            $categories = $query->getResult();
+            $response = $categories;
         }
         return $this->json($response);
 
@@ -237,7 +301,7 @@ class DefaultController extends AbstractController
             ->where('f.del=0')
             ->andWhere('f.isactif=1')
             ->andWhere('f.societeLower LIKE CONCAT(:societe, \'%%\')')
-            ->orderBy('f.visite','desc')
+            ->orderBy('f.visite', 'desc')
             ->setParameter('societe', $searchText)
             ->setMaxResults(5)
             ->select('f.id,f.slug,f.societe');
@@ -274,7 +338,7 @@ class DefaultController extends AbstractController
             ->join('s.secteur', 'secteur')
             ->where('s.del=0')
             ->andWhere('s.nameLower LIKE CONCAT(\'%%\',:name, \'%%\')')
-            ->orderBy('s.name','asc')
+            ->orderBy('s.name', 'asc')
             ->setParameter('name', $searchText)
             ->setMaxResults(5)
             ->select('s.name,secteur.slug as sect,s.slug');
@@ -442,7 +506,7 @@ class DefaultController extends AbstractController
             $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
         }
 
-        $qb->orderBy('count','desc');
+        $qb->orderBy('count', 'desc');
 
         $query = $qb->getQuery();
 
@@ -545,7 +609,7 @@ class DefaultController extends AbstractController
         } else {
             $qb->select('secteur.name,secteur.slug,count(distinct p.id) as count');
         }
-        $qb->orderBy('count','desc');
+        $qb->orderBy('count', 'desc');
 
         $query = $qb->getQuery();
 
@@ -652,7 +716,7 @@ class DefaultController extends AbstractController
         } else {
             $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
         }
-        $qb->orderBy('count','desc');
+        $qb->orderBy('count', 'desc');
 
         $query = $qb->getQuery();
 
@@ -750,7 +814,7 @@ class DefaultController extends AbstractController
             $qb->select('secteur.name,secteur.slug,count(distinct p.id) as count');
         }
 
-        $qb->orderBy('count','desc');
+        $qb->orderBy('count', 'desc');
 
         $query = $qb->getQuery();
 
@@ -845,7 +909,7 @@ class DefaultController extends AbstractController
         } else {
             $qb->select('pays.name,pays.slug,count(distinct p.id) as count');
         }
-        $qb->orderBy('count','desc');
+        $qb->orderBy('count', 'desc');
 
         $query = $qb->getQuery();
 
@@ -933,7 +997,7 @@ class DefaultController extends AbstractController
             $qb->select('secteur.name,secteur.slug,count(distinct p.id) as count');
         }
 
-        $qb->orderBy('count','desc');
+        $qb->orderBy('count', 'desc');
 
         $query = $qb->getQuery();
 
@@ -967,8 +1031,6 @@ class DefaultController extends AbstractController
         return $response;
 
     }
-
-
 
 
 }

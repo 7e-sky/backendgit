@@ -26,10 +26,9 @@ use Doctrine\ORM\EntityManagerInterface;
 class Mailer
 {
 
-    /**
-     * @var \Swift_Mailer
-     */
-    private $mailer;
+
+    private  $AdminMailer;
+    private  $AdherentMailer;
     /**
      * @var \Twig_Environment
      */
@@ -52,8 +51,10 @@ class Mailer
     private $adherent_email = 'adherent@lesachatsindustriels.com';
 
 
+
     public function __construct(
-        \Swift_Mailer $mailer,
+        $AdherentMailer,
+        $AdminMailer,
         \Twig_Environment $twig,
         FournisseurRepository $fournisseurRepository,
         BlackListesRepository $blackListesRepository,
@@ -61,11 +62,12 @@ class Mailer
 
     )
     {
-        $this->mailer = $mailer;
         $this->twig = $twig;
         $this->fournisseurRepository = $fournisseurRepository;
         $this->entityManager = $entityManager;
         $this->blackListesRepository = $blackListesRepository;
+        $this->AdherentMailer = $AdherentMailer;
+        $this->AdminMailer = $AdminMailer;
     }
 
     //======================================================================
@@ -84,7 +86,7 @@ class Mailer
             ->setTo('administrateur@lesachatsindustriels.com')
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdherentMailer->send($message);
 
     }
 
@@ -106,7 +108,7 @@ class Mailer
             ->setCc($cc)
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdherentMailer->send($message);
 
     }
 
@@ -127,7 +129,7 @@ class Mailer
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
 
     }
     //======================================================================
@@ -147,7 +149,7 @@ class Mailer
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdherentMailer->send($message);
 
     }
 
@@ -163,7 +165,7 @@ class Mailer
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdherentMailer->send($message);
 
     }
 
@@ -182,7 +184,26 @@ class Mailer
             ->setTo($demande->getAcheteur()->getEmail())
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
+
+    }
+
+    //======================================================================
+    // DIFFUSER RFQ => Alerter l'Acheteur lorsque la demande est refusée
+    //======================================================================
+    public function DemandeRefuserAcheteur(DemandeAchat $demande)
+    {
+
+        $body = $this->twig->render(
+            'email/RfqRefusee.html.twig', ['demande' => $demande]
+        );
+        //send e-mail
+        $message = (new \Swift_Message('Votre demande est refusée | Les Achats Industriels'))
+            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setTo($demande->getAcheteur()->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->AdminMailer->send($message);
 
     }
     //======================================================================
@@ -241,7 +262,7 @@ class Mailer
                         $message->attach(\Swift_Attachment::fromPath(ltrim($item->getUrl(), '/')));
                     }
                 }
-                $this->mailer->send($message);
+                $this->AdminMailer->send($message);
 
                 $diffusionDemande = new DiffusionDemande();
                 $diffusionDemande->setDateDiffusion(new \DateTime());
@@ -282,7 +303,7 @@ class Mailer
             }
         }
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
 
     }
 
@@ -305,7 +326,7 @@ class Mailer
             ->setTo($message->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
 
     }
 
@@ -328,7 +349,7 @@ class Mailer
             ->setTo($demandeDevis->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
 
     }
 
@@ -346,7 +367,7 @@ class Mailer
             ->setTo($produit->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
 
     }
 
@@ -370,7 +391,7 @@ class Mailer
             ->setTo($abonnement->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
 
     }
 
@@ -388,7 +409,7 @@ class Mailer
             ->setTo($demande->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
 
     }
 
@@ -409,7 +430,7 @@ class Mailer
             ->setCc([$demandeAbonnement->getZone()->getEmail(), 'administrateur@lesachatsindustriels.com'])
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
 
     }
 
@@ -430,7 +451,7 @@ class Mailer
             ->setCc('administrateur@lesachatsindustriels.com')
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
 
     }
 
@@ -449,7 +470,7 @@ class Mailer
             ->setTo($this->admin_email)
             ->setBody($body, 'text/html');
 
-        $this->mailer->send($message);
+        $this->AdminMailer->send($message);
 
     }
 }
