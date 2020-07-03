@@ -17,7 +17,7 @@
                         <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #1a1a1a; font-size: 18px; line-height: 25px; font-weight: 300; ">Vous êtes affecté pour prendre en charge la demande de devis suivante :</span><br>
                     <strong>Reférence de la demande : </strong>{{ demande.reference }}<br>
                     <strong>Description de la demande : </strong> {{ demande.description[:300] }}<br>
-                    <strong>Date de clôture : </strong> {{ demande.dateExpiration | date }}<br>
+                    <strong>Date de clôture : </strong> {{ demande.dateExpiration | date('d/m/Y à H:i') }}<br>
                         {% if demande.attachements |length > 1 %}
                             <strong>Pièces jointes : </strong> <span style="text-decoration: underline; "> (Voir ci-joints)</span>
                             <br>
@@ -193,7 +193,7 @@
                             </div>
                             <font face="'Source Sans Pro', sans-serif" color="#868686"
                                   style="font-size: 17px; line-height: 20px;">
-                                <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #868686; font-size: 17px; line-height: 20px;">Copyright &copy; {{ 'now' | date('Y') }} Les Achats Industriels. Tous les droits sont réservés.!</span>
+                                <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #868686; font-size: 17px; line-height: 20px;">Copyright &copy; {{ 'now' | date('Y') }} 7e-sky. Tous les droits sont réservés.!</span>
                             </font>
                             <div style="height: 3px; line-height: 3px; font-size: 1px;">&nbsp;</div>
                             <font face="'Source Sans Pro', sans-serif" color="#1a1a1a"

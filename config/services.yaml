@@ -57,3 +57,9 @@ services:
               $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
             autoconfigure: false
     App\DataProvider\DemandeAchatItemDataProvider: ~
+
+    App\Email\Mailer:
+            class: App\Email\Mailer
+            arguments:
+                $twig: '@twig'
+

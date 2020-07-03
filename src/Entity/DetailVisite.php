@@ -55,6 +55,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *              "validation_groups"={"visit:putValidation"}
  *          },
  *     },
+ *     subresourceOperations={
+ *          "api_demande_achats_visites_get_subresource"={
+ *               "normalization_context"={"groups"={"visit:get-for-acheteur"}},
+ *               "access_control"="is_granted('ROLE_ACHETEUR')"
+ *          }
+ *    },
  *     attributes={"pagination_items_per_page"=10},
  * )
  * @ORM\Entity(repositoryClass="App\Repository\DetailVisiteRepository")
@@ -64,32 +70,20 @@ class DetailVisite implements CreatedEntityInterface,SetFournisseurInterface
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"visit:get-all"})
+     * @Groups({"visit:get-all","visit:get-for-acheteur"})
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"visit:get-all"})
+     * @Groups({"visit:get-all","visit:get-for-acheteur"})
      */
     private $created;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
-     */
-    private $dateRec;
-
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $is_send;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
-     *
+     * @Groups({"visit:get-for-acheteur"})
      */
     private $fournisseur;
 
@@ -100,12 +94,11 @@ class DetailVisite implements CreatedEntityInterface,SetFournisseurInterface
     private $personnel;
 
     /**
-     * @ORM\ManyToOne(targetEntity="DemandeAchat")
+     * @ORM\ManyToOne(targetEntity="DemandeAchat", inversedBy="visites")
      * @Groups({"visit:get-all","visit:post"})
      * @Assert\NotBlank(groups={"visit:postValidation"})
      */
     private $demande;
-
 
     /**
      * @ORM\Column(type="smallint",length=1)
@@ -128,7 +121,6 @@ class DetailVisite implements CreatedEntityInterface,SetFournisseurInterface
     public function __construct()
     {
         $this->statut=0;
-        $this->is_send=0;
     }
 
     public function getId(): ?int
@@ -144,30 +136,6 @@ class DetailVisite implements CreatedEntityInterface,SetFournisseurInterface
     public function setCreated(\DateTimeInterface $created): CreatedEntityInterface
     {
         $this->created = $created;
-
-        return $this;
-    }
-
-    public function getDateRec(): ?\DateTimeInterface
-    {
-        return $this->dateRec;
-    }
-
-    public function setDateRec(\DateTimeInterface $dateRec): self
-    {
-        $this->dateRec = $dateRec;
-
-        return $this;
-    }
-
-    public function getIsSend(): ?bool
-    {
-        return $this->is_send;
-    }
-
-    public function setIsSend(bool $is_send): self
-    {
-        $this->is_send = $is_send;
 
         return $this;
     }

@@ -20,7 +20,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
-
 /**
  * @ApiFilter(
  *     SearchFilter::class,
@@ -101,7 +100,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  * @ORM\Entity(repositoryClass="App\Repository\DemandeAchatRepository")
  * @ORM\EntityListeners({"App\EventListener\DemandeAchatChangedNotifier"})
  * @ORM\Table(name="demande_achat",indexes={@ORM\Index(name="search_idx", columns={"statut","del"})})
- * @UniqueEntity("reference", groups={"postValidation","putValidation"})
+ * @Gedmo\Loggable
  */
 class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 {
@@ -121,12 +120,19 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
     private $acheteur;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Fournisseur")
+     * @Groups({"item:get-from-demande"})
+     */
+    private $fournisseurGagne;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Currency")
      * @Groups({"fournisseur:get-item-from-demande","fournisseur:get-from-demande","visit:get-item","visit:get-all","get-from-demande","get-from-acheteur_demandes"})
      */
     private $currency;
 
     /**
+     * 0 = En atttente, 1 = En cours , 2 = Refuser , 3 = Adjuger
      * @ORM\Column(type="smallint",length=1)
      * @Groups({"visit:get-all","get-from-demande","put-admin","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      *
@@ -163,6 +169,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
     private $description;
 
     /**
+     * @Gedmo\Versioned
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\DateTime(groups={"postValidation","putValidation"})
@@ -244,6 +251,13 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
 
     /**
+     * @ORM\OneToMany(targetEntity="DetailVisite", mappedBy="demande",cascade={"persist"})
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $visites;
+
+
+    /**
      * @ORM\ManyToOne(targetEntity="Motif")
      * @Groups({"get-from-demande","put","get-from-acheteur_demandes"})
      */
@@ -291,6 +305,22 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
      */
     private $slug;
 
+    /**
+     * @Groups({"put"})
+     */
+    public $updated;
+
+    /**
+     * @Groups({"put"})
+     */
+    public $updateExpiration;
+
+
+    /**
+     * @Groups({"put"})
+     */
+    public $annulation;
+
 
     public function __construct()
     {
@@ -304,6 +334,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
         $this->attachements = new ArrayCollection();
         $this->historiques = new ArrayCollection();
         $this->diffusionsdemandes = new ArrayCollection();
+        $this->visites = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->dateModification = new \DateTime();
 
@@ -326,6 +357,23 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
         $this->acheteur = $acheteur;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getFournisseurGagne()
+    {
+        return $this->fournisseurGagne;
+    }
+
+    /**
+     * @param mixed $fournisseurGagne
+     */
+    public function setFournisseurGagne($fournisseurGagne): void
+    {
+        $this->fournisseurGagne = $fournisseurGagne;
+    }
+
 
     /**
      * @return mixed
@@ -524,9 +572,6 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
         $this->categories = $categories;
     }
 
-
-
-
     /**
      * @return mixed
      */
@@ -671,6 +716,14 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVisites()
+    {
+        return $this->visites;
     }
 
 

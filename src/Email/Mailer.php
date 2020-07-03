@@ -29,10 +29,8 @@ class Mailer
 
     private  $AdminMailer;
     private  $AdherentMailer;
-    /**
-     * @var \Twig_Environment
-     */
     private $twig;
+
     /**
      * @var FournisseurRepository
      */
@@ -48,14 +46,14 @@ class Mailer
 
 
     private $admin_email = 'administrateur@lesachatsindustriels.com';
-    private $adherent_email = 'adherent@lesachatsindustriels.com';
+    private $adherent_email = 'dev@7e-sky.com';
 
 
 
     public function __construct(
         $AdherentMailer,
         $AdminMailer,
-        \Twig_Environment $twig,
+        $twig,
         FournisseurRepository $fournisseurRepository,
         BlackListesRepository $blackListesRepository,
         EntityManagerInterface $entityManager
@@ -253,6 +251,73 @@ class Mailer
 
             if (!$trouve) {
                 $message = (new \Swift_Message('Demande de devis'))
+                    ->setFrom($this->admin_email,'Les Achats Industriels')
+                    ->setTo($fournisseur->getEmail())
+                    ->setBody($body, 'text/html');
+
+                if ($demande->getAttachements()) {
+                    foreach ($demande->getAttachements() as $item) {
+                        $message->attach(\Swift_Attachment::fromPath(ltrim($item->getUrl(), '/')));
+                    }
+                }
+                $this->AdminMailer->send($message);
+
+                $diffusionDemande = new DiffusionDemande();
+                $diffusionDemande->setDateDiffusion(new \DateTime());
+                $diffusionDemande->setFournisseur($fournisseur);
+                $diffusionDemande->setDemande($demande);
+                $demande->addDiffusionsdemande($diffusionDemande);
+                $nbrshare++;
+
+            }
+
+        }
+        $this->entityManager->flush();
+
+    }
+
+    public function alerterFournisseursUpdateExpiration(DemandeAchat $demande,$interval,$etat =1/*1 = Pronlongé , 2 = Ecourté*/,$dateExpiration,$oldDate)
+    {
+
+
+
+        $ids_sous_secteurs = [];
+
+        foreach ($demande->getCategories() as $sousSecteur) {
+            array_push($ids_sous_secteurs, $sousSecteur->getId());
+        }
+        $qb = $this->fournisseurRepository->createQueryBuilder('f')
+            ->innerJoin('f.categories', 's')
+            ->where('s.id in (:sous_secteurs_id)')
+            ->andWhere('s.del = 0')
+            ->andWhere('f.del = 0')
+            ->andWhere('f.isactif = 1');
+        if ($demande->getLocalisation() === 2) {
+            $qb->andWhere('f.pays = :pays')->setParameter('pays', $demande->getAcheteur()->getPays());
+        }
+        $qb->setParameter('sous_secteurs_id', $ids_sous_secteurs)
+            ->select('f');
+        $query = $qb->getQuery();
+        $fournisseurs = $query->getResult();
+
+        $fournisseurs_blacklists = $this->blackListesRepository->findBy(['acheteur' => $demande->getAcheteur()->getId(), 'etat' => 1]);
+
+        $nbrshare = 0;
+        foreach ($fournisseurs as $fournisseur) {
+            $trouve = false;
+            foreach ($fournisseurs_blacklists as $blacklist) {
+                if ($blacklist->getFournisseur() == $fournisseur) {
+                    $trouve = true;
+                    break;
+                }
+            }
+
+            if (!$trouve) {
+                $body = $this->twig->render(
+                    'email/UpdateExpirationRfs.html.twig', ['oldDate'=>$oldDate,'fournisseur' => $fournisseur,'demande' => $demande,"interval"=>$interval,"etat"=>$etat,"dateExpiration"=>$dateExpiration]
+                );
+
+                $message = (new \Swift_Message("Demande de devis Ref.".$demande->getReference()))
                     ->setFrom($this->admin_email,'Les Achats Industriels')
                     ->setTo($fournisseur->getEmail())
                     ->setBody($body, 'text/html');

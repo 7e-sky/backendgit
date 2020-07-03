@@ -7,39 +7,90 @@
             <td align="left" valign="top">
                 <font face="'Source Sans Pro', sans-serif" color="#1a1a1a"
                       style="font-size: 52px; line-height: 60px; font-weight: 300; letter-spacing: -1.5px;">
-                    <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #1a1a1a; font-size: 32px; line-height: 45px; font-weight: 300; letter-spacing: -1.5px;">Madame, Monsieur,</span>
+                    <p style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif;text-align: center; color: #f48d35; font-size: 32px; line-height: 45px; font-weight: 300; letter-spacing: -1.5px;text-transform: uppercase">
+
+                        Information urgente !
+                    </p>
                 </font>
-                <div style="height: 33px; line-height: 33px; font-size: 31px;">&nbsp;</div>
+                <div style="height: 10px; line-height: 10px; font-size: 10px;">&nbsp;</div>
                 <font face="'Source Sans Pro', sans-serif" color="#585858"
                       style="font-size: 14px; line-height: 31px;">
                     <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 14px; line-height: 21px;">
                             <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #1a1a1a; font-size: 18px; line-height: 25px; font-weight: 300; ">
-                            Vous vous êtes inscrit(e) en tant que <strong>FOURNISSEUR</strong>  sur notre place de marché
-                             </span>&ensp;<a href="https://www.lesachatsindustriels.com/">www.lesachatsindustriels.com</a><br>
-                        <br> <br>
+                                <p style="text-transform: uppercase;color:#1a1a1a;font-weight: bold ">{{ fournisseur.civilite~' '~fournisseur.lastName~' '~fournisseur.firstName }}
+                                    ,</p>
+                                <br>
+                                Veuillez noter que la demande de devis <strong>Réf.{{ demande.reference }}</strong> a été
+                                <strong style="text-transform: uppercase;" {% if etat == 1 %} <span
+                                        style="color: green">prolongée</span> {% else %} <span style="color: red">écourtée</span>  {% endif %}</strong>
+                                de<strong>
+                                    {% if interval.y > 0 %}
+                                        {{ ' '~interval.y~' an(s)' }}
+                                    {% endif %}
+
+                                    {% if interval.m > 0 %}
+                                        {{ ' '~interval.m~' mois' }}
+                                    {% endif %}
+
+                                    {% if interval.d > 0 %}
+                                        {{ ' '~interval.d~' jour(s)' }}
+                                    {% endif %}
+
+                                    {% if interval.h > 0 %}
+                                        {{ ' '~interval.h~' heure(s)' }}
+                                    {% endif %}
+                                    {% if interval.i > 0 %}
+                                        {{ ' '~interval.i~' minute(s)' }}
+                                    {% endif %}
+                                </strong>
+
+                            </span><br><br>
                         <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #1a1a1a; font-size: 18px; line-height: 25px; font-weight: 300; ">
-                            Par conséquent nous vous adressons ci-après une demande de devis qui pourrait vous intéresser:
+                             Détail de la demande:
                         </span><br><br>
-                    <strong>Reférence de la demande : </strong>{{ demande.reference }}<br>
-                    <strong>Description de la demande : </strong> {{ demande.description[:300] }}<br>
-                    <strong>Date de clôture : </strong> {{ demande.dateExpiration | date('d/m/Y à H:i') }}<br>
-                        {% if demande.attachements|length > 1 %}
-                            <strong>Pièces jointes : </strong> <span style="text-decoration: underline; "> (Voir ci-joints)</span>
-                            <br>
-                        {% endif %}
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%"
+                               style="width: 100% !important; min-width: 88%; max-width: 88%;">
+                            <tr>
+                                <td><strong>Reférence</strong></td>
+                                <td>:<a href="https://lesachatsindustriels.com/"></a> {{ demande.reference }}</td>
+                            </tr>
+                             <tr>
+                                <td><strong>Désignation</strong></td>
+                                <td>: {{ demande.titre }}</td>
+                            </tr>
+                             <tr>
+                                <td><strong>Description</strong></td>
+                                <td>: {{ demande.description[:300] }}</td>
+                            </tr>
+                             <tr>
+                                <td><strong>Ancienne date de clôture</strong></td>
+                                <td>: {{ oldDate | date('d/m/Y à H:i') }}</td>
+                            </tr>
+                             <tr>
+                                <td><strong>Nouvelle date de clôture</strong></td>
+                                <td>: {{ dateExpiration | date('d/m/Y à H:i') }}</td>
+                            </tr>
+                            {% if demande.attachements|length > 1 %}
+                                <tr>
+                                <td><strong>Pièces jointes</strong></td>
+                                <td><span style="text-decoration: underline; ">: (Voir ci-joints)</span></td>
+                            </tr>
+                            {% endif %}
+                        </table>
                         <br>
 
                         <span>
-                            Si cette affaire vous intéresse, nous vous offrons <strong>deux possibilités</strong> afin d´y répondre, soit:
+                            Si vous n'avez toujours pas vu le profil de cet acheteur, une nouvelle opportunité s'offre à vous, et pour ce faire nous vous offrons <strong>deux possibilités</strong> afin d´y répondre, soit:
                         </span>
-                        <br>
-                        <br>
-                        <span>1- Voir les coordonnées de l´ACHETEUR (Société, Nom de l´acheteur, Tel, Fax etc)
-                            et lui répondre directement, ceci en vous procurant des jetons chez nous.</span><br>
-                       <span>2- Nous repondre par mail à <a href="mailto:achats@lesachatsindustriels.com">achats@lesachatsindustriels.com</a> en nous faisant
-                           parvenir votre meilleure offre revendeur, dans ce cas votre interlocuteur devient
-                           la société <strong>7E-SKY</strong> dont les coordonnées sont indiquées ci-dessous.</span>
-                        <br>
+                        <br><br>
+                        <ol>
+                          <li>Voir les coordonnées de l´ACHETEUR (Société, Nom de l´acheteur, Tel, Fax etc)
+                                                    et lui répondre directement, ceci en vous procurant des jetons chez nous.</li>
+                          <li>Nous repondre par mail à <a href="mailto:achats@lesachatsindustriels.com">achats@lesachatsindustriels.com</a> en nous faisant
+                                                   parvenir votre meilleure offre revendeur, dans ce cas votre interlocuteur devient
+                                                   la société <strong>7E-SKY</strong> dont les coordonnées sont indiquées ci-dessous</li>
+                        </ol>
+
                         <br>
                         Notre équipe reste á votre entière disposition pour un éventuel complément d´information.
                         Meilleures salutations,
@@ -79,17 +130,19 @@
                             <td width="18" style="width: 18px; max-width: 18px; min-width: 18px;">
                                 &nbsp;
                             </td>
-                            <td class="mob_center"  style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 14px; line-height: 21px;" align="left" valign="top">
+                            <td class="mob_center"
+                                style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 14px; line-height: 21px;"
+                                align="left" valign="top">
 
 
-                            <strong>Contact</strong> : Mr YOUNES HALOUI<br>
-                            <br>
-                            <strong>7E-SKY</strong><br>
-                            36, Rue Imam Al BOUKHARI, <br>
-                            20370 Maarif Extension Casablanca - Maroc.<br>
-                            <strong>GSM</strong>: 0661.35.52.18<br>
-                            <strong>Tel</strong>: +212.522.36.57.97 <br>
-                            <strong>Fax</strong>: +212.522.36.57.94<br>
+                                <strong>Contact</strong> : Mr YOUNES HALOUI<br>
+                                <br>
+                                <strong>7E-SKY</strong><br>
+                                36, Rue Imam Al BOUKHARI, <br>
+                                20370 Maarif Extension Casablanca - Maroc.<br>
+                                <strong>GSM</strong>: 0661.35.52.18<br>
+                                <strong>Tel</strong>: +212.522.36.57.97 <br>
+                                <strong>Fax</strong>: +212.522.36.57.94<br>
 
                                 <div style="height: 1px; line-height: 1px; font-size: 1px;">&nbsp;
                                 </div>

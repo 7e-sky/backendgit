@@ -125,10 +125,38 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
          * @var UserInterface $acheteur
          */
         $user = $this->tokenStorage->getToken()->getUser();
+        $new_date_expiration = $demande->getDateExpiration();
 
-        if ($user->getRoles()[0] === 'ROLE_ACHETEUR') {
+        if ($demande->updateExpiration && !$demande->updated && $demande->getStatut() === 1) {
+            $repo = $this->entityManager->getRepository('Gedmo\Loggable\Entity\LogEntry');
+            $demande_history = $repo->getLogEntries($demande);
+
+            if ($demande_history && count($demande_history) > 0) {
+                $version = count($demande_history);
+                $repo->revert($demande, $version/*version*/);
+
+                if ($new_date_expiration != $demande->getDateExpiration()) {
+
+                    $old_date = $demande->getDateExpiration();
+                    $interval = $old_date->diff($new_date_expiration);
+                    if ($new_date_expiration > $old_date) {
+                        $this->mailer->alerterFournisseursUpdateExpiration($demande, $interval, 1, $new_date_expiration, $old_date);
+                    } elseif ($new_date_expiration < $old_date) {
+                        $this->mailer->alerterFournisseursUpdateExpiration($demande, $interval, 2, $new_date_expiration, $old_date);
+                    }
+                    $demande->setDateExpiration($new_date_expiration);
+                }
+            }
+
+        }
+        if ($user->getRoles()[0] === 'ROLE_ACHETEUR' && $demande->updated) {
             $demande->setStatut(0);
         }
+
+        if ($demande->getStatut() === 1 && $demande->annulation) {
+            $demande->setDateExpiration(new \DateTime());
+        }
+
 
         if ($user->getRoles()[0] === 'ROLE_ADMIN') {
             if (!$demande->getReference() || is_null($demande->getReference())) {
