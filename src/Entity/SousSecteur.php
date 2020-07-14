@@ -84,7 +84,7 @@ class SousSecteur
     /**
      * @ORM\Column(type="string", length=150)
      * @Groups({"get","categorie:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-item","dmdAbonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","sous-secteur:get-all","secteur:get-all","put","post"})
-     * @Assert\Length(min=4,max=50,groups={"postValidation","putValidation"})
+     * @Assert\Length(min=3,max=50,groups={"postValidation","putValidation"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
      */

@@ -15,18 +15,44 @@
                     <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 14px; line-height: 21px;">
                             <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #1a1a1a; font-size: 18px; line-height: 25px; font-weight: 300; ">
                             Vous vous êtes inscrit(e) en tant que <strong>FOURNISSEUR</strong>  sur notre place de marché
-                             </span>&ensp;<a href="https://www.lesachatsindustriels.com/">www.lesachatsindustriels.com</a><br>
+                             </span>
+                          <br>
+                          <br>
+                         <div style="text-align: center">
+                              <a href="https://www.lesachatsindustriels.com/demandes_prix/{{ demande.id }}"
+                                 style="color: #f48d35; font-size: 32px; line-height: 45px; font-weight: 300;text-transform: uppercase">www.lesachatsindustriels.com</a>
+                         </div>
                         <br> <br>
                         <span style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #1a1a1a; font-size: 18px; line-height: 25px; font-weight: 300; ">
                             Par conséquent nous vous adressons ci-après une demande de devis qui pourrait vous intéresser:
                         </span><br><br>
-                    <strong>Reférence de la demande : </strong>{{ demande.reference }}<br>
-                    <strong>Description de la demande : </strong> {{ demande.description[:300] }}<br>
-                    <strong>Date de clôture : </strong> {{ demande.dateExpiration | date('d/m/Y à H:i') }}<br>
-                        {% if demande.attachements|length > 1 %}
-                            <strong>Pièces jointes : </strong> <span style="text-decoration: underline; "> (Voir ci-joints)</span>
-                            <br>
-                        {% endif %}
+                         <table cellpadding="0" cellspacing="0" border="0" width="100%"
+                                style="width: 100% !important; min-width: 88%; max-width: 88%;">
+                            <tr>
+                                <td><strong>Référence</strong></td>
+                                <td> :<a href="https://lesachatsindustriels.com/demandes_prix/{{ demande.id }}">{{ demande.reference }}</a> </td>
+                            </tr>
+                             <tr>
+                                <td><strong>Désignation</strong></td>
+                                <td> : {{ demande.titre }}</td>
+                            </tr>
+                             <tr>
+                                <td><strong>Description</strong></td>
+                                <td> : {{ demande.description[:300] }}</td>
+                            </tr>
+
+                             <tr>
+                                <td><strong>Date de clôture</strong></td>
+                                <td> : {{ demande.dateExpiration | date('d/m/Y à H:i') }}</td>
+                            </tr>
+                             {% if demande.attachements|length > 1 %}
+                                 <tr>
+                                <td><strong>Pièces jointes</strong></td>
+                                <td><span style="text-decoration: underline; "> : (Voir ci-joints)</span></td>
+                            </tr>
+                             {% endif %}
+                        </table>
+
                         <br>
 
                         <span>
@@ -79,17 +105,19 @@
                             <td width="18" style="width: 18px; max-width: 18px; min-width: 18px;">
                                 &nbsp;
                             </td>
-                            <td class="mob_center"  style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 14px; line-height: 21px;" align="left" valign="top">
+                            <td class="mob_center"
+                                style="font-family: 'Source Sans Pro', Arial, Tahoma, Geneva, sans-serif; color: #585858; font-size: 14px; line-height: 21px;"
+                                align="left" valign="top">
 
 
-                            <strong>Contact</strong> : Mr YOUNES HALOUI<br>
-                            <br>
-                            <strong>7E-SKY</strong><br>
-                            36, Rue Imam Al BOUKHARI, <br>
-                            20370 Maarif Extension Casablanca - Maroc.<br>
-                            <strong>GSM</strong>: 0661.35.52.18<br>
-                            <strong>Tel</strong>: +212.522.36.57.97 <br>
-                            <strong>Fax</strong>: +212.522.36.57.94<br>
+                                <strong>Contact</strong> : Mr YOUNES HALOUI<br>
+                                <br>
+                                <strong>7E-SKY</strong><br>
+                                36, Rue Imam Al BOUKHARI, <br>
+                                20370 Maarif Extension Casablanca - Maroc.<br>
+                                <strong>GSM</strong>: 0661.35.52.18<br>
+                                <strong>Tel</strong>: +212.522.36.57.97 <br>
+                                <strong>Fax</strong>: +212.522.36.57.94<br>
 
                                 <div style="height: 1px; line-height: 1px; font-size: 1px;">&nbsp;
                                 </div>

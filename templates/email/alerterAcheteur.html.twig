@@ -173,9 +173,9 @@
                                     <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
                                         <tbody>
                                         <tr>
-                                            <td style="width:64px;">
+                                            <td >
 
-                                                <img height="auto" src="{{absolute_url(asset('/assets/images/logo.png')) }}" alt='logo' style="border:0;display:block;outline:none;text-decoration:none;width:100%;" width="64" />
+                                                <img height="auto" src="{{absolute_url(asset('/assets/images/logo.png')) }}" alt='logo' style="border:0;display:block;outline:none;text-decoration:none;width:70%;margin:auto"  />
 
                                             </td>
                                         </tr>
@@ -211,7 +211,7 @@
                                             <li><strong>Description : </strong>{{ demande.description }}</li>
                                             <li><strong>Date de création : </strong>{{ demande.created|date("d/m/Y") }}
                                             </li>
-                                            <li><strong>Date d'éxpiration : </strong>{{ demande.dateExpiration|date("d/m/Y") }}
+                                            <li><strong>Date d'expiration : </strong>{{ demande.dateExpiration|date("d/m/Y") }}
                                             </li>
                                         </ul>
                                     </div>
@@ -235,7 +235,7 @@
                                                 {#line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">#}
                                                 {#Voir ma demande#}
                                                 {#</a>#}
-                                                <a href="https://lesachatsindustriels.com/demandes/{{demande.id}}"
+                                                <a href="https://lesachatsindustriels.com/demandes-achat/{{demande.id}}-{{demande.slug}}"
                                                    style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;
                                                 line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">
                                                     Voir ma demande

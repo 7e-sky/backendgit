@@ -51,29 +51,29 @@
                         <table cellpadding="0" cellspacing="0" border="0" width="100%"
                                style="width: 100% !important; min-width: 88%; max-width: 88%;">
                             <tr>
-                                <td><strong>Reférence</strong></td>
-                                <td>:<a href="https://lesachatsindustriels.com/"></a> {{ demande.reference }}</td>
+                                <td><strong>Référence</strong></td>
+                                <td> :<a href="https://lesachatsindustriels.com/demandes_prix/{{ demande.id }}">{{ demande.reference }}</a> </td>
                             </tr>
                              <tr>
                                 <td><strong>Désignation</strong></td>
-                                <td>: {{ demande.titre }}</td>
+                                <td> : {{ demande.titre }}</td>
                             </tr>
                              <tr>
                                 <td><strong>Description</strong></td>
-                                <td>: {{ demande.description[:300] }}</td>
+                                <td> : {{ demande.description[:300] }}</td>
                             </tr>
                              <tr>
                                 <td><strong>Ancienne date de clôture</strong></td>
-                                <td>: {{ oldDate | date('d/m/Y à H:i') }}</td>
+                                <td> : {{ oldDate | date('d/m/Y à H:i') }}</td>
                             </tr>
                              <tr>
                                 <td><strong>Nouvelle date de clôture</strong></td>
-                                <td>: {{ dateExpiration | date('d/m/Y à H:i') }}</td>
+                                <td> : {{ dateExpiration | date('d/m/Y à H:i') }}</td>
                             </tr>
                             {% if demande.attachements|length > 1 %}
                                 <tr>
                                 <td><strong>Pièces jointes</strong></td>
-                                <td><span style="text-decoration: underline; ">: (Voir ci-joints)</span></td>
+                                <td><span style="text-decoration: underline; "> : (Voir ci-joints)</span></td>
                             </tr>
                             {% endif %}
                         </table>

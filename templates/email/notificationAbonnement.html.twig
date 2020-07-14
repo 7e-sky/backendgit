@@ -11,35 +11,77 @@
     </p>
 {% endif %}
 <h4>Les informations du fournisseur :</h4>
-<ul>
-    <li><strong>Raison sociale : </strong>{{ demande.fournisseur.societe }}</li>
-    <li><strong>Nom complet : </strong>{{ demande.fournisseur.civilite~' '~demande.fournisseur.firstName~' '~demande.fournisseur.lastName }}
-    </li>
-    <li><strong>Téléphone : </strong>
-        <a href="tel:{{ demande.fournisseur.phone }}">{{ demande.fournisseur.phone }}</a>
-    </li>
-    <li><strong>Fixe : </strong>
-        <a href="tel:{{ demande.fournisseur.fix }}">{{ demande.fournisseur.fix }}</a>
-    </li>
-    <li><strong>Email : </strong>{{ demande.fournisseur.email }}</li>
-    <li><strong>Pays : </strong>{{ demande.fournisseur.pays ? demande.fournisseur.pays.name : '' }}</li>
-    <li><strong>Ville : </strong>{{ demande.fournisseur.ville ? demande.fournisseur.ville.name:'' }}</li>
-    <li><strong>Adresse : </strong>{{ demande.fournisseur.adresse1 }}</li>
+<table cellpadding="0" cellspacing="0" border="0"
+       style="width: 62% !important; min-width: 40%; max-width: 62%;">
+    <tr>
+        <td><strong>Raison sociale</strong></td>
+        <td> : {{ demande.fournisseur.societe }} </td>
+    </tr>
+    <tr>
+        <td><strong>Nom complet</strong></td>
+        <td> : {{ demande.fournisseur.civilite~' '~demande.fournisseur.firstName~' '~demande.fournisseur.lastName }}</td>
+    </tr>
+    <tr>
+        <td><strong>Téléphone</strong></td>
+        <td> :  <a href="tel:{{ demande.fournisseur.phone }}">{{ demande.fournisseur.phone }}</a></td>
+    </tr>
 
-</ul>
+    <tr>
+        <td><strong>Fixe</strong></td>
+        <td> :  <a href="tel:{{ demande.fournisseur.fix }}">{{ demande.fournisseur.fix }}</a></td>
+    </tr>
+    <tr>
+        <td><strong>Email</strong></td>
+        <td> : {{ demande.fournisseur.email }}</td>
+    </tr>
+    <tr>
+        <td><strong>Pays</strong></td>
+        <td> : {{ demande.fournisseur.pays ? demande.fournisseur.pays.name : '' }}</td>
+    </tr>
+
+    <tr>
+        <td><strong>Ville</strong></td>
+        <td> : {{ demande.fournisseur.ville ? demande.fournisseur.ville.name:'' }}</td>
+    </tr>
+
+    <tr>
+        <td><strong>Adresse</strong></td>
+        <td> : {{ demande.fournisseur.adresse1 }}</td>
+    </tr>
+</table>
 
 <br>
 <h4>Les informations de la commande :</h4>
-<ul>
-    <li><strong>Offre : </strong>{{ demande.offre.name }}</li>
-    <li><strong>Prix : </strong>{{ demande.prix~' '~demande.currency }}</li>
-    <li><strong>Mode de paiement : </strong>{{ demande.mode.name }}</li>
-    <li><strong>Durée : </strong>{{ demande.duree.name }} mois <span style="color: red;">{{ demande.duree.remise ? '(Remise '~demande.duree.remise~' %)' : '' }}</span></li>
-    <li><strong>Date de création : </strong>{{ demande.created|date("d/m/Y")}}</li>
-    <li><strong>Activités: </strong>
-        {% for sousSecteur in demande.sousSecteurs %}
-            {{ sousSecteur.name~' ' }}
-        {% endfor %}
-    </li>
-</ul>
+
+<table cellpadding="0" cellspacing="0" border="0"
+       style="width: 62% !important; min-width: 40%; max-width: 62%;">
+    <tr>
+        <td><strong>Offre</strong></td>
+        <td> : {{ demande.offre.name }} </td>
+    </tr>
+    <tr>
+        <td><strong>Prix</strong></td>
+        <td> : {{ demande.prix~' '~demande.currency }}</td>
+    </tr>
+    <tr>
+        <td><strong>Mode de paiement</strong></td>
+        <td> :  {{ demande.mode.name }}</td>
+    </tr>
+
+    <tr>
+        <td><strong>Durée</strong></td>
+        <td> :  {{ demande.duree.name }} mois <span style="color: red;">{{ demande.duree.remise ? '(Remise '~demande.duree.remise~' %)' : '' }}</span></td>
+    </tr>
+    <tr>
+        <td><strong>Date de création</strong></td>
+        <td> : {{ demande.created|date("d/m/Y")}}</td>
+    </tr>
+    <tr>
+        <td><strong>Activités</strong></td>
+        <td> : {% for sousSecteur in demande.sousSecteurs %}
+                {{ sousSecteur.name~' ' }}
+            {% endfor %}</td>
+    </tr>
+
+</table>
 

@@ -100,6 +100,8 @@ class ParentService
                 $user->setParent1($zone);
                 $this->mailer->newSociete($user,$zone,$profile);
 
+            }else{
+                $this->mailer->newSocieteAdmin($user,$profile);
             }
 
         }

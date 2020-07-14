@@ -28,8 +28,13 @@ use App\Controller\ImageProduit\UploadImageProduitAction;
  *           "controller"=UploadImageProduitAction::class,
  *           "defaults"={"_api_receive"=false}
  *           }
- * },
- *     itemOperations={"get"},
+ *     },
+ *     itemOperations={
+ *       "get",
+ *       "delete"={
+ *           "access_control"="is_granted('ROLE_FOURNISSEUR')"
+ *           }
+ *     },
  *     normalizationContext={
  *      "groups"={"get"}
  *     }

@@ -46,7 +46,7 @@ class Mailer
 
 
     private $admin_email = 'administrateur@lesachatsindustriels.com';
-    private $adherent_email = 'dev@7e-sky.com';
+    private $adherent_email = 'adherent@lesachatsindustriels.com';
 
 
 
@@ -81,7 +81,7 @@ class Mailer
         //send e-mail
         $message = (new \Swift_Message('Inscription ' . $profile . ' sur lesachatsindustriels.com'))
             ->setFrom($this->adherent_email,'Les Achats Industriels')
-            ->setTo('administrateur@lesachatsindustriels.com')
+            ->setTo($this->admin_email)
             ->setBody($body, 'text/html');
 
         $this->AdherentMailer->send($message);
@@ -104,6 +104,22 @@ class Mailer
             ->setFrom($this->adherent_email,'Les Achats Industriels')
             ->setTo($parent->getEmail())
             ->setCc($cc)
+            ->setBody($body, 'text/html');
+
+        $this->AdherentMailer->send($message);
+
+    }
+    public function newSocieteAdmin(User $user, $profile)
+    {
+
+        $body = $this->twig->render(
+            'email/newSocieteAlert.html.twig', ['user' => $user, 'profile' => $profile]
+        );
+
+        //send e-mail
+        $message = (new \Swift_Message('Inscription ' . $profile . ' sur lesachatsindustriels.com'))
+            ->setFrom($this->adherent_email,'Les Achats Industriels')
+            ->setTo($this->admin_email)
             ->setBody($body, 'text/html');
 
         $this->AdherentMailer->send($message);
@@ -147,7 +163,13 @@ class Mailer
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
-        $this->AdherentMailer->send($message);
+        try {
+            $result = $this->AdherentMailer->send($message);
+        }
+        catch (\Swift_TransportException $e) {
+            echo $e->getMessage();
+        }
+
 
     }
 
@@ -492,7 +514,7 @@ class Mailer
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
             ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($demandeAbonnement->getCommercial()->getEmail())
-            ->setCc([$demandeAbonnement->getZone()->getEmail(), 'administrateur@lesachatsindustriels.com'])
+            ->setCc([$demandeAbonnement->getZone()->getEmail(), $this->admin_email])
             ->setBody($body, 'text/html');
 
         $this->AdminMailer->send($message);
@@ -513,7 +535,7 @@ class Mailer
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
             ->setFrom($this->admin_email,'Les Achats Industriels')
             ->setTo($demandeAbonnement->getZone()->getEmail())
-            ->setCc('administrateur@lesachatsindustriels.com')
+            ->setCc($this->admin_email)
             ->setBody($body, 'text/html');
 
         $this->AdminMailer->send($message);

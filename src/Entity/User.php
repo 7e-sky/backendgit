@@ -37,7 +37,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"User" = "User","Admin" = "Admin","Acheteur" = "Acheteur","Fournisseur"="Fournisseur","Commercial"="Commercial","ZoneCommercial"="ZoneCommercial"})
- * @UniqueEntity("email", repositoryMethod="findByUniqueCriteria",groups={"postValidation","putValidation"})
+ * @UniqueEntity("email", repositoryMethod="findByUniqueCriteria",groups={"postValidation","putValidation"},message="Cet e-mail est déjà utilisée.")
  */
 class User implements UserInterface,CreatedEntityInterface
 {

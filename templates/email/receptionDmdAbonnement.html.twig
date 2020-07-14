@@ -2,7 +2,7 @@
 
 
 <p>
-    Nous accusons réception de votre commande numéro <strong>{{ demande.reference }}</strong> du {{ demande.created|date("d/m/Y h:i:s")}} et nous vous remercions pour la confiance que vous nous témoignez.
+    Nous accusons réception de votre commande numéro <strong>{{ demande.reference }}</strong> du {{ demande.created|date("d/m/Y h:i")}} et nous vous remercions pour la confiance que vous nous témoignez.
     <br>
 
     Nous vous rappelons, cependant, qu'il s'agit d'une commande seulement. L'activation de l'abonnement commandé sera effective à la réception du règlement.
@@ -16,30 +16,51 @@
     Cordialement,
 </p>
 <h3>Rappel de l'abonnement commandé :</h3>
-<ul>
-    <li><strong>Référence : </strong>{{ demande.reference}}</li>
-    <li><strong>Offre : </strong>{{ demande.offre.name}}</li>
-    <li><strong>Activités : </strong>{{ demande.offre.nbActivite}} activités</li>
-    <li><strong>Durée : </strong>{{ demande.duree.name}} mois</li>
-</ul>
+<table cellpadding="0" cellspacing="0" border="0"
+       style="width: 60% !important; min-width: 40%; max-width: 60%;">
+    <tr>
+        <td><strong>Référence</strong></td>
+        <td> : {{ demande.reference}} </td>
+    </tr>
+    <tr>
+        <td><strong>Offre</strong></td>
+        <td> : {{ demande.offre.name}}</td>
+    </tr>
+    <tr>
+        <td><strong>Activités</strong></td>
+        <td> : {{ demande.offre.nbActivite }} activités</td>
+    </tr>
+    <tr>
+        <td><strong>Date de la commande</strong></td>
+        <td> : {{ demande.created | date('d/m/Y à H:i') }}</td>
+    </tr>
+    <tr>
+        <td><strong>Durée</strong></td>
+        <td> : {{ demande.duree.name}} mois</td>
+    </tr>
+
+</table>
+
 
 <h3>Modes de paiement acceptés :</h3>
 
 <strong style="color: #0F83E8; text-decoration: underline">Paiement par versement ou virement bancaire :</strong>
 
-<p>Prière d'effectuer un versement en espèces ou un virement bancaire, de la somme de <strong>{{ demande.prix~' '~demande.currency }}</strong>  sur le
-    compte ci-dessous <br> sans oublier de nous faxer l'ordre dudit virement/versement au 05 22 36 57 94.
+<p>Prière d'effectuer un versement ou un virement bancaire, de la somme de <strong>{{ demande.prix|number_format(2, ',', '.') }}{{ ' '~demande.currency }}</strong>  sur le
+    compte ci-dessous <br> sans oublier de nous transmetre le justification de paiement par: <br>
+    <strong>Email : </strong> <a href="mailto:adherent@lesachatsindustriels.com">adherent@lesachatsindustriels.com</a>
 </p>
+<strong >Coordonnées bancaires :</strong>
 <ul>
     <li><strong>Banque : </strong>ATTIJARIWAFA BANK</li>
     <li><strong>Bénéficiaire : </strong>3F industrie</li>
     <li><strong>RIB : </strong>007 780 000 4095 00000 254 292</li>
 </ul>
 <br>
-<strong style="color: #0F83E8; text-decoration: underline">Paiement en espèces ou chèque :</strong>
+<strong style="color: #0F83E8; text-decoration: underline">Autre paiement :</strong>
 
 <p>
-    Veuillez vous présenter à notre agence 3F Industrie située :
+    Veuillez passer à notre agence sis à l'adresse suivante:
 </p>
 <address>
     36, Rue Imam Al BOUKHARI,<br />

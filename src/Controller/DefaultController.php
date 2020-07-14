@@ -66,10 +66,6 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-
-        $em = $this->getDoctrine()->getManager();
-        $users = $em->getRepository(User::class)->find(14);
-
         return $this->json('');
     }
 
@@ -139,6 +135,7 @@ class DefaultController extends AbstractController
             ->andWhere('p.del=0 or p.del IS NULL')
             ->groupBy('s.id')
             ->orderBy('count', 'desc')
+            ->addOrderBy('s.name', 'asc')
             ->setMaxResults(12)
             ->select('s.id,s.name,s.slug,count(p.id) as count');
         $query = $qb->getQuery();
@@ -300,6 +297,7 @@ class DefaultController extends AbstractController
         $qb = $em_fournisseur->createQueryBuilder('f')
             ->where('f.del=0')
             ->andWhere('f.isactif=1')
+            ->andWhere('f.isComplet=1')
             ->andWhere('f.societeLower LIKE CONCAT(:societe, \'%%\')')
             ->orderBy('f.visite', 'desc')
             ->setParameter('societe', $searchText)
@@ -310,6 +308,8 @@ class DefaultController extends AbstractController
 
         if ($fournisseurs) {
             $array['title'] = 'Fournisseurs';
+            array_push($fournisseurs, ['autreFrs'=>'Afficher tout','value'=>$searchText]);
+
             $array['suggestions'] = $fournisseurs;
             array_push($response, $array);
         }
@@ -330,6 +330,8 @@ class DefaultController extends AbstractController
 
         if ($produits) {
             $arrayp['title'] = 'Produits';
+            array_push($produits, ['autreProduits'=>'Afficher tout','value'=>$searchText]);
+
             $arrayp['suggestions'] = $produits;
             array_push($response, $arrayp);
         }
@@ -669,6 +671,7 @@ class DefaultController extends AbstractController
         // Where condition
         $qb->where('p.del=0');
         $qb->andWhere('p.isactif=1');
+        $qb->andWhere('p.isComplet=1');
 
 
         if ($q) {
@@ -761,6 +764,7 @@ class DefaultController extends AbstractController
         // Where condition
         $qb->where('p.del=0');
         $qb->andWhere('p.isactif=1');
+        $qb->andWhere('p.isComplet=1');
 
 
         if ($sousSecteur) {

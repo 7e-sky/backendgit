@@ -11,12 +11,7 @@ namespace App\EventSubscriber;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Email\Mailer;
 use App\Entity\Abonnement;
-use App\Entity\DemandeAbonnement;
 use App\Entity\Admin;
-use App\Entity\ZoneCommercial;
-use App\Entity\Commercial;
-use App\Entity\Fournisseur;
-use App\Entity\Produit;
 use App\Repository\AbonnementRepository;
 use App\Repository\CurrencyRepository;
 use App\Repository\DemandeAbonnementRepository;
@@ -246,7 +241,7 @@ class AbonnementSubscriber implements EventSubscriberInterface
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
         $result++;
-        return 'A-' . date("Y") . '-' . $result;
+        return 'Ab-' . date("Y") . '-' . $result;
 
     }
 

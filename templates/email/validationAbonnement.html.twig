@@ -12,20 +12,37 @@
 {% endif %}
 
 <p>
-    Veuillez lire ce mail et le conserver pour un éventuel usage ultérieur car il contient des informations importantes concernant la gestion de vos produits.
+    Veuillez lire cet mail et le conserver pour un éventuel usage ultérieur car il contient des informations importantes concernant la gestion de vos produits.
 </p>
 
 <br>
 
 <strong style="color: #0F83E8;font-size: larger; text-decoration: underline">Détails de l'abonnement</strong>
+<br>
+<table cellpadding="0" cellspacing="0" border="0"
+       style="width: 62% !important; min-width: 40%; max-width: 62%;">
+    <tr>
+        <td><strong>Référence</strong></td>
+        <td> : {{ abonnement.reference}} </td>
+    </tr>
+    <tr>
+        <td><strong>Offre</strong></td>
+        <td> : {{ abonnement.offre.name}}</td>
+    </tr>
+    <tr>
+        <td><strong>Activités</strong></td>
+        <td> : {{ abonnement.offre.nbActivite }} activités</td>
+    </tr>
 
-<ul>
-    <li><strong>Référence : </strong>{{ abonnement.reference}}</li>
-    <li><strong>Offre : </strong>{{ abonnement.offre.name}}</li>
-    <li><strong>Activités : </strong>{{ abonnement.offre.nbActivite}} activités</li>
-    <li><strong>Durée : </strong>{{ abonnement.duree.name}} mois</li>
-    <li><strong>Date d'expiration : </strong>{{ abonnement.expired|date("d/m/Y h:i:s")}}</li>
-</ul>
+    <tr>
+        <td><strong>Durée</strong></td>
+        <td> : {{ abonnement.duree.name}} mois</td>
+    </tr>
+    <tr>
+        <td><strong>Date d'expiration</strong></td>
+        <td> : {{ abonnement.expired | date('d/m/Y à H:i') }}</td>
+    </tr>
+</table>
 
 <br>
 <strong style="color: #0F83E8;font-size: larger; text-decoration: underline">Gérer vos produits </strong>
@@ -38,8 +55,8 @@
 <ol>
     {#<li>Cliquez sur le lien suivant: <a href="https://7e-sky.com/login">https://7e-sky.com</a></li>#}
     <li>Cliquez sur le lien suivant: <a href="https://www.lesachatsindustriels.com/login">https://www.lesachatsindustriels.com</a></li>
-    <li>Connectez-vous votre email et mot de passe</li>
-    <li>Sur le menu a gauche cliquer sur le lien <strong>"Mes Produits"</strong> </li>
+    <li>Remplissez votre email et mot de passe</li>
+    <li>Sur le menu a gauche cliquez sur le lien <strong>"Produits"</strong> </li>
 </ol>
 
 <br>
@@ -48,10 +65,10 @@
 </strong>
 
 <p>
-    Notre support technique est disponible 24 heures sur 24 et 7 jours sur 7 pour vous assister. Il suffit d'envoyer un email à
+    Notre support technique est disponible 24h/24h et 7j/7j pour vous assister. Il suffit d'envoyer un email à
     <a href="mailto:support@lesachatsindustriels.com">support@lesachatsindustriels.com</a>
-    Afin de vous fournir une assistance rapide et précise, <br>
-    veuillez inclure le maximum de détails (nom d'utilisateur du compte, société, capture d'écran, description du problème, etc.).
+    Afin de vous fournir une assistance rapide et précise. <br>
+    Veuillez inclure le maximum de détails (nom d'utilisateur du compte, société, capture d'écran, description du problème, etc.).
     <br>
     Cela accélérera la prise en charge de votre demande en permettant à nos techniciens de commencer immédiatement à diagnostiquer le problème.
 </p>

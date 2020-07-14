@@ -48,6 +48,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *              "denormalization_context"={"groups"={"actualite:put"}},
  *              "validation_groups"={"actualite:putValidation"}
  *          },
+ *          "delete"={
+ *              "access_control"="is_granted('ROLE_ADMIN')",
+ *
+ *          },
  *     },
  *      attributes={
  *     "pagination_client_enabled"=true,
