@@ -112,10 +112,9 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
      */
     private $id;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
-     * @Groups({"visit:get-item","visit:get-all"})
+     * @Groups({"item:get-from-demande","visit:get-item","visit:get-all"})
      */
     private $acheteur;
 
@@ -320,6 +319,13 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
      * @Groups({"put"})
      */
     public $annulation;
+
+    /**
+     * @ORM\Column(type="string", length=250,nullable=true)
+     * @Groups({"get-from-demande","put","post"})
+     */
+    private $autreCategories;
+
 
 
     public function __construct()
@@ -725,6 +731,24 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
     {
         return $this->visites;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAutreCategories()
+    {
+        return $this->autreCategories;
+    }
+
+    /**
+     * @param mixed $autreCategories
+     */
+    public function setAutreCategories($autreCategories): void
+    {
+        $this->autreCategories = $autreCategories;
+    }
+
+
 
 
 }

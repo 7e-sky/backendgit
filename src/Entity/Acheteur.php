@@ -71,13 +71,13 @@ class Acheteur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays", inversedBy="acheteurs")
-     * @Groups({"visit:get-all","get","post","put"})
+     * @Groups({"get-from-demande","visit:get-all","get","post","put"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"visit:get-all","get","post","put"})
+     * @Groups({"get-from-demande","visit:get-all","get","post","put"})
      */
     private $ville;
 
@@ -93,8 +93,8 @@ class Acheteur extends User
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      * @Assert\Regex(
-     *     pattern="/[a-zA-Z0-9]{3,}/",
-     *     message="Raison social (minimum de 3 caractères alphanumériques)",
+     *     pattern="/[a-zA-Z0-9]{2,}/",
+     *     message="Raison social (minimum de 2 caractères alphanumériques)",
      *     groups={"postValidation","putValidation"}
      * )
      */
@@ -102,7 +102,7 @@ class Acheteur extends User
 
     /**
      * @ORM\Column(type="string", length=5)
-     * @Groups({"visit:get-all","get","put","post"})
+     * @Groups({"get-from-demande","visit:get-all","get","put","post"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=1,max=5,groups={"postValidation","putValidation"})
      */
@@ -111,14 +111,14 @@ class Acheteur extends User
 
     /**
      * @ORM\Column(type="string", length=15,nullable=true)
-     * @Groups({"visit:get-all","get","put","post"})
+     * @Groups({"get-from-demande","visit:get-all","get","put","post"})
      * @Assert\Length(min=15,max=15,groups={"postValidation","putValidation"})
      */
     private $ice;
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
-     * @Groups({"visit:get-all","get","put","post"})
+     * @Groups({"get-from-demande","visit:get-all","get","put","post"})
      *  @AssertPhoneNumber(
      *     groups={"postValidation","putValidation"},
      *     message="Veuillez entrer votre numéro en format international (Exemple Maroc) : +212522112244."
@@ -130,14 +130,14 @@ class Acheteur extends User
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
-     * @Groups({"visit:get-all","get","put","post"})
+     * @Groups({"get-from-demande","visit:get-all","get","put","post"})
 
      */
     private $website;
 
     /**
      * @ORM\Column(type="text",nullable=true)
-     * @Groups({"visit:get-all","get","put","post"})
+     * @Groups({"get-from-demande","visit:get-all","get","put","post"})
      * @Assert\Length(min=6,groups={"postValidation","putValidation"})
      */
     private $description;
@@ -165,7 +165,7 @@ class Acheteur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur")
-     * @Groups({"visit:get-all","get","post","put"})
+     * @Groups({"get-from-demande","visit:get-all","get","post","put"})
      */
     private $secteur;
 

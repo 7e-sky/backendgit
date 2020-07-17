@@ -47,6 +47,7 @@ class Mailer
 
     private $admin_email = 'administrateur@lesachatsindustriels.com';
     private $adherent_email = 'adherent@lesachatsindustriels.com';
+    private $achats_email = 'achats@lesachatsindustriels.com';
 
 
 
@@ -109,6 +110,7 @@ class Mailer
         $this->AdherentMailer->send($message);
 
     }
+
     public function newSocieteAdmin(User $user, $profile)
     {
 
@@ -226,6 +228,47 @@ class Mailer
         $this->AdminMailer->send($message);
 
     }
+
+
+    //======================================================================
+    // FOURNISSEURS GAGNE & PERDUE
+    //======================================================================
+
+    public function alerterFrsGagner(DemandeAchat $demande)
+    {
+
+        $body = $this->twig->render(
+            'email/alerterFrsGagne.html.twig', ['demande' => $demande]
+        );
+
+        //send e-mail
+        $message = (new \Swift_Message('🏆 Félicitation ! vous êtes l\'heureux gagnant de la demande Réf. [ RFQ-'.$demande->getReference().' ]'))
+            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setTo($demande->getFournisseurGagne()->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->AdminMailer->send($message);
+
+    }
+
+    public function alerterFrsPerdue(DemandeAchat $demande,Fournisseur $fournisseur)
+    {
+
+        $body = $this->twig->render(
+            'email/alerterFrsPerdue.html.twig', ['fournisseur' => $fournisseur,'demande' => $demande]
+        );
+
+        //send e-mail
+        $message = (new \Swift_Message('Vous avez raté l\'occasion de la demande d\'achat Réf. [ RFQ-'.$demande->getReference().' ]'))
+            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setTo($fournisseur->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->AdminMailer->send($message);
+
+    }
+
+
     //======================================================================
     // DIFFUSER RFQ => FOURNISSEURS CONSERNEES
     //======================================================================
@@ -242,35 +285,34 @@ class Mailer
         foreach ($demande->getCategories() as $sousSecteur) {
             array_push($ids_sous_secteurs, $sousSecteur->getId());
         }
+
         $qb = $this->fournisseurRepository->createQueryBuilder('f')
             ->innerJoin('f.categories', 's')
             ->where('s.id in (:sous_secteurs_id)')
             ->andWhere('s.del = 0')
             ->andWhere('f.del = 0')
             ->andWhere('f.isactif = 1');
+
         if ($demande->getLocalisation() === 2) {
             $qb->andWhere('f.pays = :pays')->setParameter('pays', $demande->getAcheteur()->getPays());
         }
+
         $qb->setParameter('sous_secteurs_id', $ids_sous_secteurs)
             ->select('f');
         $query = $qb->getQuery();
         $fournisseurs = $query->getResult();
 
         $fournisseurs_blacklists = $this->blackListesRepository->findBy(['acheteur' => $demande->getAcheteur()->getId(), 'etat' => 1]);
-
-
         $nbrshare = 0;
+
         foreach ($fournisseurs as $fournisseur) {
-
             $trouve = false;
-
             foreach ($fournisseurs_blacklists as $blacklist) {
                 if ($blacklist->getFournisseur() == $fournisseur) {
                     $trouve = true;
                     break;
                 }
             }
-
             if (!$trouve) {
                 $message = (new \Swift_Message('Demande de devis'))
                     ->setFrom($this->admin_email,'Les Achats Industriels')
@@ -283,17 +325,27 @@ class Mailer
                     }
                 }
                 $this->AdminMailer->send($message);
-
                 $diffusionDemande = new DiffusionDemande();
                 $diffusionDemande->setDateDiffusion(new \DateTime());
                 $diffusionDemande->setFournisseur($fournisseur);
                 $diffusionDemande->setDemande($demande);
                 $demande->addDiffusionsdemande($diffusionDemande);
                 $nbrshare++;
-
             }
-
         }
+
+        $message = (new \Swift_Message('Demande de devis'))
+            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setTo($this->achats_email)
+            ->setBody($body, 'text/html');
+
+        if ($demande->getAttachements()) {
+            foreach ($demande->getAttachements() as $item) {
+                $message->attach(\Swift_Attachment::fromPath(ltrim($item->getUrl(), '/')));
+            }
+        }
+
+        $this->AdminMailer->send($message);
         $this->entityManager->flush();
 
     }
@@ -397,7 +449,6 @@ class Mailer
     //======================================================================
     // FOURNISSEUR MESSAGE FICHE ENTREPRISE
     //======================================================================
-
 
     // Alerter le fournisseur quand un visiteur public lui envoyé un message
 

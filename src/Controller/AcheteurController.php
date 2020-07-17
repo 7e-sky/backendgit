@@ -47,7 +47,11 @@ class AcheteurController extends AbstractController
      */
     private $mailer;
 
-    public function __construct(TokenStorageInterface $tokenStorage, DetailVisiteRepository $visiteRepository,EntityManagerInterface $entityManager,Mailer $mailer )
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        DetailVisiteRepository $visiteRepository,
+        EntityManagerInterface $entityManager,
+        Mailer $mailer )
     {
 
         $this->tokenStorage = $tokenStorage;
@@ -72,9 +76,12 @@ class AcheteurController extends AbstractController
                         //Set fournisseur gangé
                         $visite->setStatut(1);
                         $demande_achat->setFournisseurGagne($visite->getFournisseur());
+                        $this->mailer->alerterFrsGagner($demande_achat);
                     }else{
                         //Set fournisseur perdu
                         $visite->setStatut(2);
+                        $this->mailer->alerterFrsPerdue($demande_achat,$visite->getFournisseur());
+
                     }
                 }
             }
