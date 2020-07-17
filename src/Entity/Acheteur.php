@@ -103,8 +103,6 @@ class Acheteur extends User
     /**
      * @ORM\Column(type="string", length=5)
      * @Groups({"get-from-demande","visit:get-all","get","put","post"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Assert\Length(min=1,max=5,groups={"postValidation","putValidation"})
      */
     private $civilite;
 

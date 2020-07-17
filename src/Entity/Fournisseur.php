@@ -140,8 +140,6 @@ class Fournisseur extends User
     /**
      * @ORM\Column(type="string", length=5)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Assert\Length(min=1,max=5,groups={"postValidation","putValidation"})
      */
     private $civilite;
 
