@@ -59,7 +59,7 @@ class Personnel implements CreatedEntityInterface,SetFournisseurInterface
     /**
      * @ORM\Column(type="string", length=150,name="fullName")
      * @Assert\NotBlank(groups={"personnel:postValidation","personnel:putValidation"})
-     * @Assert\Length(min=6,max=255,groups={"personnel:postValidation","personnel:putValidation"})
+     * @Assert\Length(min=4,max=255,groups={"personnel:postValidation","personnel:putValidation"})
      * @Groups({"personnel:get-all","personnel:post","personnel:put","visit:get-all"})
      */
     private $name;
@@ -78,14 +78,6 @@ class Personnel implements CreatedEntityInterface,SetFournisseurInterface
     /**
      * @ORM\Column(type="string", length=20)
      * @Groups({"personnel:get-all","personnel:post","personnel:put"})
-     * @AssertPhoneNumber(
-     *     type="mobile",
-     *     defaultRegion="MA",
-     *     groups={"personnel:postValidation","personnel:putValidation"},
-     *     message="Cette valeur n'est pas un numéro de mobile valide."
-     *     )
-     * @Assert\NotBlank(groups={"personnel:postValidation","personnel:putValidation"})
-     * @Assert\Length(min=10,max=20,groups={"personnel:postValidation","personnel:putValidation"})
      */
     private $phone;
 

@@ -95,8 +95,6 @@ class User implements UserInterface,CreatedEntityInterface
     /**
      * @ORM\Column(type="integer",nullable=true)
      * @Groups({"get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
-     * @Assert\Length(min=4,max=255,groups={"postValidation","putValidation"})
-     *
      */
     protected $codepostal;
 
@@ -208,8 +206,6 @@ class User implements UserInterface,CreatedEntityInterface
      * @Assert\Expression(
      *     "this.getNewPassword() === this.getNewConfirmpassword()",
      *     message="Passwords does not match"
-     *
-     *
      * )
      */
     protected $newConfirmpassword;

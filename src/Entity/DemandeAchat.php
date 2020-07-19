@@ -19,7 +19,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
-
 /**
  * @ApiFilter(
  *     SearchFilter::class,
@@ -36,6 +35,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     "acheteur.ville.slug": "exact",
  *     "categories.sousSecteurs.secteur.slug": "exact",
  *     "categories.sousSecteurs.slug": "exact",
+ *     "historiques.fournisseur.id": "exact",
  *      }
  * )
  * @ApiFilter(

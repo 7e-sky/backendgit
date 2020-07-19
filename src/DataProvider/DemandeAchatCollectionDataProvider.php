@@ -75,8 +75,9 @@ final class DemandeAchatCollectionDataProvider implements CollectionDataProvider
                 if (!empty($categories_id)) {
                     $queryBuilder->innerJoin('o.categories', 's')->innerJoin('o.acheteur', 'a')
                         ->where('s.id in (:categories_id)')
-                        ->andWhere('o.statut = 1')
+                        ->andWhere('o.statut = 1 OR o.statut = 3')
                         ->andWhere('o.isPublic = 1')
+                        ->andWhere('o.del = 0')
                         ->andWhere('o.localisation = 1 OR ( o.localisation = 2 AND a.pays = :pays) OR ( o.localisation = 3 AND a.pays <> :pays) ')
                         ->andWhere('s.del = 0')
                         ->setParameter('categories_id', $categories_id)
