@@ -57,14 +57,14 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"visit:get-for-acheteur","sugg-secteur:get-all","selectProduit:get-all","produit:get-all","fournisseur:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","get-from-demande","sous-secteur:get-all","get-from-ville","get-from-acheteur_demandes"})
+     * @Groups({"visit:get-for-acheteur","sugg-secteur:get-all","selectProduit:get-all","produit:get-all","fournisseur:item:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","sous-secteur:get-all","get-from-ville","get-from-acheteur_demandes"})
      */
     protected $id;
 
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"visit:get-for-acheteur","abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","get-from-demande","sous-secteur:get-all","get-from-ville","get-from-acheteurs_blacklistes"})
+     * @Groups({"visit:get-for-acheteur","abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","item:get-from-demande","sous-secteur:get-all","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=2,max=255,groups={"postValidation","putValidation"})
      */
@@ -72,7 +72,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"visit:get-for-acheteur","abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","sous-secteur:get-all","get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
+     * @Groups({"visit:get-for-acheteur","abonnement:get-item","dmdAbonnement:get-all","visit:get-all","get","put","post","sous-secteur:get-all","item:get-from-demande","get-from-ville","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=2,max=255,groups={"postValidation","putValidation"})
      */
@@ -80,27 +80,27 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
-     * @Groups({"get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"item:get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $adresse1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"item:get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $adresse2;
 
     /**
      * @ORM\Column(type="integer",nullable=true)
-     * @Groups({"get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"item:get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      */
     protected $codepostal;
 
     /**
      * @ORM\Column(type="string", length=35)
-     * @Groups({"visit:get-for-acheteur","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post","get-from-demande"})
+     * @Groups({"visit:get-for-acheteur","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post","item:get-from-demande"})
      * @AssertPhoneNumber(
      *     type="mobile",
      *     groups={"postValidation"},

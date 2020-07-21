@@ -31,6 +31,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     "isPublic": "exact",
  *     "categories.slug": "exact",
  *     "categories.name": "partial",
+ *     "acheteur.societe": "partial",
  *     "acheteur.pays.slug": "exact",
  *     "acheteur.ville.slug": "exact",
  *     "categories.sousSecteurs.secteur.slug": "exact",
@@ -114,7 +115,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
-     * @Groups({"item:get-from-demande","visit:get-item","visit:get-all"})
+     * @Groups({"get-from-demande","visit:get-item","visit:get-all"})
      */
     private $acheteur;
 
@@ -126,12 +127,12 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Currency")
-     * @Groups({"fournisseur:get-item-from-demande","fournisseur:get-from-demande","visit:get-item","visit:get-all","get-from-demande","get-from-acheteur_demandes"})
+     * @Groups({"fournisseur:get-item-from-demande","fournisseur:get-from-demande","visit:get-item","visit:get-all","item:get-from-demande","get-from-acheteur_demandes"})
      */
     private $currency;
 
     /**
-     * 0 = En atttente, 1 = En cours , 2 = Refuser , 3 = Adjuger
+     * 0 = En atttente, 1 = En cours , 2 = Refusée , 3 = Adjugée
      * @ORM\Column(type="smallint",length=1)
      * @Groups({"visit:get-all","get-from-demande","put-admin","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      *
@@ -140,7 +141,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
     /**
      * @ORM\Column(type="smallint",length=1)
-     * @Groups({"visit:get-all","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"visit:get-all","item:get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      *
      */
     private $localisation=1;
@@ -258,7 +259,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Motif")
-     * @Groups({"get-from-demande","put","get-from-acheteur_demandes"})
+     * @Groups({"item:get-from-demande","put","get-from-acheteur_demandes"})
      */
     private $motifRejet;
 
@@ -300,7 +301,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
     /**
      * @Gedmo\Slug(fields={"titre"})
      * @ORM\Column(length=128, unique=true)
-     * @Groups({"get-from-demande"})
+     * @Groups({"item:get-from-demande"})
      */
     private $slug;
 
@@ -322,7 +323,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
     /**
      * @ORM\Column(type="string", length=250,nullable=true)
-     * @Groups({"get-from-demande","put","post"})
+     * @Groups({"item:get-from-demande","put","post"})
      */
     private $autreCategories;
 

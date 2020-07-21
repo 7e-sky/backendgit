@@ -71,19 +71,19 @@ class Acheteur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays", inversedBy="acheteurs")
-     * @Groups({"get-from-demande","visit:get-all","get","post","put"})
+     * @Groups({"item:get-from-demande","visit:get-all","get","post","put"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"get-from-demande","visit:get-all","get","post","put"})
+     * @Groups({"item:get-from-demande","visit:get-all","get","post","put"})
      */
     private $ville;
 
     /**
      * @ORM\ManyToOne(targetEntity="Currency")
-     * @Groups({"get-from-acheteur_demandes","get-from-demande","visit:get-all","get","post","put"})
+     * @Groups({"get-from-acheteur_demandes","item:get-from-demande","visit:get-all","get","post","put"})
      */
     private $currency;
 
@@ -102,21 +102,21 @@ class Acheteur extends User
 
     /**
      * @ORM\Column(type="string", length=5)
-     * @Groups({"get-from-demande","visit:get-all","get","put","post"})
+     * @Groups({"item:get-from-demande","visit:get-all","get","put","post"})
      */
     private $civilite;
 
 
     /**
      * @ORM\Column(type="string", length=15,nullable=true)
-     * @Groups({"get-from-demande","visit:get-all","get","put","post"})
+     * @Groups({"item:get-from-demande","visit:get-all","get","put","post"})
      * @Assert\Length(min=15,max=15,groups={"postValidation","putValidation"})
      */
     private $ice;
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
-     * @Groups({"get-from-demande","visit:get-all","get","put","post"})
+     * @Groups({"item:get-from-demande","visit:get-all","get","put","post"})
      *  @AssertPhoneNumber(
      *     groups={"postValidation","putValidation"},
      *     message="Veuillez entrer votre numéro en format international (Exemple Maroc) : +212522112244."
@@ -128,14 +128,14 @@ class Acheteur extends User
 
     /**
      * @ORM\Column(type="string", length=30,nullable=true)
-     * @Groups({"get-from-demande","visit:get-all","get","put","post"})
+     * @Groups({"item:get-from-demande","visit:get-all","get","put","post"})
 
      */
     private $website;
 
     /**
      * @ORM\Column(type="text",nullable=true)
-     * @Groups({"get-from-demande","visit:get-all","get","put","post"})
+     * @Groups({"item:get-from-demande","visit:get-all","get","put","post"})
      * @Assert\Length(min=6,groups={"postValidation","putValidation"})
      */
     private $description;
@@ -163,7 +163,7 @@ class Acheteur extends User
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur")
-     * @Groups({"get-from-demande","visit:get-all","get","post","put"})
+     * @Groups({"item:get-from-demande","visit:get-all","get","post","put"})
      */
     private $secteur;
 
