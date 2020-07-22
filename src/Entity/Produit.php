@@ -74,7 +74,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *          "put"={
  *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_FOURNISSEUR') and object.getFournisseur() == user)",
  *              "denormalization_context"={"groups"={"produit:put"}},
- *              "validation_groups"={"produit:putValidation"}
+ *              "validation_groups"={"produit:putValidation"},
+ *              "normalization_context"={"groups"={"produit:get-item","produit:get-all"}}
  *          }
  *     },
  *
@@ -120,6 +121,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     private $titreLower;
 
     /**
+     *
      * @ORM\ManyToOne(targetEntity="Secteur",inversedBy="produits")
      * @Groups({"produit:get-all","produit:get-from-fournisseur","produit:post","produit:put","demandeDevis:get-item"})
      */
@@ -254,6 +256,24 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
      * @Groups({"produit:get-all","produit:get-from-fournisseur","produit:post"})
      */
     private $free=false;
+
+    /**
+     * @ORM\Column(type="string", length=80,nullable=true)
+     * @Groups({"produit:get-all","produit:post","produit:put"})
+     */
+    private $autreSecteur;
+
+    /**
+     * @ORM\Column(type="string", length=80,nullable=true)
+     * @Groups({"produit:get-all","produit:post","produit:put"})
+     */
+    private $autreActivite;
+
+    /**
+     * @ORM\Column(type="string", length=80,nullable=true)
+     * @Groups({"produit:get-all","produit:post","produit:put"})
+     */
+    private $autreProduit;
 
     public function __construct()
     {
@@ -642,6 +662,55 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     {
         $this->free = $free;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAutreSecteur()
+    {
+        return $this->autreSecteur;
+    }
+
+    /**
+     * @param mixed $autreSecteur
+     */
+    public function setAutreSecteur($autreSecteur): void
+    {
+        $this->autreSecteur = $autreSecteur;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAutreActivite()
+    {
+        return $this->autreActivite;
+    }
+
+    /**
+     * @param mixed $autreActivite
+     */
+    public function setAutreActivite($autreActivite): void
+    {
+        $this->autreActivite = $autreActivite;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAutreProduit()
+    {
+        return $this->autreProduit;
+    }
+
+    /**
+     * @param mixed $autreProduit
+     */
+    public function setAutreProduit($autreProduit): void
+    {
+        $this->autreProduit = $autreProduit;
+    }
+
 
 
 

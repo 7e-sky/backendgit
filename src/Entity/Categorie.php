@@ -63,6 +63,9 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     subresourceOperations={
  *          "api_sous_secteurs_categories_get_subresource"={
  *               "normalization_context"={"groups"={"categorie:get-all"}}
+ *          },
+ *          "api_fournisseurs_categories_get_subresource"={
+ *                  "normalization_context"={"groups"={"frs:get"}}
  *          }
  *     }
  * )
@@ -75,7 +78,7 @@ class Categorie
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @Groups({"categorie:get-all","sousSecteurSub","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","visit:get-item","get-from-demande","get-from-acheteur_demandes","get"})
+     * @Groups({"frs:get" ,"categorie:get-all","sousSecteurSub","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","visit:get-item","get-from-demande","get-from-acheteur_demandes","get"})
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -83,12 +86,11 @@ class Categorie
     /**
      * @ORM\Column(type="string", length=150)
      * @Assert\Length(min=3,max=50,groups={"postValidation","putValidation"})
-     * @Groups({"categorie:get-all","dmdAbonnement:get-item","get","sousSecteurSub","post","put","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","visit:get-item","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
+     * @Groups({"frs:get","categorie:get-all","dmdAbonnement:get-item","get","sousSecteurSub","post","put","selectProduit:get-all","produit:get-all","produit:get-from-fournisseur","visit:get-item","get-from-demande","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      *
      */
     private $name;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="SousSecteur",inversedBy="categories")
@@ -103,7 +105,6 @@ class Categorie
      * @ORM\JoinTable(name="fournisseur_categories")
      */
     private $fournisseurs;
-
 
     /**
      * @ORM\Column(type="boolean")

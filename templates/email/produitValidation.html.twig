@@ -201,8 +201,8 @@
                                 <td align="center"
                                     style="font-size:0px;padding:10px 25px;padding-bottom:40px;word-break:break-word;">
 
-                                    <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:22px;font-weight:bold;line-height:1;text-align:center;color:#555;">
-                                        Validation Produit
+                                    <div style="font-family:'Helvetica Neue',Arial,sans-serif;text-transform:uppercase;font-size:22px;font-weight:bold;line-height:1;text-align:center;color:#555;">
+                                        produit validé
                                     </div>
 
                                 </td>
@@ -213,7 +213,7 @@
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 
                                     <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:left;color:#555;">
-                                        Bonjour {{ demandeDevis.fournisseur.firstName~' '~demandeDevis.fournisseur.lastName }}
+                                        Bonjour {{ produit.fournisseur.firstName~' '~produit.fournisseur.lastName }}
                                     </div>
 
                                 </td>
@@ -224,9 +224,7 @@
 
                                     <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:left;color:#555;">
 
-                                        <p>Nous vous prions de bien vouloir vous informer que le produit référence
-                                            <strong> {{ produit.reference }} </strong> est validé à la date
-                                            : {{ produit.dateValidation|date("d/m/Y") }}</p>
+                                        <p>Nous vous informons que votre produit à été validé avec succès.</p>
 
                                     </div>
 
@@ -237,7 +235,7 @@
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 
                                     <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:left;color:#555;">
-                                        <h4>Les informations du produit :</h4>
+                                        <h4>Informations sur produit :</h4>
                                     </div>
 
                                 </td>
@@ -247,16 +245,29 @@
                                 <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
 
                                     <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:left;color:#555;">
-                                        <ul>
-                                            <li><strong>Référence : </strong>{{ produit.reference }}</li>
-                                            <li><strong>Titre : </strong>{{ produit.titre }}</li>
-                                            <li><strong>Secteur : </strong>{{ produit.secteur.name }}</li>
-                                            <li><strong>Sous-Secteur : </strong>{{ produit.sousSecteurs.name }}</li>
-                                            <li><strong>Catégorie : </strong>{{ produit.categorie.name }}</li>
-                                            <li><strong>Date de création : </strong>{{ produit.created|date("d/m/Y") }}
-                                            </li>
-                                            <li><strong>Description : </strong>{{ produit.description }}</li>
-                                        </ul>
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%"
+                                               style="width: 100% !important; min-width: 88%; max-width: 88%;">
+                                            <tr>
+                                                <td><strong>Référence</strong></td>
+                                                <td> : <a href="https://lesachatsindustriels.com/detail-produit/{{ produit.sousSecteurs.slug }}/{{ produit.categorie.slug }}/{{ produit.id }}-{{ produit.slug }}">{{ produit.reference }}</a> </td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Titre</strong></td>
+                                                <td> : {{ produit.titre }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Description</strong></td>
+                                                <td> : {{ produit.description[:300] }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Date de création</strong></td>
+                                                <td> : {{ produit.created | date('d/m/Y à H:i') }}</td>
+                                            </tr>
+
+                                        </table>
+
+
                                     </div>
 
                                 </td>
@@ -275,10 +286,10 @@
 														{#line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">#}
                                                     {#Connectez-vous à votre compte#}
                                                 {#</a>#}
-                                                <a href="https://lesachatsindustriels.com/login"
+                                                <a href="https://lesachatsindustriels.com/detail-produit/{{ produit.sousSecteurs.slug }}/{{ produit.categorie.slug }}/{{ produit.id }}-{{ produit.slug }}"
                                                    style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;
 														line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">
-                                                    Connectez-vous à votre compte
+                                                   Consulter votre produit
                                                 </a>
                                             </td>
                                         </tr>
@@ -287,6 +298,16 @@
                                 </td>
                             </tr>
 
+                            <tr>
+                                <td align="left" style="font-size:0;padding:10px 25px;">
+
+                                    <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:14px;line-height:20px;text-align:left;color:#525252;">
+                                        Merci et à très bientôt. <br />
+                                        L'équipe Les Achats Industriels,
+                                    </div>
+
+                                </td>
+                            </tr>
 
                         </table>
 
@@ -347,10 +368,15 @@
                                     <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
 
                                         <tr>
-                                            <td align="center" style="font-size:0px;padding:0;word-break:break-word;">
+                                            <td align="center" style="font-size:0;padding:0;">
 
                                                 <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;font-weight:300;line-height:1;text-align:center;color:#575757;">
-                                                    Les Achats Industriels
+
+                                                    <small>Copyright © {{ "now"|date("Y") }} 7e-Sky, Tous les droits sont réservés.</small>
+                                                    <br>
+                                                    <br>
+                                                    <small>Vous recevez cet e-mail parce que vous vous êtes inscrit en tant que FOURNISSEUR via notre site Web.</small>
+
                                                 </div>
 
                                             </td>

@@ -1,0 +1,66 @@
+<h3>Bonjour</h3>
+    <p>
+        <strong>{{ demande.fournisseur.societe }}</strong> vient de faire une demande de <strong>{{ demande.nbrJeton }} jetons</strong>,
+        prière de bien vouloir le contacter dans les plus brefs délais.
+    </p>
+
+<h4>Les informations du fournisseur :</h4>
+<table cellpadding="0" cellspacing="0" border="0"
+       style="width: 62% !important; min-width: 40%; max-width: 62%;">
+    <tr>
+        <td><strong>Raison sociale</strong></td>
+        <td> : {{ demande.fournisseur.societe }} </td>
+    </tr>
+    <tr>
+        <td><strong>Nom complet</strong></td>
+        <td> : {{ demande.fournisseur.civilite~' '~demande.fournisseur.firstName~' '~demande.fournisseur.lastName }}</td>
+    </tr>
+    <tr>
+        <td><strong>Téléphone</strong></td>
+        <td> :  <a href="tel:{{ demande.fournisseur.phone }}">{{ demande.fournisseur.phone }}</a></td>
+    </tr>
+
+    <tr>
+        <td><strong>Fixe</strong></td>
+        <td> :  <a href="tel:{{ demande.fournisseur.fix }}">{{ demande.fournisseur.fix }}</a></td>
+    </tr>
+    <tr>
+        <td><strong>Email</strong></td>
+        <td> : {{ demande.fournisseur.email }}</td>
+    </tr>
+    <tr>
+        <td><strong>Pays</strong></td>
+        <td> : {{ demande.fournisseur.pays ? demande.fournisseur.pays.name : '' }}</td>
+    </tr>
+
+    <tr>
+        <td><strong>Ville</strong></td>
+        <td> : {{ demande.fournisseur.ville ? demande.fournisseur.ville.name:'' }}</td>
+    </tr>
+
+    <tr>
+        <td><strong>Adresse</strong></td>
+        <td> : {{ demande.fournisseur.adresse1 }}</td>
+    </tr>
+</table>
+
+<br>
+<h4>Les informations de la commande :</h4>
+
+<table cellpadding="0" cellspacing="0" border="0"
+       style="width: 62% !important; min-width: 40%; max-width: 62%;">
+    <tr>
+        <td><strong>Demande N°</strong></td>
+        <td> : {{ demande.id }} </td>
+    </tr>
+
+    <tr>
+        <td><strong>Nombre de jetons</strong></td>
+        <td> :  {{ demande.nbrJeton }}</td>
+    </tr>
+    <tr>
+        <td><strong>Date de création</strong></td>
+        <td> : {{ demande.created|date("d/m/Y")}}</td>
+    </tr>
+</table>
+

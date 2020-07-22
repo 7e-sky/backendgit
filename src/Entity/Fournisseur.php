@@ -106,7 +106,6 @@ class Fournisseur extends User
      */
     private $personnels;
 
-
     /**
      * add mapped by if you want to miggrate
      * @ORM\ManyToMany(targetEntity="Categorie", inversedBy="fournisseurs")
@@ -115,7 +114,6 @@ class Fournisseur extends User
      * @ApiSubresource(maxDepth=1)
      */
     private $categories;
-
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -136,13 +134,11 @@ class Fournisseur extends User
      */
     private $societeLower;
 
-
     /**
      * @ORM\Column(type="string", length=5)
      * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","put","post"})
      */
     private $civilite;
-
 
     /**
      * @ORM\Column(type="string", length=15,nullable=true)
@@ -175,7 +171,6 @@ class Fournisseur extends User
      */
     private $description;
 
-
     /**
      * @ORM\OneToMany(targetEntity="Produit", mappedBy="fournisseur")
      * @ApiSubresource(maxDepth=1)
@@ -193,7 +188,6 @@ class Fournisseur extends User
      * @ApiSubresource(maxDepth=1)
      */
     private $messages;
-
 
     /**
      * @ORM\OneToMany(targetEntity="DemandeJeton", mappedBy="fournisseur")

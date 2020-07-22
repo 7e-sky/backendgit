@@ -14,6 +14,7 @@ use App\Entity\ContactFournisseur;
 use App\Entity\DemandeAbonnement;
 use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
+use App\Entity\DemandeJeton;
 use App\Entity\DiffusionDemande;
 use App\Entity\Fournisseur;
 use App\Entity\Personnel;
@@ -191,6 +192,44 @@ class Mailer
 
     }
 
+
+    //======================================================================
+    // DEMANDE JETON => Alerter l'admin ( Nouvelle demande )
+    //======================================================================
+    public function alertAdminNvJeton(DemandeJeton $demande)
+    {
+
+        $body = $this->twig->render(
+            'email/notificationJetonAdmin.html.twig', ['demande' => $demande]
+        );
+        //send e-mail
+        $message = (new \Swift_Message('Commande Jetons'))
+            ->setFrom($this->adherent_email,'Les Achats Industriels')
+            ->setTo($this->admin_email)
+            ->setBody($body, 'text/html');
+
+        $this->AdherentMailer->send($message);
+
+    }
+
+    //======================================================================
+    // DIFFUSER RFQ => Alerter l'admin ( Nouvelle demande )
+    //======================================================================
+    public function alertAdminNvRfs(DemandeAchat $demande)
+    {
+
+        $body = $this->twig->render(
+            'email/nvRfq.html.twig', ['demande' => $demande]
+        );
+        //send e-mail
+        $message = (new \Swift_Message('Demande en attente de validation'))
+            ->setFrom($this->adherent_email,'Les Achats Industriels')
+            ->setTo($this->admin_email)
+            ->setBody($body, 'text/html');
+
+        $this->AdherentMailer->send($message);
+
+    }
     //======================================================================
     // DIFFUSER RFQ => Alerter l'Acheteur lorsque la demande est validée
     //======================================================================

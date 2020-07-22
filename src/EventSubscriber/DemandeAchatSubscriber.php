@@ -72,10 +72,23 @@ class DemandeAchatSubscriber implements EventSubscriberInterface
                 ['deleteDemeandeAchat', EventPriorities::PRE_WRITE],
                 //   ['AccessControll',EventPriorities::PRE_WRITE ],
                 ['postDemandeAchat', EventPriorities::PRE_WRITE],
+                ['SendNotifToAdmin', EventPriorities::POST_WRITE],
                 ['putDemandeAchat', EventPriorities::PRE_WRITE],
                 // ['sendEmails',EventPriorities::POST_WRITE ]
             ]
         ];
+    }
+
+    public function SendNotifToAdmin(GetResponseForControllerResultEvent $event)
+    {
+
+        $demande = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        if (!$demande instanceof DemandeAchat || $method !== Request::METHOD_POST) {
+            return;
+        }
+        $this->mailer->alertAdminNvRfs($demande);
     }
 
     public function postDemandeAchat(GetResponseForControllerResultEvent $event)

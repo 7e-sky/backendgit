@@ -172,6 +172,7 @@ class Secteur
         return $this->slug;
     }
 
+
     /**
      * @return mixed
      */
