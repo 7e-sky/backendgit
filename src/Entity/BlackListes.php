@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Interfaces\CreatedEntityInterface;
 use App\Interfaces\SetAcheteurInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
+ * @ApiFilter(OrderFilter::class, properties={"created"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
@@ -20,12 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "get"={
  *              "access_control"="is_granted('ROLE_ACHETEUR')",
- *
- *
  *          }
  *     },
  *     itemOperations={
- *
  *          "get"={
  *               "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
  *
@@ -41,12 +41,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     "pagination_enabled"=false
  *     },
  *     subresourceOperations={
- *
  *          "api_acheteurs_blacklistes_get_subresource"={
  *              "access_control"="is_granted('ROLE_ACHETEUR')",
  *              "method"="GET",
  *              "normalization_context"={"groups"={"get-from-acheteurs_blacklistes"}}
  *
+ *          },
+ *          "api_fournisseurs_blacklistes_get_subresource"={
+ *              "normalization_context"={"groups"={"frs:get-all"}}
  *          }
  *     }
  * )
@@ -65,7 +67,7 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="blacklistes")
-     *
+     * @Groups({"frs:get-all"})
      */
     private $acheteur;
 
@@ -78,7 +80,7 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
+     * @Groups({"frs:get-all","blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"blackList:postValidation","blackListe:putValidation"})
      * @Assert\Length(min=6,groups={"blackList:postValidation","blackListe:putValidation"})
      */
@@ -86,20 +88,20 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get-from-acheteurs_blacklistes"})
+     * @Groups({"frs:get-all","get-from-acheteurs_blacklistes"})
      */
     private $created;
 
     /**
      * @ORM\Column(type="datetime",nullable=true)
-     * @Groups({"get-from-acheteurs_blacklistes"})
+     * @Groups({"frs:get-all","get-from-acheteurs_blacklistes"})
      */
     private $deblacklister;
 
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"blackListe:put","get-from-acheteurs_blacklistes"})
+     * @Groups({"frs:get-all","blackListe:put","get-from-acheteurs_blacklistes"})
      */
     private $etat;
 
@@ -108,7 +110,6 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
     {
         $this->etat=true;
     }
-
 
 
     public function getId(): ?int

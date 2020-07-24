@@ -142,7 +142,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
-     * @Groups({"selectProduit:get-all","produit:get-item"})
+     * @Groups({"selectProduit:get-all","produit:get-item","produit:get-all"})
      */
     private $fournisseur;
 

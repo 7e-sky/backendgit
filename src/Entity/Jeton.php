@@ -52,9 +52,15 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *              "validation_groups"={"jeton:putValidation"}
  *          }
  *     },
- *
+ *     subresourceOperations={
+ *          "api_fournisseurs_jetons_get_subresource"={
+ *               "normalization_context"={"groups"={"jeton:get-all"}}
+ *          }
+ *     },
  *     attributes={
  *     "pagination_items_per_page"=10,
+ *     "pagination_client_items_per_page"=true,
+ *     "maximum_items_per_page"=100,
  *     },
  * )
  * @ORM\Entity(repositoryClass="App\Repository\JetonRepository")
@@ -95,7 +101,6 @@ class Jeton implements CreatedEntityInterface
      * @Assert\NotBlank(groups={"jeton:postValidation","jeton:putValidation"})
      */
     private $nbrJeton;
-
 
     /**
      * @ORM\Column(type="float")

@@ -16,6 +16,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 
+
 /**
  * @ApiResource(
  *     attributes={
@@ -89,7 +90,7 @@ class Acheteur extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"sugg-secteur:get-all","visit:get-all","get","put","post","get-from-demande"})
+     * @Groups({"frs:get-all","sugg-secteur:get-all","visit:get-all","get","put","post","get-from-demande","get-from-acheteur_demandes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      * @Assert\Regex(

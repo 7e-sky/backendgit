@@ -117,7 +117,7 @@ class Fournisseur extends User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"item:get-from-demande","visit:get-for-acheteur","sugg-secteur:get-all","produit:get-item","contactFournisseur:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
+     * @Groups({"produit:get-all","item:get-from-demande","visit:get-for-acheteur","sugg-secteur:get-all","produit:get-item","contactFournisseur:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
      * @Assert\Regex(
@@ -190,18 +190,6 @@ class Fournisseur extends User
     private $messages;
 
     /**
-     * @ORM\OneToMany(targetEntity="DemandeJeton", mappedBy="fournisseur")
-     * @ApiSubresource(maxDepth=1)
-     */
-    private $commandes;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Currency")
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
-     */
-    private $currency;
-
-    /**
      * @ORM\OneToMany(targetEntity="DemandeAbonnement",mappedBy="fournisseur")
      * @ApiSubresource(maxDepth=1)
      */
@@ -212,6 +200,30 @@ class Fournisseur extends User
      * @ApiSubresource(maxDepth=1)
      */
     private $abonnements;
+
+    /**
+     * @ORM\OneToMany(targetEntity="BlackListes",mappedBy="fournisseur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $blacklistes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="DemandeJeton", mappedBy="fournisseur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $commandes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Jeton", mappedBy="fournisseur")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $jetons;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Currency")
+     * @Groups({"abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
+     */
+    private $currency;
 
     /**
      * @Gedmo\Slug(fields={"societe"})
@@ -564,6 +576,43 @@ class Fournisseur extends User
     {
         $this->autreCurrency = $autreCurrency;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getJetons()
+    {
+        return $this->jetons;
+    }
+
+    /**
+     * @param mixed $jetons
+     */
+    public function setJetons($jetons): void
+    {
+        $this->jetons = $jetons;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBlacklistes()
+    {
+        return $this->blacklistes;
+    }
+
+    /**
+     * @param mixed $blacklistes
+     */
+    public function setBlacklistes($blacklistes): void
+    {
+        $this->blacklistes = $blacklistes;
+    }
+
+
+
+
+
 
 
 

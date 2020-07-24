@@ -57,7 +57,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"visit:get-for-acheteur","sugg-secteur:get-all","selectProduit:get-all","produit:get-all","fournisseur:item:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","sous-secteur:get-all","get-from-ville","get-from-acheteur_demandes"})
+     * @Groups({"produit:get-all","get-from-acheteurs_blacklistes","frs:get-all","visit:get-for-acheteur","sugg-secteur:get-all","selectProduit:get-all","produit:get-all","fournisseur:item:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","sous-secteur:get-all","get-from-ville","get-from-acheteur_demandes"})
      */
     protected $id;
 

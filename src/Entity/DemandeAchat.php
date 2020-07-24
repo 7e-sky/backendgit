@@ -115,7 +115,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Acheteur",inversedBy="demandes")
-     * @Groups({"get-from-demande","visit:get-item","visit:get-all"})
+     * @Groups({"get-from-demande","get-from-acheteur_demandes","visit:get-item","visit:get-all"})
      */
     private $acheteur;
 
@@ -301,7 +301,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
     /**
      * @Gedmo\Slug(fields={"titre"})
      * @ORM\Column(length=128, unique=true)
-     * @Groups({"item:get-from-demande"})
+     * @Groups({"get-from-demande"})
      */
     private $slug;
 
