@@ -50,7 +50,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     arguments={
  *     "parameterName": "props",
  *     "overrideDefaultProperties": false,
- *     "whitelist": {"id","slug","categorie","sousSecteurs","secteur","fournisseur","reference","titre","description","pu","currency","featuredImageId"},
+ *     "whitelist": {"id","slug","categorie","sousSecteurs","secteur","fournisseur","reference","titre","description","pu","currency","featuredImageId","images"},
  *      }
  * )
  * @ApiResource(
@@ -154,7 +154,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="ImageProduit")
-     * @Groups({"produit:post","produit:put","demandeDevis:get-item","produit:get-all","selectProduit:get-all"})
+     * @Groups({"produit:post","produit:put","demandeDevis:get-item","produit:get-all","produit:get-from-fournisseur","selectProduit:get-all"})
      * @ORM\JoinTable()
      */
     private $images;

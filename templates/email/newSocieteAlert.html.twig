@@ -19,6 +19,6 @@
     </li>
     <li><strong>Email : </strong>{{ user.email }}</li>
     <li><strong>Pays : </strong>{{ user.pays ? user.pays.name : '' }}</li>
-    <li><strong>Ville : </strong>{{ user.ville ? user.ville.name:'' }}</li>
+    <li><strong>Ville : </strong>{{ user.ville ? (user.ville.name == 'Autre' ? 'Autre : '+user.autreVille : user.ville.name ):'' }}</li>
     <li><strong>Adresse : </strong>{{ user.adresse1 }}</li>
 </ul>
