@@ -52,7 +52,7 @@ final class WithoutDelExtension implements QueryCollectionExtensionInterface, Qu
             Acheteur::class !== $resourceClass &&
             Fournisseur::class !== $resourceClass &&
             DemandeAchat::class !== $resourceClass &&
-            DemandeDevis::class !== $resourceClass &&
+            //DemandeDevis::class !== $resourceClass &&
             ContactFournisseur::class !== $resourceClass &&
             Personnel::class !== $resourceClass &&
             Produit::class !== $resourceClass &&

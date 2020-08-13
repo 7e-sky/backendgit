@@ -36,6 +36,11 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  *              "validation_groups"={"personnel:putValidation"}
  *          },
  *     },
+ *     subresourceOperations={
+ *          "api_fournisseurs_personnels_get_subresource"={
+ *               "normalization_context"={"groups"={"personnel:get-all"}}
+ *          }
+ *     },
  *     attributes={"pagination_items_per_page"=10,"pagination_enabled"=false},
  * )
  * @ORM\Entity(repositoryClass="App\Repository\PersonnelRepository")
@@ -64,8 +69,6 @@ class Personnel implements CreatedEntityInterface,SetFournisseurInterface
      */
     private $name;
 
-
-
     /**
      * @ORM\Column(type="string", length=100)
      * @Groups({"personnel:get-all","personnel:post","personnel:put"})
@@ -92,6 +95,24 @@ class Personnel implements CreatedEntityInterface,SetFournisseurInterface
      * @Groups({"personnel:get-all"})
      */
     private $created;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Avatar")
+     * @Groups({"personnel:get-all","personnel:post","personnel:put"})
+     */
+    private $avatar;
+
+    /**
+     * @ORM\Column(type="string", length=20,nullable=true)
+     * @Groups({"personnel:get-all","personnel:post","personnel:put"})
+     */
+    private $agence;
+
+    /**
+     * @ORM\Column(type="string", length=20,nullable=true)
+     * @Groups({"personnel:get-all","personnel:post","personnel:put"})
+     */
+    private $ville;
 
     public function __construct()
     {
@@ -183,4 +204,53 @@ class Personnel implements CreatedEntityInterface,SetFournisseurInterface
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAgence()
+    {
+        return $this->agence;
+    }
+
+    /**
+     * @param mixed $agence
+     */
+    public function setAgence($agence): void
+    {
+        $this->agence = $agence;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVille()
+    {
+        return $this->ville;
+    }
+
+    /**
+     * @param mixed $ville
+     */
+    public function setVille($ville): void
+    {
+        $this->ville = $ville;
+    }
+
 }

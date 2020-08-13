@@ -427,7 +427,7 @@ class FournisseurController extends AbstractController
 
             $user = $this->tokenStorage->getToken()->getUser();
             $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
-            $products = $em->findBy(['fournisseur'=>$user]);
+            $products = $em->findBy(['fournisseur'=>$user,"del"=>0,"isValid"=>1]);
 
             $em2 = $this->getDoctrine()->getManager()->getRepository(DemandeDevis::class);
 
@@ -467,7 +467,6 @@ class FournisseurController extends AbstractController
         return $this->json($data);
 
     }
-
 
     /**
      * @Route("/fournisseur/topbudget")
@@ -510,7 +509,6 @@ class FournisseurController extends AbstractController
         return $this->json($data);
 
     }
-
 
     /**
      * @Route("/fournisseur/potentiel")

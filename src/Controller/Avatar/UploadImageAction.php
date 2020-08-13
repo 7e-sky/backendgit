@@ -55,7 +55,6 @@ class UploadImageAction
             //Persist the new Image entity
             $this->entityManager->persist($avatar);
             $this->entityManager->flush();
-
             $avatar->setFile(null);
 
             return $avatar;

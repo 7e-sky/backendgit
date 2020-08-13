@@ -30,11 +30,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     "email":"partial",
  *     "adresse":"partial",
  *     "message":"partial",
- *     "statut":"exact",
  *      }
  * )
  * @ApiFilter(DateFilter::class, properties={"created"})
- * @ApiFilter(BooleanFilter::class, properties={"statut"})
+ * @ApiFilter(BooleanFilter::class, properties={"statut","del"})
  * @ApiResource(
  *     collectionOperations={
  *          "post"={
