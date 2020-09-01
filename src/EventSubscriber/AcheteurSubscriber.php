@@ -89,6 +89,7 @@ class AcheteurSubscriber implements EventSubscriberInterface
 
 
         if ($entity->getStep() === 2 && !$entity->getisComplet()) {
+            //SET COMMERCIAL PARENT
             $this->parentService->setParent($entity,'Acheteur');
             $this->mailer->bienvenueEmail($entity);
             $entity->setIsComplet(true);

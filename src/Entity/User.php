@@ -33,11 +33,15 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
  *     },
  * )
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="user",indexes={@ORM\Index(name="indexes_user", columns={"del"}),@ORM\Index(name="indexes_user2", columns={"isactif"})})
+ * @ORM\Table(name="user",
+ *     indexes={
+ *     @ORM\Index(name="indexes_user", columns={"del"}),
+ *     @ORM\Index(name="indexes_user2", columns={"isactif"})
+ * })
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"User" = "User","Admin" = "Admin","Acheteur" = "Acheteur","Fournisseur"="Fournisseur","Commercial"="Commercial","ZoneCommercial"="ZoneCommercial"})
- * @UniqueEntity("email", repositoryMethod="findByUniqueCriteria",groups={"postValidation","putValidation"},message="Cet e-mail est déjà utilisée.")
+ * @UniqueEntity("email", repositoryMethod="findByUniqueCriteria",groups={"postValidation","putValidation"},message="Cet e-mail est déjà utilisé.")
  */
 class User implements UserInterface,CreatedEntityInterface
 {
@@ -57,7 +61,7 @@ class User implements UserInterface,CreatedEntityInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"produit:get-all","get-from-acheteurs_blacklistes","frs:get-all","visit:get-for-acheteur","sugg-secteur:get-all","selectProduit:get-all","produit:get-all","fournisseur:item:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","sous-secteur:get-all","get-from-ville","get-from-acheteur_demandes"})
+     * @Groups({"get-from-demande","produit:get-all","get-from-acheteurs_blacklistes","frs:get-all","visit:get-for-acheteur","sugg-secteur:get-all","selectProduit:get-all","produit:get-all","fournisseur:item:get-from-demande","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","visit:get-all","get","sous-secteur:get-all","get-from-ville","get-from-acheteur_demandes"})
      */
     protected $id;
 

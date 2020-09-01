@@ -3,3 +3,4 @@ api_platform:
         paths: ['%kernel.project_dir%/src/Entity']
     exception_to_status:
         App\Exception\DisableToDelete: 404
+        App\Exception\ErrorMessageException: 404

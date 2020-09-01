@@ -17,6 +17,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
@@ -81,13 +82,27 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id","visite","created","isactif","societe"})
- * @ORM\Table(name="fournisseur",indexes={@ORM\Index(name="indexe_fournisseur", columns={"societe"}),@ORM\Index(name="indexe_societe", columns={"societe_lower"})})
+ * @ORM\Table(name="fournisseur",
+ *     indexes={
+ *     @ORM\Index(name="indexe_fournisseur", columns={"societe"}),
+ *     @ORM\Index(name="indexe_societe", columns={"societe_lower"})})
  * @ORM\Entity(repositoryClass="App\Repository\FournisseurRepository")
- *
  */
 class Fournisseur extends User
 {
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"produit:get-all","item:get-from-demande","visit:get-for-acheteur","sugg-secteur:get-all","produit:get-item","contactFournisseur:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
+     * @Assert\NotBlank(groups={"postValidation","putValidation"})
+     * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
+     * @Assert\Regex(
+     *     pattern="/[a-zA-Z0-9]{2,}/",
+     *     message="Raison social (minimum de 2 caractères alphanumériques)",
+     *     groups={"postValidation","putValidation"}
+     * )
+     */
+    private $societe;
     /**
      * @ORM\ManyToOne(targetEntity="Pays",inversedBy="fournisseurs")
      * @Groups({"produit:get-item","abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
@@ -114,19 +129,6 @@ class Fournisseur extends User
      * @ApiSubresource(maxDepth=1)
      */
     private $categories;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"produit:get-all","item:get-from-demande","visit:get-for-acheteur","sugg-secteur:get-all","produit:get-item","contactFournisseur:get-all","selectProduit:get-all","abonnement:get-item","abonnement:get-all","dmdAbonnement:get-all","demandeDevis:get-all","jeton:get-item","jeton:get-all","d-jeton:get-all","d-jeton:get-item","get","put","post","get-from-diffusionDemande","get-from-blacklist","get-from-acheteurs_blacklistes"})
-     * @Assert\NotBlank(groups={"postValidation","putValidation"})
-     * @Assert\Length(min=3,max=255,groups={"postValidation","putValidation"})
-     * @Assert\Regex(
-     *     pattern="/[a-zA-Z0-9]{2,}/",
-     *     message="Raison social (minimum de 2 caractères alphanumériques)",
-     *     groups={"postValidation","putValidation"}
-     * )
-     */
-    private $societe;
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
@@ -278,6 +280,11 @@ class Fournisseur extends User
      */
     private $autreCurrency;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Fournisseur")
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id" , nullable=true)
+     */
+    private $parent;
 
     public function __construct()
     {
@@ -607,6 +614,22 @@ class Fournisseur extends User
     public function setBlacklistes($blacklistes): void
     {
         $this->blacklistes = $blacklistes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param mixed $parent
+     */
+    public function setParent($parent): void
+    {
+        $this->parent = $parent;
     }
 
 

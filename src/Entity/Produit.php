@@ -87,7 +87,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *          }
  *     }
  * )
- * @ORM\Table(name="produit",indexes={@ORM\Index(name="indexes_p_title", columns={"titre_lower"}),@ORM\Index(name="indexes_produit", columns={"titre"}),@ORM\Index(name="indexes_produit2", columns={"is_valid"}),@ORM\Index(name="indexes_produit3", columns={"del"})})
+ * @ORM\Table(name="produit",
+ *     indexes={
+ *     @ORM\Index(name="indexes_produit2", columns={"is_valid"}),
+ *     @ORM\Index(name="indexes_produit3", columns={"del"}),
+ *     @ORM\Index(name="description_index", columns={"description"}, flags={"fulltext"}),
+ *     @ORM\Index(name="titre_index", columns={"titre_lower"}, flags={"fulltext"}),
+ *     @ORM\Index(name="titre_desc_index", columns={"titre_lower","description"}, flags={"fulltext"}),
+ * })
  * @ORM\Entity(repositoryClass="App\Repository\ProduitRepository")
  */
 class Produit implements CreatedEntityInterface,SetFournisseurInterface
@@ -116,7 +123,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     private $titre;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100,nullable=true)
      */
     private $titreLower;
 
@@ -198,7 +205,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"get-owner","produit:get-from-fournisseur","demandeDevis:get-item"})
+     * @Groups({"produit:get-all","get-owner","produit:get-from-fournisseur","demandeDevis:get-item"})
      */
     private $created;
 

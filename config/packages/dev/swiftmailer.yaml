@@ -1,6 +1,6 @@
-#swiftmailer:
-#    mailers:
-#        mailer_adherent:
-#            delivery_addresses: ['youness.arbouh1@gmail.com']
-#        mailer_admin:
-#            delivery_addresses: ['youness.arbouh1@gmail.com']
+swiftmailer:
+    mailers:
+        mailer_adherent:
+            delivery_addresses: ['it.3findustrie@gmail.com']
+        mailer_admin:
+            delivery_addresses: ['it.3findustrie@gmail.com']

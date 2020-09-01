@@ -10,6 +10,7 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Pays;
+use App\Exception\ErrorMessageException;
 use App\Repository\VilleRepository;
 use App\Repository\FournisseurRepository;
 use App\Repository\AcheteurRepository;
@@ -87,7 +88,7 @@ class PaysSubscriber implements EventSubscriberInterface
                 ->getOneOrNullResult();
 
             if($fournisseur || $acheteur || $ville || $zone){
-                throw new Exception("Vous ne pouvez pas supprimer cet enregistrement, car il est en relation avec d'autre(s) objet(s) !",400);
+                throw new ErrorMessageException("Vous ne pouvez pas supprimer cet enregistrement, car il est en relation avec d'autre(s) objet(s) !");
             }
         }
 

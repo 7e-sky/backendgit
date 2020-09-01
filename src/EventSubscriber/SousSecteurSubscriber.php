@@ -10,6 +10,7 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\SousSecteur;
+use App\Exception\ErrorMessageException;
 use App\Repository\CategorieRepository;
 use App\Repository\DemandeAchatRepository;
 use App\Repository\FournisseurRepository;
@@ -26,22 +27,13 @@ class SousSecteurSubscriber implements EventSubscriberInterface
      * @var CategorieRepository
      */
     private $categorieRepository;
-    /**
-     * @var FournisseurRepository
-     */
-    private $fournisseurRepository;
-    /**
-     * @var DemandeAchatRepository
-     */
-    private $demandeAchatRepository;
 
-    public function __construct(CategorieRepository $categorieRepository, FournisseurRepository $fournisseurRepository, DemandeAchatRepository $demandeAchatRepository)
+
+    public function __construct(CategorieRepository $categorieRepository)
     {
 
 
         $this->categorieRepository = $categorieRepository;
-        $this->fournisseurRepository = $fournisseurRepository;
-        $this->demandeAchatRepository = $demandeAchatRepository;
     }
 
 
@@ -87,16 +79,8 @@ class SousSecteurSubscriber implements EventSubscriberInterface
         }
 
         if($entity->getDel()){
-            $categorie = $this->categorieRepository->findOneBy(['sousSecteur'=>$entity->getId(),'del'=>false]);
-            $fournisseur = $this->fournisseurRepository->createQueryBuilder('f')
-                ->innerJoin('f.sousSecteurs','s')
-                ->where('s.id = :s_id')
-                ->andWhere('f.del = 0')
-                ->setParameter('s_id', $entity)
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getOneOrNullResult();
-            $demande = $this->demandeAchatRepository->createQueryBuilder('d')
+
+            $categorie = $this->categorieRepository->createQueryBuilder('d')
                 ->innerJoin('d.sousSecteurs','s')
                 ->where('s.id = :s_id')
                 ->andWhere('d.del = 0')
@@ -105,8 +89,8 @@ class SousSecteurSubscriber implements EventSubscriberInterface
                 ->getQuery()
                 ->getOneOrNullResult();
 
-            if($fournisseur || $categorie || $demande){
-                throw new Exception("Vous ne pouvez pas supprimer cet enregistrement, car il est en relation avec d'autre(s) objet(s) !",400);
+            if($categorie){
+                throw new ErrorMessageException("Vous ne pouvez pas supprimer cet enregistrement, car il est en relation avec d'autre(s) objet(s) !");
             }
         }
 

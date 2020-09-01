@@ -126,6 +126,7 @@ class FournisseurSubscriber implements EventSubscriberInterface
         }
 
         if($entity->getStep() === 3 && !$entity->getisComplet()){
+            //SET COMMERCIAL PARENT
             $this->parentService->setParent($entity,'Fournisseur');
             $this->mailer->bienvenueEmail($entity);
             $entity->setIsComplet(true);

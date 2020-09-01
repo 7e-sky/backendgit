@@ -20,15 +20,17 @@ class FournisseurRepository extends ServiceEntityRepository
         parent::__construct($registry, Fournisseur::class);
     }
 
-    /**
-     * @param string[] $criteria format: array('user' => <user_id>, 'name' => <name>)
-     */
     public function findByUniqueCriteria(array $criteria)
     {
         // would use findOneBy() but Symfony expects a Countable object
         return $this->_em->getRepository(User::class)->findBy($criteria);
     }
 
+    public function findByUniqueSociete(array $criteria)
+    {
+        // would use findOneBy() but Symfony expects a Countable object
+        return $this->_em->getRepository(Fournisseur::class)->findBy($criteria);
+    }
 
     // /**
     //  * @return Fournisseur[] Returns an array of Fournisseur objects

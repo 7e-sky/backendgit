@@ -11,6 +11,7 @@ namespace App\Controller\forgotPassword;
 use ApiPlatform\Core\Validator\ValidatorInterface;
 use App\Email\Mailer;
 use App\Entity\ForgotPassword;
+use App\Exception\ErrorMessageException;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -63,7 +64,7 @@ class RequestForgotPasswordAction
         $user = $this->userRepository->findOneBy(['email'=>$data->getEmail()]);
 
         if(!$user){
-            throw new Exception("Adresse mail inexistante");
+            throw new ErrorMessageException("Adresse mail inexistante");
         }
 
         $user->setForgotToken($this->tokenGenerator->getRandomSecureToken());

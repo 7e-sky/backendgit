@@ -68,7 +68,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\SousSecteurRepository")
- * @ORM\Table(name="sous_secteur",indexes={@ORM\Index(name="indexe_ss_name", columns={"name_lower"}),@ORM\Index(name="indexes_sous_secteur2", columns={"del"})})
+ * @ORM\Table(name="sous_secteur",
+ *     indexes={
+ *     @ORM\Index(name="indexe_ss_name", columns={"name_lower"}),
+ *     @ORM\Index(name="indexes_sous_secteur2", columns={"del"})})
  * @UniqueEntity("name")
  */
 class SousSecteur

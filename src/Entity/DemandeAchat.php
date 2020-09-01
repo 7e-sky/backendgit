@@ -100,7 +100,12 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\DemandeAchatRepository")
  * @ORM\EntityListeners({"App\EventListener\DemandeAchatChangedNotifier"})
- * @ORM\Table(name="demande_achat",indexes={@ORM\Index(name="search_idx", columns={"statut","del"})})
+ * @ORM\Table(name="demande_achat",
+ *     indexes={
+ *     @ORM\Index(name="statut_Index", columns={"statut"}),
+ *     @ORM\Index(name="del_Index", columns={"del"}),
+ *     @ORM\Index(name="desc_Index", columns={"description"}, flags={"fulltext"})
+ * })
  * @Gedmo\Loggable
  */
 class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
@@ -155,7 +160,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * Assert\NotBlank(groups={"postValidation"})
+     * @Assert\NotBlank(groups={"postValidation"})
      * @Groups({"visit:get-item","visit:get-all","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      *
      */
@@ -173,6 +178,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\DateTime(groups={"postValidation","putValidation"})
+     * @Assert\GreaterThan("+2 days",groups={"postValidation","putValidation"},message="La date d'expiration doit être supérieure à {{ compared_value }}")
      * @Groups({"visit:get-item","visit:get-all","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $dateExpiration;

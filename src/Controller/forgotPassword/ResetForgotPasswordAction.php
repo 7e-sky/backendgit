@@ -10,6 +10,7 @@ namespace App\Controller\forgotPassword;
 
 use ApiPlatform\Core\Validator\ValidatorInterface;
 use App\Entity\ResetPassword;
+use App\Exception\ErrorMessageException;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -58,7 +59,7 @@ class ResetForgotPasswordAction
         $user = $this->userRepository->findOneBy(["forgotToken"=>$data->getToken()]);
 
         if(!$user){
-            throw new Exception("Token invalide");
+            throw new ErrorMessageException("Token invalide");
         }
 
         $user->setPassword($this->passwordEncoder->encodePassword($user,$data->getPassword()));

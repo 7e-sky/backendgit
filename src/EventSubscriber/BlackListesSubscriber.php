@@ -12,6 +12,7 @@ namespace App\EventSubscriber;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Acheteur;
 use App\Entity\BlackListes;
+use App\Exception\ErrorMessageException;
 use App\Repository\BlackListesRepository;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -117,11 +118,11 @@ class BlackListesSubscriber implements EventSubscriberInterface
 
         if($entities && $method === Request::METHOD_PUT){
             if($entity->getId() !== $entities->getId()){
-                throw new Exception('Cette société déjà black listé');
+                throw new ErrorMessageException('Cette société déjà black listé');
             }
         }
         elseif($entities && $method === Request::METHOD_POST){
-                throw new Exception('Cette société déjà black listé');
+                throw new ErrorMessageException('Cette société déjà black listé');
         }
 
         if(!$entity->getEtat()){

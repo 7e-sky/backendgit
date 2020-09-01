@@ -10,6 +10,7 @@ namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Entity\Secteur;
+use App\Exception\ErrorMessageException;
 use App\Repository\AcheteurRepository;
 use App\Repository\SousSecteurRepository;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -61,7 +62,7 @@ class SecteurSubscriber implements EventSubscriberInterface
             $sousSecteurs = $this->sousSecteurRepository->findBy(['secteur'=>$entity->getId(),'del'=>false]);
 
             if($acheteurs || $sousSecteurs){
-                throw new Exception("Vous ne pouvez pas supprimer cet enregistrement, car il est en relation avec d'autre(s) objet(s) !",400);
+                throw new ErrorMessageException("Vous ne pouvez pas supprimer cet enregistrement, car il est en relation avec d'autre(s) objet(s) !");
             }
         }
 

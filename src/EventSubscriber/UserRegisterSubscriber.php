@@ -15,6 +15,7 @@ use App\Entity\Commercial;
 use App\Entity\Fournisseur;
 use App\Entity\User;
 use App\Entity\ZoneCommercial;
+use App\Exception\ErrorMessageException;
 use App\Repository\CommercialRepository;
 use App\Repository\UserRepository;
 use App\Repository\ZoneCommercialRepository;
@@ -24,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Services\ParentService;
 
 class UserRegisterSubscriber implements EventSubscriberInterface
 {
@@ -52,6 +54,10 @@ class UserRegisterSubscriber implements EventSubscriberInterface
      * @var ZoneCommercialRepository
      */
     private $zoneCommercialRepository;
+    /**
+     * @var ParentService
+     */
+    private $parentService;
 
 
     public function __construct(
@@ -60,7 +66,8 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         Mailer $mailer,
         UserRepository $userRepository,
         CommercialRepository $commercialRepository,
-        ZoneCommercialRepository $zoneCommercialRepository)
+        ZoneCommercialRepository $zoneCommercialRepository,
+        ParentService $parentService)
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->tokenGenerator = $tokenGenerator;
@@ -68,6 +75,7 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         $this->userRepository = $userRepository;
         $this->commercialRepository = $commercialRepository;
         $this->zoneCommercialRepository = $zoneCommercialRepository;
+        $this->parentService = $parentService;
     }
 
     public static function getSubscribedEvents()
@@ -101,7 +109,11 @@ class UserRegisterSubscriber implements EventSubscriberInterface
 
         //Set Role Fournisseur
         if ($user instanceof Fournisseur) {
-
+            $parent = $this->parentService->checkParentFrs($user);
+            if($parent){
+                $email = preg_replace("/(?<=.).(?=.*@)/u","*", $parent->getEmail());
+                throw new ErrorMessageException(sprintf('La société "%s" est déjà existe, un mail a été envoyé à l\'adresse "%s" pour la validation de votre compte', $parent->getSociete(),$email));
+            }
             $user->setRoles([User::ROLE_FOURNISSEUR_PRE]);
             $user->setRedirect("/register/fournisseur");
             if ($user->getSociete()) {

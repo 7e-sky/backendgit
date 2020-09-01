@@ -315,6 +315,11 @@ class DefaultController extends AbstractController
         }
 
 
+        //AMELLIORATION
+        /*SELECT id,titre_lower,description,MATCH(titre_lower,description) AGAINST('shuttle rayonnage lourd' IN BOOLEAN MODE) as score
+            FROM produit
+            WHERE MATCH(titre_lower,description) AGAINST('shuttle rayonnage' IN BOOLEAN MODE)*/
+
         $qb = $em_produit->createQueryBuilder('p')
             ->join('p.secteur', 'secteur')
             ->join('p.sousSecteurs', 'sousSecteur')
@@ -329,7 +334,7 @@ class DefaultController extends AbstractController
         $produits = $query->getResult();
 
         if ($produits) {
-            $arrayp['title'] = 'Produits';
+            $arrayp['title'] = 'Produits / Services';
             array_push($produits, ['autreProduits'=>'Afficher tout','value'=>$searchText]);
 
             $arrayp['suggestions'] = $produits;

@@ -10,8 +10,11 @@ namespace App\Services;
 
 
 use App\Email\Mailer;
+use App\Entity\Fournisseur;
+use App\Entity\FournisseurProvisoire;
 use App\Entity\User;
 use App\Repository\CommercialRepository;
+use App\Repository\FournisseurRepository;
 use App\Repository\UserRepository;
 use App\Repository\ZoneCommercialRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,22 +43,29 @@ class ParentService
      * @var Mailer
      */
     private $mailer;
+    /**
+     * @var FournisseurRepository
+     */
+    private $fournisseurRepository;
 
     public function __construct(
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         CommercialRepository $commercialRepository,
         ZoneCommercialRepository $zoneCommercialRepository,
-        Mailer $mailer)
+        Mailer $mailer,
+        FournisseurRepository $fournisseurRepository)
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->commercialRepository = $commercialRepository;
         $this->zoneCommercialRepository = $zoneCommercialRepository;
         $this->mailer = $mailer;
+        $this->fournisseurRepository = $fournisseurRepository;
     }
 
 
+    // SET PARENT POUR LES ACHETEURS / FOURNISSEUR => ZONE ou COMMERCIALE
 
     public function setParent(User $user,$profile){
 
@@ -108,4 +118,52 @@ class ParentService
 
     }
 
+    // Vérifier s'il ya déjà une societé avec le meme nom
+    public function checkParentFrs(Fournisseur $fournisseur){
+
+
+        if(!$fournisseur){
+            throw new NotFoundHttpException();
+        }
+
+
+        $societe = mb_strtolower($fournisseur->getSociete());
+        $societe = trim($societe);
+//        $email = $fournisseur->getEmail();
+
+        if(!$societe){
+            return null;
+        }
+
+        $fournisseurs = $this->fournisseurRepository->createQueryBuilder('f')
+            ->where("f.societeLower LIKE CONCAT(:societe, '%%') OR f.societeLower LIKE CONCAT( '%%',:societe)")
+            ->andWhere('f.del = 0')
+            ->andWhere('f.isactif = 1')
+            ->andWhere('f.isComplet=1')
+            ->andWhere('f.parent is null')
+            ->setParameter('societe', $societe)
+
+            ->getQuery()
+            ->getResult();
+
+        if(!$fournisseurs){
+            return null;
+        }
+
+        $frs_Provesoire = new FournisseurProvisoire();
+        $frs_Provesoire->setCivilite($fournisseur->getCivilite());
+        $frs_Provesoire->setSociete($fournisseur->getSociete());
+        $frs_Provesoire->setFirstName($fournisseur->getFirstName());
+        $frs_Provesoire->setLastName($fournisseur->getLastName());
+        $frs_Provesoire->setEmail($fournisseur->getEmail());
+        $frs_Provesoire->setPhone($fournisseur->getPhone());
+        $frs_Provesoire->setPassword($fournisseur->getPassword());
+        $frs_Provesoire->setFournisseurParent($fournisseurs[0]);
+        $this->entityManager->persist($frs_Provesoire);
+        $this->entityManager->flush();
+
+        return $fournisseurs[0];
+
+
+    }
 }
