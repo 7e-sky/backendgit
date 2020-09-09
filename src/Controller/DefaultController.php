@@ -99,6 +99,11 @@ class DefaultController extends AbstractController
                 $currency = $user->getCurrency() ? $user->getCurrency()->getName() : '';
             }
 
+            $parent = '';
+            if($user instanceof Fournisseur ){
+                $parent = $user->getParent() ?$user->getParent()->getId() : '';
+            }
+
             $dataa['token'] = $tokenupdate;
             $dataa['user'] = [
                 'id' => $user->getId(),
@@ -109,6 +114,8 @@ class DefaultController extends AbstractController
                     'email' => $user->getEmail(),
                     'redirect' => $user->getRedirect(),
                     'currency' => $currency,
+                    'parent'=>$parent,
+
                 ]
             ];
         } else {
@@ -298,7 +305,8 @@ class DefaultController extends AbstractController
             ->where('f.del=0')
             ->andWhere('f.isactif=1')
             ->andWhere('f.isComplet=1')
-            ->andWhere('f.societeLower LIKE CONCAT(:societe, \'%%\')')
+            ->andWhere('f.parent is null')
+            ->andWhere('f.societeLower LIKE CONCAT(\'%%\',:societe,\'%%\')')
             ->orderBy('f.visite', 'desc')
             ->setParameter('societe', $searchText)
             ->setMaxResults(5)

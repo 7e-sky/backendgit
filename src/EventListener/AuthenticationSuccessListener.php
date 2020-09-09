@@ -25,11 +25,14 @@ class AuthenticationSuccessListener{
 
 
         $currency = '';
-
         if($user instanceof Fournisseur || $user instanceof Acheteur){
             $currency = $user->getCurrency()?$user->getCurrency()->getName() : '';
         }
 
+        $parent = '';
+        if($user instanceof Fournisseur ){
+            $parent = $user->getParent() ?$user->getParent()->getId() : '';
+        }
 
         $data['user']=[
             'id'=>$user->getId(),
@@ -40,6 +43,7 @@ class AuthenticationSuccessListener{
                 'email'=>$user->getEmail(),
                 'redirect'=>$user->getRedirect(),
                 'currency'=>$currency,
+                'parent'=>$parent,
             ]
         ];
 

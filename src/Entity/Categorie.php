@@ -70,7 +70,10 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\CategorieRepository")
- * @ORM\Table(name="categorie",indexes={@ORM\Index(name="indexes_categorie", columns={"name"}),@ORM\Index(name="indexes_categorie2", columns={"del"})})
+ * @ORM\Table(name="categorie",
+ *     indexes={
+ *     @ORM\Index(name="indexes_categorie", columns={"name"}),
+ *     @ORM\Index(name="indexes_categorie2", columns={"del"})})
  * @UniqueEntity("name")
  */
 class Categorie

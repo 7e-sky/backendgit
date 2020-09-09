@@ -69,6 +69,11 @@ class ResetPasswordAction
             $currency = $data->getCurrency()?$data->getCurrency()->getName() : '';
         }
 
+        $parent = '';
+        if($data instanceof Fournisseur ){
+            $parent = $data->getParent() ?$data->getParent()->getId() : '';
+        }
+
         $dataa['token']=$token;
         $dataa['user']=[
             'id'=>$data->getId(),
@@ -79,6 +84,7 @@ class ResetPasswordAction
                 'email'=>$data->getEmail(),
                 'redirect'=>$data->getRedirect(),
                 'currency'=>$currency,
+                'parent'=>$parent,
 
             ]
         ];

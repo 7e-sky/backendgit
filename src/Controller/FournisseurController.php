@@ -15,6 +15,7 @@ use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
 use App\Entity\DetailVisite;
 use App\Entity\Fournisseur;
+use App\Entity\FournisseurProvisoire;
 use App\Entity\Jeton;
 use App\Entity\Personnel;
 use App\Entity\Produit;
@@ -44,6 +45,7 @@ class FournisseurController extends AbstractController
 
         $this->tokenStorage = $tokenStorage;
     }
+
     /**
      * @Route("/abonnement/founrisseur")
      */
@@ -57,12 +59,33 @@ class FournisseurController extends AbstractController
         $repoAbonnement = $this->getDoctrine()->getManager()->getRepository(Abonnement::class);
 
         if ($fournisseur instanceof Fournisseur) {
-            $abonnement = $repoAbonnement->findBy(['fournisseur'=>$fournisseur],['expired'=>'desc'],1);
+            $abonnement = $repoAbonnement->findBy(['fournisseur' => $fournisseur], ['expired' => 'desc'], 1);
             return $this->json($abonnement);
         }
 
         return null;
 
+
+    }
+
+    /**
+     * @Route("/fournisseurs-tentatives")
+     */
+    public function getCountFournisseursProvisoire()
+    {
+
+        /**
+         * @var UserInterface $fournisseur
+         */
+        $fournisseur = $this->tokenStorage->getToken()->getUser();
+        if ($fournisseur instanceof Fournisseur) {
+
+            $result = $this->getDoctrine()->getManager()->getRepository(FournisseurProvisoire::class)->count(['type' => 0, 'fournisseurParent' => $fournisseur]);
+
+            return $this->json($result);
+        }
+
+        return null;
 
     }
 
@@ -78,14 +101,93 @@ class FournisseurController extends AbstractController
 
         $qb = $em->createQueryBuilder('f')
             ->where('f.ville = :ville OR f.autreCategories IS NOT NULL')
-            ->andWhere('f.del = false')
+            ->andWhere('f.del = :false')
             ->setParameter('ville', $ville)
-            ->select('f');
-        $query = $qb->getQuery()->getResult();
-        return $this->json(count($query));
+            ->setParameter('false', false)
+            ->select('count(f.id)');
+
+        $count = $qb->getQuery()->getSingleScalarResult();
+
+        return $this->json($count);
 
 
     }
+
+
+    /**
+     * @Route("/check_activite_used")
+     */
+    public function checkIfActiviteIsUsedByCollegue(Request $request)
+    {
+
+        /**
+         * @var Fournisseur $fournisseur
+         */
+        $fournisseur = $this->tokenStorage->getToken()->getUser();
+
+        $data = $request->query->all();
+        // Activite
+        $activite = $data['activite'];
+
+        $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
+        $qb = $em->createQueryBuilder('p')
+            ->innerJoin('p.fournisseur', 'f')
+            ->where('f.id <> :current AND p.sousSecteurs = :activite and p.del = :false')
+            ->setParameter('current', $fournisseur->getId())
+            ->setParameter('false', false)
+            ->setParameter('activite', $activite);
+
+        if (is_null($fournisseur->getParent()) ) {
+            $qb->andWhere('f.parent = :parent')
+                ->setParameter('parent', $fournisseur->getId());
+        } else {
+            $qb->andWhere('f.id = :parent OR (f.parent = :parent)')
+                ->setParameter('parent', $fournisseur->getParent());
+        }
+
+        $qb->select('count(p.id)');
+        $query = $qb->getQuery()->getSingleScalarResult();
+        return $this->json(['exist'=>$query ? true : false]);
+
+
+    }
+
+    /**
+     * @Route("/free-products")
+     */
+    public function getFreeProduits()
+    {
+
+        /**
+         * @var Fournisseur $fournisseur
+         */
+        $fournisseur = $this->tokenStorage->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
+
+        $qb = $em->createQueryBuilder('p')
+            ->innerJoin('p.fournisseur', 'f')
+            ->innerJoin('p.images', 'm')
+            ->where('p.del = :del AND p.free= :free')
+            ->setParameter('del', false)
+            ->setParameter('free', true);
+
+        if ($fournisseur->getParent()) {
+            $qb->andWhere('f.id = :f1 or f.id = :f2')
+                ->setParameter('f1', $fournisseur->getId())
+                ->setParameter('f2', $fournisseur->getParent()->getId());
+        } else {
+            $qb->andWhere('f.id = :f1 or f.parent = :f1')
+                ->setParameter('f1', $fournisseur->getId());
+        }
+
+        $qb->select('count(m.id)');
+        $query = $qb->getQuery()->getSingleScalarResult();
+        return $this->json($query);
+
+
+    }
+
 
     /**
      * @Route("/messages")
@@ -98,7 +200,7 @@ class FournisseurController extends AbstractController
          */
         $fournisseur = $this->tokenStorage->getToken()->getUser();
 
-        $result = $this->getDoctrine()->getManager()->getRepository(ContactFournisseur::class)->count(['del'=>false,'statut'=>true,"fournisseur"=>$fournisseur,"isRead"=>false]);
+        $result = $this->getDoctrine()->getManager()->getRepository(ContactFournisseur::class)->count(['del' => false, 'statut' => true, "fournisseur" => $fournisseur, "isRead" => false]);
 
         return $this->json($result);
 
@@ -116,7 +218,7 @@ class FournisseurController extends AbstractController
          */
         $fournisseur = $this->tokenStorage->getToken()->getUser();
 
-        $result = $this->getDoctrine()->getManager()->getRepository(DemandeDevis::class)->count(['del'=>false,'statut'=>true,"fournisseur"=>$fournisseur,"isRead"=>false]);
+        $result = $this->getDoctrine()->getManager()->getRepository(DemandeDevis::class)->count(['del' => false, 'statut' => true, "fournisseur" => $fournisseur, "isRead" => false]);
 
 
         return $this->json($result);
@@ -160,18 +262,17 @@ class FournisseurController extends AbstractController
 
 
                 $count = 0;
-                foreach ($query as $demande){
-                    if($demande->getHistoriques()){
+                foreach ($query as $demande) {
+                    if ($demande->getHistoriques()) {
                         $trouve = false;
-                        foreach ($demande->getHistoriques() as $historique){
-                            if($historique->getFournisseur() == $fournisseur)
-                                $trouve=true;
+                        foreach ($demande->getHistoriques() as $historique) {
+                            if ($historique->getFournisseur() == $fournisseur)
+                                $trouve = true;
                         }
-                        if(!$trouve){
+                        if (!$trouve) {
                             $count++;
                         }
-                    }
-                    else{
+                    } else {
                         $count++;
                     }
                 }
@@ -328,8 +429,8 @@ class FournisseurController extends AbstractController
     }
 
     /**
-    * @Route("/fournisseur/doughnut")
-    */
+     * @Route("/fournisseur/doughnut")
+     */
     public function getDemandesBudgetsParAnnee(Request $request)
     {
 
@@ -378,14 +479,13 @@ class FournisseurController extends AbstractController
             $demande_visite = $query->getSingleScalarResult();
 
 
-
             $data = [
                 'labels' => ['En cours', 'Gagnée', 'Perdue'],
                 'datasets' => [
                     [
                         'data' => [$demande_cours, $demande_gagner, $demande_visite],
                         'backgroundColor' => [
-                            '#f57c00' ,
+                            '#f57c00',
                             '#388e3c',
                             '#f44336'
                         ],
@@ -408,11 +508,13 @@ class FournisseurController extends AbstractController
 
     }
 
-    function random_color_part() {
-        return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+    function random_color_part()
+    {
+        return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
     }
 
-    function random_color() {
+    function random_color()
+    {
         return $this->random_color_part() . $this->random_color_part() . $this->random_color_part();
     }
 
@@ -427,21 +529,21 @@ class FournisseurController extends AbstractController
 
             $user = $this->tokenStorage->getToken()->getUser();
             $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
-            $products = $em->findBy(['fournisseur'=>$user,"del"=>0,"isValid"=>1]);
+            $products = $em->findBy(['fournisseur' => $user, "del" => 0, "isValid" => 1]);
 
             $em2 = $this->getDoctrine()->getManager()->getRepository(DemandeDevis::class);
 
-            $dataDevis=[];
-            $labels=[];
-            $colors=[];
+            $dataDevis = [];
+            $labels = [];
+            $colors = [];
             $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
-            foreach ($products as $produit){
-                $count = $em2->count(['produit'=>$produit]);
-                if($count){
-                    array_push($dataDevis,$count);
-                    array_push($labels,$produit->getReference());
-                    $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)];
-                    array_push($colors,$color);
+            foreach ($products as $produit) {
+                $count = $em2->count(['produit' => $produit]);
+                if ($count) {
+                    array_push($dataDevis, $count);
+                    array_push($labels, $produit->getReference());
+                    $color = '#' . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)];
+                    array_push($colors, $color);
                 }
 
 
@@ -476,7 +578,7 @@ class FournisseurController extends AbstractController
 
         if ($this->tokenStorage->getToken() instanceof TokenInterface) {
 
-            $data= $request->query->all();
+            $data = $request->query->all();
 
             // Year
             $year = $data['year'];
@@ -498,12 +600,11 @@ class FournisseurController extends AbstractController
             $budget = $query->getSingleScalarResult();
 
 
-
-            $data = $budget?$budget:0;
+            $data = $budget ? $budget : 0;
 
 
         } else {
-            $data =0;
+            $data = 0;
         }
 
         return $this->json($data);
@@ -518,7 +619,7 @@ class FournisseurController extends AbstractController
 
         if ($this->tokenStorage->getToken() instanceof TokenInterface) {
 
-            $data= $request->query->all();
+            $data = $request->query->all();
 
             // Year
             $year = $data['year'];
@@ -528,27 +629,25 @@ class FournisseurController extends AbstractController
             $em = $this->getDoctrine()->getManager()->getRepository(DetailVisite::class);
 
             //Main widget
-            $widget8=[];
+            $widget8 = [];
 
             //Gagner array init
-            $gagner=[];
-            $gagner['title']="Demandes gagnées";
+            $gagner = [];
+            $gagner['title'] = "Demandes gagnées";
 
             //Perdue array init
-            $perdue=[];
-            $perdue['title']="Demandes perdues";
+            $perdue = [];
+            $perdue['title'] = "Demandes perdues";
 
-            $data_gagner=[];
-            $data_perdue=[];
-
-
-
-            $sommeGagnerBudger= 0;
-            $sommePerdueBudger= 0;
+            $data_gagner = [];
+            $data_perdue = [];
 
 
+            $sommeGagnerBudger = 0;
+            $sommePerdueBudger = 0;
 
-            for ($i=1;$i<=12;$i++){
+
+            for ($i = 1; $i <= 12; $i++) {
 
 
                 $qb = $em->createQueryBuilder('d')
@@ -564,9 +663,9 @@ class FournisseurController extends AbstractController
                 $query = $qb->getQuery();
 
                 $budget = $query->getSingleScalarResult();
-                $budget = $budget?$budget:0;
+                $budget = $budget ? $budget : 0;
                 $sommeGagnerBudger += $budget;
-                array_push($data_gagner,$budget);
+                array_push($data_gagner, $budget);
 
 
                 $qb = $em->createQueryBuilder('d')
@@ -582,35 +681,35 @@ class FournisseurController extends AbstractController
                 $query = $qb->getQuery();
 
                 $budget = $query->getSingleScalarResult();
-                $budget = $budget?$budget:0;
+                $budget = $budget ? $budget : 0;
                 $sommePerdueBudger += $budget;
-                array_push($data_perdue,$budget);
+                array_push($data_perdue, $budget);
 
             }
 
-            $datasets['fill']=true;
-            $datasets['backgroundColor']='#42BFF7';
-            $datasets['pointRadius']=0;
-            $datasets['pointHitRadius']=20;
-            $datasets['borderWidth']=20;
+            $datasets['fill'] = true;
+            $datasets['backgroundColor'] = '#42BFF7';
+            $datasets['pointRadius'] = 0;
+            $datasets['pointHitRadius'] = 20;
+            $datasets['borderWidth'] = 20;
 
             $gagner['somme'] = $sommeGagnerBudger;
-            $datasets['data']=$data_gagner;
+            $datasets['data'] = $data_gagner;
             $gagner['datasets'] = [$datasets];
 
             $perdue['somme'] = $sommePerdueBudger;
-            $datasets['data']=$data_perdue;
+            $datasets['data'] = $data_perdue;
             $perdue['datasets'] = [$datasets];
 
-            $widget8['gagner']=$gagner;
-            $widget8['perdue']=$perdue;
-            $widget8['total']=$sommeGagnerBudger+$sommePerdueBudger;
+            $widget8['gagner'] = $gagner;
+            $widget8['perdue'] = $perdue;
+            $widget8['total'] = $sommeGagnerBudger + $sommePerdueBudger;
 
             $data = $widget8;
 
 
         } else {
-            $data =0;
+            $data = 0;
         }
 
         return $this->json($data);
@@ -626,22 +725,22 @@ class FournisseurController extends AbstractController
 
         if ($this->tokenStorage->getToken() instanceof TokenInterface) {
 
-            $data= $request->query->all();
+            $data = $request->query->all();
 
             // Year
             $year = $data['year'];
 
             $user = $this->tokenStorage->getToken()->getUser();
             $personnels = $this->getDoctrine()->getManager()->getRepository(Personnel::class)
-                            ->findBy(['fournisseur'=>$user,'del'=>0]);
+                ->findBy(['fournisseur' => $user, 'del' => 0]);
             $em = $this->getDoctrine()->getManager()->getRepository(DetailVisite::class);
 
 
-            $data =[];
-            $personnelDatas=[];
-            foreach ($personnels as $personnel){
+            $data = [];
+            $personnelDatas = [];
+            foreach ($personnels as $personnel) {
 
-                $personnelDatas['personnel']=$personnel;
+                $personnelDatas['personnel'] = $personnel;
                 //Get count & sum demande affecté
                 $qb = $em->createQueryBuilder('d')
                     ->where('d.fournisseur = :fournisseur')
@@ -653,7 +752,7 @@ class FournisseurController extends AbstractController
                     ->select('count(d.id) as count,sum(d.budget) as budget');
                 $query = $qb->getQuery();
                 $result = $query->getOneOrNullResult();
-                $personnelDatas['demandeAffecte']=$result;
+                $personnelDatas['demandeAffecte'] = $result;
 
                 //Get count & sum demande gagner
                 $qb = $em->createQueryBuilder('d')
@@ -668,7 +767,7 @@ class FournisseurController extends AbstractController
                     ->select('count(d.id) as count,sum(d.budget) as budget');
                 $query = $qb->getQuery();
                 $result = $query->getOneOrNullResult();
-                $personnelDatas['demandeGagner']=$result;
+                $personnelDatas['demandeGagner'] = $result;
 
 
                 //Get count & sum demande perdue
@@ -684,12 +783,12 @@ class FournisseurController extends AbstractController
                     ->select('count(d.id) as count,sum(d.budget) as budget');
                 $query = $qb->getQuery();
                 $result = $query->getOneOrNullResult();
-                $personnelDatas['demandePerdue']=$result;
+                $personnelDatas['demandePerdue'] = $result;
 
-                $budget_gagner_par_mois= [];
-                $potentiel_par_mois= [];
+                $budget_gagner_par_mois = [];
+                $potentiel_par_mois = [];
 
-                for ($i=1;$i<=12;$i++){
+                for ($i = 1; $i <= 12; $i++) {
 
                     //Budget Gagnée
                     $qb = $em->createQueryBuilder('d')
@@ -706,8 +805,8 @@ class FournisseurController extends AbstractController
                         ->select('sum(d.budget)');
                     $query = $qb->getQuery();
                     $result = $query->getSingleScalarResult();
-                    $result = $result?$result:0;
-                    array_push($budget_gagner_par_mois,$result);
+                    $result = $result ? $result : 0;
+                    array_push($budget_gagner_par_mois, $result);
 
                     //Potentiel
                     $qb = $em->createQueryBuilder('d')
@@ -722,26 +821,25 @@ class FournisseurController extends AbstractController
                         ->select('sum(d.budget)');
                     $query = $qb->getQuery();
                     $result = $query->getSingleScalarResult();
-                    $result = $result?$result:0;
+                    $result = $result ? $result : 0;
 
-                    array_push($potentiel_par_mois,$result);
+                    array_push($potentiel_par_mois, $result);
                 }
-                $personnelDatas['gagnerParMois']=$budget_gagner_par_mois;
-                $personnelDatas['potentielParMois']=$potentiel_par_mois;
+                $personnelDatas['gagnerParMois'] = $budget_gagner_par_mois;
+                $personnelDatas['potentielParMois'] = $potentiel_par_mois;
 
-                array_push($data,$personnelDatas);
+                array_push($data, $personnelDatas);
 
             }
 
 
         } else {
-            $data =[];
+            $data = [];
         }
 
         return $this->json($data);
 
     }
-
 
 
 }

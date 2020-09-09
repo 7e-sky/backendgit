@@ -17,19 +17,22 @@ use App\Entity\DemandeDevis;
 use App\Entity\DemandeJeton;
 use App\Entity\DiffusionDemande;
 use App\Entity\Fournisseur;
+use App\Entity\FournisseurProvisoire;
 use App\Entity\Personnel;
 use App\Entity\Produit;
 use App\Entity\User;
 use App\Repository\BlackListesRepository;
 use App\Repository\FournisseurRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class Mailer
 {
 
 
-    private  $AdminMailer;
-    private  $AdherentMailer;
+    private $AdminMailer;
+    private $AdherentMailer;
+    private $NoReplyMailer;
     private $twig;
 
     /**
@@ -49,16 +52,22 @@ class Mailer
     private $admin_email = 'administrateur@lesachatsindustriels.com';
     private $adherent_email = 'adherent@lesachatsindustriels.com';
     private $achats_email = 'achats@lesachatsindustriels.com';
-
+    private $no_reply_email = 'no-reply@lesachatsindustriels.com';
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
 
     public function __construct(
         $AdherentMailer,
         $AdminMailer,
+        $NoReplyMailer,
         $twig,
         FournisseurRepository $fournisseurRepository,
         BlackListesRepository $blackListesRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        LoggerInterface $logger
 
     )
     {
@@ -68,6 +77,8 @@ class Mailer
         $this->blackListesRepository = $blackListesRepository;
         $this->AdherentMailer = $AdherentMailer;
         $this->AdminMailer = $AdminMailer;
+        $this->logger = $logger;
+        $this->NoReplyMailer = $NoReplyMailer;
     }
 
     //======================================================================
@@ -82,7 +93,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Inscription ' . $profile . ' sur lesachatsindustriels.com'))
-            ->setFrom($this->adherent_email,'Les Achats Industriels')
+            ->setFrom($this->adherent_email, 'Les Achats Industriels')
             ->setTo($this->admin_email)
             ->setBody($body, 'text/html');
 
@@ -103,7 +114,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Inscription ' . $profile . ' sur lesachatsindustriels.com'))
-            ->setFrom($this->adherent_email,'Les Achats Industriels')
+            ->setFrom($this->adherent_email, 'Les Achats Industriels')
             ->setTo($parent->getEmail())
             ->setCc($cc)
             ->setBody($body, 'text/html');
@@ -121,7 +132,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Inscription ' . $profile . ' sur lesachatsindustriels.com'))
-            ->setFrom($this->adherent_email,'Les Achats Industriels')
+            ->setFrom($this->adherent_email, 'Les Achats Industriels')
             ->setTo($this->admin_email)
             ->setBody($body, 'text/html');
 
@@ -142,7 +153,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Réinitialiser votre mot de passe'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
@@ -162,15 +173,14 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Vérifiez votre adresse email'))
-            ->setFrom($this->adherent_email,'Les Achats Industriels')
+            ->setFrom($this->adherent_email, 'Les Achats Industriels')
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
         try {
             $result = $this->AdherentMailer->send($message);
-        }
-        catch (\Swift_TransportException $e) {
-            echo $e->getMessage();
+        } catch (\Swift_TransportException $e) {
+            //echo $e->getMessage();
         }
 
 
@@ -184,7 +194,7 @@ class Mailer
         );
         //send e-mail
         $message = (new \Swift_Message('Bienvenue sur lesachatsindustriels.com'))
-            ->setFrom($this->adherent_email,'Les Achats Industriels')
+            ->setFrom($this->adherent_email, 'Les Achats Industriels')
             ->setTo($user->getEmail())
             ->setBody($body, 'text/html');
 
@@ -192,6 +202,66 @@ class Mailer
 
     }
 
+    //======================================================================
+    // FOURNISSEUR => "CHILD" TENTE DE S'INSCRIRE AVEC LE NOM DE VOTRE SOCIETE
+    //======================================================================
+    public function childTryRegister(FournisseurProvisoire $user)
+    {
+        $body = $this->twig->render(
+            'email/alertFrsNewChild.html.twig', ['user' => $user, 'fournisseur' => $user->getFournisseurParent()]
+        );
+        //send e-mail
+        $message = (new \Swift_Message('Tentatives d\'inscription avec le nom de votre société [' . $user->getSociete() . ']'))
+            ->setFrom($this->no_reply_email, 'Les Achats Industriels')
+            ->setcc($this->admin_email)
+            ->setTo($user->getFournisseurParent()->getEmail())
+            ->setBody($body, 'text/html');
+
+         $this->NoReplyMailer->send($message);
+
+        //$this->logger->info("*****************here i am 2******************");
+
+    }
+
+    //======================================================================
+    // FOURNISSEUR => "CHILD" NOUVELLE AGENCE / SERVICE
+    //======================================================================
+    public function nouvelleAgenceService(FournisseurProvisoire $user)
+    {
+
+        $body = $this->twig->render(
+            'email/nouvelleAgenceService.html.twig', ['user' => $user]
+        );
+        //send e-mail
+        $message = (new \Swift_Message('Validation d\'inscription sur lesachatsindustriels.com'))
+            ->setFrom($this->adherent_email, 'Les Achats Industriels')
+            ->setTo($user->getEmail())
+            ->setCc($user->getFournisseurParent()->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->AdherentMailer->send($message);
+
+    }
+
+    //======================================================================
+    // FOURNISSEUR => "CHILD" nouveau fournisseur
+    //======================================================================
+    public function nouveauFournisseur(FournisseurProvisoire $user)
+    {
+
+        $body = $this->twig->render(
+            'email/nouveauFournisseurChild.html.twig', ['user' => $user]
+        );
+        //send e-mail
+        $message = (new \Swift_Message('Validation d\'inscription sur lesachatsindustriels.com'))
+            ->setFrom($this->adherent_email, 'Les Achats Industriels')
+            ->setTo($user->getEmail())
+            ->setCc($user->getFournisseurParent()->getEmail())
+            ->setBody($body, 'text/html');
+
+        $this->AdherentMailer->send($message);
+
+    }
 
     //======================================================================
     // DEMANDE JETON => Alerter l'admin ( Nouvelle demande )
@@ -204,7 +274,7 @@ class Mailer
         );
         //send e-mail
         $message = (new \Swift_Message('Commande Jetons'))
-            ->setFrom($this->adherent_email,'Les Achats Industriels')
+            ->setFrom($this->adherent_email, 'Les Achats Industriels')
             ->setTo($this->admin_email)
             ->setBody($body, 'text/html');
 
@@ -223,7 +293,7 @@ class Mailer
         );
         //send e-mail
         $message = (new \Swift_Message('Demande en attente de validation'))
-            ->setFrom($this->adherent_email,'Les Achats Industriels')
+            ->setFrom($this->adherent_email, 'Les Achats Industriels')
             ->setTo($this->admin_email)
             ->setBody($body, 'text/html');
 
@@ -241,7 +311,7 @@ class Mailer
         );
         //send e-mail
         $message = (new \Swift_Message('Votre demande est validée | Les Achats Industriels'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($demande->getAcheteur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -260,7 +330,7 @@ class Mailer
         );
         //send e-mail
         $message = (new \Swift_Message('Votre demande est refusée | Les Achats Industriels'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($demande->getAcheteur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -281,8 +351,8 @@ class Mailer
         );
 
         //send e-mail
-        $message = (new \Swift_Message('🏆 Félicitation ! vous êtes l\'heureux gagnant de la demande Réf. [ RFQ-'.$demande->getReference().' ]'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+        $message = (new \Swift_Message('🏆 Félicitation ! vous êtes l\'heureux gagnant de la demande Réf. [ RFQ-' . $demande->getReference() . ' ]'))
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($demande->getFournisseurGagne()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -290,16 +360,16 @@ class Mailer
 
     }
 
-    public function alerterFrsPerdue(DemandeAchat $demande,Fournisseur $fournisseur)
+    public function alerterFrsPerdue(DemandeAchat $demande, Fournisseur $fournisseur)
     {
 
         $body = $this->twig->render(
-            'email/alerterFrsPerdue.html.twig', ['fournisseur' => $fournisseur,'demande' => $demande]
+            'email/alerterFrsPerdue.html.twig', ['fournisseur' => $fournisseur, 'demande' => $demande]
         );
 
         //send e-mail
-        $message = (new \Swift_Message('Vous avez raté l\'occasion de la demande d\'achat Réf. [ RFQ-'.$demande->getReference().' ]'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+        $message = (new \Swift_Message('Vous avez raté l\'occasion de la demande d\'achat Réf. [ RFQ-' . $demande->getReference() . ' ]'))
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($fournisseur->getEmail())
             ->setBody($body, 'text/html');
 
@@ -354,7 +424,7 @@ class Mailer
             }
             if (!$trouve) {
                 $message = (new \Swift_Message('Demande de devis'))
-                    ->setFrom($this->admin_email,'Les Achats Industriels')
+                    ->setFrom($this->admin_email, 'Les Achats Industriels')
                     ->setTo($fournisseur->getEmail())
                     ->setBody($body, 'text/html');
 
@@ -374,7 +444,7 @@ class Mailer
         }
 
         $message = (new \Swift_Message('Demande de devis'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($this->achats_email)
             ->setBody($body, 'text/html');
 
@@ -389,9 +459,8 @@ class Mailer
 
     }
 
-    public function alerterFournisseursUpdateExpiration(DemandeAchat $demande,$interval,$etat =1/*1 = Pronlongé , 2 = Ecourté*/,$dateExpiration,$oldDate)
+    public function alerterFournisseursUpdateExpiration(DemandeAchat $demande, $interval, $etat = 1/*1 = Pronlongé , 2 = Ecourté*/, $dateExpiration, $oldDate)
     {
-
 
 
         $ids_sous_secteurs = [];
@@ -427,11 +496,11 @@ class Mailer
 
             if (!$trouve) {
                 $body = $this->twig->render(
-                    'email/UpdateExpirationRfs.html.twig', ['oldDate'=>$oldDate,'fournisseur' => $fournisseur,'demande' => $demande,"interval"=>$interval,"etat"=>$etat,"dateExpiration"=>$dateExpiration]
+                    'email/UpdateExpirationRfs.html.twig', ['oldDate' => $oldDate, 'fournisseur' => $fournisseur, 'demande' => $demande, "interval" => $interval, "etat" => $etat, "dateExpiration" => $dateExpiration]
                 );
 
-                $message = (new \Swift_Message("Demande de devis Ref.".$demande->getReference()))
-                    ->setFrom($this->admin_email,'Les Achats Industriels')
+                $message = (new \Swift_Message("Demande de devis Ref." . $demande->getReference()))
+                    ->setFrom($this->admin_email, 'Les Achats Industriels')
                     ->setTo($fournisseur->getEmail())
                     ->setBody($body, 'text/html');
 
@@ -470,7 +539,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Affectation Email'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($personnel->getEmail())
             ->setCc($fournisseur->getEmail())
             ->setBody($body, 'text/html');
@@ -499,7 +568,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Demande d\'information | Les Achats Industriels'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($message->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -522,7 +591,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Demande de devis | Les Achats Industriels'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($demandeDevis->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -540,7 +609,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Validation du produit Réf. ' . $produit->getReference()))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($produit->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -564,7 +633,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Activation de l\'abonnement  ' . $abonnement->getOffre()->getName()))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($abonnement->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -582,7 +651,7 @@ class Mailer
         );
 
         $message = (new \Swift_Message('Commande Réf. ' . $demande->getReference()))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($demande->getFournisseur()->getEmail())
             ->setBody($body, 'text/html');
 
@@ -602,7 +671,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($demandeAbonnement->getCommercial()->getEmail())
             ->setCc([$demandeAbonnement->getZone()->getEmail(), $this->admin_email])
             ->setBody($body, 'text/html');
@@ -623,7 +692,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($demandeAbonnement->getZone()->getEmail())
             ->setCc($this->admin_email)
             ->setBody($body, 'text/html');
@@ -643,7 +712,7 @@ class Mailer
 
         //send e-mail
         $message = (new \Swift_Message('Commande offre d\'abonnement par fournisseur'))
-            ->setFrom($this->admin_email,'Les Achats Industriels')
+            ->setFrom($this->admin_email, 'Les Achats Industriels')
             ->setTo($this->admin_email)
             ->setBody($body, 'text/html');
 

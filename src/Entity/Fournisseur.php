@@ -18,6 +18,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 
 /**
  * @ApiResource(
@@ -59,7 +60,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     SearchFilter::class,
  *     properties={
  *     "societe": "partial",
- *     "societeLower": "start",
+ *     "societeLower": "partial",
  *     "categories.slug": "exact",
  *     "step": "exact",
  *     "pays.slug": "exact",
@@ -71,7 +72,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     "email": "partial",
  *     "firstName": "partial",
  *     "lastName": "partial"
- *      }
+ *      },
  * )
  * @ApiFilter(
  *     PropertyFilter::class,
@@ -81,6 +82,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     "whitelist": {"id","societe","categories","firstName","lastName","slug","pays","avatar"},
  *      }
  * )
+ * @ApiFilter(ExistsFilter::class, properties={"parent"})
  * @ApiFilter(OrderFilter::class, properties={"id","visite","created","isactif","societe"})
  * @ORM\Table(name="fournisseur",
  *     indexes={
@@ -216,6 +218,12 @@ class Fournisseur extends User
     private $commandes;
 
     /**
+     * @ORM\OneToMany(targetEntity="FournisseurProvisoire", mappedBy="fournisseurParent")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $childs;
+
+    /**
      * @ORM\OneToMany(targetEntity="Jeton", mappedBy="fournisseur")
      * @ApiSubresource(maxDepth=1)
      */
@@ -283,8 +291,14 @@ class Fournisseur extends User
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
      * @ORM\JoinColumn(name="parent", referencedColumnName="id" , nullable=true)
+     * @Groups({"produit:get-item"})
      */
     private $parent;
+
+    public function __clone()
+    {
+        $this->id = null;
+    }
 
     public function __construct()
     {
@@ -293,6 +307,7 @@ class Fournisseur extends User
         $this->personnels = new ArrayCollection();
         $this->commandes = new ArrayCollection();
         $this->demandes = new ArrayCollection();
+        $this->childs = new ArrayCollection();
         $this->demandeAbonnement = new ArrayCollection();
         $this->abonnements = new ArrayCollection();
         $this->isComplet = false;
@@ -632,11 +647,21 @@ class Fournisseur extends User
         $this->parent = $parent;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getChilds()
+    {
+        return $this->childs;
+    }
 
-
-
-
-
+    /**
+     * @param mixed $childs
+     */
+    public function setChilds($childs): void
+    {
+        $this->childs = $childs;
+    }
 
 
 }

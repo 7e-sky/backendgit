@@ -7,3 +7,5 @@ swiftmailer:
         mailer_admin:
             url: '%env(MAILER_URL_ADMIN)%'
             spool: { type: 'memory' }
+        mailer_no_reply:
+            url: '%env(MAILER_URL_NO_REPLY)%'

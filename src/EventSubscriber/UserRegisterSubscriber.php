@@ -9,6 +9,7 @@
 namespace App\EventSubscriber;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
+use ApiPlatform\Core\Validator\Exception\ValidationException;
 use App\Email\Mailer;
 use App\Entity\Acheteur;
 use App\Entity\Commercial;
@@ -23,6 +24,7 @@ use App\Security\TokenGenerator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Services\ParentService;
@@ -105,14 +107,12 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         );
 
 
-
-
         //Set Role Fournisseur
         if ($user instanceof Fournisseur) {
             $parent = $this->parentService->checkParentFrs($user);
             if($parent){
                 $email = preg_replace("/(?<=.).(?=.*@)/u","*", $parent->getEmail());
-                throw new ErrorMessageException(sprintf('La société "%s" est déjà existe, un mail a été envoyé à l\'adresse "%s" pour la validation de votre compte', $parent->getSociete(),$email));
+                throw new ErrorMessageException(sprintf('La société "%s" existe déjà, un mail a été envoyé à l\'adresse "%s" pour la validation de votre compte.', $parent->getSociete(),$email));
             }
             $user->setRoles([User::ROLE_FOURNISSEUR_PRE]);
             $user->setRedirect("/register/fournisseur");
@@ -138,7 +138,6 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         } elseif ($user instanceof ZoneCommercial) {
             $user->setRoles([User::ROLE_ZONE]);
             $user->setRedirect("/dashboard");
-
             $user->setIsActif(true);
         } elseif ($user instanceof Commercial) {
 

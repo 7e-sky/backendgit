@@ -158,10 +158,13 @@ class ParentService
         $frs_Provesoire->setEmail($fournisseur->getEmail());
         $frs_Provesoire->setPhone($fournisseur->getPhone());
         $frs_Provesoire->setPassword($fournisseur->getPassword());
+        $frs_Provesoire->setCreated(new \DateTime());
+        $frs_Provesoire->setType(0);
         $frs_Provesoire->setFournisseurParent($fournisseurs[0]);
         $this->entityManager->persist($frs_Provesoire);
         $this->entityManager->flush();
 
+       $this->mailer->childTryRegister($frs_Provesoire);
         return $fournisseurs[0];
 
 

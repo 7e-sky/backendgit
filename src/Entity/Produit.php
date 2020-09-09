@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Interfaces\CreatedEntityInterface;
 use App\Interfaces\SetFournisseurInterface;
+use App\Filter\OrSearchFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -43,14 +44,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *
  *      }
  * )
- * @ApiFilter(BooleanFilter::class, properties={"isValid","free"})
+ * @ApiFilter(BooleanFilter::class, properties={"isValid","free","del"})
  * @ApiFilter(OrderFilter::class, properties={"reference","description","created","pu","isValid","sousSecteurs.name"})
  * @ApiFilter(
  *     PropertyFilter::class,
  *     arguments={
  *     "parameterName": "props",
  *     "overrideDefaultProperties": false,
- *     "whitelist": {"id","slug","categorie","sousSecteurs","secteur","fournisseur","reference","titre","description","pu","currency","featuredImageId","images"},
+ *     "whitelist": {"id","del","slug","categorie","sousSecteurs","secteur","fournisseur","reference","titre","description","pu","currency","featuredImageId","images"},
  *      }
  * )
  * @ApiResource(
@@ -79,7 +80,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *          }
  *     },
  *
- *     attributes={"pagination_items_per_page"=10,"pagination_client_items_per_page"=true,"maximum_items_per_page"=100},
+ *     attributes={
+ *     "pagination_items_per_page"=10,
+ *     "pagination_client_items_per_page"=true,
+ *     "maximum_items_per_page"=100
+ *     },
  *     subresourceOperations={
  *          "api_fournisseurs_produits_get_subresource"={
  *              "method"="GET",
@@ -150,6 +155,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
      * @Groups({"selectProduit:get-all","produit:get-item","produit:get-all"})
+     * @ApiFilter(OrSearchFilter::class, properties={"fournisseur.parent": "exact"})
      */
     private $fournisseur;
 
@@ -225,7 +231,6 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
      * @Groups({"selectProduit:get-all","produit:get-from-fournisseur","produit:get-all","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $featuredImageId;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="Pays")

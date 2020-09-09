@@ -249,7 +249,7 @@
                                                style="width: 100% !important; min-width: 88%; max-width: 88%;">
                                             <tr>
                                                 <td><strong>Référence</strong></td>
-                                                <td> : <a href="https://lesachatsindustriels.com/detail-produit/{{ produit.sousSecteurs.slug }}/{{ produit.categorie.slug }}/{{ produit.id }}-{{ produit.slug }}">{{ produit.reference }}</a> </td>
+                                                <td> : <a href="{{ url_site~'detail-produit/'~produit.sousSecteurs.slug~'/'~produit.categorie.slug~'/'~produit.id~'-'~ produit.slug}}">{{ produit.reference }}</a> </td>
                                             </tr>
                                             <tr>
                                                 <td><strong>Titre</strong></td>
@@ -281,12 +281,8 @@
                                            style="border-collapse:separate;line-height:100%;">
                                         <tr>
                                             <td align="center" role="presentation" valign="middle">
-                                                {#<a href="https://7e-sky.com/login"#}
-                                                   {#style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;#}
-														{#line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">#}
-                                                    {#Connectez-vous à votre compte#}
-                                                {#</a>#}
-                                                <a href="https://lesachatsindustriels.com/detail-produit/{{ produit.sousSecteurs.slug }}/{{ produit.categorie.slug }}/{{ produit.id }}-{{ produit.slug }}"
+
+                                                <a href="{{ url_site~'detail-produit/'~produit.sousSecteurs.slug~'/'~produit.categorie.slug~'/'~produit.id~'-'~ produit.slug}}"
                                                    style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;
 														line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">
                                                    Consulter votre produit

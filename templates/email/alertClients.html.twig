@@ -19,7 +19,7 @@
                           <br>
                           <br>
                          <div style="text-align: center">
-                              <a href="https://www.lesachatsindustriels.com/demandes_prix/{{ demande.id }}"
+                              <a href="{{ url_site~'demandes_prix/'~demande.id }}"
                                  style="color: #f48d35; font-size: 32px; line-height: 45px; font-weight: 300;text-transform: uppercase">www.lesachatsindustriels.com</a>
                          </div>
                         <br>
@@ -30,7 +30,7 @@
                                 style="width: 100% !important; min-width: 88%; max-width: 88%;">
                             <tr>
                                 <td><strong>Référence</strong></td>
-                                <td> : <a href="https://lesachatsindustriels.com/demandes_prix/{{ demande.id }}">{{ demande.reference }}</a> </td>
+                                <td> : <a href="{{ url_site~'demandes_prix/'~demande.id }}">{{ demande.reference }}</a> </td>
                             </tr>
                              <tr>
                                 <td><strong>Désignation</strong></td>

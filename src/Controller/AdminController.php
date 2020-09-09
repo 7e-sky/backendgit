@@ -14,7 +14,10 @@ use App\Entity\DemandeAbonnement;
 use App\Entity\DemandeAchat;
 use App\Entity\DemandeDevis;
 use App\Entity\DemandeJeton;
+use App\Entity\Fournisseur;
+use App\Entity\FournisseurProvisoire;
 use App\Entity\Produit;
+use App\Entity\Ville;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -107,6 +110,7 @@ class AdminController extends AbstractController
 
     }
 
+
     /**
      * @Route("/demandes-devis")
      */
@@ -115,6 +119,42 @@ class AdminController extends AbstractController
 
         $result = $this->getDoctrine()->getManager()->getRepository(DemandeDevis::class)->count(['del' => false, 'statut' => false, "isRead" => false]);
         return $this->json($result);
+    }
+
+    /**
+     * @Route("/fournisseurs-provisoire")
+     */
+    public function getCountFournisseursProvisoire()
+    {
+
+        $result = $this->getDoctrine()->getManager()->getRepository(FournisseurProvisoire::class)->count([ 'type' => 0]);
+        return $this->json($result);
+
+    }
+
+    /**
+     * @Route("/fournisseurs-collaps")
+     */
+    public function getCountFrsCollapse()
+    {
+
+        $result = $this->getDoctrine()->getManager()->getRepository(FournisseurProvisoire::class)->count([ 'type' => 0]);
+
+        $em = $this->getDoctrine()->getManager()->getRepository(Fournisseur::class);
+        $ville = $this->getDoctrine()->getManager()->getRepository(Ville::class)->find(113);
+
+        $qb = $em->createQueryBuilder('f')
+            ->where('f.ville = :ville OR f.autreCategories IS NOT NULL')
+            ->andWhere('f.del = :false')
+            ->setParameter('ville', $ville)
+            ->setParameter('false', false)
+            ->select('count(f.id)');
+
+        $count = $qb->getQuery()->getSingleScalarResult();
+
+        return $this->json($result+$count);
+
+
     }
 
     /**

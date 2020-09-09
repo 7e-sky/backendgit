@@ -13,6 +13,7 @@ services:
         bind:
             $AdminMailer: '@swiftmailer.mailer.mailer_admin'
             $AdherentMailer: '@swiftmailer.mailer.mailer_adherent'
+            $NoReplyMailer: '@swiftmailer.mailer.mailer_no_reply'
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -36,30 +37,42 @@ services:
         arguments: ['@security.token_storage']
         tags:
             - { name: 'serializer.normalizer', priority: 64 }
+
     acme_api.event.authentication_success_listener:
             class: App\EventListener\AuthenticationSuccessListener
             tags:
                 - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
     App\Services\UserService:
          class: App\Services\UserService
          arguments: ['@security.token_storage']
+
     App\Doctrine\WithoutDelExtension:
             tags:
                 - { name: api_platform.doctrine.orm.query_extension.collection }
                 - { name: api_platform.doctrine.orm.query_extension.item }
+
     demandeachat_listner:
             class: App\EventListener\DemandeAchatChangedNotifier
             tags:
                 - { name: doctrine.orm.entity_listener, lazy: true }
+
     App\DataProvider\DemandeAchatCollectionDataProvider:
             tags: [{ name: 'api_platform.collection_data_provider' }]
             arguments:
               $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
             autoconfigure: false
+
     App\DataProvider\DemandeAchatItemDataProvider: ~
 
     App\Email\Mailer:
             class: App\Email\Mailer
             arguments:
                 $twig: '@twig'
+
+    App\Filter\OrSearchFilter:
+            autowire: false
+            autoconfigure: false
+            tags:  [ 'api_platform.filter' ]
+            arguments: [ '@doctrine', ~, '@?logger' ]
 

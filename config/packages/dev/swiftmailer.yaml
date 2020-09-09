@@ -4,3 +4,5 @@ swiftmailer:
             delivery_addresses: ['it.3findustrie@gmail.com']
         mailer_admin:
             delivery_addresses: ['it.3findustrie@gmail.com']
+        mailer_no_reply:
+            delivery_addresses: ['it.3findustrie@gmail.com']

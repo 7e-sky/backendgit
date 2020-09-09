@@ -209,17 +209,8 @@
                                     <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                                         <tr>
                                             <td align="center"  role="presentation"  valign="middle">
-                                                <!--a href="https://unruffled-bardeen-bfc2cc.netlify.com/register/confirm/{{ user.getConfirmationToken()}}"
-                                                       style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;
-														line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">
-                                                    Confirmer votre email
-                                                </a-->
-                                                <!--a href="https://7e-sky.com/register/confirm/{{ user.getConfirmationToken()}}"
-                                                   style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;
-														line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">
-                                                    Confirmer votre email
-                                                </a-->
-                                                <a href="https://lesachatsindustriels.com/register/confirm/{{ user.getConfirmationToken()}}"
+
+                                                <a href="{{ url_site~'register/confirm/'~user.getConfirmationToken() }}"
                                                    style="background:#387ca3;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;
 														line-height:120%;border-radius:3px;Margin:0;text-decoration:none;text-transform:none;padding:15px 35px;">
                                                     Confirmez votre email
@@ -245,10 +236,7 @@
                                 <td align="center" style="font-size:0px;padding:10px 25px;padding-bottom:40px;word-break:break-word;">
 
                                     <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:16px;line-height:22px;text-align:center;color:#555;">
-                                        <!--a href="https://unruffled-bardeen-bfc2cc.netlify.com/register/confirm/{{ user.getConfirmationToken()}}" style="color:#387ca3">https://unruffled-bardeen-bfc2cc.netlify.com/register/confirm/{{ user.getConfirmationToken()}}</a-->
-                                        {#<a href="https://7e-sky.com/register/confirm/{{ user.getConfirmationToken()}}" style="color:#387ca3">https://7e-sky.com/register/confirm/{{ user.getConfirmationToken()}}</a>#}
-                                        {#<a href="https://www.lesachatsindustriels.com/register/confirm/{{ user.getConfirmationToken()}}" style="color:#387ca3" >https://www.lesachatsindustriels.com/register/confirm/{{ user.getConfirmationToken()}}</a>#}
-                                        <a href="https://lesachatsindustriels.com/register/confirm/{{ user.getConfirmationToken()}}" style="color:#387ca3" >https://www.lesachatsindustriels.com/register/confirm/{{ user.getConfirmationToken()}}</a>
+                                      <a href="{{ url_site~'register/confirm/'~user.getConfirmationToken() }}" style="color:#387ca3" >https://www.lesachatsindustriels.com/register/confirm/{{ user.getConfirmationToken()}}</a>
                                     </div>
 
                                 </td>
@@ -335,7 +323,7 @@
                                             <td align="center" style="font-size:0px;padding:0;word-break:break-word;">
 
                                                 <div style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;font-weight:300;line-height:1;text-align:center;color:#575757;">
-                                                    <small>Cet e-mail a été envoyé suite à votre inscription sur notre site web <a href="https://www.lesachatsindustriels.com/">lesachatsindustriels.com</a></small>
+                                                    <small>Cet e-mail a été envoyé suite à votre inscription sur notre site web <a href="{{ url_site }}">lesachatsindustriels.com</a></small>
                                                     <br>
                                                     <br>
                                                     <small>Copyright © {{ "now"|date("Y") }} 7e-Sky, Tous les droits sont réservés</small>
