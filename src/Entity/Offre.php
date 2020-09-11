@@ -81,7 +81,7 @@ class Offre
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"offre:get-all","dmdAbonnement:get-all","offre:post","offre:put","abonnement:get-item"})
+     * @Groups({"abonnement:get-all","offre:get-all","dmdAbonnement:get-all","offre:post","offre:put","abonnement:get-item"})
      *
      */
     private $nbActivite;
@@ -123,7 +123,6 @@ class Offre
     {
         $this->description = $description;
     }
-
 
 
     public function getPrixMad()
@@ -177,7 +176,6 @@ class Offre
     {
         $this->nbActivite = $nbActivite;
     }
-
 
 
 }

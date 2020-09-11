@@ -95,7 +95,6 @@ class FournisseurController extends AbstractController
     public function getCountAutreVilleAcount()
     {
 
-
         $em = $this->getDoctrine()->getManager()->getRepository(Fournisseur::class);
         $ville = $this->getDoctrine()->getManager()->getRepository(Ville::class)->find(113);
 
@@ -107,9 +106,7 @@ class FournisseurController extends AbstractController
             ->select('count(f.id)');
 
         $count = $qb->getQuery()->getSingleScalarResult();
-
         return $this->json($count);
-
 
     }
 
@@ -188,7 +185,6 @@ class FournisseurController extends AbstractController
 
     }
 
-
     /**
      * @Route("/messages")
      */
@@ -200,7 +196,8 @@ class FournisseurController extends AbstractController
          */
         $fournisseur = $this->tokenStorage->getToken()->getUser();
 
-        $result = $this->getDoctrine()->getManager()->getRepository(ContactFournisseur::class)->count(['del' => false, 'statut' => true, "fournisseur" => $fournisseur, "isRead" => false]);
+        $result = $this->getDoctrine()->getManager()->getRepository(ContactFournisseur::class)
+            ->count(['del' => false, 'statut' => true, "fournisseur" => $fournisseur, "isRead" => false]);
 
         return $this->json($result);
 
