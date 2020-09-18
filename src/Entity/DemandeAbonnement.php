@@ -49,7 +49,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *          "put"={
  *              "denormalization_context"={"groups"={"dmdAbonnement:put"}},
  *              "access_control"="is_granted('ROLE_ADMIN') or ( is_granted('ROLE_FOURNISSEUR') and object.getFournisseur() == user )",
- *              "validation_groups"={"dmdAbonnement:putValidation"}
+ *              "validation_groups"={"dmdAbonnement:putValidation"},
+ *              "normalization_context"={"groups"={"dmdAbonnement:get-item","dmdAbonnement:get-all"}}
  *          }
  *     },
  *     subresourceOperations={
@@ -169,6 +170,12 @@ class DemandeAbonnement implements CreatedEntityInterface, SetFournisseurInterfa
      * @Groups({"dmdAbonnement:get-all","dmdAbonnement:post"})
      */
     private $type = false;
+
+    /**
+     * @ORM\Column(type="array",nullable=true)
+     * @Groups({"dmdAbonnement:get-all","dmdAbonnement:post","dmdAbonnement:put"})
+     */
+    private $suggestions;
 
 
     public function __construct()
@@ -326,6 +333,22 @@ class DemandeAbonnement implements CreatedEntityInterface, SetFournisseurInterfa
     public function setType($type): void
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSuggestions()
+    {
+        return $this->suggestions;
+    }
+
+    /**
+     * @param mixed $suggestions
+     */
+    public function setSuggestions($suggestions): void
+    {
+        $this->suggestions = $suggestions;
     }
 
 

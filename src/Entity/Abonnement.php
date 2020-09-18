@@ -79,7 +79,7 @@ class Abonnement implements CreatedEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Offre")
-     * @Groups({"abonnement:get-item","abonnement:get-all","abonnement:post","abonnement:put"})
+     * @Groups({"abonnement:get-all","abonnement:post","abonnement:put"})
      * @Assert\NotBlank(groups={"abonnement:postValidation","abonnement:putValidation"})
      */
     private $offre;
@@ -170,7 +170,7 @@ class Abonnement implements CreatedEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Duree")
-     * @Groups({"abonnement:get-item","abonnement:get-all","abonnement:post","abonnement:put"})
+     * @Groups({"abonnement:get-all","abonnement:post","abonnement:put"})
      * @Assert\NotBlank(groups={"abonnement:postValidation","abonnement:putValidation"})
      */
     private $duree;

@@ -58,26 +58,26 @@ class Offre
      * @Assert\NotBlank(groups={"offre:putValidation","offre:postValidation"})
      */
     private $description;
+
     /**
      * @ORM\Column(type="float")
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
+     * @Groups({"abonnement:get-all","dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
      * @Assert\NotBlank(groups={"offre:putValidation","offre:postValidation"})
      */
     private $prixMad;
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
+     * @Groups({"abonnement:get-all","dmdAbonnement:get-all","offre:get-all","offre:post","offre:put"})
      * @Assert\NotBlank(groups={"offre:putValidation","offre:postValidation"})
      */
     private $prixEur;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"offre:get-all","offre:post","offre:put"})
-     *
+     * @ORM\Column(type="string", length=25)
+     * @Groups({"abonnement:get-all","offre:get-all","dmdAbonnement:get-all","offre:post","offre:put","abonnement:get-item"})
      */
-    private $imageOffre;
+    private $focusProduit;
 
     /**
      * @ORM\Column(type="smallint")
@@ -85,6 +85,27 @@ class Offre
      *
      */
     private $nbActivite;
+
+    /**
+     * @ORM\Column(type="smallint")
+     * @Groups({"abonnement:get-all","offre:get-all","dmdAbonnement:get-all","offre:post","offre:put","abonnement:get-item"})
+     *
+     */
+    private $nbPageCatalogue;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"abonnement:get-all","offre:get-all","dmdAbonnement:get-all","offre:post","offre:put","abonnement:get-item"})
+     */
+    private $hasCommercial = false;
+
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"abonnement:get-all","offre:get-all","dmdAbonnement:get-all","offre:post","offre:put","abonnement:get-item"})
+     */
+    private $hasBanner = false;
 
 
     public function getId(): ?int
@@ -149,17 +170,22 @@ class Offre
         return $this;
     }
 
-    public function getImageOffre()
+    /**
+     * @return mixed
+     */
+    public function getFocusProduit()
     {
-        return $this->imageOffre;
+        return $this->focusProduit;
     }
 
-    public function setImageOffre($imageOffre): self
+    /**
+     * @param mixed $focusProduit
+     */
+    public function setFocusProduit($focusProduit): void
     {
-        $this->imageOffre = $imageOffre;
-
-        return $this;
+        $this->focusProduit = $focusProduit;
     }
+
 
     /**
      * @return mixed
@@ -176,6 +202,55 @@ class Offre
     {
         $this->nbActivite = $nbActivite;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNbPageCatalogue()
+    {
+        return $this->nbPageCatalogue;
+    }
+
+    /**
+     * @param mixed $nbPageCatalogue
+     */
+    public function setNbPageCatalogue($nbPageCatalogue): void
+    {
+        $this->nbPageCatalogue = $nbPageCatalogue;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHasCommercial()
+    {
+        return $this->hasCommercial;
+    }
+
+    /**
+     * @param mixed $hasCommercial
+     */
+    public function setHasCommercial($hasCommercial): void
+    {
+        $this->hasCommercial = $hasCommercial;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHasBanner()
+    {
+        return $this->hasBanner;
+    }
+
+    /**
+     * @param mixed $hasBanner
+     */
+    public function setHasBanner($hasBanner): void
+    {
+        $this->hasBanner = $hasBanner;
+    }
+
 
 
 }

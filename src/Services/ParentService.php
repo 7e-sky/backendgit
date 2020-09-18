@@ -138,9 +138,9 @@ class ParentService
         $fournisseurs = $this->fournisseurRepository->createQueryBuilder('f')
             ->where("f.societeLower LIKE CONCAT(:societe, '%%') OR f.societeLower LIKE CONCAT( '%%',:societe)")
             ->andWhere('f.del = 0')
-            ->andWhere('f.isactif = 1')
-            ->andWhere('f.isComplet=1')
-            ->andWhere('f.parent is null')
+            //->andWhere('f.isactif = 1')
+            //->andWhere('f.isComplet=1')
+            //->andWhere('f.parent is null')
             ->setParameter('societe', $societe)
 
             ->getQuery()

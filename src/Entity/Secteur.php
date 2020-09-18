@@ -74,7 +74,7 @@ class Secteur
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\Length(min=3,max=50,groups={"postValidation","putValidation"})
-     * @Groups({"dmdAbonnement:get-item","abonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","visit:get-all","secteur:get-all","sous-secteur:get-all","get","post","put","get-from-demande"})
+     * @Groups({"dmdAbonnement:get-all","abonnement:get-all","produit:get-item","produit:get-all","produit:get-from-fournisseur","visit:get-all","secteur:get-all","sous-secteur:get-all","get","post","put","get-from-demande"})
      */
     private $name;
 

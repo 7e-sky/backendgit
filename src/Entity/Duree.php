@@ -60,7 +60,7 @@ class Duree implements CreatedEntityInterface
 
     /**
      * @ORM\Column(type="smallint")
-     * @Groups({"abonnement:get-item","dmdAbonnement:get-all","duree:get-all","duree:put","duree:post"})
+     * @Groups({"abonnement:get-all","dmdAbonnement:get-all","duree:get-all","duree:put","duree:post"})
      * @Assert\NotBlank(groups={"duree:postValidation","duree:putValidation"})
      */
     private $remise;
