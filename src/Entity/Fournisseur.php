@@ -79,7 +79,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
  *     arguments={
  *     "parameterName": "props",
  *     "overrideDefaultProperties": false,
- *     "whitelist": {"id","societe","categories","firstName","lastName","slug","pays","avatar"},
+ *     "whitelist": {"id","societe","categories","firstName","lastName","slug","pays","avatar","step","created"},
  *      }
  * )
  * @ApiFilter(ExistsFilter::class, properties={"parent"})

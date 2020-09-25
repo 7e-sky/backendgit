@@ -13,6 +13,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 /**
  * @ApiFilter(
@@ -23,6 +24,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  *      "fournisseur.societe": "partial",
  *      "mode.name": "partial",
  *      "sousSecteurs.name": "partial",
+ *      }
+ * )
+ * @ApiFilter(
+ *     PropertyFilter::class,
+ *     arguments={
+ *     "parameterName": "props",
+ *     "overrideDefaultProperties": false,
+ *     "whitelist": {"id","offre","fournisseur","created","statut"},
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"reference","created","statut","sousSecteurs.name"})
@@ -87,7 +96,7 @@ class DemandeAbonnement implements CreatedEntityInterface, SetFournisseurInterfa
 
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
-     * @Groups({"dmdAbonnement:get-all","dmdAbonnement:get-item"})
+     * @Groups({"dmdAbonnement:get-all"})
      */
     private $fournisseur;
 

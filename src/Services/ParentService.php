@@ -142,7 +142,6 @@ class ParentService
             //->andWhere('f.isComplet=1')
             //->andWhere('f.parent is null')
             ->setParameter('societe', $societe)
-
             ->getQuery()
             ->getResult();
 

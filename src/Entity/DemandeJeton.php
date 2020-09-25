@@ -13,6 +13,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 /**
  * @ApiFilter(
@@ -21,6 +22,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     "id":"exact",
  *     "nbrJeton": "exact",
  *     "fournisseur.societe": "partial",
+ *      }
+ * )
+ * @ApiFilter(
+ *     PropertyFilter::class,
+ *     arguments={
+ *     "parameterName": "props",
+ *     "overrideDefaultProperties": false,
+ *     "whitelist": {"id","nbrJeton","fournisseur","created","isUse"},
  *      }
  * )
  * @ApiFilter(
@@ -43,7 +52,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     itemOperations={
  *
  *          "get"={
- *                  "normalization_context"={"groups"={"d-jeton:get-item"}}
+ *                  "normalization_context"={"groups"={"d-jeton:get-all","d-jeton:get-item"}}
  *                },
  *          "put"={
  *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_FOURNISSEUR') and object.getFournisseur() == user)",
@@ -79,7 +88,7 @@ class DemandeJeton implements CreatedEntityInterface, SetFournisseurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur",inversedBy="commandes")
-     * @Groups({"d-jeton:get-all","d-jeton:get-item"})
+     * @Groups({"d-jeton:get-all"})
      */
     private $fournisseur;
 

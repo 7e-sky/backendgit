@@ -243,10 +243,17 @@ class DemandeAbonnementSubscriber implements EventSubscriberInterface
             //HT + TVA = TTC
             $ttc = $prixHT + ($prixHT * 0.2);
 
+            //Pour commul admin
+            $prixAdmin = $ttc;
             if ($entity->getFournisseur()->getCurrency() && $entity->getFournisseur()->getCurrency()->getName() !== 'MAD')
+            {
                 $ttc = $prixHT;
+                $prixAdmin = $prixHT * 10;
+
+            }
 
             $abonnement->setPrix($ttc);
+            $abonnement->setPrixAdmin($prixAdmin);
             $abonnement->setReference($this->getRefAbonnement());
             $abonnement->setType($entity->getType());
 

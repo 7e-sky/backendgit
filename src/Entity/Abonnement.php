@@ -138,6 +138,13 @@ class Abonnement implements CreatedEntityInterface
     private $prix;
 
     /**
+     * @ORM\Column(type="float")
+     * @Groups({"get-admin"})
+     */
+    private $prixAdmin;
+
+
+    /**
      * @ORM\ManyToOne(targetEntity="Paiement")
      * @Groups({"abonnement:get-all","abonnement:post","abonnement:put"})
      * @Assert\NotBlank(groups={"abonnement:postValidation","abonnement:putValidation"})
@@ -347,6 +354,23 @@ class Abonnement implements CreatedEntityInterface
     {
         $this->prix = $prix;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPrixAdmin()
+    {
+        return $this->prixAdmin;
+    }
+
+    /**
+     * @param mixed $prixAdmin
+     */
+    public function setPrixAdmin($prixAdmin): void
+    {
+        $this->prixAdmin = $prixAdmin;
+    }
+
 
     /**
      * @return mixed

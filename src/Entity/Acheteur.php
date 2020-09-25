@@ -15,6 +15,7 @@ use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumbe
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 
 /**
@@ -62,6 +63,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  * )
  * @ApiFilter(
  *     BooleanFilter::class,properties={"del","isactif"}
+ * )
+ * @ApiFilter(
+ *     PropertyFilter::class,
+ *     arguments={
+ *     "parameterName": "props",
+ *     "overrideDefaultProperties": false,
+ *     "whitelist": {"id","societe","firstName","lastName","slug","pays","avatar","step","created"},
+ *      }
  * )
  * @ApiFilter(DateFilter::class, properties={"created"})
  * @ApiFilter(OrderFilter::class, properties={"id","created","isactif","societe"})
