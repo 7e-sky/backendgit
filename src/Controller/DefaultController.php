@@ -193,6 +193,30 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @Route("/api/focus_categories_mobile")
+     */
+    public function getFocusCategorieMobile()
+    {
+        $em_secteur = $this->getDoctrine()->getManager()->getRepository(Secteur::class);
+
+        $qb = $em_secteur->createQueryBuilder('s')
+            ->join('s.image', 'i')
+            ->leftJoin('s.produits', 'p')
+            ->where('s.del=0')
+            ->andWhere('p.del=0 or p.del IS NULL')
+            ->groupBy('s.id')
+            ->orderBy('count', 'desc')
+            ->addOrderBy('s.name', 'asc')
+            ->setMaxResults(10)
+            ->select('s.id,s.name,i.url,count(p.id) as count');
+        $query = $qb->getQuery();
+        $secteurs = $query->getResult();
+        return $this->json($secteurs);
+
+    }
+
+
+    /**
      * @Route("/api/parcourir_secteurs")
      */
     public function getSecteurs()

@@ -84,7 +84,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
-     * @Groups({"item:get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"produit:get-item","item:get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $adresse1;

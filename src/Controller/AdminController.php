@@ -784,7 +784,6 @@ class AdminController extends AbstractController
             return $this->json([]);
         }
 
-
         $em = $this->getDoctrine()->getManager()->getRepository(Fournisseur::class);
         $em2 = $this->getDoctrine()->getManager()->getRepository(Acheteur::class);
 
@@ -813,7 +812,6 @@ class AdminController extends AbstractController
 
             array_push($datasetFournisseurs, $result ? (int)$result : 0 );
 
-
             // Acheteur inscrit
             $qb = $em2->createQueryBuilder('a')
                 ->where('year(a.created) = :year')
@@ -829,10 +827,7 @@ class AdminController extends AbstractController
 
             array_push($datasetAcheteurs, $result ? $result : 0 );
 
-
         }
-
-
 
 
         $vendu['label']='Fournisseur(s)';
@@ -851,7 +846,6 @@ class AdminController extends AbstractController
             'datasets' => $datasets,
             'years'=>$years
         ];
-
 
         return $this->json($data);
 
