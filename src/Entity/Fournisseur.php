@@ -67,6 +67,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
  *     "ville.slug": "exact",
  *     "ville.name": "partial",
  *     "categories.sousSecteurs.secteur.slug": "exact",
+ *     "categories.sousSecteurs.secteur.id": "exact",
  *     "categories.sousSecteurs.slug": "exact",
  *     "phone": "partial",
  *     "email": "partial",

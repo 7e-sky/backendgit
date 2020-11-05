@@ -66,7 +66,7 @@ class Secteur
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"secteur:get-all","sous-secteur:get-all","get","get-from-demande"})
+     * @Groups({"secteur:get-all","produit:get-all","sous-secteur:get-all","get","get-from-demande"})
      */
     private $id;
 

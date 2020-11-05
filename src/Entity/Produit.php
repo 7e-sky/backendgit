@@ -38,6 +38,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *     "pays.slug": "exact",
  *     "ville.slug": "exact",
  *     "secteur.slug": "exact",
+ *     "secteur.id": "exact",
  *     "secteur.name": "partial",
  *     "sousSecteurs.slug": "exact",
  *     "sousSecteurs.name": "partial",
