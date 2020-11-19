@@ -47,7 +47,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     arguments={
  *     "parameterName": "props",
  *     "overrideDefaultProperties": false,
- *     "whitelist": {"id","slug","reference","titre","description","pays","ville","dateExpiration","created"},
+ *     "whitelist": {"id","slug","reference","titre","attachements","categories","description","pays","ville","dateExpiration","created"},
  *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"reference","description","dateExpiration","created","budget","isPublic","categories.name"})
@@ -233,7 +233,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
     /**
      * @ORM\ManyToMany(targetEntity="Attachement")
      * @ORM\JoinTable()
-     * @Groups({"item:get-from-demande","visit:get-item","put","post","fournisseur:get-item-from-demande"})
+     * @Groups({"get-from-demande","item:get-from-demande","visit:get-item","put","post","fournisseur:get-item-from-demande"})
      * @Assert\NotBlank()
      * @ApiSubresource(maxDepth=1)
      */

@@ -75,7 +75,6 @@ class UserConfirmationSubscriber implements EventSubscriberInterface
          */
         $confirmationToken = $event->getControllerResult();
 
-
         $user = $this->userRepository->findOneBy(['confirmationToken'=>$confirmationToken->confirmationToken]);
 
         if(!$user){
@@ -86,7 +85,6 @@ class UserConfirmationSubscriber implements EventSubscriberInterface
         $user->setConfirmationToken(null);
 
         $this->entityManager->flush();
-
 
         $token = $this->tokenManager->create($user);
 
@@ -101,7 +99,6 @@ class UserConfirmationSubscriber implements EventSubscriberInterface
                 'redirect'=>$user->getRedirect(),
             ]
         ];
-
 
         $event->setResponse(new JsonResponse($dataa));
 
