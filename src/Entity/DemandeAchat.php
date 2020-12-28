@@ -72,15 +72,14 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     },
  *     itemOperations={
  *          "get"={
- *                  "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
- *                  "normalization_context"={"groups"={"get-from-demande","item:get-from-demande"}}
- *                },
+ *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
+ *              "normalization_context"={"groups"={"get-from-demande","item:get-from-demande"}}
+ *           },
  *          "get_item_by_fournisseur"={
  *              "method"="GET",
  *              "path"="/demande_achats/{id}/fournisseur",
  *              "normalization_context"={"groups"={"fournisseur:get-item-from-demande"}}
  *          },
- *
  *          "put"={
  *              "access_control"="is_granted('ROLE_ADMIN') or (is_granted('ROLE_ACHETEUR') and object.getAcheteur() == user)",
  *              "denormalization_context"={"groups"={"put"}},
@@ -178,7 +177,7 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
      * @ORM\Column(type="datetime")
      * @Assert\NotBlank(groups={"postValidation","putValidation"})
      * @Assert\DateTime(groups={"postValidation","putValidation"})
-     * @Assert\GreaterThan("+2 days",groups={"postValidation","putValidation"},message="La date d'expiration doit être supérieure à {{ compared_value }}")
+     * @Assert\GreaterThan("+2 days",groups={"postValidation"},message="La date d'expiration doit être supérieure à {{ compared_value }}")
      * @Groups({"visit:get-item","visit:get-all","get-from-demande","post","put","get-from-acheteur_demandes","fournisseur:get-from-demande","fournisseur:get-item-from-demande"})
      */
     private $dateExpiration;

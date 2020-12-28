@@ -47,7 +47,7 @@ class Avatar
 
     /**
      * @ORM\Column(nullable=true)
-     * @Groups({"personnel:get-all","abonnement:get-item","produit:get-all","dmdAbonnement:get-item","visit:get-all","get"})
+     * @Groups({"personnel:get-all","get-from-acheteurs_blacklistes","visit:get-for-acheteur","item:get-from-demande","abonnement:get-item","produit:get-all","dmdAbonnement:get-item","visit:get-all","get"})
      */
     private $url;
 

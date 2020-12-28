@@ -84,7 +84,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\Column(type="string", length=255,nullable=true)
-     * @Groups({"produit:get-item","item:get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"produit:get-item","get-from-acheteurs_blacklistes","item:get-from-demande","visit:get-for-acheteur","item:get-from-demande","abonnement:get-item","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      * @Assert\Length(min=6,max=255,groups={"postValidation","putValidation"})
      */
     protected $adresse1;
@@ -187,7 +187,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Avatar")
-     * @Groups({"abonnement:get-item","produit:get-all","dmdAbonnement:get-item","visit:get-all","get","put","post"})
+     * @Groups({"abonnement:get-item","get-from-acheteurs_blacklistes","item:get-from-demande","visit:get-for-acheteur","produit:get-all","dmdAbonnement:get-item","visit:get-all","get","put","post"})
      */
     protected $avatar;
 

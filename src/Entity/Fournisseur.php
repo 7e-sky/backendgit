@@ -108,13 +108,13 @@ class Fournisseur extends User
     private $societe;
     /**
      * @ORM\ManyToOne(targetEntity="Pays",inversedBy="fournisseurs")
-     * @Groups({"produit:get-item","abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"produit:get-item","get-from-acheteurs_blacklistes","item:get-from-demande","visit:get-for-acheteur","abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
      */
     private $pays;
 
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
-     * @Groups({"produit:get-item","abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
+     * @Groups({"produit:get-item","item:get-from-demande","get-from-acheteurs_blacklistes","visit:get-for-acheteur","abonnement:get-item","dmdAbonnement:get-item","get","post","put"})
      */
     private $ville;
 
