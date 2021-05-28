@@ -4,6 +4,12 @@
 /.env.local.php
 /.env.*.local
 /public/bundles/
+/public/attachement/
+/public/images/
 /var/
 /vendor/
+/*.zip
+/*.rar
+/*.iml
+/*.ini
 ###< symfony/framework-bundle ###

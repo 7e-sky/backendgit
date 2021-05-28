@@ -208,7 +208,7 @@ class DefaultController extends AbstractController
             ->orderBy('count', 'desc')
             ->addOrderBy('s.name', 'asc')
             ->setMaxResults(10)
-            ->select('s.id,s.name,i.url,count(p.id) as count');
+            ->select('s.id,s.name,i.url,count(p.id) as count,s.slug');
         $query = $qb->getQuery();
         $secteurs = $query->getResult();
         return $this->json($secteurs);

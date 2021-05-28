@@ -229,6 +229,7 @@ class Produit implements CreatedEntityInterface,SetFournisseurInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="ImageProduit")
+     * @ORM\JoinColumn(name="featured_image_id_id", referencedColumnName="id", onDelete="SET NULL")
      * @Groups({"selectProduit:get-all","produit:get-from-fournisseur","produit:get-all","produit:post","produit:put","demandeDevis:get-item"})
      */
     private $featuredImageId;

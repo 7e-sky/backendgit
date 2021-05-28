@@ -161,7 +161,7 @@ class Mailer
 
     }
     //======================================================================
-    // CONFIRMATION EMAIL ACCOUNT
+    //                      CONFIRMATION EMAIL ACCOUNT
     //======================================================================
 
     public function sendConfirmationEmail(User $user)
@@ -203,7 +203,7 @@ class Mailer
     }
 
     //======================================================================
-    // FOURNISSEUR => "CHILD" TENTE DE S'INSCRIRE AVEC LE NOM DE VOTRE SOCIETE
+    // FOURNISSEUR => "CHILD" TENTE DE S'INSCRIRE
     //======================================================================
     public function childTryRegister(FournisseurProvisoire $user)
     {
@@ -219,7 +219,6 @@ class Mailer
 
          $this->NoReplyMailer->send($message);
 
-        //$this->logger->info("*****************here i am 2******************");
 
     }
 

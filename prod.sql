@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.4
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : localhost:3306
--- Généré le : jeu. 23 juil. 2020 à 10:49
--- Version du serveur :  5.6.47
--- Version de PHP : 7.3.6
+-- Hôte : 127.0.0.1
+-- Généré le : ven. 28 mai 2021 à 17:10
+-- Version du serveur :  10.4.17-MariaDB
+-- Version de PHP : 7.3.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `manua067_lesha`
+-- Base de données : `lesha_db`
 --
 
 -- --------------------------------------------------------
@@ -46,15 +45,16 @@ CREATE TABLE `abonnement` (
   `remise` double NOT NULL,
   `currency_id` int(11) DEFAULT NULL,
   `commentaire` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` tinyint(1) NOT NULL
+  `type` tinyint(1) NOT NULL,
+  `prix_admin` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `abonnement`
 --
 
-INSERT INTO `abonnement` (`id`, `offre_id`, `demande_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `mode_id`, `reference`, `statut`, `prix`, `created`, `expired`, `date_peiment`, `duree_id`, `remise`, `currency_id`, `commentaire`, `type`) VALUES
-(1, 2, 1, 2, NULL, NULL, 1, 'A-2020-1', 1, 2880, '2020-07-13 10:08:51', '2021-07-13 10:08:51', '2020-07-13 10:08:51', 1, 0, 11, NULL, 0);
+INSERT INTO `abonnement` (`id`, `offre_id`, `demande_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `mode_id`, `reference`, `statut`, `prix`, `created`, `expired`, `date_peiment`, `duree_id`, `remise`, `currency_id`, `commentaire`, `type`, `prix_admin`) VALUES
+(1, 2, 1, 2, NULL, NULL, 1, 'A-2020-1', 1, 2880, '2020-07-13 10:08:51', '2021-07-13 10:08:51', '2020-07-13 10:08:51', 1, 0, 11, NULL, 0, 2880);
 
 -- --------------------------------------------------------
 
@@ -92,7 +92,7 @@ CREATE TABLE `acheteur` (
   `ice` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fix` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `website` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `description` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `secteur_id` int(11) DEFAULT NULL,
   `currency_id` int(11) DEFAULT NULL,
   `step` int(11) NOT NULL,
@@ -240,7 +240,17 @@ INSERT INTO `acheteur` (`id`, `pays_id`, `ville_id`, `societe`, `parent2`, `civi
 (682, 144, 1, 'Acheteur 2', NULL, 'M.', '123456789123456', '+212622151213', 'http://www.3finudstrie.com', '', 1, 11, 2, 1, 'A-6827827', NULL, NULL),
 (740, 144, 1, '3F INDUSTRIE', NULL, 'Mlle', '001531606000066', '', 'https://www.3findustrie.com/', '3F Industrie a choisi de se positionner sur le secteur de la logistique en mettant à la disposition de ce dernier les meilleures fournisseurs tout en respectant les normes les plus sévères et les plus demandées par les donneurs d’ordres les plus exigeants. Notre objectif est d’offrir à nos clients une qualité de service qui s’inscrit dans une amélioration continue.', 25, 11, 2, 1, 'A-740f6a4', NULL, NULL),
 (741, 1, 114, '3f industrie', NULL, 'M.', NULL, '', '', '', 8, 11, 2, 1, 'A-7416c2a', NULL, NULL),
-(742, 144, 1, 'ENGIE SERVICES MAROC', NULL, 'M.', '001534967000014', '', '', '', 17, 11, 2, 1, 'A-7425185', NULL, NULL);
+(742, 144, 1, 'ENGIE SERVICES MAROC', NULL, 'M.', '001534967000014', '', '', '', 17, 11, 2, 1, 'A-7425185', NULL, NULL),
+(754, 144, 1, 'l hmm', NULL, 'Mlle', '121365478525252', '', '', '', 4, 11, 2, 1, 'A-7548ce3', NULL, NULL),
+(757, 144, 1, 'Armor industrie', NULL, 'Mlle', '001535724000042', '+212523360915', 'https://armor-industrie.ma/', 'Fabricant exportateur de consommables bureautiques et informatiques. Reconditionnement de cartouches laser. Certification ISO 9001/2000 (2005)', 23, 1, 2, 1, 'A-7572d02', NULL, NULL),
+(759, NULL, NULL, 'Promoteur ', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+(763, NULL, NULL, 'BAREA', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+(771, 144, 1, '7e-sky', NULL, 'Mlle', '001531606000066', '+212522365797', 'https://7e-sky.ma/', 'Notre société est basée sur la conviction que les besoins de nos clients sont de la plus haute importance. Toute notre équipe s\'engage à répondre à ces besoins. En conséquence, un pourcentage élevé de notre activité provient de clients réguliers et de références.\n', 5, 11, 2, 1, 'A-771a947', NULL, NULL),
+(780, 144, 1, 'GSM', NULL, 'M.', '123908790546908', '+212522678960', 'http://www.gsm.com', 'achat individielle ', 2, 11, 2, 1, 'A-780b827', NULL, NULL),
+(781, 144, 1, 'ESCA EM', NULL, 'Mme', '000230964000005', '+212522209120', 'http://www.esca.ma', 'ESCA Ecole de Management', 16, 11, 2, 1, 'A-78119d5', NULL, NULL),
+(782, NULL, NULL, 'THAIS', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+(786, NULL, NULL, 'Cissscn', NULL, 'M.', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL),
+(790, 144, 7, 'Tanger', NULL, 'Mme', '000050602000088', '', '', '', 1, 1, 2, 1, 'A-790c354', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -357,7 +367,16 @@ INSERT INTO `actualite` (`id`, `image_id`, `titre`, `description`, `created`, `i
 (96, 6, 'Management : se changer soi-même pour changer ses équipes', 'Alors que le monde du travail évolue très vite, que les techniques changent, que l\'aspect collaboratif prend de plus en plus d\'importance, les managers doivent adapter leurs pratiques s\'ils veulent rester légitimes. Mais faut-il pour autant révolutionner le management et changer tous les process de son entreprise ?\r\n\r\nOutre la difficulté d\'une telle mission, encore plus dans un grand groupe, Frédéric Rey-Millet, dirigeant d\'EthiKonsulting, qui organise le Hackathon du Management, souligne qu\'avant de \"hacker\" leur entreprise, les managers doivent d\'abord concevoir des outils concrets, qui les concernent directement : \"Avant de changer le système, la culture, les autres... il faut commencer par se changer soi-même. Sinon, les outils conçus ne seront pas mis en oeuvre\", explique-t-il.\r\n\r\nCécil Dijoux, coach lean et agile, souligne également que c\'est souvent en améliorant les méthodes de production qu\'on améliore le relationnel, là où beaucoup d\'entreprises cherchent à améliorer les relations entre leurs équipes dans l\'espoir d\'améliorer la production. D\'ailleurs, \"beaucoup d\'entreprises pensent qu\'il faut changer la culture pour changer les pratiques. Or, le lean management et l\'agilité montrent l\'inverse : il faut changer les pratiques pour changer la culture\", affirme-t-elle.\r\n\r\nAinsi, quand un manager veut entraîner ses équipes sur la voie du changement, il doit lui-même se remettre en question. Face à des personnes réticentes, il vaut mieux privilégier une attitude ouverte, demander à \"tester\", à avoir le \"bénéfice du doute\" plutôt que de chercher à tout prix une adhésion totale a priori. Surtout, il faut accepter que tout le monde ne suive pas : \"il faut éviter la bêtise d\'aller chercher les réfractaires à tout prix, c\'est chronophage et peu efficace \", assure Cécil Dijoux.....', '2019-11-05 18:27:14', 1, NULL, 'https://www.decision-achats.fr/Thematique/rh-1234/Breves/Management-changer-soi-meme-changer-ses-equipes-343744.htm', 'management-se-changer-soi-meme-pour-changer-ses-equipes', 'Peut-on changer une organisation, un système ou une culture d\'entreprise sans, au préalable, changer sa façon de manager ? C\'est à cette question qu\'a tenté de répondre la 3e édition du Hackathon du Management, organisé par EthiKonsulting.'),
 (97, 6, 'Achats innovants : le tremplin des marketplaces', 'En septembre 2018, la centrale d\'achat du groupe hôtelier NH Hotel lance sa propre marketplace aux côtés de Mirakl, le spécialiste des solutions digitales pour ce type de projets. C\'est avec cet exemple que s\'est ouvert le 26 novembre dernier l\'édition 2019 des Enjeux de l\'Innovation BtoB, largement consacré à la transformation digitale et à l\'explosion des places de marché.\r\n\r\n\"Sur de très nombreux marchés, on assiste actuellement à une démultiplication des acteurs en présence concernant un même produit ou service. Les canaux d\'achats se diversifient, et la technologie joue un rôle prépondérant dans cette évolution, notamment parce que les jeunes générations de travailleurs veulent reproduire leurs habitudes personnelles dans la sphère professionnelle\", constate Magali Testard, senior partner au sein du cabinet de conseil en stratégie Roland Berger.\r\n\r\nLes directions achats sont souvent décrites comme des gestionnaires de coûts et de risques. Mais désormais, elles sont également amenées à chercher des relais de croissance. \"Elles se positionnent sur de la création de valeur, de la génération de nouveaux revenus\", poursuit-elle. Concrètement, le développement des marketplaces s\'inscrit dans cette logique. Il s\'agit d\'en faire des plateformes de création de services pour les utilisateurs....', '2019-12-05 18:11:14', 1, NULL, 'https://www.decision-achats.fr/Thematique/strategie-achats-1236/Breves/Achats-innovants-tremplin-marketplaces-344594.htm', 'achats-innovants-le-tremplin-des-marketplaces', 'Dans de nombreuses filières, le développement de places de marché bouleverse le paysage concurrentiel. Plus qu\'une simple digitalisation des offres, il s\'agit d\'un levier de création de valeur, associé à de nouveaux services, permettant parfois des collaborations jusque là impossibles.'),
 (98, 17, 'Problème de couple acheteur/fournisseur : Comment réussir son divorce', '<p>Les relations du <strong>couple acheteur/fournisseur sont complexes</strong>. Elles peuvent devenir compliquées. Avec le temps, il peut arriver que les objectifs divergent, que la confiance s\'érode et que l\'on ne puisse plus rien attendre de l\'autre. <strong>Quand le couple acheteur/fournisseur vacille</strong>, il est parfois nécessaire d\'y <strong>mettre un terme</strong>.<br>&nbsp;</p><p><strong>Si la fidélité a du bon, elle n\'est pas toujours récompensée</strong>. Nous allons vous aider à vous poser les <strong>bonnes questions</strong> pour bien se séparer.</p><p>&nbsp;</p><h2><strong>1) Une décision à réfléchir</strong></h2><p>&nbsp;</p><p><strong>Agir de manière impulsive peut se révéler contre-productif et risqué</strong>. Le fournisseur pourrait finir par vous manquer ! Prenez le temps, vous n\'êtes pas pressés...</p><p>Quand la relation est pérenne, on se pardonne facilement les petits écarts : une livraison incomplète, un paiement décalé, etc. Une fois que la décision de se séparer est prise, on devient plus exigeant ; tout peut devenir <strong>une source de conflits</strong>. Il faudra donc être irréprochable pour <strong>éviter l\'escalade et les procédures juridiques longues et coûteuses, aux issues incertaines</strong>.</p><p>Il est dans l\'intérêt de tous d\'être ouverts aux <strong>compromis</strong> pour faciliter cette décision lourde de conséquences. L\'écoute et l\'ouverture ne sont pas un signe de faiblesse mais d\'intelligence. On arrive souvent à résoudre un conflit en se parlant ouvertement.</p><p>L\'acheteur devra faire attention à ce qui lui appartient, ou pas : la <strong>propriété intellectuelle. </strong>Certains outils/processus/brevets, etc. ne vous appartiennent finalement peut-être pas ! On s\'en rend définitivement compte quand le partenaire a récupéré ses affaires et quitté les lieux.</p><p>Enfin, arrêter une relation peut conduire à la <strong>disparition du partenaire et engager la responsabilité du client</strong>. Les tribunaux pourraient être saisis. Il n\'est pas rare de se rendre compte de l\'état de <strong>dépendance économique</strong> au moment où l\'on décide de se séparer.</p><p>&nbsp;</p><h2><strong>2) La décision est prise : attention à la durée de préavis</strong></h2><p>&nbsp;</p><p>Le <strong>risque de rupture abusive des relations commerciales établies</strong> est fréquent dans les entreprises.</p><p>Les principaux critères retenus par les tribunaux sont la <strong>continuité ou la croyance légitime dans la continuité </strong>des relations.</p><p><strong>La rupture des relations commerciales n\'est pas une faute</strong> ; seule la <strong>brutalité de la rupture est punissable</strong>. L\'acheteur doit tenir compte de la durée de la relation commerciale et respecter une durée minimale de préavis, basée sur les usages ou accords interprofessionnels.</p><p>Si la relation commerciale est établie, le préavis est <strong>environ d\'un mois par année</strong> de relation mais il est <strong>très variable</strong>. Il considère la dépendance du fournisseur, le volume d\'affaires, la durée de la relation etc. Face à ces incertitudes sur la durée du préavis qui ont longtemps alimenté les contentieux et laissé les acteurs, même de bonne foi, dans le flou, le législateur est intervenu en précisant qu\'en cas de litige entre les parties sur la durée du préavis, la responsabilité de l\'auteur de la rupture ne peut être engagée du chef d\'une durée insuffisante dès lors qu\'il a respecté un <strong>préavis de 18 mois</strong>.</p><p>En cas de préavis insuffisant, le fournisseur sera en droit de demander des indemnités basées sur la perte de marge brute sur coûts variables, un préjudice moral ou d\'image etc. De son côté, l\'acheteur doit rester vigilant et s\'assurer ponctuellement qu\'il ne représente <strong>pas un pourcentage de chiffre d\'affaires significatif </strong>auprès de son fournisseur pour pallier toute situation de dépendance économique préjudiciable en cas de rupture des relations avec son fournisseur.</p><p>A noter, la remise en concurrence systématique des fournisseurs par le biais d\'appel d\'offres peut caractériser l\'absence de relations commerciales établies. Les <strong>relations précaires protègent l\'acheteur</strong> : la fidélité peut se retourner contre lui.</p><p>En fonction de pourquoi l\'acheteur souhaite mettre un terme à la relation, la durée du préavis n\'est peut-être pas l\'élément déterminant. S<strong>i le partenaire n\'exécute pas ses obligations contractuelles</strong>, le client pourra invoquer la <strong>résolution du contrat pour faute</strong>. Il faudra caractériser la ou les fautes, donner un temps raisonnable au fournisseur pour y remédier avant de pouvoir légitiment dénoncer le contrat et ses obligations. Pour être enrichissante, une relation doit être vécue activement et pas subie. Les indicateurs et leur suivi permettent de piloter la relation, d\'échanger et mettre en place les actions correctives qui s\'imposent. Ces échanges pourront être utilisés en cas de litige : les paroles s\'envolent, les écrits restent.</p><p>Si le prestataire souhaite augmenter ses prix, l\'acheteur pourra <strong>\"suggérer\" au vendeur de demander une hausse de prix par écrit et de fixer une date butoir</strong> pour l\'acceptation de sa nouvelle offre. La jurisprudence a déjà dédouané l\'acheteur du préavis quand le vendeur est à l\'origine de la dénonciation des accords commerciaux.</p><p>Il est à noter que l\'ensemble des points ci-dessus peuvent être encadrés par le biais d\'un <strong>contrat écrit définissant les droits et obligations de chacune des parties</strong>. Ce cadre contractuel permettra ainsi, tant à l\'acheteur qu\'au fournisseur, de connaître, dès le commencement de leur relation commerciale, les <strong>conditions d\'exécution et de terminaison </strong>de celle-ci, fermant ainsi la porte à de nombreux contentieux potentiels, faute de règles du jeu établies. De même, rien n\'interdit aux parties de contractualiser leur accord amiable sur les modalités de sortie, fermant, là encore, la porte à de potentiels contentieux judiciaires.</p>', '2020-07-14 14:31:21', 1, NULL, 'https://www.decision-achats.fr/Thematique/strategie-achats-1236/Breves/Probleme-couple-acheteur-fournisseur-Comment-reussir-son-divorce-350849.htm', 'probleme-de-couple-acheteur-fournisseur-comment-reussir-son-divorce', 'Pour être heureux en couple acheteur/fournisseur, ne soyez pas impulsifs. La rupture ne résout pas les problèmes organisationnels : elle peut au mieux les masquer temporairement. Il est toujours utile de se remettre en question et de s\'améliorer pour être sûr de ne pas revivre la même situation...'),
-(99, 18, '[Avis d\'expert] Le ticket d\'entrée, l\'autre façon de faire des gains achats', '<p>Comment faire pour accélérer le pay-back de ses actions achats?? <strong>Demander un ticket d\'entrée à ses fournisseurs</strong>. C\'est de l\'argent frais payé par le fournisseur à l\'attribution d\'une nouvelle affaire. L\'idée est de dire que l\'on troque une remise de fin d\'année (RFA) par une remise de début de contrat. <strong>Ce ticket d\'entrée est légal s\'il est justifié</strong> par une contrepartie de service. Dans la course au cash, la grande distribution a initié cette pratique qui s\'est répandue dans les autres secteurs. Condamné par certains, le ticket d\'entrée attire et fait débat.</p><p>À cause de la réglementation, <strong>les distributeurs ont une marge de manoeuvre limitée sur les prix des produits</strong>, mais peuvent agir sur les \"à-côtés\". Forte d\'une créativité débordante, la distribution a inventé une multitude de \"tickets\" : le ticket de référencement, le ticket de contribution au catalogue papier, le ticket tête de gondole, etc. On en recense une quarantaine. Le monde industriel l\'a adopté telle quelle, ou l\'a adapté. Citons ce constructeur automobile qui demande systématiquement une baisse de 3?% à son fournisseur sur les produits déjà achetés aujourd\'hui en contrepartie de l\'attribution d\'un nouveau business qui commencera dans 6 mois. Le résultat est le même que dans la distribution.</p><p>&nbsp;</p><h2><strong>Tous les prétextes sont bons</strong></h2><p>&nbsp;</p><p>Certains projets e-achat ont utilisé la même technique. En contrepartie du référencement unique d\'un fournisseur sur le système e-achat, certains industriels ont demandé un ticket d\'entrée. Légalement ces entreprises justifiaient la demande par la création de catalogue ou la mise en place technique de l\'accord. Le chèque fournisseur permettait d\'alléger le coût du projet e-procurement côté client. Du côté fournisseurs, la mise en ligne permettait de diminuer son effort commercial pour taux d\'utilisation du contrat supérieur. Mais <strong>certains tickets d\'entrée se sont avérés malheureusement sans effet positif pour le fournisseur</strong>. Des entreprises décernent des \"prix du fournisseur de l\'année\" ou des appellations \"fournisseurs panel\" . Et l\'attribution de cette appellation peut se faire conjointement à un ticket d\'entrée.</p><p>Le fournisseur profite de ce prix pour faire une dépêche de presse et d\'afficher son nouveau statut. <strong>Le budget provient souvent du département marketing du fournisseur</strong>, heureux de cette opération de communication.</p><p>Le plus étonnant est que certains fournisseurs ont intégré ces tickets d\'entrée dans leurs offres standards. C\'est le cas des Télécoms. En l\'espèce, les opérateurs proposent souvent un ticket d\'entrée qui correspond aux frais d\'installation et aux pénalités que devraient payer leurs clients pour sortir du contrat avec leur concurrent. <strong>Les commissaires aux comptes vérifient activement que ces tickets d\'entrée ne sont pas juste une façon d\'acheter du business</strong>.</p><p>Là où le bât blesse, c\'est dans la contrepartie fournisseur. Dans certains cas, la contrepartie perçue par les fournisseurs n\'est pas évidente. <strong>Le ticket d\'entrée en devient donc illégal</strong>. Le ticket d\'entrée est un des outils du professionnel de l\'achat, s\'il est bien utilisé. Sinon il peut devenir un ticket de sortie pour l\'acheteur.</p>', '2020-07-14 15:26:28', 1, NULL, 'https://www.decision-achats.fr/Thematique/strategie-achats-1236/Breves/ticket-entree-autre-faire-gains-achats-350729.htm', 'avis-dexpert-le-ticket-dentree-lautre-facon-de-faire-des-gains-achats', '\"Le ticket d\'entrée\" est le nom pudique pour décrire une pratique qui consiste à demander une contribution financière immédiate à un fournisseur, en échange de l\'attribution d\'une affaire. Est-ce une technique de bandit ?');
+(99, 18, '[Avis d\'expert] Le ticket d\'entrée, l\'autre façon de faire des gains achats', '<p>Comment faire pour accélérer le pay-back de ses actions achats?? <strong>Demander un ticket d\'entrée à ses fournisseurs</strong>. C\'est de l\'argent frais payé par le fournisseur à l\'attribution d\'une nouvelle affaire. L\'idée est de dire que l\'on troque une remise de fin d\'année (RFA) par une remise de début de contrat. <strong>Ce ticket d\'entrée est légal s\'il est justifié</strong> par une contrepartie de service. Dans la course au cash, la grande distribution a initié cette pratique qui s\'est répandue dans les autres secteurs. Condamné par certains, le ticket d\'entrée attire et fait débat.</p><p>À cause de la réglementation, <strong>les distributeurs ont une marge de manoeuvre limitée sur les prix des produits</strong>, mais peuvent agir sur les \"à-côtés\". Forte d\'une créativité débordante, la distribution a inventé une multitude de \"tickets\" : le ticket de référencement, le ticket de contribution au catalogue papier, le ticket tête de gondole, etc. On en recense une quarantaine. Le monde industriel l\'a adopté telle quelle, ou l\'a adapté. Citons ce constructeur automobile qui demande systématiquement une baisse de 3?% à son fournisseur sur les produits déjà achetés aujourd\'hui en contrepartie de l\'attribution d\'un nouveau business qui commencera dans 6 mois. Le résultat est le même que dans la distribution.</p><p>&nbsp;</p><h2><strong>Tous les prétextes sont bons</strong></h2><p>&nbsp;</p><p>Certains projets e-achat ont utilisé la même technique. En contrepartie du référencement unique d\'un fournisseur sur le système e-achat, certains industriels ont demandé un ticket d\'entrée. Légalement ces entreprises justifiaient la demande par la création de catalogue ou la mise en place technique de l\'accord. Le chèque fournisseur permettait d\'alléger le coût du projet e-procurement côté client. Du côté fournisseurs, la mise en ligne permettait de diminuer son effort commercial pour taux d\'utilisation du contrat supérieur. Mais <strong>certains tickets d\'entrée se sont avérés malheureusement sans effet positif pour le fournisseur</strong>. Des entreprises décernent des \"prix du fournisseur de l\'année\" ou des appellations \"fournisseurs panel\" . Et l\'attribution de cette appellation peut se faire conjointement à un ticket d\'entrée.</p><p>Le fournisseur profite de ce prix pour faire une dépêche de presse et d\'afficher son nouveau statut. <strong>Le budget provient souvent du département marketing du fournisseur</strong>, heureux de cette opération de communication.</p><p>Le plus étonnant est que certains fournisseurs ont intégré ces tickets d\'entrée dans leurs offres standards. C\'est le cas des Télécoms. En l\'espèce, les opérateurs proposent souvent un ticket d\'entrée qui correspond aux frais d\'installation et aux pénalités que devraient payer leurs clients pour sortir du contrat avec leur concurrent. <strong>Les commissaires aux comptes vérifient activement que ces tickets d\'entrée ne sont pas juste une façon d\'acheter du business</strong>.</p><p>Là où le bât blesse, c\'est dans la contrepartie fournisseur. Dans certains cas, la contrepartie perçue par les fournisseurs n\'est pas évidente. <strong>Le ticket d\'entrée en devient donc illégal</strong>. Le ticket d\'entrée est un des outils du professionnel de l\'achat, s\'il est bien utilisé. Sinon il peut devenir un ticket de sortie pour l\'acheteur.</p>', '2020-07-14 15:26:28', 1, NULL, 'https://www.decision-achats.fr/Thematique/strategie-achats-1236/Breves/ticket-entree-autre-faire-gains-achats-350729.htm', 'avis-dexpert-le-ticket-dentree-lautre-facon-de-faire-des-gains-achats', '\"Le ticket d\'entrée\" est le nom pudique pour décrire une pratique qui consiste à demander une contribution financière immédiate à un fournisseur, en échange de l\'attribution d\'une affaire. Est-ce une technique de bandit ?'),
+(100, 21, 'Pourquoi les grands acheteurs préfèrent les retards de paiement aux concessions tarifaires?', '<p>&nbsp; Le crédit fournisseur n\'est pas un crédit comme les autres. C\'est un crédit bon marché, de sorte que les retards équivalent à une concession tarifaire, la valeur du temps diminuant le coût effectif des achats. Ainsi, le crédit fournisseur modifie directement le partage du profit dans la chaîne, sans toucher aux tarifs. De plus, il peut être différencié entre les acheteurs, alors que la loi interdit de leur appliquer des prix différents. C\'est pourquoi les retards dépendent du pouvoir de négociation.<br>&nbsp;&nbsp;<br>Or la concentration des acheteurs a augmenté ces dernières décennies, limitant la capacité des fournisseurs à diversifier leur clientèle. Cela les conduit à accepter les retards, qu\'ils aient ou non un pouvoir de négociation. S\'ils n\'ont pas ce pouvoir, l\'allongement des délais transfère une partie du surplus à leurs grands clients sans que ces derniers changent les prix, ce qui maintient le profit total de la chaîne. Seule sa répartition change. S\'ils ont ce pouvoir et forment de fait un oligopole, la concurrence par les délais est préférée et les délais clients sont les plus élevés lorsque la concentration des fournisseurs est élevée. En somme, les vendeurs valident un comportement opportuniste des grands acheteurs.</p>', '2020-08-06 16:02:38', 1, NULL, 'https://www.decision-achats.fr/Thematique/strategie-achats-1236/Breves/Revue-presse-achats-semaine-juillet-351486.htm', 'pourquoi-les-grands-acheteurs-preferent-les-retards-de-paiement-aux-concessions-tarifaires', 'Le crédit fournisseur n\'est pas un crédit comme les autres. C\'est un crédit bon marché, de sorte que les retards équivalent à une concession tarifaire, la valeur du temps diminuant le coût effectif des achats.'),
+(101, 20, 'L\'après Covid ou le retour des cost killers !', '<h4>Acheteur vs consultant, le combat continue. Pourtant, tous deux possèdent le même ADN, chacun apporte ses qualités et intervient dans les mêmes environnements mais sous des contraintes différentes. Alors, qui va gagne<strong>r ?</strong><br><br>Cost killer, un terme d\'abord <strong>encensé</strong>, puis rapidement <strong>controversé </strong>pour finir par être <strong>rejeté</strong>...<br>&nbsp;</h4><p>Et pourtant, en ces temps post-covid où les ressources financières et le cash des entreprises sont au plus bas, pourquoi ne pas relancer ces consultants, payés le plus souvent au résultat, en tenant compte de l\'histoire et des erreurs du passé ?</p><p>Il est vrai qu\'à une époque, les costs killers faisaient irruption dans les entreprises, malmenaient les fournisseurs, souvent mis au ban, et une fois leur tableau d\'économies complété, repartaient à la même vitesse qu\'ils étaient arrivés, empochant au passage leur chèque pour le service rendu.</p><p>Vu comme cela, ça ressemble un peu à l\'époque de la Terreur... Aujourd\'hui, les choses ont évolué : les acheteurs veillent et les <i>\"cost-killer 2.0</i>\" jouent le long terme et l\'accompagnement.</p><p>Nos deux protagonistes ont la même finalité, même s\'ils marchent sur des chemins différents.</p><p>Et si, plutôt que de les laisser s\'affronter, on mariait ces deux fonctions, pour le meilleur ?</p><p>Conseil externe ou fonction acheteur, les deux missions appellent les mêmes réflexes : <strong>rassurer</strong>, apporter des <strong>solutions</strong>, <strong>analyser</strong>, <strong>trouver </strong>les ressources nécessaires, <strong>négocier</strong>, <strong>fédérer</strong>, <strong>convaincre</strong>...</p><p>Et mesurer, entre autres, les économies réalisées, sur lesquelles chacun d\'eux est intéressé.</p>', '2020-08-06 16:15:16', 1, NULL, 'https://www.decision-achats.fr/Thematique/category-management-1229/Breves/Tribune-apres-Covid-retour-cost-killers-351464.htm', 'lapres-covid-ou-le-retour-des-cost-killers', 'Acheteur vs consultant, le combat continue. Pourtant, tous deux possèdent le même ADN,'),
+(102, 24, 'Ce que le Covid a mis en exergue et ce que les décideurs vont mettre en oeuvre..', '<h4>\"Clairement, la Covid19 a mis les experts des approvisionnements et achats stratégiques au défi de sécuriser les chaînes d\'approvisionnement contre des risques multiples et d\'origines diverses (santé, sociaux, sociétaux et économiques). Ce qui, de notre expérience passera par la prise en compte à tous les étages de la supply chain d\'une gestion de risques dynamique dont les composantes essentielles seront de l\'ordre de :</h4><h4>1 - La détermination du risque de défaillance fournisseur : évaluation des risques financiers des portefeuilles achat,</h4><h4>2 - L\'identification des risques de non-conformité : détermination précise des bénéficiaires effectifs et des liens capitalistiques</h4><h4>3 - Renforcement de la résilience des chaînes d\'approvisionnement : augmentation rapide du portefeuille de fournisseurs pour sécuriser vos chaînes d\'approvisionnement (back-up plan).\"</h4><h4>Ces éléments sont extraits du rapport que vient de publier l<a href=\"https://www.decision-achats.fr/Thematique/strategie-achats-1236/Breves/Preparer-redecollage-decideurs-prets-reevaluer-leurs-process-350217.htm\">\'Observatoire technologique et digital</a>*, qui souhaite mieux comprendre et appréhender les changements récents de notre environnement et de leurs impacts. Plusieurs entreprises se sont unies pour créer cet Observatoire à l\'appel d\'entreprises et d\'organisations professionnelles (Clarans, Studia, L\'école d\'ingénieurs EPF, le Club des processus) qui a interrogé environ 10 0000 décideurs entre le 20 mai et le 3 juillet 2020 au travers de 24 questions fermées.</h4><h4><a href=\"http://observatory.technology/wp-content/uploads/2020/07/Observatoire-Digital-Technologique-Et-apr%C3%A8s-Covid-Rapport-denqu%C3%AAte-Juil.-2020-1.pdf\">L\'étude</a> ne se limite pas aux achats et à la supply mais bien à l\'ensemble de l\'entreprise, aux faiblesses mises à jour par la pandémie et aux solutions d\'avenir. Elle s\'intéresse aux stratégies économiques globales envisagées par les décideurs économiques, aux processus à mettre en place au sein de l\'entreprise, aux outils digitaux, au télétravail, à l\'automatisation des tâches administratives, aux plateformes collaboratives, etc.</h4>', '2020-08-11 15:34:39', 1, NULL, 'https://www.decision-achats.fr/Thematique/strategie-achats-1236/Breves/que-Covid-mis-exergue-que-decideurs-vont-mettre-oeuvre-351482.htm', 'ce-que-le-covid-a-mis-en-exergue-et-ce-que-les-decideurs-vont-mettre-en-oeuvre', 'Afin d\'aider au redécollage post-covid des entreprise, le tout jeune Observatoire technologique et digital a sondé des décideurs économiques sur les enseignements tirés de la crise et sur les mesures à prendre.'),
+(103, 23, 'Solutions technologiques : quels outils pour digitaliser ses achats ?', '<h4>Le contexte de crise sanitaire et économique impose aux entreprises de déployer de nouvelles actions dans un objectif de maîtrise des dépenses et des risques. Les nouvelles technologies sont synonymes de garanties fortes sur ce plan&nbsp;: elles offrent ainsi de franchir le pas vers la digitalisation des processus dans les achats. Mais encore faut-il savoir quelle méthode est souhaitable concrètement&nbsp;!</h4><h4>Deux approches diffèrent lors de l’instauration d’un tel projet&nbsp;:</h4><h4>La mise en place <strong>d’une suite achats</strong>, est l’une d’entre elles. Elle permet de chapeauter l’existant et offrir une vue d’ensemble de la situation.</h4><h4>La deuxième approche consiste en <strong>la construction d’un hub</strong> intégrant une multitude d’applications, selon l’usage de chacune (automatisation des paiements, gestion des contrats, etc.).</h4>', '2020-08-11 16:18:04', 1, NULL, 'https://www.decision-achats.fr/Thematique/hub-dedie-1267/breve/strategieachats--solutions-technologiques-quels-outils-pour-digitaliser-ses-achats-351592.htm', 'solutions-technologiques-quels-outils-pour-digitaliser-ses-achats', 'Le contexte de crise sanitaire et économique impose aux entreprises de déployer de nouvelles actions dans un objectif de maîtrise des dépenses et des risques');
+INSERT INTO `actualite` (`id`, `image_id`, `titre`, `description`, `created`, `is_active`, `keywords`, `source`, `slug`, `apercu`) VALUES
+(104, 26, 'Quand les achats des entreprises ont un rôle vital à jouer pour favoriser la transition écologique..', '<h4>Alors que les entreprises s\'efforcent d\'inscrire le développement durable dans leur propre démarche de RSE, les achats se posent comme un allié vital pour conduire le changement environnemental nécessaire au sein de l\'entreprise et permettre aux fournisseurs de suivre ce train en marche. Dans une démarche de développement durable, la capacité à obtenir une cartographie complète de l\'impact environnemental d\'une entreprise, y compris de ses fournisseurs, est une étape essentielle. En rassemblant informations, certifications environnementales et autres documents légaux directement auprès des fournisseurs, les plateformes de gestion des Achats vont ainsi aider les entreprises à gérer efficacement leurs fournisseurs et les risques associés tout en travaillant à leurs côtés pour promouvoir les pratiques éco-responsables. Collaborer autour de la supply chain va faire la différence. Elle donne aux entreprises la possibilité de dépasser les attentes de leurs clients et de transformer les pratiques de développement durable en avantage concurrentiel.</h4>', '2020-08-24 08:23:37', 1, NULL, 'https://www.decision-achats.fr/Thematique/strategie-achats-1236/Breves/Revue-presse-achats-semaine-aout-351798.htm', 'quand-les-achats-des-entreprises-ont-un-role-vital-a-jouer-pour-favoriser-la-transition-ecologique', 'De quelle façon les achats des entreprises peuvent être un levier pour leur transition énergétique?'),
+(105, 27, '|Avis d\'expert] Projets agiles : Réconcilions le couple acheteur fournisseur', '<h4><i><strong>Les enjeux de l\'acheteur sur la sécurisation et l\'anticipation des besoins, sont en contradiction avec ceux du fournisseur, qui lui recherche une flexibilité d\'exécution sur les projets agiles. Hors un contrat trop rigide est un frein à l\'agilité. Dès lors, comment concilier l\'inconciliable ?</strong></i><br><br>L\'<strong>agilité </strong>! Derrière ce mot, se cache un modèle d\'exécution de projet de plus en plus répandu dans les entreprises. Si ces bénéfices ne sont plus à démontrer, tel que la maximisation de la valeur métier, son côté flexible sur le périmètre est anxiogène pour les acheteurs. La contractualisation peut, dès lors, prendre des aspects de chemin de croix, tant pour l\'acheteur que le fournisseur.</h4><h4>La principale crainte de l\'acheteur, c\'est d\'être face à une <strong>promesse technique</strong> que le fournisseur ne saura pas honorer. L\'acheteur va alors chercher les moyens de le <strong>piloter </strong>et l\'<strong>engager</strong>. Le moyen confortable d\'y remédier ? Retomber dans un modèle d\'engagement forfaitaire avec des coûts et un périmètre figés.<br>&nbsp;</h4><h2><strong>Le forfait : la facilité apparente</strong></h2><h4>Par principe, les<strong> méthodes agiles</strong> font évoluer au fur et à mesure des itérations le périmètre du projet, et il est parfois difficile d\'avoir un prix réellement établi pour le produit développé. L\'acheteur via le forfait, espère engager le fournisseur dans la réalisation d\'une prestation à un prix maîtrisé. Une douce, mais pourtant fausse, sensation de sécurité. Nous avons tendance à penser que le forfait simplifie le fonctionnement et l\'exécution. Or dans la réalité, il aboutit à plus de litiges ou désaccords. Prévoir son périmètre fonctionnel définitif avant le démarrage du projet est un exercice quasiment impossible, et l\'ajout de périmètre fonctionnel en cours d\'exécution, peu importe sa nécessité, entraînera des discussions relatives à un devis complémentaire. Les micro-lots additionnels sont courants (et inévitables) sur ce mode d\'engagement. Au final, le ratio prix / valeur business est plus important sur l\'<strong>engagement forfaitaire</strong>. C\'est justement le côté <strong>évolutif</strong>, <strong>adaptatif du produit</strong>, qui fait la force du paradigme agile, qui garantit l\'adéquation de la réponse applicative à un besoin utilisateur. Il faut se souvenir qu\'un produit ça évolue, ça vie.</h4><h4>Ce n\'est pas le mode d\'engagement qui fera la réussite du projet, mais bien la <strong>capacité des deux parties à réagir et à s\'adapter</strong> durant l\'exécution, à tenir les rythmes de livraisons et de recettes. Et pour cela, le contrat ne doit pas être un frein mais bien un outil à cette fin.</h4><h4>Il est important de se souvenir que le succès - tout comme l\'échec - est portée à la fois par l\'entreprise et par le fournisseur. Favoriser un environnement d\'échanges et interagir comme des partenaires pour <strong>co-construire </strong><i><strong>une succes story </strong></i>fourniront plus de valeur à long terme qu\'une simple exécution de contrat.</h4>', '2020-08-24 08:43:54', 1, NULL, 'https://www.decision-achats.fr/Thematique/strategie-achats-1236/Breves/Avis-expert-Projets-agiles-Reconcilions-couple-acheteur-fournisseur-351790.htm', 'avis-dexpert-projets-agiles-reconcilions-le-couple-acheteur-fournisseur', 'Les enjeux de l\'acheteur sur la sécurisation et l\'anticipation des besoins, sont en contradiction avec ceux du fournisseur'),
+(106, 30, 'Savez-vous gérer votre temps ? 7 astuces pour ne plus être débordé', '<h4><i>Votre fonction vous amène à être sur tous les fronts. Vous arrive-t-il de regretter de ne pas avoir pu passer plus de temps avec un collaborateur ? Avez-vous également la désagréable sensation que c\'est parfois votre emploi du temps qui commande ?</i></h4><h4><i>Alors, quelles sont les astuces pour ne plus être débordé ? Trouver votre équilibre entre votre vie personnelle et votre vie professionnelle,st-ce vraiment l\'équation impossible ?</i></h4><h4><br><strong>7 astuces pour ne plus être débordé</strong></h4><h4><strong>Définissez vos priorités grâce à la matrice d \'Eisenhower</strong></h4><p>Elle vous permet de distinguer et hiérarchiser ce qui est urgent et nécessaire de ce qui ne l\'est pas.</p><p>La matrice d\'Eisenhower se décompose en 4 groupes :</p><p>- Ce qui est <strong>urgent et nécessaire</strong>,</p><p>- Ce qui <strong>urgent mais non nécessaire</strong>,</p><p>- Ce qui est <strong>nécessaire mais non urgent</strong>,</p><p>- Ce qui n \'est <strong>ni urgent ni nécessaire</strong>.</p><p>Pour éviter la procrastination (remettre à plus tard ce que l\'on peut faire aujourd\'hui), focalisez-vous sur le dernier point. Vous aurez ainsi l\'esprit libéré pour vous <strong>concentrer sur les aspects stratégiques</strong>. Définir ainsi vos priorités vous amènera à vous détacher de la fameuse \" <i>to do list</i> \" que vous allez reporter, au mieux, d\'une semaine sur l\'autre...</p><h4><br><strong>Evaluez la durée de toutes vos activités</strong></h4><p>Personnelle ou professionnelle, la durée d\'une activité est une notion très subjective. Ce qu\'on aime passe toujours trop vite, ce qu\'on rechigne à faire dure bien souvent trop longtemps.</p><p>Soyez honnête par apport à ces deux points pour évaluer au mieux le temps que vous passez sur vos activités. Vous vous rendrez ainsi mieux compte des tâches répétitives, que vous pourrez peut-être automatiser et des tâches chronophages</p><p><i>Pour <strong>rester concentré et efficace</strong>, pensez à la \" méthode Pomodoro \" : 45 minutes de travail puis 15 minutes de pause.</i></p><p>Hiérarchiser vos priorités et évaluer la durée de vos activités sont les bases de votre gestion du temps. Ce sont elles en effet qui vont vous permettre de construire et d\'anticiper votre journée et votre semaine.</p><h4><br><strong>Anticipez votre journée et votre semaine</strong></h4><p>Pour maîtriser votre agenda, prenez le temps de tout noter : vos rendez-vous, les plages dédiées aux dossiers que vous gérez, votre temps \" off \", vos activités extra-professionnelles... Rien ne doit échapper à votre vigilance. Vous aurez ainsi une visibilité totale de votre emploi du temps.</p><p>Pour chaque tâche, pensez également à prendre une <strong>marge de sécurité</strong>, toujours utile pour votre tranquillité d\'esprit.</p><h4><br><strong>Prévoyez les imprévus</strong></h4><p>Ce sont des sources de stress permanentes. Si vous écartez les événements inattendus (accident, fourrière, inondation,...), <strong>les imprévus sont prévisibles</strong> ! Les incidents qui peuvent vous paraitre mineurs et inhabituels sont en fait des éléments qui doivent vous \" <i>mettre la puce à l\'oreille</i> \" car ils sont révélateurs de dysfonctionnements. En étant attentif, vous éviterez ainsi les dérapages et les glissements de planning avec leurs lots de mauvaises surprises.</p><p>&nbsp;</p><h4><strong>Investissez dans un agenda papier</strong></h4><p>Les <strong>agendas numériques</strong> et partagés, même s\'ils sont très pratiques, vous <strong>coupent de toute forme d\'écriture</strong>. Même si vous pensez que cela fait doublon, achetez un agenda papier, une gomme et un crayon (papier). En écrivant (et en gommant !), vous allez très vite vous rendre compte si ce délai est tenable ou ce rendez-vous utile. L\'engagement avec un crayon et une gomme est bien différent de celui des agendas électroniques.</p><h4><br><strong>Apprenez à dire \" </strong><i><strong>non</strong></i><strong> \"</strong></h4><p>Par peur de déplaire ou de paraître pour quelqu\'un d\'antipathique, vous dîtes bien souvent \" <i>oui</i> \", alors que vous pensez et que vous voudriez dire \" <i>non</i> \"... Et c\'est ainsi que vous pouvez vous retrouver dans des situations qui vous dépassent, et dont vous voudriez vous défaire.</p><p>Pour éviter ces moments inconfortables, apprenez à dire \" <i>non</i> \" et entraînez-vous à le dire sur des petites choses puis sur des points plus importants.</p><h4><br><strong>Fuyez les voleurs de temps</strong></h4><p>Entre les appels , les alertes en tout genre ou les notifications des réseaux sociaux, les sources de distraction sont nombreuses.<br>&nbsp;</p>', '2020-09-04 10:55:21', 1, NULL, 'https://www.decision-achats.fr/Thematique/rh-1234/Breves/Savez-vous-gerer-votre-temps-astuces-plus-deborde-351900.htm', 'savez-vous-gerer-votre-temps-7-astuces-pour-ne-plus-etre-deborde', 'Votre fonction vous amène à être sur tous les fronts. Vous arrive-t-il de regretter de ne pas avoir pu passer plus de temps avec un collaborateur ? Avez-vous également la désagréable sensation que c\'est parfois votre emploi du temps qui commande ?\n\nAlors, quelles sont les astuces pour ne plus être débordé ? Trouver votre équilibre entre votre vie personnelle et votre vie professionnelle,st-ce vraiment l\'équation impossible ?'),
+(107, 31, 'La transformation digitale, socle d\'une démarche achat plus inclusive ?', '<h2>La dématérialisation de la commande publique, à l\'oeuvre depuis plusieurs années, se heurte pourtant toujours à un écueil : la réalité des organisations. En effet, la révolution digitale dans l\'achat public butte obstinément sur le passage à l\'échelle. Pourquoi ? Comment y remédier ?</h2><p>&nbsp;</p><p>Comment faire de la transformation digitale un levier de collaboration et de performance économique ? C\'est la question qui habite tout directeur achats publics depuis quelques années, qu\'il agisse au sein d\'une collectivité territoriale, d\'un établissement public à caractère industriel et commercial ou d\'un groupement hospitalier. <strong>La transformation digitale s\'impose aux organisations publiques</strong>. C\'est bien sûr un enjeu réglementaire désormais imposé par le Code de la commande publique, mais pour que cette transformation devienne aussi un enjeu d\'efficacité, de compétitivité même, <i>les directions achats publiques ne peuvent pas se limiter à la mise en place d\'outils</i>, mais se doivent de mener une réflexion globale.<br>&nbsp;</p><p>Pour Nathalie Deleville, déléguée nationale du CNA, en introduction de la dernière matinale achats publics co-organisée par le CNA et l\'éditeur Per Angusta : \"<i>On assiste à une transformation profonde de la fonction, avec des enjeux importants en termes de performance, de qualité, d\'innovation qui nécessitent, pour conduire le changement d\'écrire une feuille de route précise</i>.\" Donc en 2019, le digital et tout ce que cela recouvre, se présente sous un angle nouveau pour les achats publics et implique d\'<strong>avoir une approche plus inclusive</strong>. Pour que la dématérialisation ait un impact il faut d\'abord qu\'elle ait un sens, il faut donc <strong>réconcilier le digital avec ce que sont les devoirs</strong> et les responsabilités sociétales des organismes publics pour une réelle efficacité.<br>&nbsp;</p><h2><strong>Clarifier les objectifs à travers un schéma directeur</strong></h2><p>Construire une feuille de route digitale achats dans le contexte des marchés publics consiste, pour Eric Bardet, directeur des achats du budget et des finances des Universités Paris Sud, à <strong>avoir une vision double</strong> : \"<i>Cela consiste à avoir une bonne symbiose entre la commande publique et tout l\'aspect réglementaire qu\'elle porte, ET la démarche achat.</i>\" Ainsi, avoir une feuille de route avec des jalons précis en fonction de sa maturité, de son organisation interne, de ses contraintes de fonctionnement, pour ne citer que cela, <strong>doit permettre grâce aux outils de faire basculer les process achats dans l\'aide à la décision</strong>. \"<i>L\'enjeu d\'une feuille de route digitale, n\'est pas juste l\'implémentation de nouveaux outils, mais bien l\'animation de la future politique achat et le déploiement de toute la stratégie achats à travers ces outils</i>\", insiste Eric Bardet.<br>&nbsp;</p><p>Bien évidemment, suivant les contraintes et les priorités,<strong> les arbitrages ne seront pas les mêmes d\'une direction achats publics à l\'autre</strong>. L\'autre enjeu à la mise en place d\'une feuille de route digitale est de permettre de gérer les injonctions contradictoires que doit de toute façon porter la commande publique. En effet, lorsqu\'on empile les cinq paramètres, les cinq objectifs de la feuille de route achat définie par l\'État et qu\'on essaie de les porter tous en même temps et de la même façon, cela devient vite une mission impossible. \"<i>Il faut pondérer. Bien sûr les cinq critères doivent être pris en compte, mais selon votre secteur d\'activité et vos contraintes, il revient au directeur achats de trouver le bon curseur et de donner du sens à la démarche achats pour que les équipes des différents services \" plongent \" dans les achats</i>\", estime Eric Bardet en charge du plan de transformation achats des Universités Paris Sud.<br>&nbsp;</p><p>Une feuille de route digitale permet donc de <strong>clarifier les objectifs des équipes achats et d\'embarquer l\'ensemble des prescripteurs</strong>. \"<i>Cela permet d\'organiser la transformation, de repenser le SI sur toute la chaîne achats en anticipant les impacts chez les différents utilisateurs</i>\", indique Ludivine Chazelle, chef de projet accompagnement au changement chez Klee Group.</p><p>&nbsp;</p><h2><strong>De l\'importance du marketing achat...</strong></h2><p>&nbsp;</p><p>Mais parce que digitaliser pour digitaliser n\'aboutit en général sur rien de concret et encore moins d\'efficace,<strong> il incombe au directeur achats de porter \"la vision\" de la digitalisation des achats publics</strong>. \"<i>Cela revient ni plus ni moins à faire de la pédagogie achats, estime Eric Bardet. On peut tout à fait utiliser le digital pour réduire les risques, notamment par exemple pour identifier et éradiquer tous les contrats orphelins pas ou peu suivis</i>.\" Pour que le marketing achat soit efficace,<strong> il convient de travailler trois axes </strong>: l\'ambition, la vision et le risque. En partant d\'une cartographie des dépenses, on peut ensuite produire une lecture des achats comprise par tous, ce qui provoquera in fine la prise de conscience nécessaire pour mettre en lien la gestion des risques et l\'ambition globale. \"<i>Il faut beaucoup d\'énergie à l\'architecte achats pour faire comprendre et accepter sa feuille de route digitale. Cela passe par des actions sur le pilotage achats pur, mais aussi en agissant sur l\'opérationnel pour fluidifier et simplifier les process en évitant qu\'une commande fournisseur soit saisie quatre fois par exemple</i>\", illustre Eric Bardet.</p><p>Un projet de digitalisation permet donc de <strong>donner de la visibilité aux actions des achats</strong>. Pour la région AURA (région de taille équivalente à l\'Irlande) qui déploie son nouveau SI achats (SIAM) depuis 9 mois, ce projet a permis de mettre en lumière les actions achats. \"<i>Grâce à l\'outil, nous nous rendons visibles auprès de nos prescripteurs et commençons à constater un changement d\'attitude important</i>\", se réjouit Aurélia Degnifo Lucot, responsable du service pilotage, méthodes et outils de la direction des achats de la région. La centralisation des deux directions achats historiques en une seule entité régionale a permis de <strong>rendre plus visible et plus lisible les actions de chacun</strong>. \"<i>Les fournisseurs ont une seule adresse, un point d\'entrée unique et l\'ensemble des besoins ressort sur les profils acheteurs</i>\", détaille Aurélia Degnifo Lucot.</p><p>Réconcilier SI achats et SI Finance pour aligner l\'effet gains avec l\'effet budgétaire est un autre levier pour être visible auprès des métiers. \"<i>Après 9 mois de déploiement et un gros travail sur la data et la simplification des process, nous allons aborder un deuxième palier en 2020 pour travailler l\'interface avec le SI Finance</i>\", explique Aurélia Degnifo Lucot. <strong>Cette réconciliation fait sens</strong> (elle constitue d\'ailleurs l\'un des objectifs de la nouvelle directive du Comité interministériel de la transformation publique 2020), mais reste complexe dans la mise en oeuvre, ne serait-ce que parce l\'économie achat n\'est pas toujours la même ligne budgétaire.</p>', '2020-10-07 11:23:23', 1, NULL, 'https://www.decision-achats.fr/Thematique/achats-publics-1230/Breves/transformation-digitale-socle-demarche-achat-plus-inclusive-350747.htm', 'la-transformation-digitale-socle-dune-demarche-achat-plus-inclusive', 'La dématérialisation de la commande publique, à l\'oeuvre depuis plusieurs années, se heurte pourtant toujours à un écueil : la réalité des organisations. En effet, la révolution digitale dans l\'achat public butte obstinément sur le passage à l\'échelle. Pourquoi ? Comment y remédier ?');
 
 -- --------------------------------------------------------
 
@@ -388,7 +407,20 @@ INSERT INTO `actualite_image` (`id`, `url`) VALUES
 (15, 'logima_G.gif'),
 (16, '5f0dbd2c6da93250975772.jpg'),
 (17, '5f0dc1b3ee6be338552100.jpg'),
-(18, '5f0dcea06c537134086752.jpg');
+(18, '5f0dcea06c537134086752.jpg'),
+(19, '5f2c2999180ea163916832.png'),
+(20, '5f2c2c893c59b772841887.jpg'),
+(21, '5f2c2d1794a68467680307.png'),
+(22, '5f32b207ba15d811356655.png'),
+(23, '5f32c47898002356061573.jpg'),
+(24, '5f3536600e83c467611756.jpg'),
+(25, '5f3aa5137681b430441594.PNG'),
+(26, '5f43785672419991059682.jpg'),
+(27, '5f437951225b9873404689.jpg'),
+(28, '5f439024b381b531222472.jpg'),
+(29, '5f4d17b81a2d0123256560.jpg'),
+(30, '5f521d0d03c80937449678.jpg'),
+(31, '5f7da4d2396af350647197.jpg');
 
 -- --------------------------------------------------------
 
@@ -464,7 +496,31 @@ CREATE TABLE `avatar` (
 INSERT INTO `avatar` (`id`, `url`) VALUES
 (1, '5eda4f418aba8704646613.jpg'),
 (2, '5f0dd859d44f8557642055.png'),
-(3, '5f17191ae21f1711407296.png');
+(3, '5f17191ae21f1711407296.png'),
+(4, '5f1b0262e3499949152932.jpg'),
+(5, '5f1b03ed0739a656675666.jpg'),
+(6, '5f1fe4aba9524114098328.png'),
+(7, '5f1fe50a9b947951932934.png'),
+(8, '5f1fe690623bd732435341.png'),
+(9, '5f1fe6a80cfbe532656886.png'),
+(10, '5f1fe6c53cc81588727985.png'),
+(11, '5f1fe6ec2756a387336330.png'),
+(12, '5f1ff20b970e2392999198.png'),
+(13, '5f27210259d47477504970.png'),
+(14, '5f298a6bb60f6888294306.jpg'),
+(15, '5f298a7acea63061932261.jpg'),
+(16, '5f44f5bf48c6d827263301.jpeg'),
+(17, '5f44f5ccd0dc7288652541.jpeg'),
+(18, '5f44f5d82c110528463053.jpeg'),
+(19, '5f4621427e97a985516972.jpeg'),
+(20, '5f46fd538be9b427217418.png'),
+(21, '5f4917e1de45b851762170.png'),
+(22, '5f58b50b20182789019549.jpg'),
+(23, '5f914db592f8c914254380.png'),
+(24, '5f92a2fa124d4565492419.jpg'),
+(25, '5ffebab8ecda0552785285.png'),
+(26, '60982298ef3ab603946399.png'),
+(27, '60b0bf6fae335078326153.PNG');
 
 -- --------------------------------------------------------
 
@@ -481,6 +537,13 @@ CREATE TABLE `black_listes` (
   `deblacklister` datetime DEFAULT NULL,
   `etat` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `black_listes`
+--
+
+INSERT INTO `black_listes` (`id`, `fournisseur_id`, `raison`, `created`, `acheteur_id`, `deblacklister`, `etat`) VALUES
+(1, 2, 'ddddddd', '2020-08-31 15:51:02', 682, '2020-08-31 15:52:20', 0);
 
 -- --------------------------------------------------------
 
@@ -532,7 +595,7 @@ INSERT INTO `categorie` (`id`, `name`, `del`, `slug`) VALUES
 (30, 'Matériel et fournitures pour restaurant\n', 0, 'materiel-et-fournitures-pour-restaurant\n'),
 (31, 'Matériel et fournitures pour Glaciers\n', 0, 'materiel-et-fournitures-pour-glaciers\n'),
 (32, 'Fourniture Industrie Alimentatire\n', 0, 'fourniture-industrie-alimentatire\n'),
-(33, 'Matériel pour l\'industrie Alimentataire\n', 0, 'materiel-pour-lindustrie-alimentataire\n'),
+(33, 'Matériel pour l\'Industrie Alimentaire', 0, 'materiel-pour-lindustrie-alimentaire'),
 (34, 'Matériel pour pâtisserie, confiserie\n', 0, 'materiel-pour-patisserie-confiserie\n'),
 (35, 'Produits surgelés\n', 0, 'produits-surgeles\n'),
 (36, 'Materiel pour Ascenseurs', 0, 'materiel-pour-ascenseurs'),
@@ -629,7 +692,7 @@ INSERT INTO `categorie` (`id`, `name`, `del`, `slug`) VALUES
 (128, 'Outillages', 0, 'outillages'),
 (129, 'Armoire et coffret\n', 0, 'armoire-et-coffret\n'),
 (130, 'Appareils de mesure et de contrôle électrique', 0, 'appareils-de-mesure-et-de-controle-electrique'),
-(131, 'Automate programmable\n', 0, 'automate-programmable\n'),
+(131, 'Automate programmable\n_deleted-131', 1, 'automate-programmable-deleted-131'),
 (132, 'Bobinage pour moteur électrique\n', 0, 'bobinage-pour-moteur-electrique\n'),
 (133, 'Câble et fil électrique\n', 0, 'cable-et-fil-electrique\n'),
 (134, 'Carte électronique\n', 0, 'carte-electronique\n'),
@@ -847,7 +910,6 @@ INSERT INTO `categorie` (`id`, `name`, `del`, `slug`) VALUES
 (353, 'Articles promotionnels\n', 0, 'articles-promotionnels\n'),
 (354, 'Cadeaux d\'affaires\n', 0, 'cadeaux-daffaires\n'),
 (355, 'Intérim\n', 0, 'interim\n'),
-(356, 'Gardiennage\n', 0, 'gardiennage\n'),
 (357, 'Recrutement\n', 0, 'recrutement\n'),
 (358, 'Alarmes', 0, 'alarmes'),
 (359, 'Appareils de surveillance', 0, 'appareils-de-surveillance'),
@@ -873,7 +935,128 @@ INSERT INTO `categorie` (`id`, `name`, `del`, `slug`) VALUES
 (379, 'Carte électronique ', 0, 'carte-electronique'),
 (380, 'Bac en plastique', 0, 'bac-en-plastique'),
 (381, 'Bac de rétention ', 0, 'bac-de-retention'),
-(382, 'Autre', 0, 'autre');
+(382, 'Autre', 0, 'autre'),
+(383, 'Moto-variateurs', 0, 'moto-variateurs'),
+(384, 'Moteurs asynchrones', 0, 'moteurs-asynchrones'),
+(385, 'Réducteurs', 0, 'reducteurs'),
+(386, 'Variateurs de vitesse', 0, 'variateurs-de-vitesse'),
+(387, 'Transmission', 0, 'transmission'),
+(388, 'Moteurs asynchrones', 0, 'moteurs-asynchrones-1'),
+(389, 'Tuyauterie industrielle', 0, 'tuyauterie-industrielle'),
+(390, 'Chaudronnerie', 0, 'chaudronnerie'),
+(391, 'Peinture sablage', 0, 'peinture-sablage'),
+(392, 'Main d\'oeuvre en régie', 0, 'main-doeuvre-en-regie'),
+(393, 'Poste électrique', 0, 'poste-electrique'),
+(394, 'Groupe électrogène', 0, 'groupe-electrogene'),
+(395, 'Valise d\'injection', 0, 'valise-dinjection'),
+(396, 'Groupe électrogène', 0, 'groupe-electrogene-1'),
+(397, 'Machine traitement huile', 0, 'machine-traitement-huile'),
+(398, 'Détecteur défauts câbles', 0, 'detecteur-defauts-cables'),
+(399, 'Tableau hta', 0, 'tableau-hta'),
+(400, 'Cellule hta', 0, 'cellule-hta'),
+(401, 'Testeur disjoncteurs', 0, 'testeur-disjoncteurs'),
+(402, 'Eau embouteillée', 0, 'eau-embouteillee'),
+(403, 'Eclairage extérieur', 0, 'eclairage-exterieur'),
+(404, 'Eclairage extérieur_deleted-404', 1, 'eclairage-exterieur-deleted-404'),
+(405, 'Eclairage extérieur_deleted-405', 1, 'eclairage-exterieur-deleted-405'),
+(406, 'Eclairage extérieur _deleted-406', 1, 'eclairage-exterieur-deleted-406'),
+(407, 'Tube PPR', 0, 'tube-ppr'),
+(408, 'TUBE PPR_deleted-408', 1, 'tube-ppr-deleted-408'),
+(409, 'TUBE PPR_deleted-409', 1, 'tube-ppr-deleted-409'),
+(410, 'Robinetterie Industrielle', 0, 'robinetterie-industrielle'),
+(411, 'Vannes', 0, 'vannes'),
+(412, 'Lampe', 0, 'lampe'),
+(413, 'Caméra de surveillance ', 0, 'camera-de-surveillance'),
+(414, 'Contrôle d\'accès', 0, 'controle-dacces-1'),
+(415, 'Interphone', 0, 'interphone'),
+(416, 'Informatique', 0, 'informatique'),
+(417, 'Télésurveillance chambre froide', 0, 'telesurveillance-chambre-froide'),
+(418, 'Détection incendie', 0, 'detection-incendie'),
+(419, 'Sécurité éléctronique_deleted-419', 1, 'securite-electronique-deleted-419'),
+(420, 'Switch', 0, 'switch'),
+(421, 'Sécurité éléctronique', 0, 'securite-electronique-1'),
+(422, 'Caméra surveillance', 0, 'camera-surveillance'),
+(423, 'Système de pointage', 0, 'systeme-de-pointage'),
+(424, 'Protection incendie', 0, 'protection-incendie'),
+(425, 'Système désenfumage', 0, 'systeme-desenfumage'),
+(426, 'Extinction automatique', 0, 'extinction-automatique'),
+(427, 'Interphonie IP et sonorisation ', 0, 'interphonie-ip-et-sonorisation'),
+(428, 'Télésurveillance et régulation', 0, 'telesurveillance-et-regulation'),
+(429, 'Maintenance ', 0, 'maintenance'),
+(430, 'Dératisation', 0, 'deratisation'),
+(431, 'Désinfection', 0, 'desinfection'),
+(432, 'Désinsectisation', 0, 'desinsectisation'),
+(433, 'Travaux d’aménagement', 0, 'travaux-damenagement'),
+(434, 'Aluminium_deleted-434', 1, 'aluminium-deleted-434'),
+(435, 'Aluminium_deleted-435', 1, 'aluminium-deleted-435'),
+(436, 'fenêtre _deleted-436', 1, 'fenetre-deleted-436'),
+(437, 'Porte_deleted-437', 1, 'porte-deleted-437'),
+(438, 'Pergola ', 0, 'pergola'),
+(439, 'Véranda', 0, 'veranda'),
+(440, 'Fenêtre', 0, 'fenetre'),
+(441, 'Porte', 0, 'porte-1'),
+(442, 'Aluminium', 0, 'aluminium-1'),
+(443, 'Bigbag', 0, 'bigbag'),
+(444, 'Sacs PP', 0, 'sacs-pp'),
+(445, 'Sacs PP', 0, 'sacs-pp-1'),
+(446, 'Filets Agricoles  ', 0, 'filets-agricoles'),
+(447, 'Farine', 0, 'farine'),
+(448, 'Matériel BTP', 0, 'materiel-btp'),
+(449, 'Ciment', 0, 'ciment'),
+(450, 'Bâche', 0, 'bache'),
+(451, 'Bavettes', 0, 'bavettes'),
+(452, 'Gel hydroalcoolique', 0, 'gel-hydroalcoolique'),
+(453, 'Thé vert de Chine', 0, 'the-vert-de-chine'),
+(454, 'Thé Chunmee', 0, 'the-chunmee'),
+(455, 'Thé Gunpowder', 0, 'the-gunpowder'),
+(456, 'Désinfection', 0, 'desinfection-1'),
+(457, 'Dératisation', 0, 'deratisation-1'),
+(458, 'Désinsectisation', 0, 'desinsectisation-1'),
+(459, 'Jardinage', 0, 'jardinage'),
+(460, 'Nettoyage ', 0, 'nettoyage'),
+(461, 'Treuil', 0, 'treuil'),
+(462, 'levage', 0, 'levage'),
+(463, 'Levage', 0, 'levage-1'),
+(464, 'Pont roulant', 0, 'pont-roulant'),
+(465, 'Portique', 0, 'portique'),
+(466, 'Potence', 0, 'potence'),
+(467, 'Palan', 0, 'palan'),
+(468, 'Crane', 0, 'crane'),
+(469, 'Câble éléctrique HT BT', 0, 'cable-electrique-ht-bt'),
+(470, 'Automates programmables', 0, 'automates-programmables'),
+(471, 'Ecran supervision ', 0, 'ecran-supervision'),
+(472, 'Module entrée sortie ', 0, 'module-entree-sortie'),
+(473, 'Vérins pneumatiques ', 0, 'verins-pneumatiques'),
+(474, 'Pompe hydraulique ', 0, 'pompe-hydraulique'),
+(475, 'Vanne hydraulique ', 0, 'vanne-hydraulique'),
+(476, 'Nacelle élévatrice automotrice', 0, 'nacelle-elevatrice-automotrice'),
+(477, 'Additifs diesel', 0, 'additifs-diesel'),
+(478, 'Palan', 0, 'palan-1'),
+(479, 'Palan ', 0, 'palan-2'),
+(480, 'Chariot élévateurs ', 0, 'chariot-elevateurs'),
+(481, 'Treuils', 0, 'treuils'),
+(482, 'Crics', 0, 'crics'),
+(483, 'Vérins', 0, 'verins'),
+(484, 'Gerbeurs', 0, 'gerbeurs'),
+(485, 'Transpalettes', 0, 'transpalettes'),
+(486, 'Accessoires EPI', 0, 'accessoires-epi'),
+(487, 'Caoutchouc', 0, 'caoutchouc'),
+(488, 'Boulons', 0, 'boulons'),
+(489, 'Ecrous', 0, 'ecrous'),
+(490, 'Vis', 0, 'vis'),
+(491, 'Câble électrique', 0, 'cable-electrique'),
+(492, 'Composants pour l\'électricité', 0, 'composants-pour-lelectricite'),
+(493, 'Installation réparation Plomberie', 0, 'installation-reparation-plomberie'),
+(494, 'Accessoires Branchement Eau', 0, 'accessoires-branchement-eau'),
+(495, 'Tuyauterie', 0, 'tuyauterie'),
+(496, 'Equipement Piscine', 0, 'equipement-piscine'),
+(497, 'Mesure de débit', 0, 'mesure-de-debit'),
+(498, 'Mesure de masse', 0, 'mesure-de-masse'),
+(499, 'Mesure mécanique ', 0, 'mesure-mecanique'),
+(500, 'Capteurs de vitesse ', 0, 'capteurs-de-vitesse'),
+(501, 'Masques médicaux', 0, 'masques-medicaux'),
+(502, 'Capteurs industriels', 0, 'capteurs-industriels'),
+(503, 'sécurité EPI', 0, 'securite-epi');
 
 -- --------------------------------------------------------
 
@@ -1238,7 +1421,6 @@ INSERT INTO `categorie_sous_secteur` (`categorie_id`, `sous_secteur_id`) VALUES
 (353, 84),
 (354, 84),
 (355, 85),
-(356, 85),
 (357, 85),
 (358, 86),
 (359, 86),
@@ -1264,7 +1446,132 @@ INSERT INTO `categorie_sous_secteur` (`categorie_id`, `sous_secteur_id`) VALUES
 (379, 42),
 (380, 61),
 (381, 88),
-(381, 91);
+(381, 91),
+(383, 17),
+(384, 41),
+(385, 62),
+(386, 41),
+(387, 62),
+(388, 17),
+(389, 97),
+(390, 97),
+(391, 97),
+(392, 100),
+(393, 41),
+(394, 41),
+(395, 41),
+(396, 38),
+(397, 17),
+(398, 41),
+(399, 41),
+(400, 41),
+(401, 41),
+(402, 3),
+(403, 41),
+(404, 41),
+(405, 41),
+(406, 41),
+(407, 31),
+(407, 56),
+(407, 83),
+(408, 83),
+(409, 83),
+(410, 31),
+(410, 56),
+(410, 83),
+(411, 31),
+(412, 101),
+(413, 102),
+(414, 86),
+(415, 102),
+(416, 66),
+(417, 102),
+(418, 86),
+(419, 86),
+(420, 67),
+(421, 66),
+(422, 102),
+(423, 102),
+(424, 86),
+(425, 86),
+(426, 86),
+(427, 86),
+(428, 103),
+(429, 99),
+(430, 104),
+(431, 105),
+(432, 105),
+(433, 55),
+(434, 1),
+(435, 1),
+(436, 106),
+(437, 106),
+(438, 107),
+(439, 107),
+(440, 107),
+(441, 107),
+(442, 1),
+(443, 32),
+(444, 108),
+(445, 108),
+(446, 83),
+(447, 7),
+(448, 19),
+(449, 54),
+(450, 83),
+(451, 109),
+(452, 109),
+(453, 3),
+(454, 3),
+(455, 3),
+(456, 104),
+(457, 104),
+(458, 104),
+(459, 110),
+(460, 104),
+(461, 70),
+(462, 70),
+(463, 70),
+(464, 70),
+(465, 70),
+(466, 70),
+(467, 70),
+(468, 70),
+(469, 41),
+(470, 113),
+(471, 113),
+(472, 113),
+(473, 114),
+(474, 115),
+(475, 115),
+(476, 70),
+(477, 116),
+(478, 70),
+(479, 118),
+(480, 118),
+(481, 118),
+(482, 118),
+(483, 118),
+(484, 118),
+(485, 118),
+(486, 109),
+(487, 119),
+(488, 31),
+(489, 31),
+(490, 31),
+(491, 41),
+(492, 41),
+(493, 120),
+(494, 122),
+(495, 122),
+(496, 122),
+(497, 123),
+(498, 123),
+(499, 123),
+(500, 123),
+(501, 124),
+(502, 113),
+(503, 125);
 
 -- --------------------------------------------------------
 
@@ -1306,7 +1613,7 @@ CREATE TABLE `condition_generale` (
 
 INSERT INTO `condition_generale` (`id`, `titre`, `contenu`, `slug`) VALUES
 (1, 'Conditions générales', '<p><strong>***Conditions Générales d\'Utilisation du site&nbsp;lesachatsindustriels&nbsp;***</strong></p><p>&nbsp;</p><p>Les présentes conditions générales d’utilisation du site Internet&nbsp;lesachatsindustriels&nbsp;(ci-après le « Site ») ont pour objet de régir les droits et obligations de la Société&nbsp;\"7e-sky\"&nbsp;éditrice et propriétaire du site (ci-après «&nbsp;lesachatsindustriels&nbsp;») et de l’utilisateur (ci-après l’« Utilisateur ») du Site dans le cadre des prestations de services fournies par le site&nbsp;www.lesachatsindustriels.com. Par conséquence, toute utilisation, consultation du Site ou inscription sur le Site implique l’adhésion pleine et entière de l’Utilisateur aux présentes conditions générales d’utilisation.</p><p>&nbsp;</p><p><strong>***ARTICLE 1 – Le concept***</strong></p><p>&nbsp;</p><p>1.1. Le Site a pour objet principal la mise en relation de sociétés (les Acheteurs) préalablement inscrites sur le site souhaitant trouver des fournisseurs de leurs produits ou services, ces derniers (Les Fournisseurs) qui sont eux aussi préalablement inscrits sur le Site se disent capable de fournir le produit ou service demandé par l’acheteur dans les meilleures conditions. Les Acheteurs, les fournisseurs (Produit / service) ainsi que les sous-traitants sont ci- après dénommés les Utilisateurs ou individuellement l’Utilisateur.<br>1.2. L\'enregistrement sur&nbsp;lesachatsindustriels&nbsp;en tant que Fournisseur engage ce dernier une fois qu’il décide de participer à un Appel d’offre, à fournir le produit ou service pour lequel il s’est inscrit comme fournisseur.<br>1.3. L\'enregistrement sur&nbsp;lesachatsindustriels&nbsp;en tant qu’Acheteur engage ce dernier à ne pas lancer de fausse demande de prix, il s’engage à ce que ses demandes soient fondées sur un besoin réel et réalisable.</p><p>&nbsp;</p><p><strong>***ARTICLE 2 – Du côté de l’utilisation du Site par les Acheteurs***</strong></p><p>&nbsp;</p><p>2.1. Les Acheteurs sont obligés de créer un compte utilisateur contenant ses données d’identification, telles que demandées sur le Site (ci-après l’Identification).<br>2.2. Tout Acheteur est tenu de fournir, lors de son inscription sur le Site une Identification exacte, complète et à jour permettant de le contacter.<br>2.3.&nbsp;\"7e-sky\"&nbsp;ne possède pas les moyens de contrôler l’exactitude des informations fournies par l’Acheteur lors de son inscription ni les autres informations éventuellement communiquées ultérieurement par l’Acheteur et disponibles sur le Site.<br>2.4.&nbsp;\"7e-sky\"&nbsp;se réserve le droit de rendre \"Invalide\" tous compte d’acheteur s’il s’avère en non-conformité avec la déontologie du site web www.lesachatsindustriels.com. Tout plan ou dessins accompagnant les appels d\'offre des acheteurs, sera automatiquement modifier voir supprimé s’ils dissimulent ou mentionnent en quoique ce soit une indication ou un signe pouvant permettre d\'identifier la provenance de l\'appel d\'offre.<br>2.5. L’Acheteur s’engage à mettre à jour l’Identification le concernant en cas de modification de cette dernière.<br>2.6.&nbsp;\"7e-sky\"&nbsp;à travers son site web&nbsp;lesachatsindustriels&nbsp;se réserve le droit de diffuser les coordonnées de tout utilisateur de ce site ceux des Acheteurs au divers Fournisseurs, et ceux des Fournisseurs aux divers Acheteurs ou à d’autres utilisateurs<br>2.7&nbsp;\"7e-sky\"&nbsp;ne saurait en conséquence être tenue pour responsable des inconvénients et des inexactitudes qui pourraient être transmises de façon délibérée ou par erreur par les utilisateurs (Acheteur / Fournisseur).<br>2.8. L’acheteur s’engage à diffuser ses Appels d’Offres avec comme but de réaliser des transactions d\'achat potentielles, et à ne pas soumettre des Appels d\'Offres avec comme objectif de consulter et/ou comparer les prix ou propositions de ses propres concurrents.</p><p><br><br><strong>***ARTICLE 3 - Du côté de l’utilisation du Site par les Fournisseurs***</strong></p><p>&nbsp;</p><p>3.1. L’accès au Site et son utilisation par le fournisseur est totalement gratuite sauf quand ce dernier est intéressé par un appel d’offre et veux voir les coordonnées de celui qui l’a lancé, néanmoins ce dernier est obligé de créer un compte utilisateur contenant ses données d’identification, telles que demandées sur le Site (ci-après l’Identification).<br>3.2. Tout Fournisseur est tenu de fournir, lors de son inscription sur le Site, une Identification exacte, complète et à jour permettant de le contacter.<br>3.3.&nbsp;\"7e-sky\"&nbsp;ne possède pas les moyens de contrôler l’exactitude des informations fournies par le Fournisseur lors de son inscription ni les autres informations éventuellement communiquées ultérieurement par le Fournisseur et disponibles sur le Site.<br>3.4. Si lors de la consultation ou de l’utilisation du Site, le Fournisseur constate que l’Identification fournie par un autre Utilisateur est inexacte, le Fournisseur pourra le signaler en adressant un email à administrateur@lesachatsindustriels.com<br>3.5.&nbsp;\"7e-sky\"&nbsp;à travers son site web&nbsp;lesachatsindustriels&nbsp;se réserve le droit de diffuser les coordonnées de tout utilisateur de ce site, ceux des Acheteurs au divers Fournisseurs, et ceux des Fournisseurs au divers Acheteurs ou à d’autres utilisateurs<br>3.6.&nbsp;\"7e-sky\"&nbsp;ne saurait en conséquence être tenue pour responsable des inconvénients et des inexactitudes qui pourraient être transmise de façon délibérée ou par erreur par les utilisateurs (Acheteur / Fournisseur).</p><p>&nbsp;</p><p><strong>***ARTICLE 4 – Règles de Paiement***</strong></p><p>&nbsp;</p><p>4.1. Les jetons, packs, les bannières publicitaires et les campagnes publicitaires peuvent être vendues séparément, ou ensemble cela dépendra des clients et de leurs souhaits.<br>4.2.&nbsp;\"7e-sky\"&nbsp;se réserve le droit de modifier à tout moment ses tarifs.<br>4.3. Le règlement n’est pris en compte qu’une fois que notre compte bancaire soit crédité du montant figurant dans la facture correspondant à cet achat. Le paiement ne peut en aucun cas et sous aucune condition être remboursé. Les Packs Crédits ne sont pas transférables entre Fournisseur ou d’un Utilisateur à un autre.</p><p><br><br><strong>***ARTICLE 5 - Confidentialité des Données***</strong></p><p>&nbsp;</p><p>5.1. L’Utilisateur s’engage à respecter les droits de propriété intellectuelle liés à toutes informations auxquelles il aura accès dans le cadre de l\'utilisation du site&nbsp;lesachatsindustriels<br>5.2. Tout Fournisseur s’engage à conserver confidentielles et à faire conserver confidentielles par son personnel, toutes les données auxquelles il a accès dans le cadre de l’utilisation du Site, sauf accord écrit de l’Acheteur pour divulguer ces données.<br>5.3. Le Fournisseur s’interdit, sauf accord préalable de&nbsp;\"7e-sky\", et quel que soit le résultat de la mise en relation effectuée par l’intermédiaire du site&nbsp;lesachatsindustriels&nbsp;de :<br>- reproduire les données à d’autres fins que l’étude de l’offre de l’Acheteur,<br>- vendre les données directement ou indirectement.</p><p><br><br><strong>***ARTICLE 6 - Blocage ou suppression du compte de l’Utilisateur***</strong></p><p>&nbsp;</p><p>6.&nbsp;\"7e-sky\"&nbsp;se réserve le droit de bloquer ou de supprimer, à tout moment et sans préavis, le compte d’un Utilisateur, Acheteur, Fournisseur ou Société de service, sans avoir à s’en justifier, en cas de violation de tout ou partie des présentes conditions générales et/ou en cas d’inactivité du compte de l’Utilisateur pendant une durée de 12 mois.<br><br><br>&nbsp;</p><p><strong>***ARTICLE 7 – Garanties***</strong></p><p>&nbsp;</p><p>7.1. Les données figurant dans la base de données de&nbsp;www.lesachatsindustriels.com&nbsp;sont déclaratives et fournies par les Utilisateurs, tiers par rapport à&nbsp;\"7e-sky\". Dès lors&nbsp;\"7e-sky\"&nbsp;ne garantit ni l’exactitude, ni la fiabilité des données communiquées par les Utilisateurs ni la solvabilité de ces derniers et ne peut en aucun cas en être tenue pour responsable.<br>7.2.&nbsp;\"7e-sky\"&nbsp;ne pourra encourir une quelconque responsabilité en cas d’utilisation des Identifications non conformes à l’objet du service ou du fait des résultats qui pourraient être obtenus par l\'usage des Identifications.<br>7.3.&nbsp;\"7e-sky\"&nbsp;est, et demeure, un tiers par rapport aux Utilisateurs. Dès lors, la responsabilité de son site&nbsp;www.lesachatsindustriels.com&nbsp;ne pourra pas être engagée du fait d’inexécutions contractuelles ou de mauvaise exécution des contrats conclus entre Utilisateurs.<br>7.4. La communication des plans du produit qu’il souhaite faire fabriquer est exposée aux risques et périls de l’Acheteur.<br>7.5. Lors de la consultation du Site, l’Utilisateur peut, par l’usage des liens hypertextes mis en place par www.lesachatsindustriels, accéder à d’autres sites Internet ou serveurs partenaires sur lesquels&nbsp;www.lesachatsindustriels.com&nbsp;n’exerce aucun contrôle.<br>Les sites Internet cibles étant susceptibles d’évoluer librement sans l’intervention ou l’autorisation de&nbsp;\"7e-sky\", l’Utilisateur reconnaît expressément que la responsabilité de&nbsp;\"7e-sky\"&nbsp;résultant du contenu des sites Internet cibles est exclue.<br>7.6. Tout accord conclu par un Utilisateur avec des partenaires sur le site web www.lesachatsindustriels se fait sous sa seule responsabilité, sans que la responsabilité de&nbsp;\"7e-sky\"&nbsp;ne puisse être engagée pour des raisons quelconques.</p><p><br><br><strong>***Article 8 - Droits de propriété intellectuelle***</strong></p><p>&nbsp;</p><p>8.1. La marque&nbsp;«LESACHATSINDUSTRIELS»&nbsp;et les noms de domaine&nbsp;lesachatsindustriels.com, lesachatsindustriels.fr, lesachatsindustriels.ma,&nbsp;sont la propriété de&nbsp;\"7e-sky\".&nbsp;Toute utilisation du nom&nbsp;LESACHATSINDUSTRIELS&nbsp;est interdite sans l’autorisation préalable et écrite de&nbsp;\"7e-sky\".<br>8.2. Ce site et son contenu sont protégés, au sens du Code de la propriété intellectuelle, en particulier par les droits d\'auteur et de marques.<br>8.3. En application du Code de la Propriété Intellectuelle et, plus généralement, des traités et accords internationaux comportant des dispositions relatives à la protection des droits d\'auteurs, l’Utilisateur s’interdit de reproduire même partiellement, vendre, distribuer, émettre, diffuser, adapter, modifier, publier, communiquer intégralement ou partiellement, sous quelque forme que ce soit la présentation ou l\'organisation du Site sans autorisation préalable et écrite de&nbsp;\"7e-sky\"</p><p><br>8.4. Toute violation des droits et obligations ci-dessus énumérés constituerait une contrefaçon des droits de propriété intellectuelle de&nbsp;\"7e-sky\".</p><p><br><br><strong>***ARTICLE 9 - Accès au Site et modifications sur&nbsp;lesachatsindustriels***</strong></p><p>&nbsp;</p><p>9.1. L\'accès à tout ou partie du Site pourra être suspendu ou supprimé sur simple décision de&nbsp;\"7e-sky\"&nbsp;en cas de force majeure, de difficultés informatiques ou techniques, de difficultés liées à la structure des réseaux de télécommunications, de blocage des réseaux de télécommunications, de grève, d’état d’urgence national ou local, d’intempéries sans que cette liste ne soit exhaustive.<br>9.2. De même, l\'accès au Site pourra être interrompu pour des raisons de maintenance.<br>9.3.&nbsp;\"7e-sky\"&nbsp;se réserve le droit de modifier ou de faire évoluer à tout moment, les fenêtres du Site&nbsp;lesachatsindustriels, ses fonctionnalités, les services, leur prix ou les conditions d\'utilisation qui lui sont applicables, et cela sans notification préalable d\'aucune sorte et sans que l’Utilisateur puisse invoquer un quelconque préjudice.</p><p><br><br><strong>***ARTICLE 10 - Données personnelles***</strong></p><p>&nbsp;</p><p>10.1. Données personnelles<br>10.1.1.&nbsp;\"7e-sky\"&nbsp;peut collecter et enregistrer des informations relatives à l’Utilisateur, personne physique ou morale, constituant des données à caractère personnel. Ces données sont enregistrées dans une base de données internes.<br>10.1.2.&nbsp;\"7e-sky\"&nbsp;à travers son site web&nbsp;www.lesachatsindustriels.com&nbsp;se réserve le droit de commercialiser les coordonnées téléphoniques, postales et/ou électroniques collectées auprès des Utilisateurs dans le cadre de ses services pour des opérations de mailing ciblées et d’envoi d’Alerte. Toutefois,&nbsp;\"7e-sky\"&nbsp;ne garantit pas la fiabilité et l’exactitude des données recueillies et ne peut dès lors engager une quelconque responsabilité en cas de non délivrance des envois adressés.<br>10.1.3. Lors de son inscription, l’Utilisateur pourra s’opposer à la communication à des tiers et à l’utilisation par&nbsp;\"7e-sky\"&nbsp;de ses coordonnées.<br>10.2. Les cookies<br>10.2.1. Dans le cadre de la consultation ou de l’utilisation du Site,&nbsp;www.lesachatsindustriels.com&nbsp;peut conserver certaines données concernant l’Utilisateur, pour les besoins du bon fonctionnement des services proposés ainsi qu’à des fins statistiques.<br>10.2.2. L\'activation de cette fonction n\'est pas nécessaire pour visiter le Site.<br>10.3. Autres données de connexion Lors de toute consultation du Site,&nbsp;www.lesachatsindustriels.com&nbsp;collecte certaines données concernant l’Utilisateur, à savoir l’adresse IP, la date et la durée de sa visite et le matériel technique utilisé (système d\'exploitation, navigateur…). Ces informations qui sont rendues anonymes, ne sont collectées sur le serveur de&nbsp;www.lesachatsindustriels.com&nbsp;et utilisées qu’à des fins statistiques.</p><p><br><strong>***ARTICLE 11 - Défauts de paiements***</strong></p><p>&nbsp;</p><p>11. En cas de défaut ou de litige nés du paiement par un Utilisateur des services proposés par&nbsp;Lesachatsindustriels, avec l’aide de ses partenaires financiers,&nbsp;\"7e-sky\"&nbsp;se réserve le droit à effectuer toutes démarches ou enquêtes nécessaires à la récupération de sa créance.</p><p>&nbsp;</p><p><strong>***ARTICLE 12 - Loi applicable et compétence***</strong></p><p>&nbsp;</p><p>12.1. Les présentes conditions générales d’utilisation et tout contrat conclu en vertu des présentes sont soumis au droit Marocain.<br>12.2. Tout litige relatif à la validité, à l’interprétation et/ou exécution des présentes et de tout contrat est soumis à la compétence des Tribunaux de Commerce de Casablanca – Maroc.<br>12.3. Malgré les traductions des présentes conditions générales en anglais, allemand, et autres langues qui pourraient être proposées ultérieurement, l’Utilisateur reconnaît que seule la version en langue française fera foi entre lui et&nbsp;\"7e-sky\".</p><p>&nbsp;</p>', 'conditions-generales'),
-(2, 'Facturation', '<p>Contactez le département financier à propos de la facturation.<br><br><strong>Téléphone</strong> : +212-522.36.57.97.<br><strong>Fax</strong> : +212-522.36.57.95.<br><strong>Email</strong>: <a href=\"mailto:adherent@lesachatsindustriels.com\">adherent@lesachatsindustriels.com</a></p><p><strong>Coordonnées bancaires pour régler vos factures</strong><br><br><br><strong>Par virement bancaire Au :</strong><br><br>3F industrie<br>ATTIJARIWAFA BANK<br>CENTRE D\'AFFAIRE CASA PORTE D\'ANFA<br>Casablanca, Maroc<br><br><strong>Numéro du compte Bancaire</strong> : 007 780 000 4095 00000 254 292</p>', 'facturation');
+(2, 'Facturation', '<p>Contactez le département financier à propos de la facturation.<br><br><strong>Téléphone</strong> : +212-522.36.57.97.<br><strong>Fax</strong> : +212-522.36.57.95.<br><strong>Email</strong>: <a href=\"mailto:adherent@lesachatsindustriels.com\">adherent@lesachatsindustriels.com</a></p><p><strong>Coordonnées bancaires pour régler vos factures</strong><br><br><br><strong>Par virement bancaire Au :</strong><br><br><strong className=\"uppercase\">7e-Sky</strong>\r\n<br>ATTIJARIWAFA BANK<br>CENTRE D\'AFFAIRE CASA PORTE D\'ANFA<br>Casablanca, Maroc<br><br><strong>Numéro du compte Bancaire</strong> : 007 780 0004095000002798 03</p>', 'facturation');
 
 -- --------------------------------------------------------
 
@@ -1328,6 +1635,18 @@ CREATE TABLE `contact_fournisseur` (
   `date_read` datetime DEFAULT NULL,
   `del` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `contact_fournisseur`
+--
+
+INSERT INTO `contact_fournisseur` (`id`, `fournisseur_id`, `contact`, `phone`, `email`, `message`, `created`, `date_validation`, `statut`, `is_read`, `date_read`, `del`) VALUES
+(1, 784, 'Soumaya Erroufi', '+212655826660', 'Mobourzgui@gmail.com', 'Vvcvvvvvvcccxx', '2020-10-23 10:19:24', NULL, 0, 0, NULL, 0),
+(2, 755, 'Abdelhak fettach', '+212661839354', 'commercialnomed@gmail.com', 'Nous avons l\'honneur de vous présenter notre société NOMED spécialisée en mobilier et fournitures de bureaux, et agencement des espaces; Afin de vous aider à faire des économies, nous vous proposons des prix exceptionnels.\n\n* Chaise de bureaux de très bonne qualité avec UN PRIX PROMOTIONNEL\n\n* Toner et cartouches pour toutes sortes d\'imprimante Originale ou Compatible et des ramettes papier A4 avec UN PRIX COMPÉTITIF\n\nPour tous vos besoins n\'hésitez pas à nous contacter en indiquant la référence. Merci\n\nCordialement\nAbdelhak.FETTACH\nGSM:+212 661 83 93 54\ncommercialnomed@gmail.com', '2020-11-09 15:42:42', NULL, 0, 0, NULL, 0),
+(3, 784, 'Saad tazi', '+212676678754', 'Contact.association.ennour@gmail.com', 'Bonjour Bourzgui technologie ', '2020-12-24 22:45:26', '2020-12-28 10:20:14', 1, 1, '2020-12-31 10:09:23', 0),
+(4, 748, 'Tahz', '+212661915376', 'Manesteel@manesteel.com', 'Bonjour\nSalam', '2021-02-03 20:15:25', NULL, 0, 0, NULL, 0),
+(5, 775, 'RAHMA SOUABNI', '+212661840617', 'contact@pesagepromotion.com', 'Bonjour Mr Mustapha Nakrachi,\n\nsuit a votre demande qui paru sur linkedin merci de nous envoyer votre demande.\n \nFort de plus de 20 ans d’expérience, PESAGE PROMOTION est un des leaders du pesage industriel et commercial en Afrique.', '2021-02-25 13:26:30', '2021-03-01 07:54:33', 1, 0, NULL, 0),
+(6, 645, 'fatima ezzahra qaraf', '+212537673857', 'qaraf.f.ezzahra@gmail.com', 'bonjour,\nmerci de bien vouloir nous envoyer votre mail pour vous envoyer une demande de prix concernant des extincteurs dans le cadre d\'un appel d\'offres.', '2021-03-29 08:33:56', '2021-04-07 08:50:45', 1, 0, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -1378,15 +1697,16 @@ CREATE TABLE `demande_abonnement` (
   `duree_id` int(11) DEFAULT NULL,
   `prix` double NOT NULL,
   `currency` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` tinyint(1) NOT NULL
+  `type` tinyint(1) NOT NULL,
+  `suggestions` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:array)'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `demande_abonnement`
 --
 
-INSERT INTO `demande_abonnement` (`id`, `offre_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `reference`, `statut`, `created`, `mode_id`, `duree_id`, `prix`, `currency`, `type`) VALUES
-(1, 2, 2, NULL, NULL, 'D-2020-1', 1, '2020-07-13 10:06:52', 1, 1, 2880, 'MAD', 0);
+INSERT INTO `demande_abonnement` (`id`, `offre_id`, `fournisseur_id`, `zone_id`, `commercial_id`, `reference`, `statut`, `created`, `mode_id`, `duree_id`, `prix`, `currency`, `type`, `suggestions`) VALUES
+(1, 2, 2, NULL, NULL, 'D-2020-1', 1, '2020-07-13 10:06:52', 1, 1, 2880, 'MAD', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1549,7 +1869,9 @@ INSERT INTO `demande_achat` (`id`, `acheteur_id`, `statut`, `reference`, `descri
 (341, 740, 1, '2020-4', 'Besoin d\'un climatiseur pour bureau de dimensions : \n4500 mm x 4600 mm x 1980 mm \n\nQuantité   :   01', '2020-07-31 19:30:00', 1, 0, 0, '2020-07-08 14:16:03', '2020-07-20 08:49:16', 1, 0, 0, 0, NULL, 11, 'CLIMATISEUR POUR BUREAU', 'Maroc', 'Casablanca', 'climatiseur-pour-bureau', 1, NULL, NULL),
 (342, 742, 1, '2020-5', '2 cartes électroniques de commande des chambres froides :\n•	Marque : ELIWELL,\n•	Référence : EWRC 500.\n', '2020-07-27 10:57:00', 1, 0, 0, '2020-07-16 09:06:51', '2020-07-20 16:08:43', 1, 0, 0, 0, NULL, 11, 'CARTE ELECTRONIQUE POUR CHAMBRE FROIDE', 'Maroc', 'Casablanca', 'carte-electronique-pour-chambre-froide', 1, NULL, NULL),
 (343, 742, 1, '2020-6', 'Bonjour,\n\nJe vous prie de me faire une offre de prix et disponibilité pour ce qui suit :\n\n60 / TOLEDO SUPERIA T8 UNI 4FT 2400LM 16W 865 SYLVANIA\n', '2020-07-22 15:06:00', 1, 0, 0, '2020-07-17 14:09:49', '2020-07-17 15:02:40', 1, 0, 0, 0, NULL, 11, 'LAMPE LED T8', 'Maroc', 'Casablanca', 'lampe-led-t8', 1, NULL, NULL),
-(344, 742, 1, '2020-7', 'Bonjour,\n\nprière de me faire une offre de prix et disponibilité pour ce qui suit :\n\n1 / Redresseur de rendement RECTIFIER Emerson réf: R48-2000E3.', '2020-07-21 21:12:00', 1, 0, 0, '2020-07-17 20:14:35', '2020-07-21 09:16:07', 1, 0, 0, 0, NULL, 11, 'REDRESSEUR Emerson R48-2000E3 ', 'Maroc', 'Casablanca', 'redresseur-emerson-r48-2000e3', 1, NULL, NULL);
+(344, 742, 1, '2020-7', 'Bonjour,\n\nprière de me faire une offre de prix et disponibilité pour ce qui suit :\n\n1 / Redresseur de rendement RECTIFIER Emerson réf: R48-2000E3.', '2020-07-21 21:12:00', 1, 0, 0, '2020-07-17 20:14:35', '2020-07-21 09:16:07', 1, 0, 0, 0, NULL, 11, 'REDRESSEUR Emerson R48-2000E3 ', 'Maroc', 'Casablanca', 'redresseur-emerson-r48-2000e3', 1, NULL, NULL),
+(345, 771, 1, '2020-8', 'J’ai besoin d’une NACELLE CISEAUX ELECTRIQUE pour ACHAT - NEUVE\nH     : 4m60\nQTE : 01 \n\nMême besoin, \nH     : 11m80\nQTE : 01 \n\nMerci de me donner vos meilleures cotations ! ', '2020-09-04 15:50:00', 1, 0, 0, '2020-08-31 14:52:15', '2020-09-01 11:12:15', 0, 0, 0, 0, NULL, 11, 'NACELLE CISEAUX ELECTRIQUE pour ACHAT - NEUVE', 'Maroc', 'Casablanca', 'nacelle-ciseaux-electrique-pour-achat-neuve', 1, NULL, NULL),
+(346, 781, 1, '2020-9', 'masques de protection covid', '2020-10-05 00:00:00', 1, 0, 0, '2020-09-30 11:36:58', '2020-10-02 13:21:54', 1, 0, 0, 0, NULL, 11, 'Masques chirurgicale (covid)', 'Maroc', 'Casablanca', 'masques-chirurgicale-covid', 2, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1594,6 +1916,16 @@ CREATE TABLE `demande_devis` (
   `date_read` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `demande_devis`
+--
+
+INSERT INTO `demande_devis` (`id`, `produit_id`, `contact`, `societe`, `phone`, `email`, `message`, `created`, `adresse`, `statut`, `del`, `date_validation`, `quantity`, `fournisseur_id`, `is_read`, `date_read`) VALUES
+(1, 1, 'ARABE RAMI HIND', '3F INDUSTRIE', '+330522365797', '3findustrie@gmail.com', 'Salut\n     ', '2020-08-05 14:08:40', 'kjhhhs gsgshg hshsh ', 1, 0, '2020-08-05 14:12:00', 100, 2, 1, '2020-08-05 14:18:31'),
+(2, 24, 'ghali', 'vascom', '+212619950351', 'idrisselghali.bismilah@gmail.com', 'Merci de m\'envoyer le prix d\'un bureau en bois dim 200x80', '2020-08-07 17:07:28', 'Casablanca', 1, 0, '2020-08-08 12:02:42', 4, 755, 0, NULL),
+(3, 11, 'Zakaria Ouhra', 'motive ', '+212601754015', 'zakariaouhra@yahoo.fr', 'Test  --->', '2021-03-11 11:32:58', 'Casablanca', 0, 0, NULL, 10, 745, 0, NULL),
+(4, 33, 'ACI MAROC', 'ACI MAROC', '+212661846839', 'acimaroc@outlook.fr', 'bonjour \nmerci de m\'envoyer votre offre  ', '2021-04-26 10:17:21', 'rue errahala al abdari num 4 hay mohamadi 60000 oujda ', 1, 0, '2021-05-26 08:58:46', 1, 765, 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -1613,7 +1945,11 @@ INSERT INTO `demande_ha_categories` (`demande_achat_id`, `categorie_id`) VALUES
 (341, 185),
 (342, 57),
 (343, 156),
-(344, 157);
+(344, 157),
+(345, 476),
+(346, 126),
+(346, 486),
+(346, 501);
 
 -- --------------------------------------------------------
 
@@ -1660,7 +1996,8 @@ CREATE TABLE `detail_visite` (
 INSERT INTO `detail_visite` (`id`, `fournisseur_id`, `demande_id`, `created`, `budget`, `statut`, `personnel_id`) VALUES
 (1, 2, 344, '2020-07-18 17:41:33', 10000, 0, 2),
 (2, 2, 343, '2020-07-20 17:42:37', 0, 0, NULL),
-(3, 638, 343, '2020-07-21 16:06:19', 0, 0, NULL);
+(3, 638, 343, '2020-07-21 16:06:19', 0, 0, NULL),
+(4, 756, 346, '2020-10-02 13:54:01', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1701,7 +2038,9 @@ INSERT INTO `diffusion_demande` (`id`, `fournisseur_id`, `demande_id`, `date_dif
 (19, 638, 344, '2020-07-21 09:16:08'),
 (20, 641, 344, '2020-07-21 09:16:08'),
 (21, 648, 344, '2020-07-21 09:16:08'),
-(22, 661, 344, '2020-07-21 09:16:08');
+(22, 661, 344, '2020-07-21 09:16:08'),
+(23, 756, 346, '2020-10-02 13:21:54'),
+(24, 775, 346, '2020-10-02 13:21:54');
 
 -- --------------------------------------------------------
 
@@ -1737,7 +2076,7 @@ CREATE TABLE `ext_log_entries` (
   `object_id` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `object_class` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `version` int(11) NOT NULL,
-  `data` longtext COLLATE utf8mb4_unicode_ci COMMENT '(DC2Type:array)',
+  `data` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '(DC2Type:array)',
   `username` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
@@ -1862,7 +2201,14 @@ INSERT INTO `ext_log_entries` (`id`, `action`, `logged_at`, `object_id`, `object
 (114, 'update', '2020-07-19 17:14:33', '345', 'App\\Entity\\DemandeAchat', 2, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-07-31 18:13:00.000000\";s:13:\"timezone_type\";i:1;s:8:\"timezone\";s:6:\"+00:00\";}}', NULL),
 (115, 'update', '2020-07-20 08:49:16', '341', 'App\\Entity\\DemandeAchat', 3, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-07-31 19:30:00.000000\";s:13:\"timezone_type\";i:1;s:8:\"timezone\";s:6:\"+01:00\";}}', NULL),
 (116, 'update', '2020-07-20 16:08:43', '342', 'App\\Entity\\DemandeAchat', 5, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-07-27 10:57:00.000000\";s:13:\"timezone_type\";i:1;s:8:\"timezone\";s:6:\"+00:00\";}}', NULL),
-(117, 'update', '2020-07-21 09:16:07', '344', 'App\\Entity\\DemandeAchat', 102, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-07-21 21:12:00.000000\";s:13:\"timezone_type\";i:1;s:8:\"timezone\";s:6:\"+00:00\";}}', NULL);
+(117, 'update', '2020-07-21 09:16:07', '344', 'App\\Entity\\DemandeAchat', 102, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-07-21 21:12:00.000000\";s:13:\"timezone_type\";i:1;s:8:\"timezone\";s:6:\"+00:00\";}}', NULL),
+(118, 'create', '2020-08-31 14:52:15', '345', 'App\\Entity\\DemandeAchat', 1, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-09-04 15:50:00.000000\";s:13:\"timezone_type\";i:3;s:8:\"timezone\";s:3:\"UTC\";}}', NULL),
+(119, 'update', '2020-08-31 14:53:00', '345', 'App\\Entity\\DemandeAchat', 3, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-09-04 15:50:00.000000\";s:13:\"timezone_type\";i:1;s:8:\"timezone\";s:6:\"+00:00\";}}', NULL),
+(120, 'update', '2020-09-01 11:12:15', '345', 'App\\Entity\\DemandeAchat', 4, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-09-04 15:50:00.000000\";s:13:\"timezone_type\";i:1;s:8:\"timezone\";s:6:\"+00:00\";}}', NULL),
+(121, 'create', '2020-09-30 11:36:58', '346', 'App\\Entity\\DemandeAchat', 1, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-10-05 00:00:00.000000\";s:13:\"timezone_type\";i:3;s:8:\"timezone\";s:3:\"UTC\";}}', NULL),
+(122, 'update', '2020-10-01 09:42:46', '346', 'App\\Entity\\DemandeAchat', 2, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-10-05 00:00:00.000000\";s:13:\"timezone_type\";i:1;s:8:\"timezone\";s:6:\"+00:00\";}}', NULL),
+(123, 'update', '2020-10-02 13:20:11', '346', 'App\\Entity\\DemandeAchat', 3, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-10-05 00:00:00.000000\";s:13:\"timezone_type\";i:1;s:8:\"timezone\";s:6:\"+00:00\";}}', NULL),
+(124, 'update', '2020-10-02 13:21:54', '346', 'App\\Entity\\DemandeAchat', 4, 'a:1:{s:14:\"dateExpiration\";O:8:\"DateTime\":3:{s:4:\"date\";s:26:\"2020-10-05 00:00:00.000000\";s:13:\"timezone_type\";i:1;s:8:\"timezone\";s:6:\"+00:00\";}}', NULL);
 
 -- --------------------------------------------------------
 
@@ -1960,7 +2306,17 @@ INSERT INTO `fiche` (`id`, `url`, `file_size`, `type`) VALUES
 (12, '5ee8e5c1cd51b764595979.pdf', 142995, 'application/pdf'),
 (13, '5f0d94df8ae1b738997755.pdf', 2843172, 'application/pdf'),
 (14, '5f0d981529046181905127.pdf', 274882, 'application/pdf'),
-(15, '5f0d9a02754c7723691029.pdf', 255754, 'application/pdf');
+(15, '5f0d9a02754c7723691029.pdf', 255754, 'application/pdf'),
+(16, '5f1b0a1e52114288221434.pdf', 264404, 'application/pdf'),
+(17, '5f1b0c07ecdec777310044.pdf', 1396877, 'application/pdf'),
+(18, '5f1ff0d551230493949179.pdf', 424257, 'application/pdf'),
+(19, '5f27187f51d2c102325177.pdf', 799491, 'application/pdf'),
+(20, '5f2719702998a759859662.pdf', 799491, 'application/pdf'),
+(21, '5f271cf49b5bb936395407.png', 285037, 'image/png'),
+(22, '5f271ff1db476689105491.pdf', 1425650, 'application/pdf'),
+(23, '5f3564bf04106647189932.pdf', 39717, 'application/pdf'),
+(24, '5f61aa84deef3972787419.jpg', 36499, 'image/jpeg'),
+(25, '60a4ded40f49c837971175.jpg', 45842, 'image/jpeg');
 
 -- --------------------------------------------------------
 
@@ -1977,7 +2333,7 @@ CREATE TABLE `fournisseur` (
   `ice` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fix` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `website` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `description` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `currency_id` int(11) DEFAULT NULL,
   `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone_vu` int(11) NOT NULL,
@@ -1988,206 +2344,246 @@ CREATE TABLE `fournisseur` (
   `code_client` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `autre_ville` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `autre_categories` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `autre_currency` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `autre_currency` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `parent` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `fournisseur`
 --
 
-INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `ice`, `fix`, `website`, `description`, `currency_id`, `slug`, `phone_vu`, `visite`, `societe_lower`, `step`, `is_complet`, `code_client`, `autre_ville`, `autre_categories`, `autre_currency`) VALUES
-(2, 144, 1, '3F Industrie', 'M.', '001531606000066', '+212522365797', 'http://www.3findustrie.com', '3F Industrie a choisi de se positionner sur le secteur de la logistique en mettant à la disposition de ce dernier les meilleures fournisseurs tout en respectant les normes les plus sévères et les plus demandées par les donneurs d’ordres les plus exigeants. Notre objectif est d’offrir à nos clients une qualité de service qui s’inscrit dans une amélioration continue.\n\nRayonnage et système de stockage : Rayonnage à palettes : Conventionnel, Accumulation, Mobile, Dynamique. Rayonnage pour archive, charge légère et lourde plateforme sur deux ou trois niveaux pour une optimisation maximale rayonnage cantilever pour des charges longues, lourdes et volumineuses.\n\nRayonnage mobile pour archive documents et œuvres d’art. Intervention sur tout type de rayonnage pour démontage remontage et divers modifications de niveaux ou d’implantation. Notre savoir-faire nous a permis d’avoir la confiance de nombreuses entreprises dans différents secteurs d’activité : Alimentaire, Industriel, Logistique, Distribution…', 11, '3f-industrie', 4, 194, '3f industrie', 3, 1, NULL, NULL, NULL, NULL),
-(49, 144, 1, 'thyssenkrupp elevator maroc', '', NULL, '212522204505', '', NULL, 11, 'thyssenkrupp-elevator-maroc', 0, 0, 'thyssenkrupp elevator maroc', 3, 1, NULL, NULL, NULL, NULL),
-(55, 144, 1, 'Le Carton', '', NULL, '212522204505', '', NULL, 11, 'le-carton', 0, 0, 'le carton', 3, 1, NULL, NULL, NULL, NULL),
-(56, 144, 1, 'Imprimerie Sabri', '', NULL, '212522902037', '', NULL, 11, 'imprimerie-sabri', 0, 0, 'imprimerie sabri', 3, 1, NULL, NULL, NULL, NULL),
-(67, 144, 1, 'LEAN Consulting', '', NULL, '00212661671868', 'http://www.lean-consulting.ma', NULL, 11, 'lean-consulting', 0, 0, 'lean consulting', 3, 1, NULL, NULL, NULL, NULL),
-(72, 144, 9, 'arrahala choukri', '', NULL, '0537376687', '', NULL, 11, 'arrahala-choukri', 0, 0, 'arrahala choukri', 3, 1, NULL, NULL, NULL, NULL),
-(75, 144, 1, 'STE EURO-PNEUS SARL', '', NULL, '0522811306', '', NULL, 11, 'ste-euro-pneus-sarl', 0, 0, 'ste euro-pneus sarl', 3, 1, NULL, NULL, NULL, NULL),
-(79, 144, 1, 'SMTR CARRE', '', NULL, '022408458', 'www.carre.ma', NULL, 11, 'smtr-carre', 0, 0, 'smtr carre', 3, 1, NULL, NULL, NULL, NULL),
-(86, 144, 1, 'SJL Maroc', '', NULL, '0522674000', '', NULL, 11, 'sjl-maroc', 0, 0, 'sjl maroc', 3, 1, NULL, NULL, NULL, NULL),
-(87, 144, 13, 'DPS', '', NULL, '00212528236435', 'www.dps-ma.com', NULL, 11, 'dps', 0, 0, 'dps', 3, 1, NULL, NULL, NULL, NULL),
-(88, 144, 1, 'CD INDEX', '', NULL, '0522983499', 'www.cddoc.fr', NULL, 11, 'cd-index', 0, 0, 'cd index', 3, 1, NULL, NULL, NULL, NULL),
-(92, 144, 1, 'ELECTRO PROTECT', '', NULL, '0522992970', '', NULL, 11, 'electro-protect', 0, 0, 'electro protect', 3, 1, NULL, NULL, NULL, NULL),
-(93, 144, 2, 'MEDIXANA', '', NULL, '0537631490', 'www.medisana.ma', NULL, 11, 'medixana', 0, 0, 'medixana', 3, 1, NULL, NULL, NULL, NULL),
-(95, 144, 2, 'FI LAMANE Assurances', '', NULL, '0537799833', 'www.filamane.com', NULL, 11, 'fi-lamane-assurances', 0, 0, 'fi lamane assurances', 3, 1, NULL, NULL, NULL, NULL),
-(97, 75, 43, 'EXPRESSO France', '', NULL, '0388042030', 'expresso-france.com', NULL, 1, 'expresso-france', 0, 0, 'expresso france', 3, 1, NULL, NULL, NULL, NULL),
-(111, 144, 31, 'Meca ingineering', '', NULL, '00212661065982', '', NULL, 11, 'meca-ingineering', 0, 0, 'meca ingineering', 3, 1, NULL, NULL, NULL, NULL),
-(112, 144, 1, 'marché central', '', NULL, '0527814446', '', NULL, 11, 'marche-central', 0, 0, 'marché central', 3, 1, NULL, NULL, NULL, NULL),
-(113, 144, 5, 'Your PC', '', NULL, '0535 643 352', 'www.yourpc.ma', NULL, 11, 'your-pc', 0, 0, 'your pc', 3, 1, NULL, NULL, NULL, NULL),
-(115, 144, 1, 'Convergence Telecom', '', NULL, '00212677896835', 'www.convergence-tele.com', NULL, 11, 'convergence-telecom', 0, 0, 'convergence telecom', 3, 1, NULL, NULL, NULL, NULL),
-(121, 144, 1, 'ATLADIS', '', NULL, '00212522992062', 'www.atladis.ma', NULL, 11, 'atladis', 0, 0, 'atladis', 3, 1, NULL, NULL, NULL, NULL),
-(124, 144, 7, 'LBA Consulting', '', NULL, '0661706647', '', NULL, 11, 'lba-consulting', 0, 0, 'lba consulting', 3, 1, NULL, NULL, NULL, NULL),
-(126, 144, 1, 'QUINCAILLERIE NASRALLAH', '', NULL, '0522300361', '', NULL, 11, 'quincaillerie-nasrallah', 0, 0, 'quincaillerie nasrallah', 3, 1, NULL, NULL, NULL, NULL),
-(128, 144, 1, 'gm equipements', '', NULL, '0522592220', 'www.gm-equipements.com', NULL, 11, 'gm-equipements', 0, 0, 'gm equipements', 3, 1, NULL, NULL, NULL, NULL),
-(132, 144, 1, 'SRM', '', NULL, '0522633700', 'www.groupe-premium.com', NULL, 11, 'srm', 0, 0, 'srm', 3, 1, NULL, NULL, NULL, NULL),
-(139, 144, 1, 'Ultimate Computer', '', NULL, '0522 86 42 04', 'www.uc-maroc.ma', NULL, 11, 'ultimate-computer', 0, 0, 'ultimate computer', 3, 1, NULL, NULL, NULL, NULL),
-(142, 144, 1, 'LES 5 CONINENTS', '', NULL, '0522265209', NULL, NULL, 11, 'les-5-coninents', 0, 0, 'les 5 coninents', 3, 1, NULL, NULL, NULL, NULL),
-(149, 144, 1, 'madiva ', '', NULL, '0661912561', '', NULL, 11, 'madiva', 0, 0, 'madiva ', 3, 1, NULL, NULL, NULL, NULL),
-(155, 144, 1, 'UNIFORCE INFORMATIQUE', '', NULL, '0522297240', 'www.uniforce.ma', NULL, 11, 'uniforce-informatique', 0, 0, 'uniforce informatique', 3, 1, NULL, NULL, NULL, NULL),
-(157, 144, 12, 'Univers Engins', '', NULL, '0524355555', '', NULL, 11, 'univers-engins', 0, 0, 'univers engins', 3, 1, NULL, NULL, NULL, NULL),
-(161, 144, 1, 'logipro', '', NULL, '212522987175', '', NULL, 11, 'logipro', 0, 0, 'logipro', 3, 1, NULL, NULL, NULL, NULL),
-(163, 144, 12, 'GROUPE MENARA HOLDING/ Les Lumières de Menara', '', NULL, '+212(0)524345387/97', 'http://www.2lm-maroc.com/', NULL, 11, 'groupe-menara-holding-les-lumieres-de-menara', 0, 0, 'groupe menara holding/ les lumières de menara', 3, 1, NULL, NULL, NULL, NULL),
-(165, 109, 83, 'PLASTIMARK S.p.A.', '', NULL, '00390171618630', 'www.plastimark.com', NULL, 11, 'plastimark-s-p-a', 0, 0, 'plastimark s.p.a.', 3, 1, NULL, NULL, NULL, NULL),
-(168, 144, 12, 'GROUPE AUTO HALL', '', NULL, '0524448422', 'www.autohall.ma', NULL, 11, 'groupe-auto-hall', 0, 0, 'groupe auto hall', 3, 1, NULL, NULL, NULL, NULL),
-(169, 144, 1, 'TELEDYNE', '', NULL, '0522307664 ', 'teledyne.blogspot.com', NULL, 11, 'teledyne', 0, 0, 'teledyne', 3, 1, NULL, NULL, NULL, NULL),
-(171, 75, 82, 'TRADER PARTNER', '', NULL, '0616803821', '', NULL, 1, 'trader-partner', 0, 0, 'trader partner', 3, 1, NULL, NULL, NULL, NULL),
-(177, 144, 1, 'ESPACE MANUTENTION', '', NULL, '0522403950', '', NULL, 11, 'espace-manutention', 0, 0, 'espace manutention', 3, 1, NULL, NULL, NULL, NULL),
-(180, 144, 1, 'SOPRIAM', '', NULL, '0522464900', '', NULL, 11, 'sopriam', 0, 0, 'sopriam', 3, 1, NULL, NULL, NULL, NULL),
-(188, 144, 1, 'QUALITAS', '', NULL, '0522444038', 'www.qualitas.ma', NULL, 11, 'qualitas', 0, 0, 'qualitas', 3, 1, NULL, NULL, NULL, NULL),
-(189, 144, 1, 'HAMA', '', NULL, '34567', '', NULL, 11, 'hama', 0, 0, 'hama', 3, 1, NULL, NULL, NULL, NULL),
-(190, 144, 1, 'CAP GIBRALTAR', '', NULL, '0522357128', 'http://www.capgibraltar.com', NULL, 11, 'cap-gibraltar', 0, 0, 'cap gibraltar', 3, 1, NULL, NULL, NULL, NULL),
-(192, 144, 1, 'L\'APPROVISIONNEUR TECHNIQUE', '', NULL, '0522440884/956', 'www.appro-tech.com', NULL, 11, 'lapprovisionneur-technique', 0, 0, 'l\'approvisionneur technique', 3, 1, NULL, NULL, NULL, NULL),
-(195, 144, 1, 'INTERVARIA', '', NULL, '0522523838', 'WWW.INTERVARIA.MA', NULL, 11, 'intervaria', 0, 0, 'intervaria', 3, 1, NULL, NULL, NULL, NULL),
-(197, 203, 79, 'ESTINDEL', '', NULL, '0034954693830', 'http://www.estindel.com', NULL, 1, 'estindel', 0, 0, 'estindel', 3, 1, NULL, NULL, NULL, NULL),
-(198, 144, 1, 'TECNY MAROC', '', NULL, '212522986800', '', NULL, 11, 'tecny-maroc', 0, 0, 'tecny maroc', 3, 1, NULL, NULL, NULL, NULL),
-(199, 144, 12, 'SUD TRANSMISSION', '', NULL, '0524432169', '', NULL, 11, 'sud-transmission', 0, 0, 'sud transmission', 3, 1, NULL, NULL, NULL, NULL),
-(202, 144, 1, 'MAROC BUREAU', '', NULL, '0522353755', '', NULL, 11, 'maroc-bureau', 0, 0, 'maroc bureau', 3, 1, NULL, NULL, NULL, NULL),
-(204, 144, 1, 'INSTALLATOR ', '', NULL, '0522404201', 'www.installator.com', NULL, 11, 'installator', 0, 0, 'installator ', 3, 1, NULL, NULL, NULL, NULL),
-(210, 75, 76, 'KLB Group', '', NULL, '0149443500', 'www.klb-group.com', NULL, 11, 'klb-group', 0, 0, 'klb group', 3, 1, NULL, NULL, NULL, NULL),
-(215, 144, 1, 'INEGMA', '', NULL, '00212522865832', 'www.groupe-inegma.com', NULL, 11, 'inegma', 0, 0, 'inegma', 3, 1, NULL, NULL, NULL, NULL),
-(218, 144, 1, 'METALLIC DESIGN', '', NULL, '0522970320', '', NULL, 11, 'metallic-design', 0, 0, 'metallic design', 3, 1, NULL, NULL, NULL, NULL),
-(220, 144, 1, 'SOTRANSE SARL', '', NULL, '0522244268', 'www.sotranse.com', NULL, 11, 'sotranse-sarl', 0, 0, 'sotranse sarl', 3, 1, NULL, NULL, NULL, NULL),
-(221, 144, 1, 'b2a-pro services sarl', '', NULL, '0668046613', '', NULL, 11, 'b2a-pro-services-sarl', 0, 0, 'b2a-pro services sarl', 3, 1, NULL, NULL, NULL, NULL),
-(223, 144, 1, 'F C Industriel', '', NULL, '0661298827', NULL, NULL, 11, 'f-c-industriel', 0, 0, 'f c industriel', 3, 1, NULL, NULL, NULL, NULL),
-(224, 144, 1, 'ELEXPERT', '', NULL, '0522249171', 'www.elexpert.ma', NULL, 11, 'elexpert', 0, 0, 'elexpert', 3, 1, NULL, NULL, NULL, NULL),
-(225, 144, 31, 'AMP', '', NULL, '0523314020', 'www.amp-ge.ma', NULL, 11, 'amp', 0, 0, 'amp', 3, 1, NULL, NULL, NULL, NULL),
-(228, 144, 1, 'R2i Consult', '', NULL, '+212 (0) 522 986 960', '', NULL, 11, 'r2i-consult', 0, 0, 'r2i consult', 3, 1, NULL, NULL, NULL, NULL),
-(231, 144, 1, 'AFRIC ROULEMENT', '', NULL, '0522407009', '', NULL, 11, 'afric-roulement', 0, 0, 'afric roulement', 3, 1, NULL, NULL, NULL, NULL),
-(232, 144, 7, 'ORSA', '', NULL, '0539351152', '', NULL, 11, 'orsa', 0, 0, 'orsa', 3, 1, NULL, NULL, NULL, NULL),
-(233, 144, 1, 'Helio rif', '', NULL, '00212522932814', '', NULL, 11, 'helio-rif', 0, 0, 'helio rif', 3, 1, NULL, NULL, NULL, NULL),
-(235, 144, 1, 'ODIMATIC', '', NULL, '0522301515', '', NULL, 11, 'odimatic', 0, 0, 'odimatic', 3, 1, NULL, NULL, NULL, NULL),
-(236, 144, 7, 'coflaga', '', NULL, '0539943662', '', NULL, 11, 'coflaga', 0, 0, 'coflaga', 3, 1, NULL, NULL, NULL, NULL),
-(238, 144, 1, 'CASA TECHNIQUE AUTO S.A.R.L', '', NULL, '00212661400572', '', NULL, 11, 'casa-technique-auto-sarl', 0, 0, 'casa technique auto s.a.r.l', 3, 1, NULL, NULL, NULL, NULL),
-(239, 144, 1, 'EUROPE COMPUTER SYSTEMES INTERNATIONAL MAROC', '', NULL, '0522789030', 'www.ecs-group.com', NULL, 11, 'europe-computer-systemes-international-maroc', 0, 0, 'europe computer systemes international maroc', 3, 1, NULL, NULL, NULL, NULL),
-(241, 144, 1, 'PROFESSIONNEL COMPUTER ', '', NULL, '0522393956', '', NULL, 11, 'professionnel-computer', 0, 0, 'professionnel computer ', 3, 1, NULL, NULL, NULL, NULL),
-(243, 144, 1, 'SCOLARIUM', '', NULL, '0522874401', 'www.microstore.ma', NULL, 11, 'scolarium', 0, 0, 'scolarium', 3, 1, NULL, NULL, NULL, NULL),
-(246, 144, 1, 'AVENIR FORMATION', '', NULL, '0522203664', '', NULL, 11, 'avenir-formation', 0, 0, 'avenir formation', 3, 1, NULL, NULL, NULL, NULL),
-(248, 144, 32, 'Excelsa Techniques Composites', '', NULL, '00212 522592053', 'www.excelsa-maroc.com', NULL, 11, 'excelsa-techniques-composites', 0, 0, 'excelsa techniques composites', 3, 1, NULL, NULL, NULL, NULL),
-(252, 144, 31, 'MASIFE', '', NULL, '0661116047', NULL, NULL, 11, 'masife', 0, 0, 'masife', 3, 1, NULL, NULL, NULL, NULL),
-(254, 144, 1, 'Optim Achat', '', NULL, '0522362281', 'www.optim-achat.com', NULL, 11, 'optim-achat', 0, 0, 'optim achat', 3, 1, NULL, NULL, NULL, NULL),
-(255, 144, 1, 'FROXY', '', NULL, '212522313167', '', NULL, 11, 'froxy', 0, 0, 'froxy', 3, 1, NULL, NULL, NULL, NULL),
-(258, 144, 10, 'GLOBAL ACCESS', '', NULL, '21237863596', 'www.globalaccess.ma', NULL, 11, 'global-access', 0, 0, 'global access', 3, 1, NULL, NULL, NULL, NULL),
-(262, 144, 1, 'ALDIS', '', NULL, '0522476340', 'www.lachaisequidecore.com', NULL, 11, 'aldis', 0, 0, 'aldis', 3, 1, NULL, NULL, NULL, NULL),
-(265, 144, 7, 'International cabinet of consulting and brokerage', '', NULL, '00212667226854', NULL, NULL, 11, 'international-cabinet-of-consulting-and-brokerage', 0, 0, 'international cabinet of consulting and brokerage', 3, 1, NULL, NULL, NULL, NULL),
-(267, 144, 1, '3S MORCCO', '', NULL, '0522992222', 'www.3smorocco.com', NULL, 11, '3s-morcco', 0, 0, '3s morcco', 3, 1, NULL, NULL, NULL, NULL),
-(273, 144, 1, 'Total Protection', '', NULL, '0522252632', '', NULL, 11, 'total-protection', 0, 0, 'total protection', 3, 1, NULL, NULL, NULL, NULL),
-(279, 144, 1, 'INDUSTRIE EXPO', '', NULL, '2126 63428925', '', NULL, 11, 'industrie-expo', 0, 0, 'industrie expo', 3, 1, NULL, NULL, NULL, NULL),
-(280, 144, 1, 'GLOBAL IT', '', NULL, '00212529011066', '', NULL, 11, 'global-it', 0, 0, 'global it', 3, 1, NULL, NULL, NULL, NULL),
-(281, 144, 1, 'SMBS', '', NULL, '00212522487518', 'www.smbs.ma', NULL, 11, 'smbs', 0, 0, 'smbs', 3, 1, NULL, NULL, NULL, NULL),
-(282, 144, 1, 'GOOD TEC', '', NULL, '0522765052', '', NULL, 11, 'good-tec', 0, 0, 'good tec', 3, 1, NULL, NULL, NULL, NULL),
-(285, 144, 1, 'equindus', '', NULL, '0522209719', '', NULL, 11, 'equindus', 0, 0, 'equindus', 3, 1, NULL, NULL, NULL, NULL),
-(289, 144, 12, 'marbeco ', '', NULL, '0674918260', NULL, NULL, 11, 'marbeco', 0, 0, 'marbeco ', 3, 1, NULL, NULL, NULL, NULL),
-(290, 144, 34, 'high maintenance sarl', '', NULL, '0665211117', '', NULL, 11, 'high-maintenance-sarl', 0, 0, 'high maintenance sarl', 3, 1, NULL, NULL, NULL, NULL),
-(291, 144, 9, 'ENATCOM', '', NULL, '0537378361', '', NULL, 11, 'enatcom', 0, 0, 'enatcom', 3, 1, NULL, NULL, NULL, NULL),
-(295, 144, 1, 'ELEVATEK', '', NULL, '+212522610270', 'www.elevatek.ma', NULL, 11, 'elevatek', 0, 0, 'elevatek', 3, 1, NULL, NULL, NULL, NULL),
-(296, 144, 1, 'LONGOMETAL', '', NULL, '0522402060', '', NULL, 11, 'longometal', 0, 0, 'longometal', 3, 1, NULL, NULL, NULL, NULL),
-(298, 144, 1, 'pop', '', NULL, '0522447719', NULL, NULL, 11, 'pop', 0, 0, 'pop', 3, 1, NULL, NULL, NULL, NULL),
-(300, 144, 1, 'W2A', '', NULL, '0640261431', 'http://www.lesachatsindustriel', 'Société de developpement informatique', 11, 'w2a', 0, 0, 'w2a', 3, 1, NULL, NULL, NULL, NULL),
-(307, 144, 72, 'MAROC TRANSFO', '', NULL, '0522 96 41 12', '', NULL, 11, 'maroc-transfo', 0, 0, 'maroc transfo', 3, 1, NULL, NULL, NULL, NULL),
-(308, 144, 1, 'FENIE BROSSETTE', '', NULL, '0522639173', 'www.feniebrossette.ma', NULL, 11, 'fenie-brossette', 0, 0, 'fenie brossette', 3, 1, NULL, NULL, NULL, NULL),
-(310, 144, 1, 'FIRST MATERIEL', '', NULL, '0522677070', 'www.firstmateriel.ma', NULL, 11, 'first-materiel', 0, 0, 'first materiel', 3, 1, NULL, NULL, NULL, NULL),
-(311, 144, 1, 'technipower', '', NULL, '00212522253113', 'http://www.technipower-maroc.c', NULL, 11, 'technipower', 0, 0, 'technipower', 3, 1, NULL, NULL, NULL, NULL),
-(312, 75, 71, 'GENELEC S.A.S.', '', NULL, '0474626505', 'genelec.tm.fr', NULL, 1, 'genelec-sas', 0, 0, 'genelec s.a.s.', 3, 1, NULL, NULL, NULL, NULL),
-(315, 144, 13, 'JLM', '', NULL, '0528 24 10 50', 'http://www.jlm-maroc.com', NULL, 11, 'jlm', 0, 0, 'jlm', 3, 1, NULL, NULL, NULL, NULL),
-(316, 144, 1, 'TC MAROC', '', NULL, '0522593530', 'www.tcmaroc.com', NULL, 11, 'tc-maroc', 0, 0, 'tc maroc', 3, 1, NULL, NULL, NULL, NULL),
-(317, 144, 1, 'LAWAZIME INDUSTRIELLES', '', NULL, '0522714448', '', NULL, 11, 'lawazime-industrielles', 0, 0, 'lawazime industrielles', 3, 1, NULL, NULL, NULL, NULL),
-(323, 144, 1, 'CAP SECURITE', '', NULL, '00212522247078', '', NULL, 11, 'cap-securite', 0, 0, 'cap securite', 3, 1, NULL, NULL, NULL, NULL),
-(326, 144, 1, 'HIERRO SARL', '', NULL, '0522334802', 'www.hierro.ma', NULL, 11, 'hierro-sarl', 0, 0, 'hierro sarl', 3, 1, NULL, NULL, NULL, NULL),
-(328, 144, 31, 'a2me', '', NULL, '212523303117', 'www.a2me.ma', NULL, 11, 'a2me', 0, 0, 'a2me', 3, 1, NULL, NULL, NULL, NULL),
-(330, 144, 1, 'YOUSRA GADGET  SARL', '', NULL, '0661136453', '', NULL, 11, 'yousra-gadget-sarl', 0, 0, 'yousra gadget sarl', 3, 1, NULL, NULL, NULL, NULL),
-(332, 144, 31, 'Sofie consulting europe maroc', '', NULL, '0523321053', 'www.sofiec-international.com', NULL, 11, 'sofie-consulting-europe-maroc', 0, 0, 'sofie consulting europe maroc', 3, 1, NULL, NULL, NULL, NULL),
-(333, 144, 1, 'Cleric Maroc ', '', NULL, '0522247129', '', NULL, 11, 'cleric-maroc', 0, 0, 'cleric maroc ', 3, 1, NULL, NULL, NULL, NULL),
-(334, 75, 68, 'Guichon Valves', '', NULL, '00 334 79 44 59 00', 'www.guichon.com', NULL, 11, 'guichon-valves', 0, 0, 'guichon valves', 3, 1, NULL, NULL, NULL, NULL),
-(339, 144, 12, 'elementerre', '', NULL, '+212.524.42.13.11', 'www.elementerre.net', NULL, 11, 'elementerre', 0, 0, 'elementerre', 3, 1, NULL, NULL, NULL, NULL),
-(340, 144, 1, 'STE. PLASTIBAG', '', NULL, '0522618153', '', NULL, 11, 'ste-plastibag', 0, 0, 'ste. plastibag', 3, 1, NULL, NULL, NULL, NULL),
-(346, 144, 1, 'ciea', '', NULL, '00212522672825', 'ciea.fr', NULL, 1, 'ciea', 0, 0, 'ciea', 3, 1, NULL, NULL, NULL, NULL),
-(348, 144, 1, 'LOGICOLD', '', NULL, '0522536620', 'www.logicold.com', NULL, 11, 'logicold', 0, 0, 'logicold', 3, 1, NULL, NULL, NULL, NULL),
-(350, 144, 1, 'drem', '', NULL, '0522275664', '', NULL, 11, 'drem', 0, 0, 'drem', 3, 1, NULL, NULL, NULL, NULL),
-(353, 144, 2, 'n.design', '', NULL, '0661290284', '', NULL, 11, 'ndesign', 0, 0, 'n.design', 3, 1, NULL, NULL, NULL, NULL),
-(359, 144, 12, 'PROTEMAX', '', NULL, '0524432143', 'www.protemax-maroc.com', NULL, 11, 'protemax', 0, 0, 'protemax', 3, 1, NULL, NULL, NULL, NULL),
-(363, 144, 1, 'MAGINOX', '', NULL, '0522357239', '', NULL, 11, 'maginox', 0, 0, 'maginox', 3, 1, NULL, NULL, NULL, NULL),
-(365, 144, 1, 'omatrac', '', NULL, '0522661544', '', NULL, 11, 'omatrac', 0, 0, 'omatrac', 3, 1, NULL, NULL, NULL, NULL),
-(367, 144, 1, 'idmar industry', '', NULL, '0522401118', '', NULL, 11, 'idmar-industry', 0, 0, 'idmar industry', 3, 1, NULL, NULL, NULL, NULL),
-(369, 144, 1, 'ADVANCED AUTOMATION', '', NULL, '0522861929', '', NULL, 11, 'advanced-automation', 0, 0, 'advanced automation', 3, 1, NULL, NULL, NULL, NULL),
-(372, 144, 1, 'Top Rayonnages SARL', '', NULL, '0649438405', '', NULL, 11, 'top-rayonnages-sarl', 0, 0, 'top rayonnages sarl', 3, 1, NULL, NULL, NULL, NULL),
-(378, 203, 53, 'Estanterías Record', '', NULL, '0034958466888', 'www.estanteriasrecord.com', NULL, 11, 'estanterías-record', 0, 0, 'estanterías record', 3, 1, NULL, NULL, NULL, NULL),
-(387, 144, 1, 'communication system', '', NULL, '0522995550', 'www.comsys.ma', NULL, 11, 'communication-system', 0, 0, 'communication system', 3, 1, NULL, NULL, NULL, NULL),
-(388, 144, 31, 'Masbahi Group Informatique', '', NULL, '0523327617', '', NULL, 11, 'masbahi-group-informatique', 0, 0, 'masbahi group informatique', 3, 1, NULL, NULL, NULL, NULL),
-(389, 144, 1, 'Aaron & Babel', '', NULL, '212661060901', 'www.aaron-babel.com', NULL, 11, 'aaron-babel', 0, 0, 'aaron & babel', 3, 1, NULL, NULL, NULL, NULL),
-(392, 144, 13, 'ste PERFECT DECOR (perdeco)', '', NULL, '00212528333720', 'www.per-deco.com', NULL, 11, 'ste-perfect-decor-perdeco', 0, 0, 'ste perfect decor (perdeco)', 3, 1, NULL, NULL, NULL, NULL),
-(396, 144, 1, 'FIRST INVESTMENT FINANCE', '', NULL, '0674108464', '', NULL, 11, 'first-investment-finance', 0, 0, 'first investment finance', 3, 1, NULL, NULL, NULL, NULL),
-(398, 75, 52, 'PALMAT SYSTEMS', '', NULL, '33 555 234 607', 'www.palmat-systems.com', NULL, 11, 'palmat-systems', 0, 0, 'palmat systems', 3, 1, NULL, NULL, NULL, NULL),
-(403, 144, 1, 'groupelogistiqueinvest', '', NULL, '0661266980', '', NULL, 11, 'groupelogistiqueinvest', 0, 0, 'groupelogistiqueinvest', 3, 1, NULL, NULL, NULL, NULL),
-(405, 144, 1, 'SOCOMIS', '', NULL, '522 22 95 36 ', '', NULL, 11, 'socomis', 0, 0, 'socomis', 3, 1, NULL, NULL, NULL, NULL),
-(406, 144, 13, 'Cabinplant', '', NULL, '0537642878', 'www.cabinplant.net', NULL, 11, 'cabinplant', 0, 0, 'cabinplant', 3, 1, NULL, NULL, NULL, NULL),
-(407, 144, 1, 'ACTION SERVICES', '', NULL, '0522662003', '', NULL, 11, 'action-services', 0, 0, 'action services', 3, 1, NULL, NULL, NULL, NULL),
-(409, 203, 51, 'Presitec ', '', NULL, '0034656952936', 'www.presitec.com', NULL, 1, 'presitec', 0, 0, 'presitec ', 3, 1, NULL, NULL, NULL, NULL),
-(410, 144, 1, 'fournipro.ma', '', NULL, '0522 21 80 05', 'www.fournipro.ma', NULL, 11, 'fourniproma', 0, 0, 'fournipro.ma', 3, 1, NULL, NULL, NULL, NULL),
-(418, 144, 1, 'SONEFI', '', NULL, '+212522661389', 'www.sonefi.ma', NULL, 11, 'sonefi', 0, 0, 'sonefi', 3, 1, NULL, NULL, NULL, NULL),
-(420, 144, 1, 'TCE PARTNERS', '', NULL, '00212674027932', '', NULL, 11, 'tce-partners', 0, 0, 'tce partners', 3, 1, NULL, NULL, NULL, NULL),
-(421, 144, 1, 'international security business', '', NULL, '0522204937', 'www.internationalsecuritybusin', NULL, 11, 'international-security-business', 0, 0, 'international security business', 3, 1, NULL, NULL, NULL, NULL),
-(425, 144, 1, 'ingeniatis', '', NULL, '0662014287', 'www.ingeniatis.com', NULL, 11, 'ingeniatis', 0, 0, 'ingeniatis', 3, 1, NULL, NULL, NULL, NULL),
-(446, 144, 1, 'GAMAI S.A.R.L', '', NULL, '212522665523', '', 'Société spécialisé en Automatisme Industriel, Intégrateur et distributeur officiel des Produits de marque Siemens.', 11, 'gamai-s.a.r.l', 0, 0, 'gamai s.a.r.l', 3, 1, NULL, NULL, NULL, NULL),
-(449, 144, 1, 'abs protection', '', NULL, '0522850101', '', 'Importateur et distributeur du matériel de sécurité et protection, vêtement de travail, accessoire de protection contre l\'incendie porte automatique,caméra, alarme, télésurveillance.', 11, 'abs-protection', 0, 0, 'abs protection', 3, 1, NULL, NULL, NULL, NULL),
-(450, 144, 1, 'CASAPACKING', '', NULL, '0522 44 44 23/24/25', '', 'CASAPACKING est le spécialiste des machines et matériels pour l’emballage et le conditionnement: banderoleuses, fardeleuses, cercleuses… Tous type de film, feuillard, adhésif, élastique... ', 11, 'casapacking', 0, 0, 'casapacking', 3, 1, NULL, NULL, NULL, NULL),
-(454, 144, 2, 'Eco-Sakane', '', NULL, '0537 75 68 67  ', 'www.ecosakane.com', 'Construction en bois, charpente traditionnel, lamellé collé, specialiste des golfs, club de tir, HARAS, amenagement urbain, villa et bungamow', 11, 'eco-sakane', 0, 0, 'eco-sakane', 3, 1, NULL, NULL, NULL, NULL),
-(456, 144, 1, 'univers caoutchouc', '', NULL, '212522244232', '', 'importateur distributeur bande transporteuse en caoutchouc et en PVC tout article en caoutchouc courroie trapez et de transmission rouleaux de convoyeur pieces en caoutchouc moulé', 11, 'univers-caoutchouc', 0, 0, 'univers caoutchouc', 3, 1, NULL, NULL, NULL, NULL),
-(458, 203, 48, 'AFHER EUROBELT, S.A.', '', NULL, '0034983217480', 'www.eurobelt.com', 'FABRICANTS DE TAPIS MODULAIRES PLASTIQUES', 11, 'afher-eurobelt-sa', 0, 0, 'afher eurobelt, s.a.', 3, 1, NULL, NULL, NULL, NULL),
-(464, 144, 1, 'FIXAVI sarl', '', NULL, '0522240421', '', 'Nous sommes une société spécialisée dans la vente du matériel industriel et quincaillerie, nous commercialisons entre autre les articles ci-après :\r\n', 11, 'fixavi-sarl', 0, 0, 'fixavi sarl', 3, 1, NULL, NULL, NULL, NULL),
-(465, 144, 1, 'Grues d\'Hercules Maroc - GHM', '', NULL, '05 22 34 16 60', 'gruesdherculesmaroc.com', 'Depuis 2004, l´entreprise s´est spécialisée dans la location de grues mobiles télescopiques et grues treillis de 18t a 200t, de nacelles élévatrices et de plateformes automotrices d´une hauteur de 6 à 43 mètres. ', 11, 'grues-dhercules-maroc-ghm', 0, 0, 'grues d\'hercules maroc - ghm', 3, 1, NULL, NULL, NULL, NULL),
-(469, 144, 1, 'ELITE AMENAGEMENT', '', NULL, '0614233888', 'WWW.ELITEAGENCEMENT.COM', 'AMENAGEMENT EN CLOISON .PEINTURE.\r\nREVETEMENT DU SOL EN CARLAGE PARQUET ET FAUX PLAFOND', 11, 'elite-amenagement', 0, 0, 'elite amenagement', 3, 1, NULL, NULL, NULL, NULL),
-(476, 144, 1, '1NEWLOG', '', NULL, '0662637305', '', 'sffdsf', 11, '1newlog', 0, 0, '1newlog', 3, 1, NULL, NULL, NULL, NULL),
-(479, 196, 107, 'SLESCA Pte Ltd', '', NULL, '006568488067', 'www.slesca.com', 'Slesca est une société de Trading avec des « Bureau de Sourcing et d’Achats » de produits industriels qui sont basés a Singapour/Chine/Inde, ', 2, 'slesca-pte-ltd', 0, 0, 'slesca pte ltd', 3, 1, NULL, NULL, NULL, NULL),
-(482, 144, 1, 'ALLIANSIS', '', NULL, '05 22 201370', '', 'Audit, Consulting, Conseil \r\nEngineering & Re-Engineering des SI \r\nDéploiement & Sécurisation des SI \r\nSolutions de Sauvegarde et de sécurité\r\nCâblage électrique, Informatique…, réfection & Interconnexion Réseaux \r\nMaintenance \r\nInfogérance', 11, 'alliansis', 0, 0, 'alliansis', 3, 1, NULL, NULL, NULL, NULL),
-(484, 144, 1, 'Thalès Informatique', '', NULL, '0522548780', 'www.thales.ma', 'intégrateur des logiciels de gestion Sage, solutions d\'infrastructure matérielle et réseau', 11, 'thales-informatique', 0, 0, 'thalès informatique', 3, 1, NULL, NULL, NULL, NULL),
-(485, 144, 1, 'MATINVEST SARL', '', NULL, '0661133783', '', 'MATINVEST SARL , société d\'import/export de matériaux de constructions portes (logements économiques et hauts de gamme) cuisnes , parquet ,marbre etc... , ainsi que d\'ameublement  , négoce international .', 11, 'matinvest-sarl', 0, 0, 'matinvest sarl', 3, 1, NULL, NULL, NULL, NULL),
-(489, 144, 1, 'Renov Plast', '', NULL, '0661405240', '', 'Socièté de transformation des matières plastiques par injection, fabrication et réparation des moules, matrices et toute autre fabrication mécanique', 11, 'renov-plast', 0, 0, 'renov plast', 3, 1, NULL, NULL, NULL, NULL),
-(562, 144, 9, 'GHM MESSTECHNIK MAROC', '', NULL, '+212537360330', 'www.messtechnik.ma', 'GHM MESSTECHNIK MAROC située à kenitra  travaille dans le secteur  industriels  ( métrologie , lean manufacture', 11, 'ghm-messtechnik-maroc', 0, 0, 'ghm messtechnik maroc', 3, 1, NULL, NULL, NULL, NULL),
-(566, 109, 108, 'Zallys Srl', '', NULL, '390445366785', 'www.zallys.com', 'Merci à des décennies d\'expérience dans la conception et la fabrication de véhicules électriques professionnels, Zallys a toujours été une société de reference de son secteur, offrant des solutions logistiques pour toute exigence liée à la manutention de charges sur roue.', 11, 'zallys-srl', 0, 0, 'zallys srl', 3, 1, NULL, NULL, NULL, NULL),
-(567, 144, 1, 'ATLAS', '', NULL, '0637320163', '', 'ingénierie de conditionnement et emballage', 11, 'atlas', 0, 0, 'atlas', 3, 1, NULL, NULL, NULL, NULL),
-(568, 103, 109, 'Eastman Impex', '', NULL, '+91-161-3044092 ', 'www.eastmanimpex.com', 'We are Manufacturer and Exporters of Fabrication Items ', 7, 'eastman-impex', 0, 0, 'eastman impex', 3, 1, NULL, NULL, NULL, NULL),
-(572, 144, 1, '2SID TECH', '', NULL, '0663070404', '2SID.MA', '2SID TECH étant un acteur majeur sur le marché de l’identification et Traçabilité', 11, '2sid-tech', 0, 0, '2sid tech', 3, 1, NULL, NULL, NULL, NULL),
-(575, 144, 1, 'vibra motor maroc', '', NULL, '0619911703', 'facebook.com/vibramaroc', 'équilibrage des rotors,ventilateur/ analyse vibratoire/ diagnostic roulement/ alignement laser/ usinage mécanique/thermographie.', 11, 'vibra-motor-maroc', 0, 0, 'vibra motor maroc', 3, 1, NULL, NULL, NULL, NULL),
-(576, 144, 1, 'STF CONSULTING', '', NULL, ' +212 522 986 960', 'stfconsulting.e-monsite.com/', 'Electricité, électronique, automobile\r\nPneumatique, Électropneumatique\r\nCapteurs\r\nAutomatismes, API, bus de terrain', 11, 'stf-consulting', 0, 0, 'stf consulting', 3, 1, NULL, NULL, NULL, NULL),
-(579, 144, 1, 'Ryme Bensbih', '', NULL, '0661932282', 'www.allobricole.ma', 'Allobricole comble les besoins de nettoyage, jardinage, traitement d’hygiène et bricolage et ainsi que les prestations de maintenance et installations techniques : Electricité, plomberie, Climatisation, Système de vidéo-surveillance, de détection d’incendie et de contrôle d’accès', 11, 'ryme-bensbih', 0, 0, 'ryme bensbih', 3, 1, NULL, NULL, NULL, NULL),
-(582, 144, 98, 'F.t.FRERESLAAYOUNE', '', NULL, '0604075903', '', 'Vente et acheter tous les articles EPI', 11, 'ftfrereslaayoune', 0, 0, 'f.t.frereslaayoune', 3, 1, NULL, NULL, NULL, NULL),
-(586, 144, 1, 'ATLAS AGENCEMENT', '', NULL, '0522523838', '', 'Société d’équipement et d’aménagement de bureau, vente rayonnage, manutention.', 11, 'atlas-agencement', 0, 0, 'atlas agencement', 3, 1, NULL, NULL, NULL, NULL),
-(587, 144, 1, 'DALGO INDUSTRIE', '', NULL, '0661417140', 'www.facebook.com/dalgoindustri', 'Notre métier est le rayonnage dans ses différents systèmes, fonctionnel, modulable , robuste et économique ainsi que les rayonnage dans tous ses types.', 11, 'dalgo-industrie', 0, 0, 'dalgo industrie', 3, 1, NULL, NULL, NULL, NULL),
-(588, 144, 1, 'GC SWISS TRADING ', '', NULL, '00212694636583', 'www.astarlubricants.com', 'Nous sommes une usine avec plus de 30 ans d\'expérience dans la production de lubrifiants. \r\nNous produisons le lubrifiant standard pour le lubrifiant compétitif dans les voitures, les motocyclettes, les camions, l\'hydraulique, la transmission, agricole, marine, e', 11, 'gc-swiss-trading-', 0, 0, 'gc swiss trading ', 3, 1, NULL, NULL, NULL, NULL),
-(590, 144, 1, 'Alsace Equipement', '', NULL, '06 96 66 66 47', 'alsace-equipement-sarl.busines', 'Nous sommes des fabricants de vétements professionnels et d\'image et EPI depuis 1997,de la création de vos propres modèles le choix des matières la prise des mesures et l\'accompagnement pour un vetement de travail qui vous donne plus de visibilité et de confort.', 11, 'alsace-equipement', 0, 0, 'alsace equipement', 3, 1, NULL, NULL, NULL, NULL),
-(591, 144, 1, 'yazi industrie', '', NULL, '0652598954', 'www.yazindustrie.com', 'Entreprise de vente des fourniture industrielles et technique de type : mécanique, pneumatique hydraulique électrique et matériel de sécurité , nous fabriquons des flow rack et postes de travail et nous possédons un département de filtration domestique et industrielle', 11, 'yazi-industrie', 0, 0, 'yazi industrie', 3, 1, NULL, NULL, NULL, NULL),
-(592, 144, 1, 'Sigmatecasa ', '', NULL, '0660896422 ', 'www.facebook.com/domotiquee/', 'SIGMATECASA est une société d\'ingénierie spécialisée dans la conception et la gestion de projet de domotique, GTC et l\'intégration des systèmes audiovisuels', 11, 'sigmatecasa-', 0, 0, 'sigmatecasa ', 3, 1, NULL, NULL, NULL, NULL),
-(609, 144, 1, 'CONSO EXPRESS', '', NULL, '0619555862', 'www.consoexpress.com', 'fourniture de bureau matériels et consommable de bureau  ', 11, 'conso-express', 0, 0, 'conso express', 3, 1, NULL, NULL, NULL, NULL),
-(610, 144, 2, 'GNS-ELEC', '', NULL, '+212602314191', '', 'TRAVAUX ELECTRIQUE\r\nFOURNITURE DES MATÉRIELS ET EQUIPEMENTS ÉLECTRIQUES', 11, 'gns-elec', 0, 1, 'gns-elec', 3, 1, NULL, NULL, NULL, NULL),
-(612, 144, 9, 'HIBAPOWER', 'M.', '000082309000024', '+212537329090', 'http://hibapower.com/', 'HIBAPOWER est une société spécialisée en Énergie \r\n (Énergie solaire : pompage solaire, ON Grid, OFF Grid et systèmes hybrides. Groupes électrogènes : Etude, Fourniture, Installation, Maintenance et Location).\r\n', 11, 'hibapower', 0, 0, 'hibapower', 3, 1, NULL, NULL, NULL, NULL),
-(613, 144, 1, 'santoimmo', '', NULL, '0619969062', '', 'Notre entreprise vous propose ses services de ponçage,traitement et cristallisation de marbre ;fourniture et pose de gerflex ,parquet papier peint à casablanca, CONT T2L 0619969062', 11, 'santoimmo', 0, 0, 'santoimmo', 3, 1, NULL, NULL, NULL, NULL),
-(614, 144, 12, 'AFRICAROME', '', NULL, '00212658668379', 'africarome.com', 'Spécialiste des relations producteurs au Maroc. Produits naturels (Huiles végétales comme l\'huile de Figue de Barbarie et Argan, savons noirs, huiles essentielles, épices, arômes, etc...) ', 11, 'africarome', 0, 0, 'africarome', 3, 1, NULL, NULL, NULL, NULL),
-(615, 144, 1, 'EMANUS', '', NULL, '00212638251210', '', 'Vente de Fournitures de bureau, Matériel et Consommables Informatiques ', 11, 'emanus', 0, 0, 'emanus', 3, 1, NULL, NULL, NULL, NULL),
-(618, 144, 31, 'Quadritech', '', NULL, '0523335355', 'www.quadritech.ma', 'Quadritech spécialiste dans l\'installation et la maintenance des fermetures industrielles et équipements de quai au Maroc. Disposant de plusieurs d\'années d\'expérience, l\'équipe Quadritech s\'engage à vous présenter la solution la plus adéquate.', 11, 'quadritech', 0, 0, 'quadritech', 3, 1, NULL, NULL, NULL, NULL),
-(619, 144, 1, 'PROTECTION UNIT', '', NULL, '0522766526', 'www.protectionunit.ma', 'Afin de répondre à chaque besoin, PROTECTION UNIT propose un éventail de services professionnels. Grâce à son expérience et à un savoir-faire reconnus, \r\n', 11, 'protection-unit', 0, 0, 'protection unit', 3, 1, NULL, NULL, NULL, NULL),
-(620, 144, 1, 'L\'ART DU TEXTILE', '', NULL, '212522521078', 'lartdutextile.com', 'VÊTEMENTS PROFESSIONNELS ET HOTELIERS', 11, 'lart-du-textile', 0, 0, 'l\'art du textile', 3, 1, NULL, NULL, NULL, NULL),
-(623, 144, 2, 'GHAF CAR', '', NULL, '0619438618', 'Www.ghafcar.ma', 'LOCATION DES VOITURES ', 11, 'ghaf-car', 0, 0, 'ghaf car', 3, 1, NULL, NULL, NULL, NULL),
-(624, 144, 98, 'SAHARA NAVALS', '', NULL, '0672682909', '', 'reparation et maintenance des bateaux et navires, reparation et maintenance de coque de navires, reparation et maintenance de chaudiere et tuyauterie', 11, 'sahara-navals', 0, 0, 'sahara navals', 3, 1, NULL, NULL, NULL, NULL),
-(627, 144, 1, 'AL ASSIL VOYAGES', '', NULL, '0611308874', '', 'AGENCE DE VOYAGE', 11, 'al-assil-voyages', 0, 0, 'al assil voyages', 3, 1, NULL, NULL, NULL, NULL),
-(633, 144, 2, 'SAMT de coordination et de construction', '', NULL, '0600441142', '', 'entrepreneur de travaux divers pilotage et coordination des projets prestation de service divers.', 11, 'samt-de-coordination-et-de-construction', 0, 0, 'samt de coordination et de construction', 3, 1, NULL, NULL, NULL, NULL),
-(634, 144, 1, 'BE PREMIUM', '', NULL, '0634770754', 'be-premium.ma/', 'CONSULTING & CONSEIL\r\nFORMATION\r\nINGÉNIERIE\r\nSOUS-TRAITANCE et fabriquant des remorques routiers', 11, 'be-premium', 0, 0, 'be premium', 3, 1, NULL, NULL, NULL, NULL),
-(637, 144, 1, 'Company of Industrial Multiservices', '', NULL, '0667255318', '', 'C.I.M vous accompagne dans votre manutention,nous mettons à votre disposition \r\nune ensemble de matériels et de compétences qui vous aide à bien vivre votre manutention.\r\n', 11, 'company-of-industrial-multiservices', 0, 2, 'company of industrial multiservices', 3, 1, NULL, NULL, NULL, NULL),
-(638, 144, 31, 'INDUSTRIE MAROC FLUIDE ', 'Mme', '001544919000097', '0662190170', '', 'Composants pneumatiques ou hydrauliques\r\n', 11, 'industrie-maroc-fluide', 0, 3, 'industrie maroc fluide ', 3, 1, NULL, NULL, NULL, NULL),
-(640, 144, 1, 'STE BB LUX DECOR', '', NULL, '0663810285', '', 'travaux de tapisseries et ses drives. décorations et ameublement', 11, 'ste-bb-lux-decor', 0, 1, 'ste bb lux decor', 3, 1, NULL, NULL, NULL, NULL),
-(641, 144, 1, 'VDV Electro', '', NULL, '0522204321', 'www.ccinv.be', 'Importateur de matériel électrotechnique (interphone, test et mesure, vidéosurveillance)', 11, 'vdv-electro', 0, 0, 'vdv electro', 3, 1, NULL, NULL, NULL, NULL),
-(644, 144, 1, 'SEVEN TRADE', '', NULL, '0661429279', 'www.seventrade.ma', 'VENTILATEURS INDUSTRIELS, MOBILIER URBAIN, MATERIEL DE MANUTENTION', 11, 'seven-trade', 0, 0, 'seven trade', 3, 1, NULL, NULL, NULL, NULL),
-(645, 144, 1, 'GTSI(Groupe technique de système incendie)', '', NULL, '0650842874', '', 'Spécialisé  en système sécurité notamment dans les domaines de (Détection et protection incendie, anti-intrusion, contrôle d\'accès, désenfumage, Extinction automatique, vidéosurveillance, courant faible.\r\n', 11, 'gtsi', 0, 4, 'gtsi(groupe technique de système incendie)', 3, 1, NULL, NULL, NULL, NULL),
-(647, 144, 25, 'logigard', '', NULL, '0661765758', '', 'Bonjour pour tous vos besoins des prestations gardiennage/nettoyage et vidéosurveillance avec des prix intéressants contactez-nous\r\nSociété LOGIGARD SERVICES\r\n0661765758\r\n0537406917\r\nZouhir Elbekkali\r\nGérant', 11, 'logigard', 0, 1, 'logigard', 3, 1, NULL, NULL, NULL, NULL),
-(648, 144, 1, 'Airclimelectro', '', NULL, '0661982871', '', 'climatisation,froid,plomberie,extraction,travaux  divers ', 11, 'airclimelectro', 0, 1, 'airclimelectro', 3, 1, NULL, NULL, NULL, NULL),
-(649, 144, 1, 'Trans Fuso', 'M.', NULL, '0662798719', '', 'transport marchandises, distribution...', 11, 'trans-fuso', 0, 1, 'trans fuso', 3, 1, NULL, NULL, NULL, NULL),
-(652, 144, 31, 'Igor', 'M.', NULL, '0673840138', '', 'Construction et charpente métallique tuyauteries \r\nSablage et peinture industrielle ', 11, 'igor', 0, 1, 'igor', 3, 1, NULL, NULL, NULL, NULL),
-(654, 144, 1, 'industry development company', 'Mme', NULL, '0664200809', '', 'Industry Development company, est une centrale d\'achat 100% marocaine, qui s\'occupe de vos fournitures industrielles et services.\r\n', 11, 'industry-development-company', 0, 1, 'industry development company', 3, 1, NULL, NULL, NULL, NULL),
-(655, 144, 7, 'Afrique polysystemes technology', 'M.', NULL, '0661050338', 'www.afriquepst.com', '***AFRIQUE POLY SYSTEMES TECHNOLOGY***\r\nis a purchasing and logistics center specializing in the industries that are present in Africa and europe. \r\nFor all your supply and supply chain projects, we have the solution adapted to their needs.', 11, 'afrique-polysystemes-technology', 0, 1, 'afrique polysystemes technology', 3, 1, NULL, NULL, NULL, NULL),
-(660, 219, 112, 'iNFOGERANCE', 'M.', NULL, '0021625432777', 'http://www.onfo-gerance.com', 'développement des produits de connectivité  qui servent à la supervision de réseau d\'éclairage public, monitoring du vehicule et elock pour la sécurisation des remorques, des conteneurs et des camions frigo', 1, 'infogerance', 0, 1, 'infogerance', 3, 1, NULL, NULL, NULL, NULL),
-(661, 144, 1, 'SOFIM', 'M.', NULL, '+212522450061', 'www.sofim.ma', 'SOFIM (Société de fournitures d’industries et mines) est crée en 2001; son activité principale est la fourniture, l’installation et l’entretien du matériel industriel (hydraulique, pneumatique, mécanique, électricité, électronique et automatique).', 11, 'sofim', 1, 2, 'sofim', 3, 1, NULL, NULL, NULL, NULL),
-(664, 144, 1, 'Koumen négoce', 'M.', NULL, '0663240208', '', 'Koumen négoce société de négoce en matière de lubrifiants moteur et industriels', 11, 'koumen-negoce', 0, 1, 'koumen négoce', 3, 1, NULL, NULL, NULL, NULL),
-(684, 75, 33, 'Fournisseur 3', 'M.', NULL, '', 'https://www.lesachatsindustrie', '', 1, 'fournisseur-3', 0, 14, 'fournisseur 3', 3, 1, 'F-6845f24', NULL, NULL, NULL),
-(745, 109, 116, 'motive ', 'M.', NULL, '', 'https://www.motive.it/fr/', 'motive naît en l\'an 2000, du groupe RIB (www.ribind.it), un groupe parmi les leaders mondiaux dans le secteur des systèmes d\'ouverture automatique, dans le but de transférer la technologie et le know-how, développés au cours des 35 années d\'activité, au marché des moteurs électriques et des réducteurs à usage industriel.', 1, 'motive', 0, 2, 'motive ', 3, 1, 'F-7455ebf', NULL, 'moteurs asynchrones, réducteurs, variateurs de vitesse, transmission, puissance, fabricant', NULL);
+INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `ice`, `fix`, `website`, `description`, `currency_id`, `slug`, `phone_vu`, `visite`, `societe_lower`, `step`, `is_complet`, `code_client`, `autre_ville`, `autre_categories`, `autre_currency`, `parent`) VALUES
+(2, 144, 1, '3F Industrie', 'M.', '001531606000066', '+212522365797', 'http://www.3findustrie.com', '3F Industrie a choisi de se positionner sur le secteur de la logistique en mettant à la disposition de ce dernier les meilleures fournisseurs tout en respectant les normes les plus sévères et les plus demandées par les donneurs d’ordres les plus exigeants. Notre objectif est d’offrir à nos clients une qualité de service qui s’inscrit dans une amélioration continue.\n\nRayonnage et système de stockage : Rayonnage à palettes : Conventionnel, Accumulation, Mobile, Dynamique. Rayonnage pour archive, charge légère et lourde plateforme sur deux ou trois niveaux pour une optimisation maximale rayonnage cantilever pour des charges longues, lourdes et volumineuses.\n\nRayonnage mobile pour archive documents et œuvres d’art. Intervention sur tout type de rayonnage pour démontage remontage et divers modifications de niveaux ou d’implantation. Notre savoir-faire nous a permis d’avoir la confiance de nombreuses entreprises dans différents secteurs d’activité : Alimentaire, Industriel, Logistique, Distribution…', 11, '3f-industrie', 7, 339, '3f industrie', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(49, 144, 1, 'thyssenkrupp elevator maroc', '', NULL, '212522204505', '', NULL, 11, 'thyssenkrupp-elevator-maroc', 0, 0, 'thyssenkrupp elevator maroc', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(55, 144, 1, 'Le Carton', '', NULL, '212522204505', '', NULL, 11, 'le-carton', 0, 0, 'le carton', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(56, 144, 1, 'Imprimerie Sabri', '', NULL, '212522902037', '', NULL, 11, 'imprimerie-sabri', 0, 0, 'imprimerie sabri', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(67, 144, 1, 'LEAN Consulting', '', NULL, '00212661671868', 'http://www.lean-consulting.ma', NULL, 11, 'lean-consulting', 0, 0, 'lean consulting', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(72, 144, 9, 'arrahala choukri', '', NULL, '0537376687', '', NULL, 11, 'arrahala-choukri', 0, 0, 'arrahala choukri', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(75, 144, 1, 'STE EURO-PNEUS SARL', '', NULL, '0522811306', '', NULL, 11, 'ste-euro-pneus-sarl', 0, 0, 'ste euro-pneus sarl', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(79, 144, 1, 'SMTR CARRE', '', NULL, '022408458', 'www.carre.ma', NULL, 11, 'smtr-carre', 0, 0, 'smtr carre', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(86, 144, 1, 'SJL Maroc', '', NULL, '0522674000', '', NULL, 11, 'sjl-maroc', 0, 0, 'sjl maroc', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(87, 144, 13, 'DPS', '', NULL, '00212528236435', 'www.dps-ma.com', NULL, 11, 'dps', 0, 0, 'dps', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(88, 144, 1, 'CD INDEX', '', NULL, '0522983499', 'www.cddoc.fr', NULL, 11, 'cd-index', 0, 0, 'cd index', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(92, 144, 1, 'ELECTRO PROTECT', '', NULL, '0522992970', '', NULL, 11, 'electro-protect', 0, 0, 'electro protect', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(93, 144, 2, 'MEDIXANA', '', NULL, '0537631490', 'www.medisana.ma', NULL, 11, 'medixana', 0, 0, 'medixana', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(95, 144, 2, 'FI LAMANE Assurances', '', NULL, '0537799833', 'www.filamane.com', NULL, 11, 'fi-lamane-assurances', 0, 0, 'fi lamane assurances', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(97, 75, 43, 'EXPRESSO France', '', NULL, '0388042030', 'expresso-france.com', NULL, 1, 'expresso-france', 0, 0, 'expresso france', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(111, 144, 31, 'Meca ingineering', '', NULL, '00212661065982', '', NULL, 11, 'meca-ingineering', 0, 0, 'meca ingineering', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(112, 144, 1, 'marché central', '', NULL, '0527814446', '', NULL, 11, 'marche-central', 0, 0, 'marché central', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(113, 144, 5, 'Your PC', '', NULL, '0535 643 352', 'www.yourpc.ma', NULL, 11, 'your-pc', 0, 0, 'your pc', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(115, 144, 1, 'Convergence Telecom', '', NULL, '00212677896835', 'www.convergence-tele.com', NULL, 11, 'convergence-telecom', 0, 0, 'convergence telecom', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(121, 144, 1, 'ATLADIS', '', NULL, '00212522992062', 'www.atladis.ma', NULL, 11, 'atladis', 0, 0, 'atladis', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(124, 144, 7, 'LBA Consulting', '', NULL, '0661706647', '', NULL, 11, 'lba-consulting', 0, 0, 'lba consulting', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(126, 144, 1, 'QUINCAILLERIE NASRALLAH', '', NULL, '0522300361', '', NULL, 11, 'quincaillerie-nasrallah', 0, 0, 'quincaillerie nasrallah', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(128, 144, 1, 'gm equipements', '', NULL, '0522592220', 'www.gm-equipements.com', NULL, 11, 'gm-equipements', 0, 0, 'gm equipements', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(132, 144, 1, 'SRM', '', NULL, '0522633700', 'www.groupe-premium.com', NULL, 11, 'srm', 0, 0, 'srm', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(139, 144, 1, 'Ultimate Computer', '', NULL, '0522 86 42 04', 'www.uc-maroc.ma', NULL, 11, 'ultimate-computer', 0, 0, 'ultimate computer', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(142, 144, 1, 'LES 5 CONINENTS', '', NULL, '0522265209', NULL, NULL, 11, 'les-5-coninents', 0, 0, 'les 5 coninents', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(149, 144, 1, 'madiva ', '', NULL, '0661912561', '', NULL, 11, 'madiva', 0, 0, 'madiva ', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(155, 144, 1, 'UNIFORCE INFORMATIQUE', '', NULL, '0522297240', 'www.uniforce.ma', NULL, 11, 'uniforce-informatique', 0, 0, 'uniforce informatique', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(157, 144, 12, 'Univers Engins', '', NULL, '0524355555', '', NULL, 11, 'univers-engins', 0, 0, 'univers engins', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(161, 144, 1, 'logipro', '', NULL, '212522987175', '', NULL, 11, 'logipro', 0, 0, 'logipro', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(163, 144, 12, 'GROUPE MENARA HOLDING/ Les Lumières de Menara', '', NULL, '+212(0)524345387/97', 'http://www.2lm-maroc.com/', NULL, 11, 'groupe-menara-holding-les-lumieres-de-menara', 0, 0, 'groupe menara holding/ les lumières de menara', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(165, 109, 83, 'PLASTIMARK S.p.A.', '', NULL, '00390171618630', 'www.plastimark.com', NULL, 11, 'plastimark-s-p-a', 0, 0, 'plastimark s.p.a.', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(168, 144, 12, 'GROUPE AUTO HALL', '', NULL, '0524448422', 'www.autohall.ma', NULL, 11, 'groupe-auto-hall', 0, 0, 'groupe auto hall', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(169, 144, 1, 'TELEDYNE', '', NULL, '0522307664 ', 'teledyne.blogspot.com', NULL, 11, 'teledyne', 0, 0, 'teledyne', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(171, 75, 82, 'TRADER PARTNER', '', NULL, '0616803821', '', NULL, 1, 'trader-partner', 0, 0, 'trader partner', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(177, 144, 1, 'ESPACE MANUTENTION', '', NULL, '0522403950', '', NULL, 11, 'espace-manutention', 0, 0, 'espace manutention', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(180, 144, 1, 'SOPRIAM', '', NULL, '0522464900', '', NULL, 11, 'sopriam', 0, 0, 'sopriam', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(188, 144, 1, 'QUALITAS', '', NULL, '0522444038', 'www.qualitas.ma', NULL, 11, 'qualitas', 0, 0, 'qualitas', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(189, 144, 1, 'HAMA', '', NULL, '34567', '', NULL, 11, 'hama', 0, 0, 'hama', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(190, 144, 1, 'CAP GIBRALTAR', '', NULL, '0522357128', 'http://www.capgibraltar.com', NULL, 11, 'cap-gibraltar', 0, 0, 'cap gibraltar', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(192, 144, 1, 'L\'APPROVISIONNEUR TECHNIQUE', '', NULL, '0522440884/956', 'www.appro-tech.com', NULL, 11, 'lapprovisionneur-technique', 0, 0, 'l\'approvisionneur technique', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(195, 144, 1, 'INTERVARIA', '', NULL, '0522523838', 'WWW.INTERVARIA.MA', NULL, 11, 'intervaria', 0, 0, 'intervaria', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(197, 203, 79, 'ESTINDEL', '', NULL, '0034954693830', 'http://www.estindel.com', NULL, 1, 'estindel', 0, 0, 'estindel', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(198, 144, 1, 'TECNY MAROC', '', NULL, '212522986800', '', NULL, 11, 'tecny-maroc', 0, 0, 'tecny maroc', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(199, 144, 12, 'SUD TRANSMISSION', '', NULL, '0524432169', '', NULL, 11, 'sud-transmission', 0, 0, 'sud transmission', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(202, 144, 1, 'MAROC BUREAU', '', NULL, '0522353755', '', NULL, 11, 'maroc-bureau', 0, 0, 'maroc bureau', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(204, 144, 1, 'INSTALLATOR ', '', NULL, '0522404201', 'www.installator.com', NULL, 11, 'installator', 0, 0, 'installator ', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(210, 75, 76, 'KLB Group', '', NULL, '0149443500', 'www.klb-group.com', NULL, 11, 'klb-group', 0, 0, 'klb group', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(215, 144, 1, 'INEGMA', '', NULL, '00212522865832', 'www.groupe-inegma.com', NULL, 11, 'inegma', 0, 0, 'inegma', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(218, 144, 1, 'METALLIC DESIGN', '', NULL, '0522970320', '', NULL, 11, 'metallic-design', 0, 0, 'metallic design', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(220, 144, 1, 'SOTRANSE SARL', '', NULL, '0522244268', 'www.sotranse.com', NULL, 11, 'sotranse-sarl', 0, 0, 'sotranse sarl', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(221, 144, 1, 'b2a-pro services sarl', '', NULL, '0668046613', '', NULL, 11, 'b2a-pro-services-sarl', 0, 0, 'b2a-pro services sarl', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(223, 144, 1, 'F C Industriel', '', NULL, '0661298827', NULL, NULL, 11, 'f-c-industriel', 0, 0, 'f c industriel', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(224, 144, 1, 'ELEXPERT', '', NULL, '0522249171', 'www.elexpert.ma', NULL, 11, 'elexpert', 0, 0, 'elexpert', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(225, 144, 31, 'AMP', '', NULL, '0523314020', 'www.amp-ge.ma', NULL, 11, 'amp', 0, 0, 'amp', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(228, 144, 1, 'R2i Consult', '', NULL, '+212 (0) 522 986 960', '', NULL, 11, 'r2i-consult', 0, 0, 'r2i consult', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(231, 144, 1, 'AFRIC ROULEMENT', '', NULL, '0522407009', '', NULL, 11, 'afric-roulement', 0, 0, 'afric roulement', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(232, 144, 7, 'ORSA', '', NULL, '0539351152', '', NULL, 11, 'orsa', 0, 0, 'orsa', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(233, 144, 1, 'Helio rif', '', NULL, '00212522932814', '', NULL, 11, 'helio-rif', 0, 0, 'helio rif', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(235, 144, 1, 'ODIMATIC', '', NULL, '0522301515', '', NULL, 11, 'odimatic', 0, 0, 'odimatic', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(236, 144, 7, 'coflaga', '', NULL, '0539943662', '', NULL, 11, 'coflaga', 0, 0, 'coflaga', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(238, 144, 1, 'CASA TECHNIQUE AUTO S.A.R.L', '', NULL, '00212661400572', '', NULL, 11, 'casa-technique-auto-sarl', 0, 0, 'casa technique auto s.a.r.l', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(239, 144, 1, 'EUROPE COMPUTER SYSTEMES INTERNATIONAL MAROC', '', NULL, '0522789030', 'www.ecs-group.com', NULL, 11, 'europe-computer-systemes-international-maroc', 0, 0, 'europe computer systemes international maroc', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(241, 144, 1, 'PROFESSIONNEL COMPUTER ', '', NULL, '0522393956', '', NULL, 11, 'professionnel-computer', 0, 0, 'professionnel computer ', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(243, 144, 1, 'SCOLARIUM', '', NULL, '0522874401', 'www.microstore.ma', NULL, 11, 'scolarium', 0, 0, 'scolarium', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(246, 144, 1, 'AVENIR FORMATION', '', NULL, '0522203664', '', NULL, 11, 'avenir-formation', 0, 0, 'avenir formation', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(248, 144, 32, 'Excelsa Techniques Composites', '', NULL, '00212 522592053', 'www.excelsa-maroc.com', NULL, 11, 'excelsa-techniques-composites', 0, 0, 'excelsa techniques composites', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(252, 144, 31, 'MASIFE', '', NULL, '0661116047', NULL, NULL, 11, 'masife', 0, 0, 'masife', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(254, 144, 1, 'Optim Achat', '', NULL, '0522362281', 'www.optim-achat.com', NULL, 11, 'optim-achat', 0, 0, 'optim achat', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(255, 144, 1, 'FROXY', '', NULL, '212522313167', '', NULL, 11, 'froxy', 0, 0, 'froxy', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(258, 144, 10, 'GLOBAL ACCESS', '', NULL, '21237863596', 'www.globalaccess.ma', NULL, 11, 'global-access', 0, 0, 'global access', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(262, 144, 1, 'ALDIS', '', NULL, '0522476340', 'www.lachaisequidecore.com', NULL, 11, 'aldis', 0, 0, 'aldis', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(265, 144, 7, 'International cabinet of consulting and brokerage', '', NULL, '00212667226854', NULL, NULL, 11, 'international-cabinet-of-consulting-and-brokerage', 0, 0, 'international cabinet of consulting and brokerage', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(267, 144, 1, '3S MORCCO', '', NULL, '0522992222', 'www.3smorocco.com', NULL, 11, '3s-morcco', 0, 0, '3s morcco', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(273, 144, 1, 'Total Protection', '', NULL, '0522252632', '', NULL, 11, 'total-protection', 0, 0, 'total protection', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(279, 144, 1, 'INDUSTRIE EXPO', '', NULL, '2126 63428925', '', NULL, 11, 'industrie-expo', 0, 0, 'industrie expo', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(280, 144, 1, 'GLOBAL IT', '', NULL, '00212529011066', '', NULL, 11, 'global-it', 0, 0, 'global it', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(281, 144, 1, 'SMBS', '', NULL, '00212522487518', 'www.smbs.ma', NULL, 11, 'smbs', 0, 0, 'smbs', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(282, 144, 1, 'GOOD TEC', '', NULL, '0522765052', '', NULL, 11, 'good-tec', 0, 0, 'good tec', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(285, 144, 1, 'equindus', '', NULL, '0522209719', '', NULL, 11, 'equindus', 0, 0, 'equindus', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(289, 144, 12, 'marbeco ', '', NULL, '0674918260', NULL, NULL, 11, 'marbeco', 0, 0, 'marbeco ', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(290, 144, 34, 'high maintenance sarl', '', NULL, '0665211117', '', NULL, 11, 'high-maintenance-sarl', 0, 0, 'high maintenance sarl', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(291, 144, 9, 'ENATCOM', '', NULL, '0537378361', '', NULL, 11, 'enatcom', 0, 0, 'enatcom', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(295, 144, 1, 'ELEVATEK', '', NULL, '+212522610270', 'www.elevatek.ma', NULL, 11, 'elevatek', 0, 0, 'elevatek', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(296, 144, 1, 'LONGOMETAL', '', NULL, '0522402060', '', NULL, 11, 'longometal', 0, 0, 'longometal', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(298, 144, 1, 'pop', '', NULL, '0522447719', NULL, NULL, 11, 'pop', 0, 0, 'pop', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(300, 144, 1, 'W2A', '', NULL, '0640261431', 'http://www.lesachatsindustriel', 'Société de developpement informatique', 11, 'w2a', 0, 0, 'w2a', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(307, 144, 72, 'MAROC TRANSFO', '', NULL, '0522 96 41 12', '', NULL, 11, 'maroc-transfo', 0, 0, 'maroc transfo', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(308, 144, 1, 'FENIE BROSSETTE', '', NULL, '0522639173', 'www.feniebrossette.ma', NULL, 11, 'fenie-brossette', 0, 0, 'fenie brossette', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(310, 144, 1, 'FIRST MATERIEL', '', NULL, '0522677070', 'www.firstmateriel.ma', NULL, 11, 'first-materiel', 0, 0, 'first materiel', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(311, 144, 1, 'technipower', '', NULL, '00212522253113', 'http://www.technipower-maroc.c', NULL, 11, 'technipower', 0, 0, 'technipower', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(312, 75, 71, 'GENELEC S.A.S.', '', NULL, '0474626505', 'genelec.tm.fr', NULL, 1, 'genelec-sas', 0, 0, 'genelec s.a.s.', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(315, 144, 13, 'JLM', '', NULL, '0528 24 10 50', 'http://www.jlm-maroc.com', NULL, 11, 'jlm', 0, 0, 'jlm', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(316, 144, 1, 'TC MAROC', '', NULL, '0522593530', 'www.tcmaroc.com', NULL, 11, 'tc-maroc', 0, 0, 'tc maroc', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(317, 144, 1, 'LAWAZIME INDUSTRIELLES', '', NULL, '0522714448', '', NULL, 11, 'lawazime-industrielles', 0, 0, 'lawazime industrielles', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(323, 144, 1, 'CAP SECURITE', '', NULL, '00212522247078', '', NULL, 11, 'cap-securite', 0, 0, 'cap securite', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(326, 144, 1, 'HIERRO SARL', '', NULL, '0522334802', 'www.hierro.ma', NULL, 11, 'hierro-sarl', 0, 0, 'hierro sarl', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(328, 144, 31, 'a2me', '', NULL, '212523303117', 'www.a2me.ma', NULL, 11, 'a2me', 0, 0, 'a2me', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(330, 144, 1, 'YOUSRA GADGET  SARL', '', NULL, '0661136453', '', NULL, 11, 'yousra-gadget-sarl', 0, 0, 'yousra gadget sarl', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(332, 144, 31, 'Sofie consulting europe maroc', '', NULL, '0523321053', 'www.sofiec-international.com', NULL, 11, 'sofie-consulting-europe-maroc', 0, 0, 'sofie consulting europe maroc', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(333, 144, 1, 'Cleric Maroc ', '', NULL, '0522247129', '', NULL, 11, 'cleric-maroc', 0, 0, 'cleric maroc ', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(334, 75, 68, 'Guichon Valves', '', NULL, '00 334 79 44 59 00', 'www.guichon.com', NULL, 11, 'guichon-valves', 0, 0, 'guichon valves', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(339, 144, 12, 'elementerre', '', NULL, '+212.524.42.13.11', 'www.elementerre.net', NULL, 11, 'elementerre', 0, 0, 'elementerre', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(340, 144, 1, 'STE. PLASTIBAG', '', NULL, '0522618153', '', NULL, 11, 'ste-plastibag', 0, 0, 'ste. plastibag', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(346, 144, 1, 'ciea', '', NULL, '00212522672825', 'ciea.fr', NULL, 1, 'ciea', 0, 0, 'ciea', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(348, 144, 1, 'LOGICOLD', '', NULL, '0522536620', 'www.logicold.com', NULL, 11, 'logicold', 0, 0, 'logicold', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(350, 144, 1, 'drem', '', NULL, '0522275664', '', NULL, 11, 'drem', 0, 0, 'drem', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(353, 144, 2, 'n.design', '', NULL, '0661290284', '', NULL, 11, 'ndesign', 0, 0, 'n.design', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(359, 144, 12, 'PROTEMAX', '', NULL, '0524432143', 'www.protemax-maroc.com', NULL, 11, 'protemax', 0, 0, 'protemax', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(363, 144, 1, 'MAGINOX', '', NULL, '0522357239', '', NULL, 11, 'maginox', 0, 0, 'maginox', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(365, 144, 1, 'omatrac', '', NULL, '0522661544', '', NULL, 11, 'omatrac', 0, 0, 'omatrac', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(367, 144, 1, 'idmar industry', '', NULL, '0522401118', '', NULL, 11, 'idmar-industry', 0, 0, 'idmar industry', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(369, 144, 1, 'ADVANCED AUTOMATION', '', NULL, '0522861929', '', NULL, 11, 'advanced-automation', 0, 0, 'advanced automation', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(372, 144, 1, 'Top Rayonnages SARL', '', NULL, '0649438405', '', NULL, 11, 'top-rayonnages-sarl', 0, 0, 'top rayonnages sarl', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(378, 203, 53, 'Estanterías Record', '', NULL, '0034958466888', 'www.estanteriasrecord.com', NULL, 11, 'estanterías-record', 0, 0, 'estanterías record', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(387, 144, 1, 'communication system', '', NULL, '0522995550', 'www.comsys.ma', NULL, 11, 'communication-system', 0, 0, 'communication system', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(388, 144, 31, 'Masbahi Group Informatique', '', NULL, '0523327617', '', NULL, 11, 'masbahi-group-informatique', 0, 0, 'masbahi group informatique', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(389, 144, 1, 'Aaron & Babel', '', NULL, '212661060901', 'www.aaron-babel.com', NULL, 11, 'aaron-babel', 0, 0, 'aaron & babel', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(392, 144, 13, 'ste PERFECT DECOR (perdeco)', '', NULL, '00212528333720', 'www.per-deco.com', NULL, 11, 'ste-perfect-decor-perdeco', 0, 0, 'ste perfect decor (perdeco)', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(396, 144, 1, 'FIRST INVESTMENT FINANCE', '', NULL, '0674108464', '', NULL, 11, 'first-investment-finance', 0, 0, 'first investment finance', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(398, 75, 52, 'PALMAT SYSTEMS', '', NULL, '33 555 234 607', 'www.palmat-systems.com', NULL, 11, 'palmat-systems', 0, 0, 'palmat systems', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(403, 144, 1, 'groupelogistiqueinvest', '', NULL, '0661266980', '', NULL, 11, 'groupelogistiqueinvest', 0, 0, 'groupelogistiqueinvest', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(405, 144, 1, 'SOCOMIS', '', NULL, '522 22 95 36 ', '', NULL, 11, 'socomis', 0, 0, 'socomis', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(406, 144, 13, 'Cabinplant', '', NULL, '0537642878', 'www.cabinplant.net', NULL, 11, 'cabinplant', 0, 0, 'cabinplant', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(407, 144, 1, 'ACTION SERVICES', '', NULL, '0522662003', '', NULL, 11, 'action-services', 0, 0, 'action services', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(409, 203, 51, 'Presitec ', '', NULL, '0034656952936', 'www.presitec.com', NULL, 1, 'presitec', 0, 0, 'presitec ', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(410, 144, 1, 'fournipro.ma', '', NULL, '0522 21 80 05', 'www.fournipro.ma', NULL, 11, 'fourniproma', 0, 0, 'fournipro.ma', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(418, 144, 1, 'SONEFI', '', NULL, '+212522661389', 'www.sonefi.ma', NULL, 11, 'sonefi', 0, 0, 'sonefi', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(420, 144, 1, 'TCE PARTNERS', '', NULL, '00212674027932', '', NULL, 11, 'tce-partners', 0, 0, 'tce partners', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(421, 144, 1, 'international security business', '', NULL, '0522204937', 'www.internationalsecuritybusin', NULL, 11, 'international-security-business', 0, 0, 'international security business', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(425, 144, 1, 'ingeniatis', '', NULL, '0662014287', 'www.ingeniatis.com', NULL, 11, 'ingeniatis', 0, 0, 'ingeniatis', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(446, 144, 1, 'GAMAI S.A.R.L', '', NULL, '212522665523', '', 'Société spécialisé en Automatisme Industriel, Intégrateur et distributeur officiel des Produits de marque Siemens.', 11, 'gamai-s.a.r.l', 0, 0, 'gamai s.a.r.l', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(449, 144, 1, 'abs protection', '', NULL, '0522850101', '', 'Importateur et distributeur du matériel de sécurité et protection, vêtement de travail, accessoire de protection contre l\'incendie porte automatique,caméra, alarme, télésurveillance.', 11, 'abs-protection', 0, 0, 'abs protection', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(450, 144, 1, 'CASAPACKING', '', NULL, '0522 44 44 23/24/25', '', 'CASAPACKING est le spécialiste des machines et matériels pour l’emballage et le conditionnement: banderoleuses, fardeleuses, cercleuses… Tous type de film, feuillard, adhésif, élastique... ', 11, 'casapacking', 0, 0, 'casapacking', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(454, 144, 2, 'Eco-Sakane', '', NULL, '0537 75 68 67  ', 'www.ecosakane.com', 'Construction en bois, charpente traditionnel, lamellé collé, specialiste des golfs, club de tir, HARAS, amenagement urbain, villa et bungamow', 11, 'eco-sakane', 0, 0, 'eco-sakane', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(456, 144, 1, 'univers caoutchouc', '', NULL, '212522244232', '', 'importateur distributeur bande transporteuse en caoutchouc et en PVC tout article en caoutchouc courroie trapez et de transmission rouleaux de convoyeur pieces en caoutchouc moulé', 11, 'univers-caoutchouc', 0, 0, 'univers caoutchouc', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(458, 203, 48, 'AFHER EUROBELT, S.A.', '', NULL, '0034983217480', 'www.eurobelt.com', 'FABRICANTS DE TAPIS MODULAIRES PLASTIQUES', 11, 'afher-eurobelt-sa', 0, 0, 'afher eurobelt, s.a.', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(464, 144, 1, 'FIXAVI sarl', '', NULL, '0522240421', '', 'Nous sommes une société spécialisée dans la vente du matériel industriel et quincaillerie, nous commercialisons entre autre les articles ci-après :\r\n', 11, 'fixavi-sarl', 0, 0, 'fixavi sarl', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(465, 144, 1, 'Grues d\'Hercules Maroc - GHM', '', NULL, '05 22 34 16 60', 'gruesdherculesmaroc.com', 'Depuis 2004, l´entreprise s´est spécialisée dans la location de grues mobiles télescopiques et grues treillis de 18t a 200t, de nacelles élévatrices et de plateformes automotrices d´une hauteur de 6 à 43 mètres. ', 11, 'grues-dhercules-maroc-ghm', 0, 0, 'grues d\'hercules maroc - ghm', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(469, 144, 1, 'ELITE AMENAGEMENT', '', NULL, '0614233888', 'WWW.ELITEAGENCEMENT.COM', 'AMENAGEMENT EN CLOISON .PEINTURE.\r\nREVETEMENT DU SOL EN CARLAGE PARQUET ET FAUX PLAFOND', 11, 'elite-amenagement', 0, 0, 'elite amenagement', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(476, 144, 1, '1NEWLOG', '', NULL, '0662637305', '', 'sffdsf', 11, '1newlog', 0, 0, '1newlog', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(479, 196, 107, 'SLESCA Pte Ltd', '', NULL, '006568488067', 'www.slesca.com', 'Slesca est une société de Trading avec des « Bureau de Sourcing et d’Achats » de produits industriels qui sont basés a Singapour/Chine/Inde, ', 2, 'slesca-pte-ltd', 0, 0, 'slesca pte ltd', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(482, 144, 1, 'ALLIANSIS', '', NULL, '05 22 201370', '', 'Audit, Consulting, Conseil \r\nEngineering & Re-Engineering des SI \r\nDéploiement & Sécurisation des SI \r\nSolutions de Sauvegarde et de sécurité\r\nCâblage électrique, Informatique…, réfection & Interconnexion Réseaux \r\nMaintenance \r\nInfogérance', 11, 'alliansis', 0, 0, 'alliansis', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(484, 144, 1, 'Thalès Informatique', '', NULL, '0522548780', 'www.thales.ma', 'intégrateur des logiciels de gestion Sage, solutions d\'infrastructure matérielle et réseau', 11, 'thales-informatique', 0, 0, 'thalès informatique', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(485, 144, 1, 'MATINVEST SARL', '', NULL, '0661133783', '', 'MATINVEST SARL , société d\'import/export de matériaux de constructions portes (logements économiques et hauts de gamme) cuisnes , parquet ,marbre etc... , ainsi que d\'ameublement  , négoce international .', 11, 'matinvest-sarl', 0, 0, 'matinvest sarl', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(489, 144, 1, 'Renov Plast', '', NULL, '0661405240', '', 'Socièté de transformation des matières plastiques par injection, fabrication et réparation des moules, matrices et toute autre fabrication mécanique', 11, 'renov-plast', 0, 0, 'renov plast', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(562, 144, 9, 'GHM MESSTECHNIK MAROC', '', NULL, '+212537360330', 'www.messtechnik.ma', 'GHM MESSTECHNIK MAROC située à kenitra  travaille dans le secteur  industriels  ( métrologie , lean manufacture', 11, 'ghm-messtechnik-maroc', 0, 0, 'ghm messtechnik maroc', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(566, 109, 108, 'Zallys Srl', '', NULL, '390445366785', 'www.zallys.com', 'Merci à des décennies d\'expérience dans la conception et la fabrication de véhicules électriques professionnels, Zallys a toujours été une société de reference de son secteur, offrant des solutions logistiques pour toute exigence liée à la manutention de charges sur roue.', 11, 'zallys-srl', 0, 0, 'zallys srl', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(567, 144, 1, 'ATLAS', '', NULL, '0637320163', '', 'ingénierie de conditionnement et emballage', 11, 'atlas', 0, 0, 'atlas', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(568, 103, 109, 'Eastman Impex', '', NULL, '+91-161-3044092 ', 'www.eastmanimpex.com', 'We are Manufacturer and Exporters of Fabrication Items ', 7, 'eastman-impex', 0, 0, 'eastman impex', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(572, 144, 1, '2SID TECH', '', NULL, '0663070404', '2SID.MA', '2SID TECH étant un acteur majeur sur le marché de l’identification et Traçabilité', 11, '2sid-tech', 0, 0, '2sid tech', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(575, 144, 1, 'vibra motor maroc', '', NULL, '0619911703', 'facebook.com/vibramaroc', 'équilibrage des rotors,ventilateur/ analyse vibratoire/ diagnostic roulement/ alignement laser/ usinage mécanique/thermographie.', 11, 'vibra-motor-maroc', 1, 27, 'vibra motor maroc', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(576, 144, 1, 'STF CONSULTING', '', NULL, ' +212 522 986 960', 'stfconsulting.e-monsite.com/', 'Electricité, électronique, automobile\r\nPneumatique, Électropneumatique\r\nCapteurs\r\nAutomatismes, API, bus de terrain', 11, 'stf-consulting', 0, 0, 'stf consulting', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(579, 144, 1, 'Ryme Bensbih', '', NULL, '0661932282', 'www.allobricole.ma', 'Allobricole comble les besoins de nettoyage, jardinage, traitement d’hygiène et bricolage et ainsi que les prestations de maintenance et installations techniques : Electricité, plomberie, Climatisation, Système de vidéo-surveillance, de détection d’incendie et de contrôle d’accès', 11, 'ryme-bensbih', 0, 0, 'ryme bensbih', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(582, 144, 98, 'F.t.FRERESLAAYOUNE', '', NULL, '0604075903', '', 'Vente et acheter tous les articles EPI', 11, 'ftfrereslaayoune', 0, 0, 'f.t.frereslaayoune', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(586, 144, 1, 'ATLAS AGENCEMENT', '', NULL, '0522523838', '', 'Société d’équipement et d’aménagement de bureau, vente rayonnage, manutention.', 11, 'atlas-agencement', 0, 0, 'atlas agencement', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(587, 144, 1, 'DALGO INDUSTRIE', '', NULL, '0661417140', 'www.facebook.com/dalgoindustri', 'Notre métier est le rayonnage dans ses différents systèmes, fonctionnel, modulable , robuste et économique ainsi que les rayonnage dans tous ses types.', 11, 'dalgo-industrie', 0, 0, 'dalgo industrie', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(588, 144, 1, 'GC SWISS TRADING ', '', NULL, '00212694636583', 'www.astarlubricants.com', 'Nous sommes une usine avec plus de 30 ans d\'expérience dans la production de lubrifiants. \r\nNous produisons le lubrifiant standard pour le lubrifiant compétitif dans les voitures, les motocyclettes, les camions, l\'hydraulique, la transmission, agricole, marine, e', 11, 'gc-swiss-trading-', 0, 0, 'gc swiss trading ', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(590, 144, 1, 'Alsace Equipement', 'M.', NULL, '06 96 66 66 47', 'alsace-equipement-sarl.busines', 'Nous sommes des fabricants de vétements professionnels et d\'image et EPI depuis 1997,de la création de vos propres modèles le choix des matières la prise des mesures et l\'accompagnement pour un vetement de travail qui vous donne plus de visibilité et de confort.', 11, 'alsace-equipement', 0, 6, 'alsace equipement', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(591, 144, 1, 'yazi industrie', '', NULL, '0652598954', 'www.yazindustrie.com', 'Entreprise de vente des fourniture industrielles et technique de type : mécanique, pneumatique hydraulique électrique et matériel de sécurité , nous fabriquons des flow rack et postes de travail et nous possédons un département de filtration domestique et industrielle', 11, 'yazi-industrie', 0, 0, 'yazi industrie', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(592, 144, 1, 'Sigmatecasa ', '', NULL, '0660896422 ', 'www.facebook.com/domotiquee/', 'SIGMATECASA est une société d\'ingénierie spécialisée dans la conception et la gestion de projet de domotique, GTC et l\'intégration des systèmes audiovisuels', 11, 'sigmatecasa-', 0, 0, 'sigmatecasa ', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(609, 144, 1, 'CONSO EXPRESS', '', NULL, '0619555862', 'www.consoexpress.com', 'fourniture de bureau matériels et consommable de bureau  ', 11, 'conso-express', 0, 0, 'conso express', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(610, 144, 2, 'GNS-ELEC', '', NULL, '+212602314191', '', 'TRAVAUX ELECTRIQUE\r\nFOURNITURE DES MATÉRIELS ET EQUIPEMENTS ÉLECTRIQUES', 11, 'gns-elec', 1, 2, 'gns-elec', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(612, 144, 9, 'HIBAPOWER', 'M.', '000082309000024', '+212537329090', 'http://hibapower.com/', 'HIBAPOWER est une société spécialisée en Énergie \r\n (Énergie solaire : pompage solaire, ON Grid, OFF Grid et systèmes hybrides. Groupes électrogènes : Etude, Fourniture, Installation, Maintenance et Location).\r\n', 11, 'hibapower', 0, 0, 'hibapower', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(613, 144, 1, 'santoimmo', '', NULL, '0619969062', '', 'Notre entreprise vous propose ses services de ponçage,traitement et cristallisation de marbre ;fourniture et pose de gerflex ,parquet papier peint à casablanca, CONT T2L 0619969062', 11, 'santoimmo', 0, 0, 'santoimmo', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(614, 144, 12, 'AFRICAROME', '', NULL, '00212658668379', 'africarome.com', 'Spécialiste des relations producteurs au Maroc. Produits naturels (Huiles végétales comme l\'huile de Figue de Barbarie et Argan, savons noirs, huiles essentielles, épices, arômes, etc...) ', 11, 'africarome', 0, 0, 'africarome', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(615, 144, 1, 'EMANUS', '', NULL, '00212638251210', '', 'Vente de Fournitures de bureau, Matériel et Consommables Informatiques ', 11, 'emanus', 0, 0, 'emanus', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(618, 144, 31, 'Quadritech', '', NULL, '0523335355', 'www.quadritech.ma', 'Quadritech spécialiste dans l\'installation et la maintenance des fermetures industrielles et équipements de quai au Maroc. Disposant de plusieurs d\'années d\'expérience, l\'équipe Quadritech s\'engage à vous présenter la solution la plus adéquate.', 11, 'quadritech', 0, 0, 'quadritech', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(619, 144, 1, 'PROTECTION UNIT', '', '001560557000015', '0522766526', 'http://www.protectionunit.ma/', 'Afin de répondre à chaque besoin, PROTECTION UNIT propose un éventail de services professionnels. Grâce à son expérience et à un savoir-faire reconnus, \r\n', 11, 'protection-unit', 0, 34, 'protection unit', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(620, 144, 1, 'L\'ART DU TEXTILE', '', NULL, '212522521078', 'lartdutextile.com', 'VÊTEMENTS PROFESSIONNELS ET HOTELIERS', 11, 'lart-du-textile', 0, 0, 'l\'art du textile', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(623, 144, 2, 'GHAF CAR', '', NULL, '0619438618', 'Www.ghafcar.ma', 'LOCATION DES VOITURES ', 11, 'ghaf-car', 0, 0, 'ghaf car', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(624, 144, 98, 'SAHARA NAVALS', '', NULL, '0672682909', '', 'reparation et maintenance des bateaux et navires, reparation et maintenance de coque de navires, reparation et maintenance de chaudiere et tuyauterie', 11, 'sahara-navals', 0, 0, 'sahara navals', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(627, 144, 1, 'AL ASSIL VOYAGES', '', NULL, '0611308874', '', 'AGENCE DE VOYAGE', 11, 'al-assil-voyages', 0, 0, 'al assil voyages', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(633, 144, 2, 'SAMT de coordination et de construction', '', NULL, '0600441142', '', 'entrepreneur de travaux divers pilotage et coordination des projets prestation de service divers.', 11, 'samt-de-coordination-et-de-construction', 0, 0, 'samt de coordination et de construction', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(634, 144, 1, 'BE PREMIUM', '', NULL, '0634770754', 'be-premium.ma/', 'CONSULTING & CONSEIL\r\nFORMATION\r\nINGÉNIERIE\r\nSOUS-TRAITANCE et fabriquant des remorques routiers', 11, 'be-premium', 0, 0, 'be premium', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(637, 144, 1, 'Company of Industrial Multiservices', 'M.', '002125817000072', '0667255318', '', 'C.I.M vous accompagne dans votre manutention,nous mettons à votre disposition \r\nune ensemble de matériels et de compétences qui vous aide à bien vivre votre manutention.\r\n', 11, 'company-of-industrial-multiservices', 1, 9, 'company of industrial multiservices', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(638, 144, 31, 'INDUSTRIE MAROC FLUIDE ', 'Mme', '001544919000097', '0662190170', '', 'Composants pneumatiques ou hydrauliques\r\n', 11, 'industrie-maroc-fluide', 0, 3, 'industrie maroc fluide ', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(640, 144, 1, 'STE BB LUX DECOR', '', NULL, '0663810285', '', 'travaux de tapisseries et ses drives. décorations et ameublement', 11, 'ste-bb-lux-decor', 1, 8, 'ste bb lux decor', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(641, 144, 1, 'VDV Electro', '', NULL, '0522204321', 'www.ccinv.be', 'Importateur de matériel électrotechnique (interphone, test et mesure, vidéosurveillance)', 11, 'vdv-electro', 1, 1, 'vdv electro', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(644, 144, 1, 'SEVEN TRADE', '', NULL, '0661429279', 'www.seventrade.ma', 'VENTILATEURS INDUSTRIELS, MOBILIER URBAIN, MATERIEL DE MANUTENTION', 11, 'seven-trade', 0, 0, 'seven trade', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(645, 144, 1, 'GTSI(Groupe technique de système incendie)', '', NULL, '0650842874', '', 'Spécialisé  en système sécurité notamment dans les domaines de (Détection et protection incendie, anti-intrusion, contrôle d\'accès, désenfumage, Extinction automatique, vidéosurveillance, courant faible.\r\n', 11, 'gtsi', 1, 74, 'gtsi(groupe technique de système incendie)', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(647, 144, 25, 'logigard', '', NULL, '0661765758', '', 'Bonjour pour tous vos besoins des prestations gardiennage/nettoyage et vidéosurveillance avec des prix intéressants contactez-nous\r\nSociété LOGIGARD SERVICES\r\n0661765758\r\n0537406917\r\nZouhir Elbekkali\r\nGérant', 11, 'logigard', 0, 9, 'logigard', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(648, 144, 1, 'Airclimelectro', '', NULL, '0661982871', '', 'climatisation,froid,plomberie,extraction,travaux  divers ', 11, 'airclimelectro', 0, 16, 'airclimelectro', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(649, 144, 1, 'Trans Fuso', 'M.', NULL, '0662798719', '', 'transport marchandises, distribution...', 11, 'trans-fuso', 0, 11, 'trans fuso', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(652, 144, 31, 'Igor', 'M.', NULL, '0673840138', '', 'Construction et charpente métallique tuyauteries \r\nSablage et peinture industrielle ', 11, 'igor', 0, 24, 'igor', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(654, 144, 1, 'industry development company', 'Mme', NULL, '0664200809', '', 'Industry Development company, est une centrale d\'achat 100% marocaine, qui s\'occupe de vos fournitures industrielles et services.\r\n', 11, 'industry-development-company', 0, 18, 'industry development company', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(655, 144, 7, 'Afrique polysystemes technology', 'M.', NULL, '0661050338', 'www.afriquepst.com', '***AFRIQUE POLY SYSTEMES TECHNOLOGY***\r\nis a purchasing and logistics center specializing in the industries that are present in Africa and europe. \r\nFor all your supply and supply chain projects, we have the solution adapted to their needs.', 11, 'afrique-polysystemes-technology', 4, 55, 'afrique polysystemes technology', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(660, 219, 112, 'iNFOGERANCE', 'M.', NULL, '0021625432777', 'http://www.onfo-gerance.com', 'développement des produits de connectivité  qui servent à la supervision de réseau d\'éclairage public, monitoring du vehicule et elock pour la sécurisation des remorques, des conteneurs et des camions frigo', 1, 'infogerance', 0, 6, 'infogerance', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(661, 144, 1, 'SOFIM', 'M.', NULL, '+212522450061', 'www.sofim.ma', 'SOFIM (Société de fournitures d’industries et mines) est crée en 2001; son activité principale est la fourniture, l’installation et l’entretien du matériel industriel (hydraulique, pneumatique, mécanique, électricité, électronique et automatique).', 11, 'sofim', 1, 68, 'sofim', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(664, 144, 1, 'Koumen négoce', 'M.', NULL, '0663240208', '', 'Koumen négoce société de négoce en matière de lubrifiants moteur et industriels', 11, 'koumen-negoce', 2, 15, 'koumen négoce', 3, 1, NULL, NULL, NULL, NULL, NULL),
+(684, 75, 33, 'Fournisseur 3', 'M.', NULL, '', 'https://www.lesachatsindustrie', '', 1, 'fournisseur-3', 0, 35, 'fournisseur 3', 3, 1, 'F-6845f24', NULL, NULL, NULL, NULL),
+(745, 109, 116, 'motive ', 'M.', NULL, '', 'https://www.motive.it/fr/', 'motive naît en 2000, du groupe RIB (www.ribind.it), un groupe parmi les leaders mondiaux dans le secteur des systèmes d\'ouverture automatique, dans le but de transférer la technologie et le know-how, développés au cours des 35 années d\'activité, au marché des moteurs électriques et des réducteurs à usage industriel.', 1, 'motive', 1, 99, 'motive ', 3, 1, 'F-7455ebf', NULL, NULL, NULL, NULL),
+(746, NULL, NULL, 'Assistante ventes', 'Mlle', NULL, NULL, NULL, NULL, NULL, 'assistante-ventes', 0, 0, 'assistante ventes', 1, 0, NULL, NULL, NULL, NULL, NULL),
+(747, 144, 1, 'SAYOUTI TRADING', 'M.', '001607014000080', '0522355951', 'http://www.sayoutitrading.ma', 'On est une société spécialisée dans l\'importation et la distribution de Matériels Electriques, fournitures industrielles et sanitaires.', 11, 'sayouti-trading', 0, 24, 'sayouti trading', 3, 1, 'F-747efc6', NULL, NULL, NULL, NULL),
+(748, 144, 1, 'Manesteel', 'M.', '002061436000022', '+212661915376', 'http://www.manesteel.ma', 'Bonjour,\n C\'est un plaisir de reprendre contact avec vous,  pour vous présenter l\'offre de service de notre société MANESTEEL afin de vous offrir le meilleur service dans le domaine de  :\n\n·  Chaudronnerie.\n\n·  Tuyauterie.\n\n·  Soudure.\n\n·  Charpente.\n\n·  Démontage et montage des équipements \n\n·  Entretien mécanique\n\n·  Génie civil.\n\n·  Main d’œuvre en régie  (en Mécanique, Chaudronnerie, Soudure, et Tuyauterie ).\n\n \n\nNotre savoir faire et notre grande expérience dans le domaine de nos activités nous ont permis de définir avec exactitude les besoins de nos clients et de leur proposer des solutions technologiques rentables et optimales respectant le choix et la décision finale de notre partenaire.\n\nLe contact direct avec nos clients et la visite de leur installation nous ont permis d\'établir des propositions et des offres claires et précises, calculées, au prix le plus juste, et prévoyant des délais de livraison et de garantie conformes aux attentes et aspirations de nos clients.\n\nNous vous invitons à visiter notre web site : www.manesteel.ma, et si vous désirez des informations complémentaires sur nos services, merci de noter que nous sommes à votre disposition.\n\nEn espérant faire partie de vos partenaires, et éventuel rendez vous avec vos représentants à la date qui vous conviendra, recevez monsieur , l\'assurance de notre considération distinguée.\nCordialement', 11, 'manesteel', 2, 15, 'manesteel', 3, 1, 'F-7487cf7', NULL, NULL, NULL, NULL),
+(749, 144, 1, 'Chama distib', 'M.', '002456006000046', '', '', 'Bonjour, \n\nNous sommes une société de distribution d\'eau de table \"MARAQUA\".\n \nNous vous proposons nos gobelets d\'eau de table de 250 ml pour une consommation individuelle, avec une livraison à domicile ou à vos locaux d\'entreprise.\n\n\nN\'hésitez pas à nous communiquer votre besoin, nous serons ravis de vous servir.\n\n\nBien à vous.\n\n\nCHAMA DISTRIBUTION.', 11, 'chama-distib', 0, 49, 'chama distib', 3, 1, 'F-749c839', NULL, NULL, NULL, NULL),
+(750, 144, 13, 'Tralos sarl', 'M.', '000076720000092', '', 'http://www.tralos-security.com', 'La société TRALOS sarl représentante plusieurs marques de renom mondiale dans le domaine de la sécurité et courant faible :\n Interphones vidéo, audio et serveur de gestion pour Tertiaire, Hôpitaux, et Industrie.\n Contrôle et Télésurveillance par Cloud computing des chambres froides (température interne, ambiante, condenseur, évaporateur, contrôle de porte chambre, marche/arrêt compresseur, humidification, dégivrage ....\n Appel public (PA) et sonorisation d\'ambiance intégré à l\'interphonie dans un seul système\n Caméra de surveillance : IP, thermique, NVR, VMS, IVS\n Solutions de gestion de stockage\n Gestion des issus, Couloir Rapide, Tourniquet, Barrière\n Gestion automatique de parking\n Horlogerie numérique\n Contrôle d\'accès et de gestion du temps : WG, UHF, RFID, biométrique, faciale, Serveur de gestion\n Appel infirmière\n Pré-câblage informatique : Cuivre et fibre optique,\n Switching : Dell, HPE, Cisco\n Detection incendie.\n\nVotre guichet unique pour tous vos besoins en matériel de sécurité : Solutions intégrées et sur mesure.\nNous vous invitons à nous faire part de vos projets. Vous recevrez de notre part toute l’attention nécessaire pour la réussite de vos futures installations et une réponse professionnelle à vos attentes.\n\nN’hésitez pas à contacter : info.tralos@gmail.com', 11, 'tralos-sarl', 0, 77, 'tralos sarl', 3, 1, 'F-750a0f9', NULL, NULL, NULL, NULL),
+(751, 144, 1, 'multipower electric', 'M.', '000225121000044', '', 'http://www.multipower.tech', 'MULTIPOWER ELECTRIC s’investit auprès des industriels depuis plus de 10 ans à travers son coeur de métier : l’électricité. Conscient de l’évolution du marché de la maintenance, MULTIPOWER ELECTRIC s’oriente vers l’activité de maintenance et entretien dans le domaine de la haute tension pour devenir.  Forte d’une équipe de professionnels, MULTIPOWER ELECTRIC propose aux entreprises industrielles et tertiaires des propositions innovantes en termes de suivi préventif sur des transformateurs et les cellules (Classeurs techniques).', 11, 'multipower-electric', 3, 78, 'multipower electric', 3, 1, 'F-7510882', NULL, NULL, NULL, NULL),
+(752, 144, 1, 'hygisolutions', 'M.', '002492245000031', '', 'http://www.hygisolutions.ma', 'YGISOLUTIONS est une entreprise de dératisation, de désinsectisation et de désinfection (dite \"entreprise 3D\") créée dans la finalité de protéger sa clientèle contre les nuisibles. Nous proposons nos services aux professionnels comme aux particuliers.\n\nNous vous proposons:\n\n- Une consultation, Inspection technique et devis anti-nuisibles sont des services offerts gratuitement par HYGISOLUTIONS.\n- Des solutions adéquates à vos besoins.\n-Expertise et Accompagnement\nNos Prestations et Services:\n\nDésinsectisation\nDésinfection (COVID-19)\nDératisation\nDéreptilisation\nAnti-Volatiles\nMatériel et consommables hygiène', 11, 'hygisolutions', 0, 26, 'hygisolutions', 3, 1, 'F-752b84b', NULL, NULL, NULL, NULL),
+(753, 144, 6, 'abkk', 'Mlle', '000001225665655', '', '', '', 11, 'abkk', 0, 4, 'abkk', 3, 1, 'F-753ba37', NULL, NULL, NULL, NULL),
+(755, 144, 1, 'PARTNER AMENAGEMENT', 'M.', '002376328000085', '0522069930', '', 'Nous sommes une société des travaux d’aménagement, Mobiliers de Bureau,Mobiliers Scolaires et Rayonnage de Stockage.', 11, 'partner-amenagement', 4, 117, 'partner amenagement', 3, 1, 'F-755f49d', NULL, NULL, NULL, NULL),
+(756, 144, 1, 'LARTDUTEXTILE', 'M.', '000224141000023', '0522 521 078', 'http://www.lartdutextile.com', 'L\'ART DU TEXTILE, Société leader, spécialisée dans la confection et la conception de vêtements professionnels et de masques de protection certifié IMANOR', 11, 'lartdutextile', 0, 33, 'lartdutextile', 3, 1, 'F-7567604', NULL, NULL, NULL, NULL),
+(758, 144, 1, 'Pergola sunset', 'M.', '632678985431190', '0662089408', '', 'Pergolas bioclimatiques sur mesure', 11, 'pergola-sunset', 0, 18, 'pergola sunset', 3, 1, 'F-7589baf', NULL, NULL, NULL, NULL),
+(760, 144, 1, 'MAOBAG', 'M.', '001941117000008', '0522984550', 'http://www.baobag.eu', 'MAOBAG, basée à Casablanca depuis 2017. \nNotre maison mère la société BAOBAG France est un des acteurs majeurs en Europe, spécialisée dans la conception, l’importation et la commercialisation d’emballage industriel souple en toile tissée tel que les sacs et les Big Bags en polypropylène.\nNous sommes présents sur le secteur Européen et Africain depuis maintenant plus de 40 ans.\nNous travaillons depuis de longues années en EUROPE et en AFRIQUE avec des acteurs majeurs dans le secteur de l’industrie, de l’agroalimentaire, de la minoterie, chimique, pétrolière, minière, pharmaceutique, du traitements des déchets, de la distribution, du BTP, des engrais, et bien d’autres…\n\nNous possédons sur Casablanca et Tanger en zone franche une grande capacité de stocks sur de nombreux standard en BIG BAG (jusqu’à 1.5 tonnes) et sacs PP et BOPP (de 1 à 100 kg,). \n\nNous pouvons également concevoir n’importe quel modèle de sac, de big bag et autres emballages industriels, sur mesure avec des délais très courts, grâce à nos 14 usines partenaires de par le monde.\nJe reste disponible pour tout complément d’information. N’hésitez pas à m’appeler ou à me revenir par mail. Nos équipes, malgré la situation restent opérationnelles et à votre écoute.', 11, 'maobag', 5, 135, 'maobag', 3, 1, 'F-760358d', NULL, NULL, NULL, NULL),
+(761, 144, 1, 'HEALTH AND MEDICAL DEVICE HOLDING', 'Mme', '002532145000013', '0522207420', '', 'Produit des équipements de protection industriel\ndispositif médical', 11, 'health-and-medical-device-holding', 0, 22, 'health and medical device holding', 3, 1, 'F-761ae05', NULL, NULL, NULL, NULL),
+(762, NULL, NULL, 'HMD HOLDING', 'Mlle', NULL, NULL, NULL, NULL, NULL, 'hmd-holding', 0, 0, 'hmd holding', 1, 0, NULL, NULL, NULL, NULL, NULL),
+(764, NULL, NULL, 'QUADRITECH', 'M.', NULL, NULL, NULL, NULL, NULL, 'quadritech-1', 0, 0, 'quadritech', 1, 0, NULL, NULL, NULL, NULL, NULL),
+(765, 44, 117, 'Hongda Tea Factory', 'M.', NULL, '', 'http://en.hndtea.com/', 'Hongda Tea Co.,Ltd est une usine professionnelle de la production et exportation en gros du thé verts de Chine comme matière première ( 41022AAAAAA/41022AAA/41022/4011/9371; 3505AAAAA/3505AAA/3505A/3505B... ) depuis 1990s, située à Hunan en Chine.\n\nGrâce aux savoir-faire et expérience raffinés, nous satisfaisons aux besoins de nos partenaires avec une riche gamme de produits naturels et certifiés, en qualités sur-mesure sous libre type de partenariat. Qualités stablisées dont la capacité de production jusqu\'à 1200 tonnes par mois.\n\nContactez M.Han au Tel/WhatsApp+8617352820448 ou par courrier électrique han@hndtea.com.\nSite Web: www.hndtea.com', 2, 'hongda-tea-factory', 0, 80, 'hongda tea factory', 3, 1, 'F-76549b2', NULL, NULL, NULL, NULL);
+INSERT INTO `fournisseur` (`id`, `pays_id`, `ville_id`, `societe`, `civilite`, `ice`, `fix`, `website`, `description`, `currency_id`, `slug`, `phone_vu`, `visite`, `societe_lower`, `step`, `is_complet`, `code_client`, `autre_ville`, `autre_categories`, `autre_currency`, `parent`) VALUES
+(766, 144, 1, 'NRS groupe', 'M.', '002526170000027', '+212603124061', '', 'Qui sommes-nous ?\n\nNRS groupe est spécialisée dans la fourniture de services aux particuliers, professionnels et des collectivités. Nous opérons dans le domaine de la propreté, l’hygiène 3D (Désinsectisation, Dératisation, Désinfection), sécurité électronique, gardiennage, jardinage et nettoyage.\n\nPour répondre aux attentes de ses clients dans un secteur où la confiance et l’efficacité sont les maîtres mots, NRS groupe cherche à aller plus loin pour apporter les solutions les plus performantes et les plus adaptées aux exigences actuelles. \n\nL’objectif de notre société est de donner entière satisfaction à notre clientèle, dans le respect d’un cahier des charges arrêté d’un commun accord entre les parties, nous nous efforçons de combiner deux éléments qui nous semblent indissociables : du personnel efficace et des produits de qualité.\n\nNotre garantie est de nous occuper de tous types de prestations dans le respect des consignes et délais qui nous serons impartis, et ce partout au Maroc.', 11, 'nrs-groupe', 8, 97, 'nrs groupe', 3, 1, 'F-766d510', NULL, NULL, NULL, NULL),
+(767, 144, 1, 'separator', 'M.', '000231019000072', '0522673400', 'http://www.separator-maroc.ma', 'Spécialiste dans l’aménagement d’espaces depuis 1999, le groupe SEPARATOR a développé une expertise authentique de Second Œuvre à travers un savoir-faire qui se perfectionne de jour en jour depuis 20 ans d’existence.\nNos Métiers :\nCLOISONS - RAYONNAGE - MINUISIER (ALUMINIUM ET BOIS) - FACADIER', 11, 'separator', 0, 40, 'separator', 3, 1, 'F-767b8e1', NULL, NULL, NULL, NULL),
+(768, NULL, NULL, 'SERVICE POTECH', 'M.', NULL, NULL, NULL, NULL, NULL, 'service-potech', 0, 0, 'service potech', 1, 0, NULL, NULL, NULL, NULL, NULL),
+(769, 220, 118, 'KM KUMSAN ', 'M.', NULL, '+902165930400', 'https://www.kumsan.com.tr/', 'KM KUMSAN CRANE SYSTEMS a été créée en 1973 en Turquie, et se dispose aujourd’hui comme leader industriel majeur sur le secteur des systèmes et équipements de manutention, en termes de conception, de fabrication, ainsi du service après-vente.\n\nSuite à notre implication dans plusieurs projets au niveau international, les activités d\'exportation de notre société ont augmenté progressivement et devraient représenter 90% de notre chiffre d\'affaires en 2020, et afin de répondre à la hausse de demande et de développer nos activités, nous avons ouvert un bureau de vente en Allemagne, et un bureau d\'études techniques et d\'ingénierie en Pologne, et nous comptons ouvrir une nouvelle facilité de 24 000 m² d\'ici la fin de 2020 à Kocaeli, en Turquie. \n\nKM KUMSAN CRANE SYSTEMS fabrique:\n-Palan électrique \n-Ponts roulants mono poutre et bipoutres (EOT)\n-Grues portiques\n-Grues potences (JIB)\n-Grues / ponts anti explosion \n-Grues / ponts spéciaux sur mesure\n-Chariots de transport\n-Portiques sur pneus (RTG)\n', 1, 'km-kumsan', 0, 37, 'km kumsan ', 3, 1, 'F-769f4ea', NULL, NULL, NULL, NULL),
+(770, 144, 7, 'AFRICA COMPONENTS', 'M.', '002304129000049', '0664050447', 'http://www.africa-components.c', 'Nous sommes une société d\'ingénierie, nous sommes implantés à CASABLANCA et TANGER \n\n AFRICA COMPONENTS fournit une large gamme de produits industriels de différentes technologies (mécanique, électrique, pneumatique, hydraulique, électronique, automatisme, lubrification…). \n\nQue ce soit un article standard de commerce ou un article sur plan, nous pouvons vous garantir les meilleurs délais.\n\nNous proposons également des équivalents pour les articles obsolètes et plus fabriqués.\n\nNous commercialisons les marques les plus fiables du marché (Siemens, Schneider Electric, ABB, Allen Bradley, Sick, IFM, Honeywell, Zebra, Omron, SMC, Festo, Parker, Legris, Legrand, Pilz, Eaton…)\n\nNous avons un rapport délai / prix très compétitif \n\nJe reste à votre disposition pour toute information complémentaire \n', 11, 'africa-components', 2, 43, 'africa components', 3, 1, 'F-7703c3b', NULL, NULL, NULL, NULL),
+(772, NULL, NULL, 'LINDIA sarl', 'M.', NULL, NULL, NULL, NULL, NULL, 'lindia-sarl', 0, 0, 'lindia sarl', 1, 0, NULL, NULL, NULL, NULL, NULL),
+(773, 175, 119, 'Blue Chem AdBlue', 'Mme', NULL, '+351252375357', 'http://www.bluechem.com', 'Blue Chem - Fabricant et Distributeur en AdBlue® et AUS40.\n\nCertifié par VDA.\n\nVrac et Conditionnés\n\nProduction au Portugal, Espagne, France et Belgique.', 1, 'blue-chem-adblue', 0, 29, 'blue chem adblue', 3, 1, 'F-77322a3', NULL, NULL, NULL, NULL),
+(775, 144, 1, 'OFFICE PRO INDUSTRIE', 'M.', '002398775000072', '0520 090 777', '', 'La société OFFICE PRO INDUS Equipements Industriels est spécialisée en: \n\n- Fourniture de l\'eau\n- Electricité\n- Manutention, levage\n- Matériel de sécurité\n- Consommables, outillage, boulonnerie\n- Plomberie et joint caoutchouc \n', 1, 'office-pro-industrie', 15, 194, 'office pro industrie', 3, 1, 'F-7755ec9', NULL, NULL, NULL, NULL),
+(776, 144, 1, 'HIGHMAT', 'M.', '002396406000015', '+212529061122', '', 'La société HIGHMAT propose à la vente ou à la location courte/moyenne ou longue durée des équipements destinés aux professionnels des Travaux Publics, du Bâtiment, de l\'Industrie, de l\'évènementiel, des Collectivités, et de l’Agriculture. \nRépondant à des besoins de manutention, élévation de personnes, levage, terrassement, énergie et transport.\n HIGHMAT Dispose d\'un parc d\'engins récents et d\'ateliers d\'entretien avec d\'équipes expérimentés et hautement qualifiés.\nLa société HIGHMAT a su se positionner en LEADER dans son\ndomaine.\nNos clients interviennent dans différents métiers : \n• construction métallique \n• Maintenance industrielle \n• Bâtiment.\n• Industries\n• Travaux publics.\n• Pépinières.\n• Evènementiel/Publicité.\n• Productions Cinématographiques. \n• logistique et transports..', 11, 'highmat', 0, 25, 'highmat', 3, 1, 'F-7763d17', NULL, NULL, NULL, NULL),
+(777, NULL, NULL, 'STE', 'M.', NULL, NULL, NULL, NULL, NULL, 'ste', 0, 0, 'ste', 1, 0, NULL, NULL, NULL, NULL, NULL),
+(778, 144, 7, 'SORCOM', 'M.', '002068289000067', '0665975523', 'http://www.orygamy.fr/', 'SORCOM fait partie du groupe ORIGAMY, qui a une entité au Maroc à Tanger appelé RMAS. Avec ce bureau local, nous avons l’opportunité de pouvoir vous rencontrer.\n\nNotre cœur d’activité est la fourniture de matériel d’Instrumentation, Piping (Tuyauterie – Vannes) et Electricité, Accessoires, Pièces de rechange.\nMais nous ne sommes pas limité à ce matériel, nous pouvons proposer une large gamme.\n', 1, 'sorcom', 1, 34, 'sorcom', 3, 1, 'F-7786d7f', NULL, NULL, NULL, NULL),
+(779, NULL, NULL, 'EASYSOFT', 'M.', NULL, NULL, NULL, NULL, NULL, 'easysoft', 0, 0, 'easysoft', 1, 0, NULL, NULL, NULL, NULL, NULL),
+(783, 44, 120, 'Liangxi Tea Factory', 'Mlle', NULL, '', '', 'Fondée en 1987, l\'usine de thé Shaoxing Liangxi, qui se trouve dans la province du Zhejiang située dans le Sud-est de la Chine, avec plus de 30 ans d’expérience dans le secteur, nous sommes spécialisés dans la plantation, la fabrication et l’exportation de thés verts réputés et de grandes qualités,comme 41022 3505 9371 4011 9366...etc.\nNotre capacité annuelle de production atteint 20,000 tonnes, grâce aux nos stocks conséquants, nous pouvons vous fournir les thé de haute qualité stable avec les prix compétitifs\nÀ votre contact : Mlle. Sophie\nTel/Whatsapp/Wechat :+86 17352820478\nEmail : sophie@gttea.com\nWebsite :www.liangxitea.com', 2, 'liangxi-tea-factory', 0, 4, 'liangxi tea factory', 3, 1, 'F-783306b', NULL, NULL, NULL, NULL),
+(784, 144, 1, 'Bourzgui technologie', 'M.', '000068554000090', '0655826660 ', 'http://bourzguitechnologie.com', 'Electricite générale domotique informatique maintenance industrielle maintenance group électrogèn\nes maintenance poste hta/mt/bt vente matériel électrique et informatique domotique ', 11, 'bourzgui-technologie', 8, 116, 'bourzgui technologie', 3, 1, 'F-7843348', NULL, 'Vente produit électrique ', NULL, NULL),
+(785, 44, 120, 'Usine Liangxi Tea ', 'Mlle', NULL, '', 'http://www.liangxitea.com/', 'Fondée en 1987, l\'usine de thé Shaoxing Liangxi, qui se trouve dans la province du Zhejiang située dans le Sud-est de la Chine, avec plus de 30 ans d’expérience dans le secteur, nous sommes spécialisés dans la plantation, la fabrication et l’exportation de thés verts réputés et de grandes qualités,comme 41022 3505 9371 4011 9366...etc.\nNotre capacité annuelle de production atteint 15,000 tonnes, grâce aux nos stocks conséquants, nous pouvons vous fournir les thé de haute qualité stable avec les prix compétitifs\nÀ votre contact : Mlle. Sophie\nTel/Whatsapp/Wechat :+86 17352820478\nEmail : sophie@gttea.com\nWebsite :www.liangxitea.com', 2, 'usine-liangxi-tea', 1, 24, 'usine liangxi tea ', 3, 1, 'F-785868a', NULL, NULL, NULL, NULL),
+(787, 144, 31, 'ENGINEERING VIB ECVM', 'M.', '002334961000039', '', '', 'Analyse vibratoire\nMonitoring vibration\nEquilibrage\nAlignement comparateur et LASER \nMaintenance mécanique et électrique \nTravaux neufs\nChaudières\n', 11, 'engineering-vib-ecvm', 0, 11, 'engineering vib ecvm', 3, 1, 'F-787cd6f', NULL, 'Vibration, Chaudière, Capteurs de vibratoon, Alignement', NULL, NULL),
+(788, NULL, NULL, 'EVOSOLUTION', 'M.', NULL, NULL, NULL, NULL, NULL, 'evosolution', 0, 0, 'evosolution', 1, 0, NULL, NULL, NULL, NULL, NULL),
+(789, 144, 7, 'NPS GROUP', 'M.', '002664325000074', '', 'https://www.bricobay.ma', 'NPS GROUP depuis sa création a pu accompagner ses partenaires professionnels dans les divers processus de fourniture industrielle relevant de nouveaux projets ou en matière de pièces de rechange de chantiers opérationnels.\nNous sommes fier de pouvoir participer à l écosystème industriel marocain qui ne cesse de monter en échelle et nous serons honorés de répondre à toute nouvelle demande de collaboration en tout ce qui est outillage professionnel d\'atelier, fourniture industrielle, pièces de rechange pour le secteur automobile à savoir les pièces mécaniques, pneumatiques, outils de manutention.\nNous fournissons également des solutions sur mesure provenant des usines de nos partenaires européens en matière d\'équipement automobile, aéronautique et protection individuelle de chantier.', 11, 'nps-group', 1, 8, 'nps group', 3, 1, 'F-7891b40', NULL, NULL, NULL, NULL),
+(791, NULL, NULL, 'TTech', 'M.', NULL, NULL, NULL, NULL, NULL, 'ttech', 0, 0, 'ttech', 1, 0, NULL, NULL, NULL, NULL, NULL),
+(792, 144, 7, 'Tanger zone', 'M.', '000050602000088', '', '', '', 2, 'tanger-zone', 0, 0, 'tanger zone', 3, 1, 'F-79286aa', NULL, NULL, NULL, NULL),
+(793, 144, 1, 'AIR BUREAU ', 'Mme', '000012358000014', '', 'https://airbureau.ma/shop/', '', 11, 'air-bureau', 0, 4, 'air bureau ', 3, 1, 'F-793587e', NULL, 'bureau , rayonnage , armoire , chaise , mobilier de bureau ', NULL, NULL),
+(794, 144, 1, '3f industriedd', 'M.', '123456789954412', '', '', '', 11, '3f-industriedd', 0, 0, '3f industriedd', 3, 1, 'F-794611e', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2206,6 +2602,7 @@ CREATE TABLE `fournisseur_categories` (
 
 INSERT INTO `fournisseur_categories` (`fournisseur_id`, `categorie_id`) VALUES
 (2, 57),
+(2, 126),
 (2, 185),
 (2, 188),
 (2, 305),
@@ -2291,6 +2688,8 @@ INSERT INTO `fournisseur_categories` (`fournisseur_id`, `categorie_id`) VALUES
 (612, 157),
 (615, 156),
 (615, 157),
+(619, 145),
+(619, 363),
 (638, 156),
 (638, 157),
 (640, 57),
@@ -2315,7 +2714,174 @@ INSERT INTO `fournisseur_categories` (`fournisseur_id`, `categorie_id`) VALUES
 (661, 156),
 (661, 157),
 (661, 185),
-(684, 22);
+(684, 22),
+(745, 384),
+(745, 385),
+(745, 386),
+(745, 387),
+(747, 403),
+(747, 407),
+(747, 410),
+(747, 411),
+(747, 412),
+(748, 374),
+(748, 389),
+(748, 390),
+(748, 391),
+(748, 392),
+(749, 402),
+(750, 413),
+(750, 414),
+(750, 415),
+(750, 416),
+(750, 417),
+(750, 418),
+(750, 420),
+(750, 421),
+(751, 140),
+(751, 393),
+(751, 395),
+(751, 396),
+(751, 397),
+(751, 398),
+(751, 399),
+(751, 400),
+(751, 401),
+(752, 430),
+(752, 431),
+(752, 432),
+(753, 305),
+(755, 310),
+(755, 311),
+(755, 312),
+(755, 313),
+(756, 126),
+(756, 127),
+(756, 501),
+(758, 438),
+(758, 439),
+(758, 440),
+(758, 441),
+(758, 442),
+(760, 7),
+(760, 65),
+(760, 142),
+(760, 443),
+(760, 445),
+(760, 446),
+(760, 447),
+(760, 448),
+(760, 449),
+(760, 450),
+(761, 451),
+(761, 452),
+(765, 453),
+(765, 454),
+(765, 455),
+(766, 363),
+(766, 456),
+(766, 457),
+(766, 458),
+(766, 459),
+(766, 460),
+(767, 310),
+(767, 311),
+(767, 312),
+(767, 313),
+(769, 305),
+(769, 306),
+(769, 461),
+(769, 463),
+(769, 464),
+(769, 465),
+(769, 466),
+(769, 467),
+(769, 468),
+(770, 469),
+(770, 470),
+(770, 471),
+(770, 473),
+(770, 474),
+(770, 475),
+(773, 477),
+(775, 478),
+(775, 480),
+(775, 481),
+(775, 482),
+(775, 483),
+(775, 484),
+(775, 485),
+(775, 486),
+(775, 487),
+(775, 488),
+(775, 489),
+(775, 490),
+(775, 491),
+(775, 492),
+(775, 493),
+(775, 494),
+(775, 495),
+(775, 496),
+(776, 68),
+(776, 305),
+(776, 306),
+(776, 476),
+(778, 118),
+(778, 119),
+(778, 128),
+(778, 130),
+(778, 133),
+(778, 139),
+(778, 156),
+(778, 195),
+(778, 206),
+(778, 387),
+(778, 389),
+(778, 411),
+(778, 475),
+(778, 495),
+(778, 497),
+(778, 498),
+(778, 499),
+(778, 500),
+(783, 453),
+(783, 454),
+(783, 455),
+(784, 156),
+(784, 266),
+(784, 393),
+(784, 429),
+(785, 453),
+(789, 60),
+(789, 126),
+(789, 128),
+(789, 135),
+(789, 136),
+(789, 137),
+(789, 486),
+(789, 492),
+(792, 305),
+(794, 37);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `fournisseur_provisoire`
+--
+
+CREATE TABLE `fournisseur_provisoire` (
+  `id` int(11) NOT NULL,
+  `fournisseur_parent_id` int(11) DEFAULT NULL,
+  `civilite` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `societe` varchar(90) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(35) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created` datetime NOT NULL,
+  `type` smallint(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -2339,7 +2905,47 @@ INSERT INTO `historique_visite` (`id`, `fournisseur_id`, `demande_id`, `created`
 (2, 2, 341, '2020-07-18 17:39:24'),
 (3, 2, 344, '2020-07-18 17:41:13'),
 (4, 2, 343, '2020-07-20 17:42:05'),
-(5, 638, 343, '2020-07-21 10:13:34');
+(5, 638, 343, '2020-07-21 10:13:34'),
+(6, 747, 344, '2020-07-27 16:05:58'),
+(7, 747, 343, '2020-07-27 16:08:33'),
+(8, 747, 342, '2020-07-27 16:09:38'),
+(9, 750, 342, '2020-08-02 17:20:21'),
+(10, 750, 131, '2020-08-02 17:23:55'),
+(11, 752, 340, '2020-08-04 17:43:36'),
+(12, 752, 335, '2020-08-04 17:44:03'),
+(13, 752, 302, '2020-08-04 17:45:11'),
+(14, 752, 228, '2020-08-04 17:46:31'),
+(15, 752, 251, '2020-08-04 17:46:53'),
+(16, 752, 250, '2020-08-04 17:47:02'),
+(17, 752, 223, '2020-08-04 17:47:37'),
+(18, 752, 222, '2020-08-04 17:47:46'),
+(19, 752, 221, '2020-08-04 17:48:08'),
+(20, 752, 208, '2020-08-04 17:48:32'),
+(21, 752, 204, '2020-08-04 17:48:50'),
+(22, 752, 172, '2020-08-04 17:51:21'),
+(23, 752, 176, '2020-08-04 17:52:03'),
+(24, 752, 170, '2020-08-04 17:52:45'),
+(25, 752, 160, '2020-08-04 17:53:39'),
+(26, 752, 162, '2020-08-04 17:54:28'),
+(27, 619, 217, '2020-08-10 14:11:01'),
+(28, 619, 223, '2020-08-10 14:13:33'),
+(29, 619, 222, '2020-08-10 14:13:51'),
+(30, 619, 344, '2020-08-10 14:21:20'),
+(31, 619, 343, '2020-08-10 14:22:05'),
+(32, 760, 335, '2020-08-18 13:03:20'),
+(33, 760, 308, '2020-08-18 13:04:34'),
+(34, 766, 344, '2020-08-27 00:28:55'),
+(35, 775, 345, '2020-09-10 22:10:35'),
+(36, 775, 344, '2020-09-10 22:12:08'),
+(37, 775, 343, '2020-09-10 22:12:41'),
+(38, 756, 346, '2020-10-02 13:53:46'),
+(39, 775, 346, '2020-10-03 10:35:55'),
+(40, 2, 346, '2021-04-07 08:39:41'),
+(41, 791, 346, '2021-05-25 12:14:47'),
+(42, 792, 346, '2021-05-25 13:31:15'),
+(43, 792, 343, '2021-05-25 13:32:23'),
+(44, 792, 344, '2021-05-25 14:41:07'),
+(45, 793, 103, '2021-05-28 10:04:07');
 
 -- --------------------------------------------------------
 
@@ -2380,7 +2986,93 @@ INSERT INTO `image_produit` (`id`, `url`) VALUES
 (22, '5f17ff056017b102874275.jpg'),
 (23, '5f180190446c2789012826.jpg'),
 (24, '5f18035f4f641483399535.png'),
-(25, '5f1861ead9f8c864637338.png');
+(25, '5f1861ead9f8c864637338.png'),
+(26, '5f1ad66786aad043252652.jpg'),
+(27, '5f1ad6bfea089553689595.JPG'),
+(33, '5f1b08991d9a3108290637.jpg'),
+(36, '5f1b0a7c9e3a7698839955.jpg'),
+(38, '5f1b0c41103fe702046046.jpg'),
+(39, '5f1fefe25aa1c641795711.jpg'),
+(40, '5f1ff01cc448a843454486.jpg'),
+(41, '5f1ff05171a47422080502.png'),
+(42, '5f1ff07034a8b076284117.jpg'),
+(43, '5f1ff0a57e78c026143341.jpg'),
+(44, '5f2178757ceda470000498.jpg'),
+(45, '5f217c823a992806231646.png'),
+(46, '5f21a2dfed026579964116.jpg'),
+(47, '5f21a5d0ec1eb321251547.jpeg'),
+(48, '5f21a8489fe6a807878549.png'),
+(49, '5f21a882ae6cb486893100.png'),
+(50, '5f21b393b6f78436348171.jpg'),
+(51, '5f2717fd90305332833036.jpg'),
+(52, '5f27196feea8b693307963.jpg'),
+(53, '5f271aeeb0ba4075151699.jpg'),
+(54, '5f271ce83e5d7310676622.jpg'),
+(55, '5f271fb25eaf2237995270.jpg'),
+(58, '5f2933c0ce019099383928.jpg'),
+(59, '5f2935c31e6c6528379916.jpg'),
+(60, '5f2935db7c718529923188.jpg'),
+(61, '5f2d79ef8b2b9774974805.jpg'),
+(63, '5f2d820d64924518342516.jpg'),
+(65, '5f2d822d88a7d234241404.jpg'),
+(66, '5f2d885f7dae9043768513.jpg'),
+(67, '5f2d886caf243102462355.jpg'),
+(69, '5f33fdaa2b718324366978.jpeg'),
+(70, '5f33fdc2d5d43379328064.jpeg'),
+(71, '5f33fdd8eb67d405089113.jpeg'),
+(72, '5f33fde9f0b1e364135960.jpeg'),
+(73, '5f33fdf758054484734707.jpeg'),
+(74, '5f35644b066a3353369371.jpg'),
+(75, '5f356450a61ed533025186.png'),
+(76, '5f356455ad22f561061312.jpg'),
+(77, '5f35645ae5d45426750911.jpg'),
+(79, '5f35649800d2b490103088.JPG'),
+(80, '5f4602dc2471c362720216.png'),
+(81, '5f4602e94317a502918588.png'),
+(82, '5f4602fe0f5d0962938256.jpg'),
+(83, '5f460308b4126439338988.jpg'),
+(84, '5f461f322a6d5596666396.jpeg'),
+(85, '5f461f3b92472609715253.jpeg'),
+(86, '5f461f58ed12a250544512.jpeg'),
+(87, '5f461f68c9cee517915795.jpeg'),
+(88, '5f461f7ef2790406799564.jpeg'),
+(89, '5f46fbd692c04449814912.jpg'),
+(90, '5f46fbe550c35303266016.jpg'),
+(91, '5f46fc038c4da847200142.jpg'),
+(92, '5f46fc1127c16529728308.jpg'),
+(93, '5f46fc3cbd76d274601083.png'),
+(94, '5f478e1d7ed32050234296.png'),
+(95, '5f478e381dce8660051806.jpg'),
+(96, '5f478e4e26061269615065.jpg'),
+(97, '5f478e5d7b5a7435208424.png'),
+(98, '5f478e6ecc0bd679888230.png'),
+(99, '5f5295114cf96650744368.png'),
+(100, '5f52952307c9d082077003.png'),
+(101, '5f52953170a26961774513.png'),
+(102, '5f52953dbd281343394038.png'),
+(103, '5f52972874845942532291.png'),
+(104, '5f529741e1203867898196.png'),
+(105, '5f52975b43c77293007014.png'),
+(106, '5f52976761ae7290541614.png'),
+(107, '5f529775e1181684835578.png'),
+(108, '5f61aa6c568f4941379777.jpg'),
+(109, '5f914e7722fe5426257689.jpg'),
+(110, '5f914e92b47f9499570301.png'),
+(112, '5fae2461de682055831463.jpg'),
+(113, '5fd1d72887fe1084554187.jpg'),
+(114, '5fd1d7349f979937286434.jpg'),
+(115, '5fe518037ff94426800982.jpeg'),
+(116, '5ffebc4810fd5151844541.jpg'),
+(117, '5ffebc5518b76931593482.jpg'),
+(118, '603caf188014f436576580.jpg'),
+(119, '6052f9d7e7452556200595.jfif'),
+(120, '60753cd230a2c524089454.jpg'),
+(123, '6098239a87dfa385467731.jpg'),
+(124, '609824ae68459179658542.png'),
+(125, '60982530c53ae651703592.jpg'),
+(126, '609825e22fcfe221879880.jpg'),
+(127, '6098275213734976223670.jpg'),
+(128, '60a4debd019b3503521906.jpg');
 
 -- --------------------------------------------------------
 
@@ -2438,7 +3130,11 @@ INSERT INTO `image_secteur` (`id`, `url`) VALUES
 (38, '5f0d7d25b4560506131688.jpg'),
 (39, '5f0d7d6aee739642696805.jpg'),
 (40, '5f0d7dbc058c5023687591.jpg'),
-(41, '5f0d7de7334e4882366225.jpg');
+(41, '5f0d7de7334e4882366225.jpg'),
+(42, '5f2d75735c5ec605055961.jpg'),
+(43, '5f4e0ca845c16145803488.jpg'),
+(44, '5f75a0d330a3b408186534.jpg'),
+(45, '5f75a3a95be19341110184.jpg');
 
 -- --------------------------------------------------------
 
@@ -2465,7 +3161,9 @@ CREATE TABLE `jeton` (
 INSERT INTO `jeton` (`id`, `fournisseur_id`, `paiement_id`, `demande_id`, `nbr_jeton`, `prix`, `is_payed`, `created`, `del`) VALUES
 (1, 2, 1, NULL, 10, 0, 1, '2020-07-18 17:17:22', 0),
 (2, 2, 1, 2, 20, 0, 1, '2020-07-18 18:56:39', 0),
-(3, 638, 1, NULL, 1, 0, 1, '2020-07-21 14:41:50', 0);
+(3, 638, 1, NULL, 1, 0, 1, '2020-07-21 14:41:50', 0),
+(4, 756, 1, NULL, 1, 0, 1, '2020-10-02 14:29:25', 0),
+(5, 775, 1, NULL, 1, 0, 1, '2020-10-03 12:09:04', 0);
 
 -- --------------------------------------------------------
 
@@ -2483,7 +3181,11 @@ CREATE TABLE `migration_versions` (
 --
 
 INSERT INTO `migration_versions` (`version`, `executed_at`) VALUES
-('20200722152613', '2020-07-22 15:26:20');
+('20200925151747', '2020-09-25 15:17:53'),
+('20210406083536', '2021-05-28 14:46:38'),
+('20210406084829', '2021-05-28 14:46:40'),
+('20210406085013', '2021-05-28 14:46:41'),
+('20210528144541', '2021-05-28 14:46:43');
 
 -- --------------------------------------------------------
 
@@ -2514,19 +3216,22 @@ CREATE TABLE `offre` (
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `prix_mad` double NOT NULL,
   `prix_eur` double NOT NULL,
-  `image_offre` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `nb_activite` smallint(6) NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `focus_produit` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nb_page_catalogue` smallint(6) NOT NULL,
+  `has_commercial` tinyint(1) NOT NULL,
+  `has_banner` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `offre`
 --
 
-INSERT INTO `offre` (`id`, `name`, `prix_mad`, `prix_eur`, `image_offre`, `nb_activite`, `description`) VALUES
-(1, 'Pack Classic', 100, 10, 'string', 5, 'Jusqu\'à 5 activités à choisir'),
-(2, 'Pack Business', 200, 20, 'string', 10, 'Jusqu\'à 10 activités à choisir'),
-(3, 'Pack Gold', 300, 30, 'string', 20, 'Jusqu\'à 20 activités à choisir');
+INSERT INTO `offre` (`id`, `name`, `prix_mad`, `prix_eur`, `nb_activite`, `description`, `focus_produit`, `nb_page_catalogue`, `has_commercial`, `has_banner`) VALUES
+(1, 'Pack Classic', 250, 25, 3, 'Jusqu\'à 3 activités à choisir', '1 produit (1 mois)', 0, 0, 0),
+(2, 'Pack Business', 350, 35, 5, 'Jusqu\'à 5 activités à choisir', '1 produit (1 mois)', 10, 1, 0),
+(3, 'Pack Gold', 450, 45, 10, 'Jusqu\'à 10 activités à choisir', '2 produit (3 mois)', 20, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2820,16 +3525,19 @@ CREATE TABLE `personnel` (
   `phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `del` tinyint(1) NOT NULL,
   `created` datetime NOT NULL,
-  `fullName` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL
+  `fullName` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `avatar_id` int(11) DEFAULT NULL,
+  `agence` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ville` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `personnel`
 --
 
-INSERT INTO `personnel` (`id`, `fournisseur_id`, `email`, `phone`, `del`, `created`, `fullName`) VALUES
-(1, 2, 'achats@lesachatsindustriels.com', '0661355218', 0, '2020-07-18 17:44:09', 'Maria Achats'),
-(2, 2, 'yhaloui@3findustrie.com', '0661355218', 0, '2020-07-18 17:47:20', 'Moimmm');
+INSERT INTO `personnel` (`id`, `fournisseur_id`, `email`, `phone`, `del`, `created`, `fullName`, `avatar_id`, `agence`, `ville`) VALUES
+(1, 2, 'achats@lesachatsindustriels.com', '0661355218', 0, '2020-07-18 17:44:09', 'Maria Achats', NULL, NULL, NULL),
+(2, 2, 'yhaloui@3findustrie.com', '0661355218', 0, '2020-07-18 17:47:20', 'Moimmm', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -2859,7 +3567,7 @@ CREATE TABLE `produit` (
   `pays_id` int(11) DEFAULT NULL,
   `slug` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone_vu` int(11) NOT NULL,
-  `titre_lower` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `titre_lower` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ville_id` int(11) DEFAULT NULL,
   `free` tinyint(1) NOT NULL,
   `autre_secteur` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -2872,11 +3580,48 @@ CREATE TABLE `produit` (
 --
 
 INSERT INTO `produit` (`id`, `secteur_id`, `sous_secteurs_id`, `fournisseur_id`, `fiche_technique_id`, `reference`, `description`, `pu`, `del`, `is_select`, `is_valid`, `created`, `videos`, `categorie_id`, `featured_image_id_id`, `titre`, `currency_id`, `date_validation`, `pays_id`, `slug`, `phone_vu`, `titre_lower`, `ville_id`, `free`, `autre_secteur`, `autre_activite`, `autre_produit`) VALUES
-(1, 25, 72, 2, NULL, 'ps2020', 'Système de stockage par accumulation dans lequel une navette motorisée se déplace sur des rails à l\'intérieur des canaux de stockage, remplaçant les chariots, réduisant considérablement les temps de manœuvre et permettant de grouper les références par canaux et non pas par allées complètes.\n\nLe Pallet Shuttle exécute les ordres donnés par un opérateur depuis une tablette dotée d\'une connexion WI-FI et dépose la charge dans le premier emplacement libre dans le canal et compactant au maximum les palettes. Le chariot élévateur n\'entre plus dans les allées et permet de gagner en capacité de stockage en profondeur, de réduire pratiquement à zéro le risque d\'accidents ou de dommages dans les rayonnages et d\'accélérer et moderniser l\'exploitation de l\'entrepôt.\n\nSolution idéale pour les entreprises qui gèrent un volume élevé de palettes par référence, avec un grand nombre d\'opérations de chargement et de déchargement.\n\nCaractéristiques\n\n- Références variées : chaque canal comporte d\'une référence différente.\n- Haute performance : augmentation du flux d\'entrées et de sorties de marchandise.\n- Augmentation de la capacité : jusqu\'à 40 mètres de stockage en profondeur.\n- Meilleure rentabilité grâce à la réduction des coûts d\'exploitation.\n- Diminution des incidents et des frais de maintenance.\n- La tablette offre de nombreuses fonctionnalités avancées, très simple à utiliser.', 0, 0, 0, 1, '2020-07-14 11:11:42', 'kF-ljgYu6cY', 317, 3, 'Pallet Shuttle', 11, '2020-07-14 11:12:47', 144, 'pallet-shuttle', 0, 'pallet shuttle', 1, 0, NULL, NULL, NULL),
-(2, 25, 72, 2, 13, 'rpm2020', 'Movirack permet de compacter les rayonnages et d’accroître considérablement la capacité de stockage sans perdre l’accès direct à chaque référence.\n\nLes rayonnages sont disposés sur des bases mobiles guidées qui se déplacent latéralement. Les allées sont ainsi supprimées et l’opérateur n’a qu’à ouvrir l’allée de service au moment opportun. Celui-ci donne l’ordre d’ouverture automatique à l’aide d’une télécommande ou procède de façon manuelle en appuyant sur un interrupteur.\n\nCes bases sont pourvues de moteurs, d\'éléments de translation et de différents systèmes de sécurité qui garantissent un fonctionnement sûr et efficace.\n\nAvantages\n\n- Système optimal pour chambres froides, de réfrigération et de congélation.\n- Augmentation de la capacité de l\'entrepôt.\n- Élimination des allées individuelles d\'accès.', 0, 0, 0, 1, '2020-07-14 11:20:19', NULL, 314, 10, 'Rayonnage à palette mobile', 11, '2020-07-14 11:20:41', 144, 'rayonnage-a-palette-mobile', 0, 'rayonnage à palette mobile', 1, 0, NULL, NULL, NULL),
+(1, 25, 72, 2, NULL, 'ps2020', 'Système de stockage par accumulation dans lequel une navette motorisée se déplace sur des rails à l\'intérieur des canaux de stockage, remplaçant les chariots, réduisant considérablement les temps de manœuvre et permettant de grouper les références par canaux et non pas par allées complètes.\n\nLe Pallet Shuttle exécute les ordres donnés par un opérateur depuis une tablette dotée d\'une connexion WI-FI et dépose la charge dans le premier emplacement libre dans le canal et compactant au maximum les palettes. Le chariot élévateur n\'entre plus dans les allées et permet de gagner en capacité de stockage en profondeur, de réduire pratiquement à zéro le risque d\'accidents ou de dommages dans les rayonnages et d\'accélérer et moderniser l\'exploitation de l\'entrepôt.\n\nSolution idéale pour les entreprises qui gèrent un volume élevé de palettes par référence, avec un grand nombre d\'opérations de chargement et de déchargement.\n\nCaractéristiques\n\n- Références variées : chaque canal comporte d\'une référence différente.\n- Haute performance : augmentation du flux d\'entrées et de sorties de marchandise.\n- Augmentation de la capacité : jusqu\'à 40 mètres de stockage en profondeur.\n- Meilleure rentabilité grâce à la réduction des coûts d\'exploitation.\n- Diminution des incidents et des frais de maintenance.\n- La tablette offre de nombreuses fonctionnalités avancées, très simple à utiliser.', 0, 0, 0, 1, '2020-07-14 11:11:42', 'kF-ljgYu6cY', 317, 3, 'Pallet Shuttle', 11, '2020-07-14 11:12:47', 144, 'pallet-shuttle', 3, 'pallet shuttle', 1, 0, NULL, NULL, NULL),
+(2, 25, 72, 2, 13, 'rpm2020', 'Movirack permet de compacter les rayonnages et d’accroître considérablement la capacité de stockage sans perdre l’accès direct à chaque référence.\n\nLes rayonnages sont disposés sur des bases mobiles guidées qui se déplacent latéralement. Les allées sont ainsi supprimées et l’opérateur n’a qu’à ouvrir l’allée de service au moment opportun. Celui-ci donne l’ordre d’ouverture automatique à l’aide d’une télécommande ou procède de façon manuelle en appuyant sur un interrupteur.\n\nCes bases sont pourvues de moteurs, d\'éléments de translation et de différents systèmes de sécurité qui garantissent un fonctionnement sûr et efficace.\n\nAvantages\n\n- Système optimal pour chambres froides, de réfrigération et de congélation.\n- Augmentation de la capacité de l\'entrepôt.\n- Élimination des allées individuelles d\'accès.', 0, 0, 0, 1, '2020-07-14 11:20:19', NULL, 314, 10, 'Rayonnage à palette mobile', 11, '2020-07-14 11:20:41', 144, 'rayonnage-a-palette-mobile', 3, 'rayonnage à palette mobile', 1, 0, NULL, NULL, NULL),
 (3, 25, 70, 2, 14, 'trm3', 'Le tracteur électrique industriel Zallys M3 est la solution idéale pour éliminer la manutention manuelle des charges.\n\n- pour des charges jusqu\'à 1.500 kg\n- polyvalent et compact\n- avec roues pneumatiques pour une utilisation intérieure et extérieure\n- passer au mode 2 vitesses\n- large gamme d\'attelages standard ou d\'accouplements personnalisés sur demande', 0, 0, 0, 1, '2020-07-14 11:35:32', NULL, 305, 14, 'M3 - Tracteur de remorquage industriel', 11, '2020-07-14 11:35:57', 144, 'm3-tracteur-de-remorquage-industriel', 0, 'm3 - tracteur de remorquage industriel', 1, 0, NULL, NULL, NULL),
-(4, 25, 70, 2, 15, 'cm15', 'Le chariot électrique à plat Zallys M15 est la solution idéale pour éliminer la manutention manuelle des charges et accélérer le piking.\n\n- pour des charges jusqu\'à 500 kg\n- polyvalent et compact\n- avec roues superélastiques pour une utilisation en intérieur\n- régulation de vitesse avec potentiomètre\n- large gamme d\'accessoires', 0, 0, 0, 1, '2020-07-14 11:41:59', NULL, 305, 16, 'M15 - Chariot électrique à plateforme', 11, '2020-07-14 11:42:17', 144, 'm15-chariot-electrique-a-plateforme', 0, 'm15 - chariot électrique à plateforme', 1, 0, NULL, NULL, NULL),
-(8, 39, 98, 684, NULL, 'abcde', 'azeazeazeazeaz', 0, 1, 0, 0, '2020-07-22 17:23:29', NULL, 382, NULL, 'Electrical wiring / interconnextion system ( EWIS )', 1, NULL, 75, 'electrical-wiring-interconnextion-system-ewis', 0, 'electrical wiring / interconnextion system ( ewis )', 33, 1, 'aza', 'zzz', 'zaaaaaa');
+(4, 25, 70, 2, 15, ' CM 15', 'Le chariot électrique à plat Zallys M15 est la solution idéale pour éliminer la manutention manuelle des charges et accélérer le piking.\n\n- pour des charges jusqu\'à 500 kg\n- polyvalent et compact\n- avec roues superélastiques pour une utilisation en intérieur\n- régulation de vitesse avec potentiomètre\n- large gamme d\'accessoires', 0, 0, 0, 1, '2020-07-14 11:41:59', NULL, 305, 16, 'M15 - Chariot électrique à plateforme', 11, '2020-07-14 11:42:17', 144, 'm15-chariot-electrique-a-plateforme', 1, 'm15 - chariot électrique à plateforme', 1, 0, NULL, NULL, NULL),
+(8, 39, 98, 684, NULL, 'abcde', 'azeazeazeazeaz', 0, 1, 0, 0, '2020-07-22 17:23:29', NULL, 382, NULL, 'Electrical wiring / interconnextion system ( EWIS )', 1, NULL, 75, 'electrical-wiring-interconnextion-system-ewis', 0, 'electrical wiring / interconnextion system ( ewis )', 33, 1, 'aza', 'zzz', 'zaaaaaa'),
+(9, 5, 17, 745, NULL, 'NEOWIFI', 'L\'objectif du moteur-variateur intégré est d\'éliminer le coût du matériel suplementaire (câbles et cabinet, principalement), les temps et les frais d\'études, d\'installation, de câblage, de programmation et d\'essais du système moteur + variateur, ainsi que les risques dus aux erreurs liées à ces opérations', 0, 0, 0, 1, '2020-07-24 12:38:40', 'hUXJ47P_Qxo', 383, 26, 'moteur-variateur breveté, facilement utilisable, IP 65, avec commande amovible et à distance', 1, '2020-07-24 13:14:20', 109, 'moteur-variateur-brevete-facilement-utilisable-ip-65-avec-commande-amovible-et-a-distance', 2, 'moteur-variateur breveté, facilement utilisable, ip 65, avec commande amovible et à distance', 116, 1, NULL, NULL, NULL),
+(10, 5, 17, 745, 16, 'DELFIRE', 'une gamme innovante des moteurs triphasés, spécialement conçu pour fonctionner en ambiance jusqu\'à 100°C en service continu S1. Particulièrement adapté pour les applications comme la déshydratation alimentaire, la ventilation de four.', 0, 0, 0, 1, '2020-07-24 16:12:45', 'G2EWOuOHljU', 388, 33, 'MOTEURS TRIPHASES DELFIRE : pour ambiance jusqu\'à 100°C en service continu S1', 1, '2020-07-24 16:46:46', 109, 'moteurs-triphases-delfire-pour-ambiance-jusqua-100degc-en-service-continu-s1', 3, 'moteurs triphases delfire : pour ambiance jusqu\'à 100°c en service continu s1', 116, 1, NULL, NULL, NULL),
+(11, 5, 17, 745, 17, 'DELPHI EX', 'ATEX est le nom conventionnel de la Directive 14/34/CE de l’Unione Européenne pour la réglementation des appareils destinés à l’emploi dans des zones à risque d’explosion\n\nLes moteurs Motive DELPHI Ex diffèrent des moteurs DELPHI standard car ils sont conçus pour être utilisés, comme les réducteurs Motive \"Ex\", dans les zones ATEX 1, 2, 21 et 22.', 0, 0, 0, 1, '2020-07-24 16:29:04', NULL, 388, 36, 'Moteurs certifiés ATEX pour les zones 1-2-21 et 22, Cat. 2 et 3, poussière et gaz', 1, '2020-07-24 16:47:24', 109, 'moteurs-certifies-atex-pour-les-zones-1-2-21-et-22-cat-2-et-3-poussiere-et-gaz', 1, 'moteurs certifiés atex pour les zones 1-2-21 et 22, cat. 2 et 3, poussière et gaz', 116, 1, NULL, NULL, 'Moteurs asynchrones'),
+(12, 14, 41, 751, NULL, 'Poste HT/BT', 'Fourniture et installation poste électrique  HT/BT', 0, 0, 0, 1, '2020-07-28 09:17:15', NULL, 156, 50, 'Equipements postes électriques HT/BT', 11, '2020-07-29 17:36:29', 144, 'equipements-postes-electriques-ht-bt', 3, 'equipements postes électriques ht/bt', 1, 1, NULL, NULL, NULL),
+(13, 2, 3, 749, 18, '250 ML', 'Bonjour, \n\nNous sommes une société de distribution d\'eau de table \"MARAQUA\".\n \nNous vous proposons nos gobelets d\'eau de table de 250 ml pour une consommation individuelle, avec une livraison à domicile ou à vos locaux d\'entreprise.\n\n\nN\'hésitez pas à nous communiquer votre besoin, nous serons ravis de vous servir.\n\n\nBien à vous.\n\n\nCHAMA DISTRIBUTION.', 1, 0, 0, 1, '2020-07-28 09:33:19', NULL, 402, 40, 'Eau de table ', 11, '2020-07-28 15:01:28', 144, 'eau-de-table', 3, 'eau de table ', 1, 1, NULL, NULL, 'Eau embouteillé '),
+(14, 34, 86, 645, NULL, 'Extincteur', 'GTSI, est spécialisé dans la mise en place de systèmes d\'extinctions automatique, les gaz(inhibiteurs ou inertes) que nous utilisons sont sans danger pour le personnel, et permettent de conserver une atmosphère respirable à concentration usuelle.', 0, 0, 0, 1, '2020-07-29 13:21:59', NULL, 426, 44, 'Extinction automatique', 11, '2020-07-29 17:31:32', 144, 'extinction-automatique', 0, 'extinction automatique', 1, 1, NULL, NULL, NULL),
+(15, 34, 86, 645, NULL, 'Désenfumage naturel/mécanique', 'Dans le cadre de nos prestation en matière de désenfumage naturel , on intervient au niveau des dispositifs  de commandes et dispositifs actionnés de sécurités, notre prestation s\'étend également à l\'installation et au remplacement des matériels.\nPar rapport au désenfumage mécanique, on intervient au niveau de remplacement des tourelles de désenfumage, des volets désenfumages, des pressostats et autres organes composants la chaine de sécurité, la mise en place ou remplacement des coffrets de reliage normalisés.', 0, 0, 0, 1, '2020-07-29 13:38:43', NULL, 425, 45, 'Désenfumage', 11, '2020-07-29 17:31:01', 144, 'desenfumage', 0, 'désenfumage', 1, 1, NULL, NULL, NULL),
+(16, 34, 86, 645, NULL, 'RIA, Poteau incendie, bache à eau, local supresseu', 'Ayant pour vocation de détecter un début d\'incendie, et mettre ainsi les bâtiments en sécurité le système sécurité incendie est indispensable pour vos locaux.\nGTSI s\'engage à la mise en place de tous les composants de ce système :\nNotre équipe se charge de l\'entretien du bache à eau.\nL\'installation du local surpresseur.\nL\'installation des RIA\nLa réalisation et le contrôle périodique des poteaux incendie.\nLa fourniture de tous le matériel du système protection', 0, 0, 0, 1, '2020-07-29 16:22:54', NULL, 424, 46, 'Système protection incendie', 11, '2020-07-29 17:30:20', 144, 'systeme-protection-incendie', 3, 'système protection incendie', 1, 1, NULL, NULL, NULL),
+(17, 34, 102, 645, NULL, 'caméra, système de pointage', 'Le rôle d\'un système de détection intrusion et de détecter une intrusion ou un evenement anormal grâce à l\'installation d\'un système alarme , et la mise en place d\'un système de pointage avancé installé par nos équipes.  ', 0, 0, 0, 1, '2020-07-29 16:36:23', NULL, 422, 47, 'anti-intrusion', 11, '2020-07-29 17:29:39', 144, 'anti-intrusion', 1, 'anti-intrusion', 1, 1, NULL, NULL, NULL),
+(18, 34, 86, 645, NULL, 'système adressable et conventionnel', 'GTSI vous propose les systèmes de détection incendie sous ces deux types respectifs, le Système Conventionnel et le Système Adressable de l\'étude jusqu\'à l\'installation ainsi que la maintenance.', 0, 0, 0, 1, '2020-07-29 16:47:46', NULL, 362, 49, 'Détection incendie', 11, '2020-07-29 17:26:19', 144, 'detection-incendie', 1, 'détection incendie', 1, 1, NULL, NULL, NULL),
+(19, 34, 102, 750, 20, 'ip-surv', 'Tralos vous propose des solutions de vidéosurveillance de marques alliant qualité et prix. Nos solutions vont de petites installations jusqu\'au installations d\'envergure à architecture client-serveur.', 0, 0, 0, 1, '2020-08-02 19:52:25', NULL, 413, 52, 'Solution de vidéosurveillance IP', 11, '2020-08-03 07:53:38', 144, 'solution-de-videosurveillance-ip', 1, 'solution de vidéosurveillance ip', 13, 1, NULL, NULL, NULL),
+(20, 34, 86, 750, NULL, 'caccès1', 'Nos solutions du contrôle d\'accès et industriel sont les plus innovantes sur le marché. Pour en juger la pertinence veuillez demander notre catalogue.', 0, 0, 0, 1, '2020-08-02 19:59:26', NULL, 361, 53, 'Solution de contrôle d\'accès complète', 11, '2020-08-03 07:54:16', 144, 'solution-de-controle-dacces-complete', 2, 'solution de contrôle d\'accès complète', 13, 1, NULL, NULL, NULL),
+(21, 34, 86, 750, 21, 'ip-inter', 'Notre solution Full IP en interphonie, sonorisation d\'ambiance et Appel publique est parmi les plus robuste et fiable. La solution est adaptée aux hôpitaux , l\'industrie et le tertiaire.', 0, 0, 0, 1, '2020-08-02 20:09:07', NULL, 427, 54, 'Solution d\'interphone et appel publique entièrement IP', 11, '2020-08-03 07:55:54', 144, 'solution-dinterphone-et-appel-publique-entierement-ip', 0, 'solution d\'interphone et appel publique entièrement ip', 13, 1, NULL, NULL, 'Interphone IP,  appel public (PA) et sonorisation '),
+(22, 17, 103, 750, 22, 'chre-fr', 'La solution proposée par Tralos est adaptée à tout type de chambre froide. Les données sont stockées sur le Cloud. Elle permet la gestion des données d\'une chambre froide, la sécurité du personnel, la régulation,  et la surveillance des compresseurs et prévient les pannes à temps.', 0, 0, 0, 1, '2020-08-02 20:21:15', NULL, 428, 55, 'Solution de télésurveillance et contrôle de chambre froide', 11, '2020-08-03 07:58:12', 144, 'solution-de-telesurveillance-et-controle-de-chambre-froide', 1, 'solution de télésurveillance et contrôle de chambre froide', 13, 1, NULL, NULL, NULL),
+(23, 22, 99, 575, NULL, 'vibra motor maroc', 'analyse vibratoire équilibrage industriel alignement laser thermographie ventilateur industriel.', 0, 0, 0, 1, '2020-08-04 10:22:24', NULL, 429, 59, 'maintenence industrielle', 11, '2020-08-04 11:10:59', 144, 'maintenence-industrielle', 1, 'maintenence industrielle', 1, 1, NULL, NULL, NULL),
+(24, 8, 22, 755, NULL, 'Bureau semi Métallique', 'Bureau semi Métallique avec Plateau en bois et Piétement Métallique avec dimension 160 cm x 80 cm', 1300, 0, 0, 1, '2020-08-07 15:58:09', NULL, 313, 61, 'Mobiliers de Bureau', 11, '2020-08-07 16:50:31', 144, 'mobiliers-de-bureau', 2, 'mobiliers de bureau', 1, 1, NULL, NULL, NULL),
+(25, 25, 72, 755, NULL, 'Rayonnage Lourd', 'Tout genre de rayonnage de stockage : Rayonnages lourd et semi lourd,Rayonnages conventionnels, rayonnages par accumulation, et rayonnages legers', 0, 0, 0, 1, '2020-08-07 16:33:02', NULL, 313, 65, 'Rayonnage de Stockage', 11, '2020-08-07 16:50:55', 144, 'rayonnage-de-stockage', 2, 'rayonnage de stockage', 1, 1, NULL, NULL, NULL),
+(26, 18, 55, 755, NULL, 'Revetement et cloison', 'Revêtement Sol et Mur, parquet, cloisons,Stores, étanchéité et produits d\'isolation,', 0, 0, 0, 1, '2020-08-07 17:02:20', NULL, 433, 66, 'Revêtement de Sol et cloison', 11, '2020-08-07 17:04:09', 144, 'revetement-de-sol-et-cloison', 0, 'revêtement de sol et cloison', 1, 1, NULL, NULL, NULL),
+(27, 6, 98, 758, NULL, 'Lames orientables ', 'Pergola bioclimatique a lames orientables motorisées', 0, 1, 0, 0, '2020-08-12 13:55:47', NULL, NULL, NULL, 'Pergola ', 11, NULL, 144, 'pergola', 0, 'pergola ', 1, 1, NULL, 'Pergola ', NULL),
+(28, 12, 32, 760, 23, '1P / 2P / 4P , PP , PE , ', 'Emballage industriel souple en toile tissée tel que les sacs et les Big Bags en polypropylène', 0, 0, 0, 1, '2020-08-13 16:05:32', NULL, 443, 74, 'Bigbag / Sacs polypropylène / Bâches professionnelles / Filets Agricoles / Sacs PE / Gaine FFS', 11, '2020-08-13 17:26:22', 144, 'bigbag-sacs-polypropylene-baches-professionnelles-filets-agricoles-sacs-pe-gaine-ffs', 3, 'bigbag / sacs polypropylène / bâches professionnelles / filets agricoles / sacs pe / gaine ffs', 1, 1, NULL, 'Conditionnement', NULL),
+(29, 2, 9, 765, NULL, 'chunmee41022 et gunpowder3505', 'Chunmee 41022 et Gunpowder 3505, feuilles cueillies à partir de jardin de théier montagneux sélectionné,  filament bien formé, arôme concentré, liqueur brun rougeâtre, goût épais et intense, mousses fines et abondantes.', 10, 1, 0, 1, '2020-08-26 06:38:04', NULL, 33, 81, 'Offre B2B thé vert de Chine', 2, '2020-08-26 09:03:50', 44, 'offre-b2b-the-vert-de-chine', 0, 'offre b2b thé vert de chine', 117, 1, NULL, NULL, NULL),
+(30, 34, 86, 766, NULL, 'NRS groupe ', 'Qui sommes-nous ?\n\nNRS groupe est spécialisée dans la fourniture de services aux particuliers, professionnels et des collectivités. Nous opérons dans le domaine de la propreté, l’hygiène 3D (Désinsectisation, Dératisation, Désinfection), sécurité électronique, gardiennage, jardinage. \n\nPour répondre aux attentes de ses clients dans un secteur où la confiance et l’efficacité sont les maîtres mots, NRS groupe cherche à aller plus loin pour apporter les solutions les plus performantes et les plus adaptées aux exigences actuelles. \n\nL’objectif de notre société est de donner entière satisfaction.', 0, 0, 0, 1, '2020-08-27 00:21:42', NULL, 363, 93, 'Sécurité, nettoyage,désinfection dératisation désinsectisation et jardinage ', 11, '2020-08-27 08:16:56', 144, 'securite-nettoyage-desinfection-deratisation-desinsectisation-et-jardinage', 4, 'sécurité, nettoyage,désinfection dératisation désinsectisation et jardinage ', 1, 1, NULL, NULL, NULL),
+(31, 1, 98, 767, NULL, 'sep0288', 'C’est avec plaisir que nous informons que SEPARATOR élargit son activité avec les experts italiens (ROSSS) afin de vous proposer les solutions efficaces et adaptatives pour mieux gérer vos entrepôts, vos bureaux et vos magasins.\n\nNos métiers :\n- RAYONNAGE\n- MENUISIER\n- FACADIER\n- CLOISONNEUR', 1200, 0, 0, 0, '2020-08-27 10:44:06', NULL, 382, 95, 'Rayonnage lourd mi lourd et léger', 11, NULL, 144, 'rayonnage-lourd-mi-lourd-et-leger', 0, 'rayonnage lourd mi lourd et léger', 1, 1, NULL, 'RAYONNAGE', 'RAYONNAGE'),
+(32, 2, 3, 765, 24, 'chunmee 4011', 'Hongda Tea Co.,Ltd est une usine professionnelle de la production et exportation en gros du thé verts de Chine comme matière première ( 41022/4011/9371/3505...... ) depuis 1990s, située à Hunan en Chine.\n\nLes feuilles du thé cueillies à partir de jardin théier montagneux sélectionné, en filament bien formé, arôme concentré, liqueur brun rougeâtre et goût épais et intense sous les mousses abondantes.\n\nNotre manager de vente M.Han est à votre écoute pour toute discussion sur nos produits et services au Tel/WhatsApp+8617352820448 et courrier électrique han@hndtea.com.\nSite Web: www.hndtea.com', 100, 0, 0, 1, '2020-09-16 06:02:48', NULL, 453, 108, 'thé vert super qualité 4011', 2, '2020-09-21 08:44:06', 44, 'the-vert-super-qualite-4011', 1, 'thé vert super qualité 4011', 117, 1, NULL, NULL, NULL),
+(33, 2, 3, 765, NULL, '41022AAAAAA', 'Origine: ferme théier montagneux sélectionnée à Hunan de Hongda Tea Factory\nApparence: thé en filament, bien serré et solide; forme régulière et évident, en couleur joli vert foncé noirâtre; exhalant l\'odeur pure, normal\nLiqueur: couleur châtain rougeâtre limpide, bouquet très arômatique, épais et long\nGoût: intense, persistant et long\nMousse: très abondante, persistente et inaltérable;\nEmballage: 10-30 kg/carton; 25-1000g/boîte\nPrix: entre 1500 - 6000 usd/tonne selon la quantité, qualité à discuter.\nContact: M.HAN tel/whatsApp+8617352820448', 0, 0, 0, 1, '2020-10-22 09:18:54', NULL, 453, 110, 'Thé vert de Chine chunmee ', 2, '2020-10-23 15:28:12', 44, 'the-vert-de-chine-chunmee', 0, 'thé vert de chine chunmee ', 117, 1, NULL, NULL, 'thé vert de Chine'),
+(34, 2, 3, 785, NULL, '41022', 'Fondée en 1987, l\'usine de thé Shaoxing Liangxi, qui se trouve dans la province du Zhejiang située dans le Sud-est de la Chine, avec plus de 30 ans d’expérience dans le secteur, nous sommes spécialisés dans la plantation, la fabrication et l’exportation de thés verts réputés et de grandes qualités,comme 41022 3505 9371 4011 9366...etc.\nNotre capacité annuelle de production atteint 15,000 tonnes, grâce aux nos stocks conséquants, nous pouvons vous fournir les thé de haute qualité stable avec les prix compétitifs\nÀ votre contact : Mlle. Sophie\nTel/Whatsapp/Wechat :+86 17352820478\nEmail : sophie@gttea.com\nWebsite :www.liangxitea.com', 0, 0, 0, 1, '2020-11-13 06:15:15', NULL, 453, 112, 'Top qualité de thé vert Chunmee 41022-الشاي الأخضر الصيني', 2, '2020-11-20 10:38:22', 44, 'top-qualite-de-the-vert-chunmee-41022-lshy-lkhdr-lsyny', 0, 'top qualité de thé vert chunmee 41022-الشاي الأخضر الصيني', 120, 1, NULL, NULL, NULL),
+(35, 2, 2, 765, NULL, '3505 EXTRA', '   Hongda Tea Factory est une usine de production et exportation du thé vert de Chine ( 41022AAAAAA, 41022AAA, 4011, 9371AAA; 3505AAAAA, 3505A, 3505B... ) depuis 1990s, située à Hunan en Chine.\n      Grâce aux savoir-faire et expérience de 30 ans, nous satisfaisons aux besoins de nos partenaires avec une riche gamme de produits certifiés, en qualités stabilisées sur-mesure et aux coûts très concurrentiels.\n      Contacter M.Han au Tel/WhatsApp+8617352820448 ou par courrier électrique han@hndtea.com pour demander les échantillons ou poser toute question.', 3, 1, 0, 0, '2020-12-10 08:07:25', NULL, 382, NULL, 'Gunpowder 3505 EXTRA - thé vert de Chine', 2, NULL, 44, 'gunpowder-3505-extra-the-vert-de-chine', 0, 'gunpowder 3505 extra - thé vert de chine', 117, 1, NULL, NULL, 'Thé vert de Chine'),
+(36, 5, 17, 784, NULL, 'Fluke', 'Marque fluke', 0, 0, 0, 0, '2020-12-24 22:38:54', NULL, 382, NULL, 'Appariel fluke à vendre ', 11, NULL, 144, 'appariel-fluke-a-vendre', 0, 'appariel fluke à vendre ', 1, 1, NULL, NULL, 'Fluke '),
+(37, 2, 98, 765, NULL, '3505AAA', 'De fabrication traditionnelle, ces feuilles de thé enroulées en forme de petites perles s’épanouissent lors de l’infusion et dévoilent leurs arômes subtils et fruités. Thé de prédilection pour préparer du thé vert à la menthe, son goût doux et rafraîchissant vous enchantera tout au long de la journée.Pour l\'échantillon contacter M.HAN au whatsapp/tel+8617352820448/han@hndtea.com.', 30, 1, 0, 0, '2021-01-13 09:24:46', NULL, 382, NULL, 'Gunpowder 3505AAA SUPER QUALITE', 2, NULL, 44, 'gunpowder-3505aaa-super-qualite', 0, 'gunpowder 3505aaa super qualite', 117, 1, NULL, 'Usine chinoise de production et exportation du thé', 'thé vert Chunmee et gunpowder'),
+(38, 2, 2, 765, NULL, '3505AAAAA', '      Hongda Tea Factory Co Ltd est une usine de production et exportation du thé vert de Chine ( 41022,4011, 9371; 3505... ) depuis 1990s.\n      Grâce aux savoir-faire unique de 30 ans, nous cherchons à rendre plus compétitifs la qualité et le prix des thés de nos partenaires importateurs. \n      Contacter M.Han au Tel/WhatsApp+8617352820448 / han@hndtea.com pour demander les échantillons ou poser toute question.', 0, 1, 0, 0, '2021-03-01 09:09:28', NULL, 382, NULL, 'Offre de Thé Gunpowder 3505 Aux Prix d\'Usine de Chine', 2, NULL, 44, 'offre-de-the-gunpowder-3505-aux-prix-dusine-de-chine', 0, 'offre de thé gunpowder 3505 aux prix d\'usine de chine', 117, 1, NULL, NULL, 'thé vert de Chine gunpowder 3505'),
+(39, 2, 3, 783, NULL, '41022AAAAAA', 'Top thé sahraoui 41022\n', 1, 0, 0, 0, '2021-03-18 06:55:52', NULL, 382, NULL, 'Top Chunmee 41022', 2, NULL, 44, 'top-chunmee-41022', 0, 'top chunmee 41022', 120, 1, NULL, NULL, 'Thé vert Chinois '),
+(40, 2, 2, 765, NULL, '3505AAAAA', '3505AAAAA\nThé vert de Chine en grain, feuilles choisies avec rigueur\ngoût pur et corsé, arômes longs, mousse très riche\nthé super pour le Maroc\nexpédié en vrac 10-30 kg/carton ou en boîte de 25g 100g 200g 300g 500g......\npour les prix contacter HAN via Facebook@CLEMENT HAN\npour en savoir plus www.hndtea.com +8617352820448', 20, 0, 0, 0, '2021-04-13 06:40:23', NULL, 7, NULL, 'gunpowder 3505AAAAA usine d\'export en Chine', 2, NULL, 44, 'gunpowder-3505aaaaa-usine-dexport-en-chine', 0, 'gunpowder 3505aaaaa usine d\'export en chine', 117, 1, NULL, NULL, NULL),
+(41, 5, 17, 789, NULL, 'Out001', 'Vente d\'outillage et équipement pour le bâtiment de qualité importé et garanti avec carné d\'authenticité fourni par nos partenaires en Europe\nmatériel pour batiment, outillage, outillage professionnel, outillage à main, outillage électrique', 0, 0, 0, 1, '2021-05-09 18:02:59', NULL, 60, 123, 'Outillage Professionnel', 11, '2021-05-24 14:08:35', 144, 'outillage-professionnel', 0, 'outillage professionnel', 7, 1, NULL, NULL, NULL),
+(42, 43, 113, 789, NULL, 'autm002', 'Détecteurs inductifs, Capteurs capacitifs, Capteurs optoélectroniques, Capteurs magnétiques pour cylindre, Capteurs de position analogiques, Capteurs magnétiques, Capteurs à ultrasons, Capteurs mécaniques, Capteurs à fibre optique et conducteurs optiques, Capteurs de couleur, Capteurs de luminescence, Capteurs fourchus, Capteurs de contraste, Capteurs de zone, Capteurs d\'inclinaison, Capteurs sans marque, Barrières photoélectriques de mesure, Barrières immatérielles de sécurité, Scanner de sécurité, Capteurs de niveau, Capteurs de pression, Capteurs de température, Régulateurs de température, Capteurs de débit, Codeurs absolus et incrémentaux, Capteurs de distance moyenne et longue portée, Scanner laser 2D, Scanner laser 3D, Modules et bus de terrain, Lien IO, Distributeurs passifs, Câbles et connecteurs industriels, Systèmes et capteurs RFID, Capteurs de vision, Systèmes de vision 2D et 3D, Lecteurs de codes à barres industriels, Pyromètres optiques fixes et portables, Marqueurs laser, Onduleur, Alimentations et UPS, PLC, Cassettes, armoires, racks et accessoires Panel PC, PC industriels, Unité de contrôle et de signalisation, Filtres monophasés et triphasés, Capteurs de position, Convertisseurs de signaux, Affichages, compteurs et minuteries, Codeurs linéaires, Systèmes de retour de moteur rotatif …\nCapteurs de niveau Capteurs de position Capteurs de pression Capteurs mécaniques Détecteurs inductifs', 0, 0, 0, 1, '2021-05-09 18:06:42', NULL, 502, 124, 'composants électronique et automatisme industriel', 11, '2021-05-26 09:03:42', 144, 'composants-electronique-et-automatisme-industriel', 0, 'composants électronique et automatisme industriel', 7, 1, NULL, NULL, NULL),
+(43, 5, 17, 789, NULL, 'fournt001', 'importation de composants originaux avec certificat d\'authenticité pour le marché automobile, agroalimentaire et aéronautique.\n- composants mécaniques\n- composants hydrauliques\n- composants pneumatiques\n- roulement\n- transmission etc...\ncomposants hydrauliques composants mécaniques composants pneumatiques roulement transmission', 0, 0, 0, 1, '2021-05-09 18:11:49', NULL, 59, 126, 'Fourniture industrielle et pièces de rechange', 11, '2021-05-24 14:07:40', 144, 'fourniture-industrielle-et-pieces-de-rechange', 0, 'fourniture industrielle et pièces de rechange', 7, 1, NULL, NULL, NULL),
+(44, 40, 125, 789, NULL, 'epi001', 'qualité garantie et produits avec certificat d\'authenticité\ncombinaison de travail professionnelle\ncasque de sécurité\nbouchon d\'oreille\ngant de sécurité\nlunette de sécurité\nharnais de sécurité\nbouchon d oreille casque de sécurité gant de sécurité harnais de sécurité lunette de sécurité', 0, 0, 0, 1, '2021-05-09 18:17:57', NULL, 503, 127, 'Equipement de protection individuel et sécurité au travail', 11, '2021-05-26 09:04:15', 144, 'equipement-de-protection-individuel-et-securite-au-travail', 0, 'equipement de protection individuel et sécurité au travail', 7, 1, NULL, NULL, NULL),
+(45, 2, 2, 765, 25, '4011AAAA', '4011AAAA\nThé du désert, choisi avec rigueur\ngoût pur et corsé, arômes longs, mousse très riche\nthé super pour le Maroc du sud, l\'Algérie, la Mauritanie...\nexpédié en vrac 10-30 kg/carton ou en boîte de 25g 100g 200g 300g 500g......\npour les prix contacter HAN +86 173 5282 0448(whatsapp) et email han@hndtea.com\npour en savoir plus www.hndtea.com', 22, 0, 0, 0, '2021-05-19 09:48:13', NULL, 382, NULL, 'Chunmee 4011AAAA export de l\'usine de thé en Chine', 2, NULL, 44, 'chunmee-4011aaaa-export-de-lusine-de-the-en-chine', 0, 'chunmee 4011aaaa export de l\'usine de thé en chine', 117, 1, NULL, NULL, 'thé vert de Chine chunmee 4011');
 
 -- --------------------------------------------------------
 
@@ -2912,7 +3657,71 @@ INSERT INTO `produit_image_produit` (`produit_id`, `image_produit_id`) VALUES
 (4, 17),
 (4, 18),
 (4, 19),
-(4, 20);
+(4, 20),
+(9, 26),
+(9, 27),
+(10, 33),
+(11, 36),
+(11, 38),
+(12, 50),
+(13, 39),
+(13, 40),
+(13, 41),
+(13, 42),
+(13, 43),
+(14, 44),
+(15, 45),
+(16, 46),
+(17, 47),
+(18, 49),
+(19, 52),
+(20, 53),
+(21, 54),
+(22, 55),
+(23, 58),
+(23, 59),
+(23, 60),
+(24, 61),
+(25, 63),
+(25, 65),
+(26, 66),
+(26, 67),
+(28, 74),
+(28, 75),
+(28, 76),
+(28, 77),
+(28, 79),
+(29, 80),
+(29, 81),
+(29, 82),
+(29, 83),
+(30, 89),
+(30, 90),
+(30, 91),
+(30, 92),
+(30, 93),
+(31, 94),
+(31, 95),
+(31, 96),
+(31, 97),
+(31, 98),
+(32, 108),
+(33, 109),
+(33, 110),
+(34, 112),
+(35, 113),
+(35, 114),
+(36, 115),
+(37, 116),
+(37, 117),
+(38, 118),
+(39, 119),
+(40, 120),
+(41, 123),
+(42, 124),
+(43, 126),
+(44, 127),
+(45, 128);
 
 -- --------------------------------------------------------
 
@@ -2970,7 +3779,14 @@ INSERT INTO `secteur` (`id`, `image_id`, `name`, `del`, `slug`) VALUES
 (36, 34, 'Télécom & Réseaux', 0, 'telecom-reseaux'),
 (37, 35, 'Travail du métal', 0, 'travail-du-metal'),
 (38, 36, 'Voyages et loisirs', 0, 'voyages-et-loisirs'),
-(39, NULL, 'Autre', 0, 'autre');
+(39, NULL, 'Autre', 0, 'autre'),
+(40, 42, 'Hygiène Sécurité Environnement', 0, 'hygiene-securite-environnement'),
+(41, NULL, 'Aménagement extérieur', 0, 'amenagement-exterieur'),
+(42, NULL, 'Automatisme et Electricité _deleted-42', 1, 'automatisme-et-electricite-deleted-42'),
+(43, 43, 'Automatisme', 0, 'automatisme'),
+(44, NULL, 'Sanitaire ', 0, 'sanitaire'),
+(45, NULL, 'Mesures, analyses et capteurs', 0, 'mesures-analyses-et-capteurs'),
+(46, 45, 'Beauté & Santé', 0, 'beaute-sante');
 
 -- --------------------------------------------------------
 
@@ -2991,14 +3807,14 @@ CREATE TABLE `select_produit` (
 INSERT INTO `select_produit` (`id`, `produit_id`, `updated`) VALUES
 (4, 1, '2020-07-14 11:42:49'),
 (5, 4, '2020-07-14 11:43:18'),
-(6, 3, '2020-07-14 11:43:27'),
+(6, 10, '2020-07-29 17:44:06'),
 (7, 2, '2020-07-14 11:43:39'),
-(8, NULL, '2020-05-15 14:25:38'),
-(9, NULL, '0000-00-00 00:00:00'),
-(10, NULL, '0000-00-00 00:00:00'),
-(11, NULL, '0000-00-00 00:00:00'),
-(12, NULL, '0000-00-00 00:00:00'),
-(13, NULL, '0000-00-00 00:00:00');
+(8, 9, '2020-07-24 13:15:49'),
+(9, 16, '2020-07-29 17:42:34'),
+(10, 11, '2020-07-24 17:08:24'),
+(11, 18, '2020-07-29 17:38:23'),
+(12, 28, '2020-08-17 15:53:54'),
+(13, 17, '2020-07-29 17:39:55');
 
 -- --------------------------------------------------------
 
@@ -3110,7 +3926,34 @@ INSERT INTO `sous_secteur` (`id`, `secteur_id`, `name`, `name_lower`, `del`, `sl
 (94, 38, 'Location véhicules', 'location véhicules', 0, 'location-vehicules'),
 (96, 9, 'Pharmacie', 'pharmacie', 0, 'pharmacie'),
 (97, 37, 'Construction Métallique ', 'construction métallique ', 0, 'construction-metallique'),
-(98, NULL, 'Autre', 'autre', 0, 'autre');
+(98, NULL, 'Autre', 'autre', 0, 'autre'),
+(99, 22, 'Machine industrielle', 'machine industrielle', 0, 'machine-industrielle'),
+(100, 37, 'Régie', 'régie', 0, 'regie'),
+(101, 14, 'Eclairage', 'eclairage', 0, 'eclairage'),
+(102, 34, 'Surveillance', 'surveillance', 0, 'surveillance'),
+(103, 17, 'Télésurveillance et contrôle', 'télésurveillance et contrôle', 0, 'telesurveillance-et-controle'),
+(104, 40, 'Hygiène', 'hygiène', 0, 'hygiene'),
+(105, 40, 'Environnement', 'environnement', 0, 'environnement'),
+(106, 1, 'Menuiserie métallique ', 'menuiserie métallique ', 0, 'menuiserie-metallique'),
+(107, 1, 'Menuiserie Aluminium', 'menuiserie aluminium', 0, 'menuiserie-aluminium'),
+(108, 13, 'Sacs ', 'sacs ', 0, 'sacs'),
+(109, 40, 'Sécurité et EPI', 'sécurité et epi', 0, 'securite-et-epi'),
+(110, 41, 'Jardinage', 'jardinage', 0, 'jardinage'),
+(111, 42, 'Automatisme_old_deleted-111', 'automatisme_old_deleted-111', 1, 'automatisme-old-deleted-111'),
+(112, 42, 'Electricité_deleted-112', 'electricité_deleted-112', 1, 'electricite-deleted-112'),
+(113, 43, 'Automatisme', 'automatisme', 0, 'automatisme-1'),
+(114, 43, 'Pneumatique', 'pneumatique', 0, 'pneumatique'),
+(115, 43, 'Hydraulique ', 'hydraulique ', 0, 'hydraulique'),
+(116, 4, 'Huiles et liquides', 'huiles et liquides', 0, 'huiles-et-liquides'),
+(117, 4, 'Huiles et liquides_deleted-117', 'huiles et liquides_deleted-117', 1, 'huiles-et-liquides-deleted-117'),
+(118, 5, 'Manutention et levage ', 'manutention et levage ', 0, 'manutention-et-levage'),
+(119, 31, 'Caoutchouc ', 'caoutchouc ', 0, 'caoutchouc'),
+(120, 44, 'Plomberie ', 'plomberie ', 0, 'plomberie'),
+(121, 44, 'Chauffage', 'chauffage', 0, 'chauffage'),
+(122, 14, 'Eau', 'eau', 0, 'eau'),
+(123, 45, 'Instrumentation mécanique', 'instrumentation mécanique', 0, 'instrumentation-mecanique'),
+(124, 46, 'Fournitures médicales professionnelles', 'fournitures médicales professionnelles', 0, 'fournitures-medicales-professionnelles'),
+(125, 40, 'sécurité EPI', 'sécurité epi', 0, 'securite-epi');
 
 -- --------------------------------------------------------
 
@@ -3171,7 +4014,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`, `password`, `del`, `isactif`, `created`, `first_name`, `last_name`, `discr`, `roles`, `password_change_date`, `parent1`, `confirmation_token`, `avatar_id`, `redirect`, `password_reset_date`, `forgot_token`) VALUES
-(1, '36, rue imam al boukhari maarif', '', 20370, '+212696318051', 'administrateur@lesachatsindustriels.com', '$2y$13$KNOAsj3DxNN2nyx6Pad1yOQ7h7GGyBN/FLp1yeoeG8svFByBjDhxa', 0, 1, '2019-08-06 10:59:17', 'YOUNESS', 'ARBOUH', 'Admin', 'ROLE_ADMIN', 1569857840, NULL, 'lcL6@PnSmZRYWhJ0iWbX8cygti4tnj', NULL, '/dashboard', NULL, NULL),
+(1, '36, rue imam al boukhari maarif', '', 20370, '+212696318051', 'administrateur@lesachatsindustriels.com', '$2y$13$HQkz8YEK/Rv9HF8jxqFbw.3RAcMVY3B79U0O56SRumQUu6z97QJzy', 0, 1, '2019-08-06 10:59:17', 'ACCOUNT', 'ADMIN', 'Admin', 'ROLE_ADMIN', 1569857840, NULL, 'lcL6@PnSmZRYWhJ0iWbX8cygti4tnj', NULL, '/dashboard', NULL, NULL),
 (2, '36, rue imam al boukhari maarif', '', 27000, '+212661355218', 'commercial@3findustrie.com', '$2y$13$Hd7F.8FcNtlshgoVhXktq.JICvonGb0tMkraF5PoHyqDHrtW0JeZ6', 0, 1, '2020-04-09 16:55:02', 'Younes', 'HALOUI', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, 'vfi0q1qzwSDjLM701p6NdGwZfVjYDy', 2, '/dashboard', '2020-07-18 17:35:58', NULL),
 (3, '36, rue imam al boukhari maarif', '', NULL, '0661355218', 'achats@lesachatsindustriels.com', '$2y$13$KNOAsj3DxNN2nyx6Pad1yOQ7h7GGyBN/FLp1yeoeG8svFByBjDhxa', 0, 1, '2020-04-09 17:21:23', 'YOUNESS', 'HALOUI', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, 'gd4sUnPLZo6nn4S9iuc.WfkQ.LaNla', NULL, '/dashboard_ac', NULL, NULL),
 (49, '16 rue Al bouhtouri', '', 20500, '212661685117', 'abderrahim.chtouane@thyssenkrupp.ma', '', 0, 0, '2009-05-26 10:22:35', 'ABDERRAHIM', 'CHTOUANE', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
@@ -3430,7 +4273,7 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (572, '10, Rue Liberté 3éme étage, Appt 6 Casablanca', '', 20070, '0663070404', 'AMHAOUER@2SID.MA', '', 0, 1, '2018-01-30 16:33:45', 'ABDELMOTALEB', 'MHAOUER', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (573, 'Zone Franche Ksar Al Majaz Oued R\'mel Commune Anjra Route De Fenideq Bp 216 - Fahs-Anjra', '', 94125, '0531061125', 'meriem.aissi@apmterminals.com', '', 0, 1, '2018-02-08 12:18:32', 'Meriem', 'Aissi', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (574, 'Zone Franche d’exportation de Tanger Automotive City, ilot 186 Commune Jouamaa Province Fahs-Anjra -Tanger-Maroc', '', 90000, '0669698317', 'mohamed-yassine.sbai@valeo.com', '', 0, 1, '2018-02-09 07:40:31', 'MohamedYassine', 'Sbai', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
-(575, 'bp 618 hay hassani berrechid', '', 26100, '0637818314', 'vibra2m@gmail.com', '', 0, 1, '2018-02-16 14:19:52', 'motor', 'vibra', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(575, 'bp 618 hay hassani berrechid', '', 26100, '0637818314', 'vibra2m@gmail.com', '$2y$13$kBABCXAbrHcHsK3yMQRFTOV6KYT1m5FOM6kl6M1YgwcdaVdqNyloi', 0, 1, '2018-02-16 14:19:52', 'motor', 'vibra', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', '2020-08-04 10:01:23', NULL),
 (576, '2 rue Melouia - ex Lapébie 20150 Casablanca - Maroc', '', 20150, '00212641047574', 'abdeddaim@gmail.com', '', 0, 1, '2018-02-16 14:54:10', 'mohamed', 'abdeddaim', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (579, '64, rue Ennoussour, apt.11, casablanca', '', 20130, '+212641058794', 'bensbih.ryme@gmail.com', '', 0, 0, '2018-02-23 15:56:55', 'Ryme', 'Bensbih', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (582, 'BP 308 ELMARSA LAAYOUNE', 'Bp308 le marsa  laayoune', 70000, '0604075903', 'f.t.frereslaayoune@gmail.com', '', 0, 1, '2018-03-08 19:03:17', 'Elfoukhari', 'Mahdi', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
@@ -3440,7 +4283,7 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (587, ': Gr Attakkadoum Gh 2 - 17 Etage 2 Sidi Bernoussi - Casablanca', '', 20610, '0661417140', 'dalgoindustrie@gmail.com', '', 0, 1, '2018-05-04 14:06:22', 'ABDELLAH', 'AGOUZOUL', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (588, '49 RUE JEAN JAURES ', '', 20000, '00212694636583', 'info@gcswisstrading.com', '', 0, 0, '2018-05-30 20:01:46', 'CHRISTOPHE', 'CHAHID', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (589, '265, Bd Zerktouni', '', 20050, '0661857812', 'fkassocier@gmail.com', '', 0, 0, '2018-07-12 13:13:23', 'ADILE', 'FERJANE', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
-(590, 'N°8,Rue El Balabil', 'mersultan', 20120, '06 96 66 66 47', 'alsaceequipement@gmail.com', '', 0, 1, '2018-09-09 11:45:37', 'badreddine', 'sadawi', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(590, 'N°8,Rue El Balabil', 'mersultan', 20120, '0696 66 66 47', 'alsaceequipement@gmail.com', '$2y$13$1Exx6o01iKGc8B8f.L5fM.WZ4QgsGXPuyZ0J2wOJ.ROQxdPQoM9n6', 0, 1, '2018-09-09 11:45:37', 'ALSACE', 'EQUIPEMENT', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, 15, '/dashboard', '2020-08-04 16:04:39', NULL),
 (591, '27, rue de Bapaume', '', 20500, '+212652598954', 'abdelilah.habti@yazindustrie.com', '', 0, 0, '2018-11-23 20:42:20', 'ABDELILAH', 'HABTI', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (592, '17 rue Abou Abbas El Jiraoui , n° 5 Q. la Gare', '', 20250, '0660896422 ', 'Sigmatecasa@gmail.com', '', 0, 0, '2019-03-02 15:27:52', 'Abdelmounim ', 'Bennouh ', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (607, 'lot koutoubia rc koutoubia n 3 sale', '', 11100, '0661705592', 'thm.messagerie@gmail.com', '', 0, 1, '2019-06-13 18:04:06', 'driss', 'hilal', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
@@ -3452,7 +4295,7 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (614, '109 avenue Abdelkrim El Khattabi, résidence Jawad', '', 40000, '00212658668379', 'contact@africarome.com', '', 0, 1, '2019-06-26 15:47:15', 'guillaume', 'dollinger', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (615, 'Hay moulay rachid group 4 rue 16 number 4 bis ER REGGAB Casablanca morocco', '', 20660, '+212654564945', 'a.erreggab@gmail.com', '', 0, 1, '2019-07-04 15:55:13', 'ABDELKRIM', 'ERREGGAB', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (618, 'Ben Yakhlef', '', 28815, '0523335355', 'contact@quadritech.ma', '', 0, 1, '2019-07-12 12:23:16', 'Commercial', 'Quadritech', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
-(619, 'Centre El Qods 2 Bd Imam Lait Bnou Saad, Étage 01, N° 58 Imm C, Sidi Bernoussi ', '', 20380, '0661513825', 'm.elhattab@protectionunit.ma', '', 0, 1, '2019-09-25 12:51:12', 'MOHAMED', 'EL HATTAB', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(619, 'Centre El Qods 2 Bd Imam Lait Bnou Saad, Étage 01, N° 58 Imm C, Sidi Bernoussi ', '', 20380, '0661513825', 'm.elhattab@protectionunit.ma', '$2y$13$0BJosiiHiaVbA9XDGQmMDe4998rITuzp1H9DwKW27Gy6aW9yW.uIC', 0, 1, '2019-09-25 12:51:12', 'MOHAMED', 'EL HATTAB', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', '2020-08-10 14:03:15', NULL),
 (620, 'Lot 106, Ard El Kheir rue 4 n°5 Aïn Chok', '', 20470, '00212661533858', 'moncef.nasri@lartdutextile.com', '', 0, 1, '2019-10-17 17:24:49', 'MONCEF', 'NASRI', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (621, 'Tabriquet Salé ', '', 11010, '0611738945', 'saaderrami@gmail.com', '', 0, 1, '2019-10-19 23:28:04', 'ERRAMI ', 'Saad ', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (622, 'TEST', '', 0, '0664568444', 'a.laouz@gmail.com', '', 0, 1, '2019-10-21 10:39:28', 'ABDELLAH', 'LAOUZ', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
@@ -3477,11 +4320,11 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (642, 'zone industrielle azit,allée 2,lot 43 A 90000 Tanger', 'mghogha', 90000, '0638816580', 'elfakhkhari.khadija@gmail.com', '', 0, 1, '2019-11-01 11:53:05', 'khadija', 'fakhkhari', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (643, '9, rue Al Amal , hay Annakhil EL JADIDA', '', 0, '0661408111', 'setrel.technique@gmail.com', '', 0, 1, '2019-11-01 19:52:15', 'ZOUHAIR', 'BELFARJI', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (644, 'KM 17 AIN HARROUDA', '', 28630, '0661429279', 'lahlali.seventrade@gmail.com', '', 0, 1, '2019-11-05 11:30:13', 'FATIMA ZOHRA', 'LAHLALI', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
-(645, '76, boulevard Nador.casablanca', '', 20480, '0650842874', 'gtsi.maroc@gmail.com', '', 0, 1, '2019-11-08 17:07:39', 'fatimazahra', 'hachidi', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(645, '76, boulevard Nador.casablanca', '', 20480, '0650842874', 'gtsi.maroc@gmail.com', '$2y$13$RLp75UXIvX2bZ0kpz8w4UuSuwUWJeunhnNMxUw/QiJD0nbx7niPI6', 0, 1, '2019-11-08 17:07:39', 'fatimazahra', 'hachidi', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', '2020-07-29 12:59:43', NULL),
 (646, '306 tickni zone industriel', '', 24000, '0660303330', 'picostelec@gmail.com', '', 0, 1, '2019-11-12 13:10:26', 'Mouhaddane ', 'Karim', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (647, 'hay oued eddhab n 36 temara', '', 12010, '0661765758', 'logigard@gmail.com', '', 0, 1, '2019-11-12 14:58:52', 'elbekkali', 'zouhir', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (648, 'salam 1 rue 16 n3 complexe residentiel sidi bernoussi casablanca', '', 20600, '0661982871', 'airclimelectro@gmail.com', '', 0, 1, '2019-11-13 10:32:02', 'laaziri', 'mustapha', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
-(649, 'RES AL BADRE GH7 IMM 64 ', 'N°01 AIN SEBAA', 20000, '+212662798719', 'trans.fuso18@gmail.com', '', 0, 1, '2019-11-15 17:44:54', 'JAWAD', 'ELMETTICHI', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(649, 'RES AL BADRE GH7 IMM 64 ', 'N°01 AIN SEBAA', 20000, '+212607722067', 'trans.fuso18@gmail.com', '$2y$13$DBE2NP4TdZnqjA3sTe6dT.cgkv3eqCNrux51GCQNdjg8Z94LFDTnq', 0, 1, '2019-11-15 17:44:54', 'Mohamed', 'Zayd', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', '2020-10-01 12:18:14', NULL),
 (650, 'Hay baraka 2 rue 12 n 15 lot 113 sidi moumen casablanca', '', 20240, '0669-977-977 ', 'casaunivers.services@gmail.com', '', 0, 1, '2019-11-19 10:31:02', 'Ahmed', 'Bassry ', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (651, '127 bloc A Ouled Oujih', '', 14000, '0662067229', 'pmil.nekach@gmail.com', '', 0, 1, '2019-11-19 12:39:06', 'Mustapha', 'Nekach', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (652, 'Kamala n55 ainsi harrouda', '', 20630, '+212673840138', 'igortravaux@gmail.com', '', 0, 0, '2019-11-19 17:02:31', 'Mohamed ', 'Taki', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
@@ -3494,16 +4337,65 @@ INSERT INTO `user` (`id`, `adresse1`, `adresse2`, `codepostal`, `phone`, `email`
 (660, 'golden tower B1/5 centre urbain nord tunis', '', 1002, '0021671906901', 'aida.kallel@planet.tn', '', 0, 1, '2019-12-18 23:22:15', 'mohamed', 'frikha', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (661, '28, rue de Provins, appt. n°10 Bélvédère ', '', 20300, '+212601754015', 'z.ouhra@sofim.ma', '', 0, 1, '2020-01-22 19:25:39', 'Zakaria', 'OUHRA', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (663, '4, Rue de l\'Imam Mouslim, Oasis', '', 20100, '0669528175', 'najwa.bellali@tgcc.ma', '', 0, 1, '2020-01-29 10:29:12', 'Najwa', 'BELLALI', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
-(664, 'Résidence fal attissir imm 115apt14 benmsick', '', 20000, '+212663240208', 'koumennegoce@gmail.com', '', 0, 1, '2020-02-12 10:22:37', 'Abderrahim', 'Mendour', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(664, 'Résidence fal attissir imm 115apt14 benmsick', '', 20000, '+212663240208', 'koumennegoce@gmail.com', '$2y$13$wfL1pWPYuB.OPq3zuClkxuzESW5wo6yEl0VscRnXDwo8KJy32Yx4.', 0, 1, '2020-02-12 10:22:37', 'Abderrahim', 'Mendour', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', '2020-07-29 08:57:30', NULL),
 (665, '116 Lot Salam 1 Ext, El Jadida.', '', 24030, '+212 619 200 256', 'sgiea.maroc@gmail.com', '', 0, 1, '2020-03-18 10:37:17', 'Mustapha', 'Belaziri', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (682, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'ha1@3findustrie.com', '$2y$13$wDlkV0UN8hct4MdEkk38FeFq7WFkkgW921uolU/s53/OgJeHHYwMi', 0, 1, '2020-06-05 16:19:56', 'Compte', 'Acheteur', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac', NULL, NULL),
-(684, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'frs2@3findustrie.com', '$2y$13$ilKL3UXu8qGlb1cJqo/VhecGWg.3M0/pd4/vttddnvv.h/ruSO9vC', 0, 1, '2020-06-05 16:26:57', 'YOUNESS', 'ARBOUH', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
-(740, '36, Rue Imam AL BOUKHARI, 20 370 Maarif,', '', NULL, '+212668936900', 'achats@3findustrie.com', '$2y$13$E96e5TJU/8k7GT9JuoIwf.RU/rT1r5MaOjCcocSwuB0In6ZWGJmSu', 0, 1, '2020-07-08 13:57:08', 'Maria', 'RHAITI', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac', NULL, NULL),
+(684, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'frs2@3findustrie.com', '$2y$13$HQkz8YEK/Rv9HF8jxqFbw.3RAcMVY3B79U0O56SRumQUu6z97QJzy', 0, 1, '2020-06-05 16:26:57', 'YOUNESS', 'ARBOUH', 'Fournisseur', 'ROLE_FOURNISSEUR', 1599914380, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(740, '36, Rue Imam AL BOUKHARI, 20 370 Maarif,', '', NULL, '+212668936900', 'achats@3findustrie.com', '$2y$13$piJW3HvW5sTm61vrIWUQ2.yye7WG4DmTfu5A5PaNXpcekAkl5kuYK', 0, 1, '2020-07-08 13:57:08', 'Maria', 'RHAITI', 'Acheteur', 'ROLE_ACHETEUR', 1599914654, NULL, NULL, NULL, '/dashboard_ac', NULL, 'PgQAzhS&B9CMpw5R@NqGu3DVjXZw7h'),
 (741, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'youness.arbouh@gmail.com', '$2y$13$8ALdLcpm1/0bgjGseyTGduPS7tODt5/vGp3Pb8xmWeng0Pv.yUTwO', 0, 1, '2020-07-13 08:26:13', 'YOUNESS', 'ARBOUH', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac', NULL, NULL),
 (742, 'route d\'eljadida province nouacer Lisasfa casablanca', '', NULL, '+212661696356', 'am.mejnaoui@gmail.com', '$2y$13$M7g/iAAeaPPw7zftd.EpL.IbIjwXIFqQv7yK5t9RpFOTYzba671Wu', 0, 1, '2020-07-14 20:57:58', 'AMINE', 'MEJNAOUI', 'Acheteur', 'ROLE_ACHETEUR', NULL, NULL, NULL, NULL, '/dashboard_ac', NULL, NULL),
 (743, '36, RUE IMAM AL BOUKHARI MAARIF', '', 20370, '+212661355218', 'yhaloui@3findustrie.com', '$2y$13$tljuiK8RKVeyTnVkU5lntO8UVeYh.b.PzOL2cHV1LjdKTlodGWr2m', 0, 1, '2020-07-15 15:50:51', 'Younes', 'HALOUI', 'Admin', 'ROLE_ADMIN', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
 (744, '36, RUE IMAM AL BOUKHARI MAARIF', '', 20370, '+212661355218', 'contact@3findustrie.ma', '$2y$13$9RdzWh.qXp4aUHeJqDWwmuOlZ2VLBTSuMBtR2qP42TPraqutQThUq', 0, 1, '2020-07-18 17:11:58', 'Younes', 'HALOUI', 'ZoneCommercial', 'ROLE_ZONE', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
-(745, 'Via Le Ghiselle, 20', '', 25014, '+212660234005', 'zakaria@motive.it', '$2y$13$GfdT7M4AeVtVt2l40v7Cje9JyTms5hUCzgMpg1JlWLoqTfx6ao1G2', 0, 1, '2020-07-22 08:40:22', 'Zakaria', 'OUHRA', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL);
+(745, 'Via Le Ghiselle, 20', '', 25014, '+212660234005', 'zakaria@motive.it', '$2y$13$GfdT7M4AeVtVt2l40v7Cje9JyTms5hUCzgMpg1JlWLoqTfx6ao1G2', 0, 1, '2020-07-22 08:40:22', 'Zakaria', 'O.', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, 5, '/dashboard', NULL, NULL),
+(746, NULL, NULL, NULL, '+212661231124', 'B.oumaima00@gmail.com', '$2y$13$S890taKZyM53BajYHVYAauZqNHOngg1.ly2OUN4dehE1Qy7DyN6FK', 0, 1, '2020-07-27 12:33:33', 'Oumaima', 'Bihich', 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, NULL, NULL, '/register/fournisseur', NULL, NULL),
+(747, 'bd.de la gare, Res la source, 2ème etg Imm B App 12', 'dépôt: 26 Bassatine Rahma GH2 TR1 Route Azemmour Dar Bouazza ', NULL, '+212665039290', 'sayouti.trading@gmail.com', '$2y$13$eq7iJCtnjkQgC0e.BKnhUu3YxbPLTZLAam7Q7AxpubC52HmQMkAOS', 0, 1, '2020-07-27 15:10:17', 'EL FARDOUS', 'SALAHEDDINE', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(748, 'N10 BD la liberté N5 étage3', 'N10 BD la liberté N5 étage3', NULL, '+212661915376', 'Manesteel@manesteel.com', '$2y$13$OxBA3omAa/KHLuGI.RouXeLVupZDvJeuM3esXm1l3.0PpvtnItTy6', 0, 1, '2020-07-27 16:21:19', 'Omar', 'Taha', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(749, '3 rue ait Ourir 2 étage bd Moulay youssef', '', NULL, '+212661885199', 'chamadistribution@gmail.com', '$2y$13$3ETe4HqwH5jatQSuuAcMOurLcYwAfciIph7A.6FtckSBGvBX8Jo92', 0, 1, '2020-07-28 08:12:47', 'Tighezoui', 'Othmane', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, 12, '/dashboard', NULL, NULL),
+(750, 'Agadir Maroc', '', NULL, '+212624786216', 'info.tralos@gmail.com', '$2y$13$QLdAq/VChYvXka/NnVnlJ.LAIRfYO3KTNRUqcetB6wE9OkwRLyLH2', 0, 1, '2020-07-28 08:28:30', 'mustapha', 'alahyane', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, 13, '/dashboard', '2021-05-27 11:30:31', NULL),
+(751, '	150 Rue 10 Esperance 2, Ain Sebaa, Casablanca 20250', '', NULL, '+212661533149', 'bouzaid.med@gmail.com', '$2y$13$4gRWiM7Q94flch7904nbBOQnaVYvJ9X2mL0gij1DN2jfoB0u427p.', 0, 1, '2020-07-28 08:40:12', 'alaa', 'Bouzaid ', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(752, '96 bd anfa Casablanca', '', NULL, '+212649289206', 'hygisolutions@gmail.com', '$2y$13$XJQINNzgLjDLgOvt7wGJyu/gSWnanVIkle.yQroF17FyzMgCj5qVG', 0, 1, '2020-07-28 08:41:28', 'redouane', 'Oukkache', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(753, 'meknes c v v', '', NULL, '+212639718940', 'elmzaitikaoutar0@gmail.com', '$2y$13$44LGbPyHBTA7bb.p/IpGVu.SxpkjauTQWeaA0s.SZEEFMxxRekuza', 0, 0, '2020-08-05 00:31:56', 'kaoutar', 'Elmzaiti', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(754, 'casablanca mm', '', NULL, '+212639718940', 'kaoutarelmzaiti1998@gmail.com', '$2y$13$XYM5Ah696faNAopdBQIXqeHTeGFdgwfVH8I1Bo5.fyRX04vp.j15S', 0, 0, '2020-08-05 13:48:35', 'kaoutar', 'Elmzaiti', 'Acheteur', 'ROLE_ACHETEUR', NULL, 744, NULL, NULL, '/dashboard_ac', NULL, NULL),
+(755, 'Lot Fekh Caid El Hraoui n°210 Mediouna Casablanca', 'CASABLANCA', NULL, '+212661350238', 'partneramenagement@gmail.com', '$2y$13$H78gDcVFc1eIVh.10kSh4.74thuD.1q7OM9vrWH3wTqJRXb9B6WA6', 0, 1, '2020-08-07 15:34:29', 'Abderrahim', 'ISSAM', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(756, 'Lot 106, Ard El Kheir rue 4 n°5 Aïn Chok Casablanca 20470', '', NULL, '+212664832747', 'djekou.yannick@lartdutextile.com', '$2y$13$t.jHfNmX2T/1xBPdjZpM6O7D4r1SFzwmnF/W5HwMaS.KnyfLY019q', 0, 1, '2020-08-10 10:48:05', 'stephane', 'yannick', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(757, '(Usine/Siège) bd Mustapha el Maani - Bir Jdid', '', NULL, '+212669816026', 'ghita.kadmiri@armor-group.com', '$2y$13$InS0K4qLsfy.bttWhIGaMu/wEvMXxOzg.8hK.tC/YoEHOydwcgmdW', 0, 1, '2020-08-10 15:14:52', 'Ghita', 'KADMIRI', 'Acheteur', 'ROLE_ACHETEUR', NULL, 744, NULL, NULL, '/dashboard_ac', NULL, NULL),
+(758, 'Rue des oudayas casablanca ', 'Dayet aoua Agdal Rabat ', NULL, '+212662089408', 'machbra@gmail.com', '$2y$13$KObJCp58uflKC1Ds7ANr8ek.ftGLfmf55mW4UI1ZnJI6kVZp1kALC', 0, 1, '2020-08-12 13:42:43', 'Brahim ', 'Machkouri ', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(759, NULL, NULL, NULL, '+212620770241', 'Tarekchiheb@hotmail.fr', '$2y$13$lavT3Ksf/sviX89yHW0Ul.pm9ABOe/i3Nnm8qNyThYccsGrfQ70V2', 0, 1, '2020-08-12 22:21:51', 'Tarik', 'Chiheb ', 'Acheteur', 'ROLE_ACHETEUR_PRE', NULL, NULL, NULL, NULL, '/register/ac2', NULL, NULL),
+(760, 'Rue Cadi Bakkar', '', NULL, '+212661574187', 'v.houdre@baobag.eu', '$2y$13$XMtz5TUD5aoyb4RDgVi95.2kJDYKk7CdE3CheTaBno/JMyu.mAwUC', 0, 1, '2020-08-13 15:03:08', 'VICTOR', 'HOUDRE', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', '2020-08-18 12:18:23', NULL),
+(761, '96 BD ANFA ETG 7 N° 71', '', NULL, '+212662735081', 's.elbaz@hmdholding.com', '$2y$13$63p8ksZqv0Q7/ZbzVhrRNOZ4/ycu4pAW8dz5V.m1KZSuclzK3UBTe', 0, 1, '2020-08-25 11:11:28', 'SARA', 'ELBAZ', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, 18, '/dashboard', NULL, NULL),
+(762, NULL, NULL, NULL, '+212662735081', 'contact@hmdholding.com', '$2y$13$aKFHw69u8slHa8NOrMERsugj2Uo./PuRcixmFgWIxq8/qcrDdRpXm', 0, 0, '2020-08-25 11:14:44', 'SARA', 'ELBAZ', 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, 'RCdRVZdwzOYN9nfDf3dR4V4.lvs6ie', NULL, '/register/fournisseur', NULL, NULL),
+(763, NULL, NULL, NULL, '+212673755858', 'ouss.zakaria95@gmail.com', '$2y$13$ZUC67kA5Lby1PXYqAvZ67eQRbXe/6qPHD1y1R1gJuUqSZaJl8qVhq', 0, 0, '2020-08-25 11:17:03', 'oussama', 'zakaria', 'Acheteur', 'ROLE_ACHETEUR_PRE', NULL, NULL, 'a2IY4&VHb1nzWSQkLUR49WM6fXUg1G', NULL, '/register/ac2', NULL, NULL),
+(764, NULL, NULL, NULL, '+212700090361', 'A.Agourram@quadritech.ma', '$2y$13$nbmRi5Q2UuyvwNr8eIGtq.TBNiDXjs6kIO7JeBWGxKD7TIsFmkvJ6', 0, 0, '2020-08-25 16:21:27', 'Abdessamad', 'AGOURRAM', 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, 'ZvnqMiouNodyEE&Z1v0GTD3K3Cuulq', NULL, '/register/fournisseur', NULL, NULL),
+(765, 'No.286 Gaoqiao Village, Gaoqiao Town, Changsha, Hunan, Chine.', '', NULL, '+8617352820448', 'han@hndtea.com', '$2y$13$NNryJ1zJHBSPqoRLJc4YluqNRvTBRwlkpyb8QI3pvZ7SpZ.NsYRvm', 0, 1, '2020-08-26 06:30:11', 'CLEMENT', 'HAN', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, 25, '/dashboard', NULL, NULL),
+(766, '332, Brahim Roudani 5ème Etage n°21 Résidence Rayane, Quartier Maarif Casablanca.', '', NULL, '+212603124061', 'Newridaxs@gmail.com', '$2y$13$0xD9vUG2glLecbAknPKkbuYGQJDbrbrc6lxz91Ax/Fb9l.e2QWxrm', 0, 1, '2020-08-26 12:19:34', 'Mohamed', 'Ridaoui', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, 20, '/dashboard', NULL, NULL),
+(767, '84/99 Lot Mauritania ZI Bernoussi', '', NULL, '+212600044957', 'w.lakrad@separator.ma', '$2y$13$ybjHgUC3ChH.2hGNROWTHOUTvk4Dw00CJtSoYCE/f8S60ojuqd2.W', 0, 1, '2020-08-27 10:19:20', 'walid', 'lakrad', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(768, NULL, NULL, NULL, '+212627667753', 'contact@potech.ma', '$2y$13$8b4l1bRHlyNe0pr0yYeW0eEkwzChosMsyXMZaGlJSHQsm/68AWU5i', 0, 1, '2020-08-27 14:39:08', 'Fouad', 'Filali', 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, NULL, NULL, '/register/fournisseur', NULL, NULL),
+(769, 'Aydınlı Mah. Birlik OSB Batı Cad. No:1 34956 -Tuzla -Istanbul Türkiye', '', NULL, '+905455968517', 'ismail.lyoubi@kumsan.com.tr', '$2y$13$.FjoFDj19YFR/AnbPzW3IObq9D4zwjthh50gpdlsY5K3qFN7PM2MG', 0, 1, '2020-08-28 14:31:08', 'ISMAIL ', 'Lyoubi', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, 21, '/dashboard', NULL, NULL),
+(770, 'Route de rabat', 'Route de rabat', NULL, '+212 6 64 05 04 47', 'sales@africa-components.com', '$2y$13$T6cuitOXfaFcFNhShnWvfOMqIb6TPXV9.COhZe1zA6TcnNNo.nWj2', 0, 1, '2020-08-28 16:25:08', 'AMINE', 'BENHALIMA', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(771, '36, Rue Imam AL BOUKHARI, 20 370 Maarif,', '', NULL, '+212668936900', 'maria.rhaiti@7e-sky.com', '$2y$13$pVZg2Oyy2.VA8seEYt5fpeV.B6TDcqlwONFBcfrfWBpJ5jWvXK3aO', 0, 1, '2020-08-31 14:14:16', 'Maria', 'RHAITI', 'Acheteur', 'ROLE_ACHETEUR', 1599914606, 744, NULL, NULL, '/dashboard_ac', NULL, NULL),
+(772, NULL, NULL, NULL, '+212665813232', 'lindiafournitures@gmail.com', '$2y$13$c9hcJqeVlTjKP.QKJDpWHOj7V1TvcwlcE.3JeTw.RDBYdJXczlr5q', 0, 0, '2020-08-31 22:22:36', 'EL GHENAM ', 'ZAKARIYA ', 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, 'lwKo.leEJsDNYetHqWAZMk7uEWqhlv', NULL, '/register/fournisseur', NULL, NULL),
+(773, 'Av. Conde de Arnoso, 4770-526 Arnoso (Santa Maria)', '', NULL, '+351936547803', 'sylvie.marques@bluechem.com', '$2y$13$pYU6.lSqn8qodVcQtj/S.ucvNQxs21nmHu5udzTdnEtMM39wHN6Be', 0, 1, '2020-09-01 10:23:28', 'Sylvie', 'Marques', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(774, NULL, NULL, NULL, '+212696318051', 'youness.arboudfdfh@gmail.com', '$2y$13$H31k0qMi8zB2KDi8IpC9duooZt/ugx8BB8NlV0L3xukgHw4FMtJ0q', 0, 0, '2020-09-03 10:50:34', 'ARBOUH', 'Youness', 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, 'bXSMk0.vwFBCqNlLSc7DLS5y5xVsJS', NULL, '/register/fournisseur', NULL, NULL),
+(775, 'N* 35 Ouaha I Lot C Bachcou ', '', NULL, '+212 661 260 012', 'commercial.officeproindustrie@gmail.com', '$2y$13$QqerN6EnfbGc3lr6w5j/lOrtJXwhkN6nqqUo0WHlwobdB5bgqMrK.', 0, 1, '2020-09-03 13:49:08', 'Mustapha', 'Nakrachi', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(776, 'km18 Rte D\'eljadida rn1 ', 'Casablanca ', NULL, '+212661105196', 'Info.highmat@gmail.com', '$2y$13$SS5y5SJWXvWenFRJTNTDzeGrqV9t8/YqaG5n6Eg.8t1uk39MrOAaG', 0, 1, '2020-09-03 15:30:12', 'BADR', 'EL AOUSSI', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(777, NULL, NULL, NULL, '+212625941109', 'lahsinia.marwa@gmail.com', '$2y$13$49idw2L6rAWMBxFFLC68/eBUVqMPzvbDxyALDmUzsPyT9yX087g2.', 0, 1, '2020-09-03 16:28:45', 'Marwa', 'lahsinia', 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, NULL, NULL, '/register/fournisseur', NULL, NULL),
+(778, 'Zone Franche de Tanger', '', NULL, '+212665975523', 'nbaze@di-s.fr', '$2y$13$CsfbUd5h.r4YuOPCK0xLdOcMnDejTKpHFznhQeBalhdLLa8xISvQi', 0, 1, '2020-09-09 10:45:25', 'Noureddine', 'BAZE', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, 22, '/dashboard', NULL, NULL),
+(779, NULL, NULL, NULL, '+212630083000', 'abderrahim.jaaoui@gmail.com', '$2y$13$r.DpLHG9ZpOln/sP6dAWfOknd5VznSX9nFz41cf4tTnggEnxA5Bre', 0, 1, '2020-09-09 16:10:47', 'ABDERRAHIM', 'Jaoui', 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, NULL, NULL, '/register/fournisseur', NULL, NULL),
+(780, 'casa blanc ain seba3 ', 'casa blanc ain seba3 ', NULL, '+212631112886', 'yassinerahali200@gmail.com', '$2y$13$N.hjmEaAH8iAmmY5Vqced.GRFqUFSqnTYAsqWriSEuJ7nYfnaxbZ.', 0, 0, '2020-09-24 09:58:20', 'yassine', 'rahali', 'Acheteur', 'ROLE_ACHETEUR', NULL, 744, NULL, NULL, '/dashboard_ac', NULL, NULL),
+(781, '7, Rue Abou youssef el kindy', 'bd my youssef', NULL, '+212646115967', 'sserghini@esca.ma', '$2y$13$OixwweIBNW/J9rY0VYLoke0SBnlOwPDhtybJ9rS4ks0O9rEBkv9HC', 0, 1, '2020-09-30 11:19:23', 'Sanaa', 'Sqalli', 'Acheteur', 'ROLE_ACHETEUR', NULL, 744, NULL, NULL, '/dashboard_ac', NULL, NULL),
+(782, NULL, NULL, NULL, '+212707 57 97 22', 'noubir.sarah@gmail.com', '$2y$13$0dWCg3/QU3mEZ6g.Qlme5.11YrIhhxpKuS1zxba.rSaatbX7Z5I0m', 0, 1, '2020-10-01 13:13:16', 'Sara', 'Noubir', 'Acheteur', 'ROLE_ACHETEUR_PRE', NULL, NULL, NULL, NULL, '/register/ac2', NULL, NULL),
+(783, 'Keqiao district, Shaoxing, Zhejiang, Chine', '', NULL, '+86 17352820478', 'sophie@gttea.com', '$2y$13$A5vHZOEFclP3r55SQ3PbbeQoswya/.XqNXzszd8q7VxyRHdrbk6Zm', 0, 1, '2020-10-22 06:13:13', 'Sophie', 'Wang', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', '2021-03-18 06:45:34', NULL),
+(784, 'Rue de Jura Bureau N.2 Maarif Casablanca ', '', 20000, '0655826660', 'rachidamani115@gmail.com', '$2y$13$ri.fcqu9E62fmsMUWPMyd.nQA5GrXnzZdv1qlt/vJemVx8RePEUsy', 0, 1, '2020-10-23 09:09:01', 'Morad', 'Bourzgui ', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, 24, '/dashboard', '2020-12-31 10:08:05', NULL),
+(785, 'Zhenbei Road, Wangtan Town, Keqiao District, Shaoxing City, Zhejiang, China', '', NULL, '+86 17352820478', 'gttea03@hotmail.com', '$2y$13$u84PvrOWs2loppSruvhaMuwEjCzcUEdDBZaHMK1iPvbkCnQWbR5ri', 0, 1, '2020-11-10 07:04:15', 'Sophie', 'Wang', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, NULL, NULL, NULL, '/dashboard', NULL, NULL),
+(786, NULL, NULL, NULL, '+14184080385', 'Tania.Chatigny.09cisss@ssss.gouv.qu.ca', '$2y$13$gc1upyE/FxDc1eiskODZBuaCuKQK6kxTleT40Hcvmg7me3lhTytLK', 0, 0, '2020-12-17 19:42:12', 'Tania', 'Chatigny', 'Acheteur', 'ROLE_ACHETEUR_PRE', NULL, NULL, '3@PmMD8VdgL.wS1XXKChcV@ilOMMlw', NULL, '/register/ac2', NULL, NULL),
+(787, 'El alia Mohamledia N°67', '', NULL, '+212661348274', 'energie.ecvm@gmail.com', '$2y$13$FB/k3xnaTdZC12dw5tzAyuDdPRwAQn.n6B0.IUxz8bp95bqWs7Yay', 0, 1, '2021-01-29 19:40:03', 'Khalid', 'MAZOUZ', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(788, NULL, NULL, NULL, '+212660145854', 'lesachatsindustriels@evosolution.net', '$2y$13$FGYQJbGZnBuLs9sj1RXGgOlvz3CCIe04m62oL/Z.HOtABHztHlL6e', 0, 0, '2021-02-18 19:13:00', 'Hicham', 'ALAOUI', 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, 'lHKsNs6iIl63AV3JuW5YQJ7w16LG37', NULL, '/register/fournisseur', NULL, NULL),
+(789, 'Resd les roses ', 'Branes lot 73', NULL, '+212708071108', 'infodevis@bricobay.ma', '$2y$13$YngQ/x99f8liPlEvKsoTlud/FWjvpAwU.at6WFwYRlrhqQYbC55DC', 0, 1, '2021-05-09 17:49:32', 'Naciri', 'Naciri', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, 26, '/dashboard', NULL, NULL),
+(790, 'Rue Teherean, Tanger', '', NULL, '+2120666579278', 'charafa.kt@gmail.com', '$2y$13$nyjttSqoTtBf0OTSgt7BYu4IvCBnjgTV5XaONI9uRyfbH95EDT1hK', 0, 1, '2021-05-25 11:54:56', 'Charafa', 'Ktiouet', 'Acheteur', 'ROLE_ACHETEUR', NULL, 744, NULL, NULL, '/dashboard_ac', NULL, NULL),
+(791, NULL, NULL, NULL, '+330665071170', 'ktiouetcharafa@gmail.com', '$2y$13$NL2Twiuta8nB3xzzIZTWyOKWIPRLUN8Gcu4bXrNk38suttykxss2y', 0, 1, '2021-05-25 12:09:04', 'Kt', 'Ch', 'Fournisseur', 'ROLE_FOURNISSEUR_PRE', NULL, NULL, NULL, NULL, '/register/fournisseur', NULL, NULL),
+(792, 'Rue Haround Rachid', '', NULL, '+212673728156', 'k.hassouni@tangermed.ma', '$2y$13$cEc0oJAImGIUna5sOYci.eFvpu.ayHAa0P7K5wsoO6MeIM8UTH1pi', 0, 1, '2021-05-25 12:19:37', 'Hassouni', 'Khalid', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL),
+(793, 'oulfa lot chahdia ', '', NULL, '+212661645120', 'if.airbureau@gmail.com', '$2y$13$cf.Hj2KPN9htFugh4P8MPe9REvY1iDjr.1yFig2Q2pr9irJxS8UNm', 0, 1, '2021-05-28 09:54:31', 'AIR ', 'BUREAU ', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, 27, '/dashboard', NULL, NULL),
+(794, '36, rue imam al boukhari maarif', '', NULL, '+212696318051', 'administrddddateur@lesachatsindustriels.com', '$2y$13$fIKNhrk06GtySjJrjcBk5eO7HF6NcczZe04F3yBDiRVIsIXBTJGdi', 0, 1, '2021-05-28 16:50:44', 'ARBOUH', 'Youness', 'Fournisseur', 'ROLE_FOURNISSEUR', NULL, 744, NULL, NULL, '/dashboard', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -3621,7 +4513,11 @@ INSERT INTO `ville` (`id`, `name`, `pays_id`, `del`, `slug`) VALUES
 (113, 'Autre', NULL, 0, 'autre'),
 (114, 'azai', 1, 0, 'azai'),
 (115, 'OutData', 2, 0, 'outdata'),
-(116, 'Castenedolo (BS)', 109, 0, 'castenedolo-bs');
+(116, 'Castenedolo (BS)', 109, 0, 'castenedolo-bs'),
+(117, 'Changsha', 44, 0, 'changsha'),
+(118, 'Istanbul', 220, 0, 'istanbul'),
+(119, 'Arnoso (Santa Maria)', 175, 0, 'arnoso-santa-maria'),
+(120, 'Shaoxing', 44, 0, 'shaoxing');
 
 -- --------------------------------------------------------
 
@@ -3814,10 +4710,12 @@ ALTER TABLE `demande_achat`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `UNIQ_D077077F989D9B62` (`slug`),
   ADD KEY `IDX_D077077F96A7BB5F` (`acheteur_id`),
-  ADD KEY `search_idx` (`statut`,`del`),
   ADD KEY `IDX_D077077FCC36B3F` (`motif_rejet_id`),
   ADD KEY `IDX_D077077F38248176` (`currency_id`),
-  ADD KEY `IDX_D077077F9C73C35D` (`fournisseur_gagne_id`);
+  ADD KEY `IDX_D077077F9C73C35D` (`fournisseur_gagne_id`),
+  ADD KEY `statut_Index` (`statut`),
+  ADD KEY `del_Index` (`del`);
+ALTER TABLE `demande_achat` ADD FULLTEXT KEY `desc_Index` (`description`);
 
 --
 -- Index pour la table `demande_achat_attachement`
@@ -3879,9 +4777,9 @@ ALTER TABLE `duree`
 ALTER TABLE `ext_log_entries`
   ADD PRIMARY KEY (`id`),
   ADD KEY `log_date_lookup_idx` (`logged_at`),
-  ADD KEY `log_class_lookup_idx` (`object_class`(191)),
-  ADD KEY `log_version_lookup_idx` (`object_id`,`object_class`(191),`version`),
-  ADD KEY `log_user_lookup_idx` (`username`(191));
+  ADD KEY `log_user_lookup_idx` (`username`),
+  ADD KEY `log_version_lookup_idx` (`object_id`,`object_class`,`version`),
+  ADD KEY `log_class_lookup_idx` (`object_class`);
 
 --
 -- Index pour la table `faq`
@@ -3911,8 +4809,9 @@ ALTER TABLE `fournisseur`
   ADD KEY `IDX_369ECA32A6E44244` (`pays_id`),
   ADD KEY `IDX_369ECA32A73F0036` (`ville_id`),
   ADD KEY `IDX_369ECA3238248176` (`currency_id`),
-  ADD KEY `indexe_societe` (`societe_lower`(191)),
-  ADD KEY `indexe_fournisseur` (`societe`(191));
+  ADD KEY `IDX_369ECA323D8E604F` (`parent`),
+  ADD KEY `indexe_societe` (`societe_lower`),
+  ADD KEY `indexe_fournisseur` (`societe`);
 
 --
 -- Index pour la table `fournisseur_categories`
@@ -3921,6 +4820,14 @@ ALTER TABLE `fournisseur_categories`
   ADD PRIMARY KEY (`fournisseur_id`,`categorie_id`),
   ADD KEY `IDX_7D619F3670C757F` (`fournisseur_id`),
   ADD KEY `IDX_7D619F3BCF5E72D` (`categorie_id`);
+
+--
+-- Index pour la table `fournisseur_provisoire`
+--
+ALTER TABLE `fournisseur_provisoire`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_E5DB53F48FB08615` (`fournisseur_parent_id`),
+  ADD KEY `indexes_type` (`type`);
 
 --
 -- Index pour la table `historique_visite`
@@ -3987,7 +4894,8 @@ ALTER TABLE `pays`
 --
 ALTER TABLE `personnel`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `IDX_A6BCF3DE670C757F` (`fournisseur_id`);
+  ADD KEY `IDX_A6BCF3DE670C757F` (`fournisseur_id`),
+  ADD KEY `IDX_A6BCF3DE86383B10` (`avatar_id`);
 
 --
 -- Index pour la table `produit`
@@ -4003,11 +4911,12 @@ ALTER TABLE `produit`
   ADD KEY `IDX_29A5EC276E694C1F` (`featured_image_id_id`),
   ADD KEY `IDX_29A5EC2738248176` (`currency_id`),
   ADD KEY `IDX_29A5EC27A6E44244` (`pays_id`),
-  ADD KEY `indexes_produit` (`titre`),
   ADD KEY `indexes_produit2` (`is_valid`),
   ADD KEY `indexes_produit3` (`del`),
-  ADD KEY `indexes_p_title` (`titre_lower`),
   ADD KEY `IDX_29A5EC27A73F0036` (`ville_id`);
+ALTER TABLE `produit` ADD FULLTEXT KEY `description_index` (`description`);
+ALTER TABLE `produit` ADD FULLTEXT KEY `titre_desc_index` (`titre_lower`,`description`);
+ALTER TABLE `produit` ADD FULLTEXT KEY `titre_index` (`titre_lower`);
 
 --
 -- Index pour la table `produit_image_produit`
@@ -4095,13 +5004,13 @@ ALTER TABLE `abonnement`
 -- AUTO_INCREMENT pour la table `actualite`
 --
 ALTER TABLE `actualite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT pour la table `actualite_image`
 --
 ALTER TABLE `actualite_image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT pour la table `attachement`
@@ -4113,19 +5022,19 @@ ALTER TABLE `attachement`
 -- AUTO_INCREMENT pour la table `avatar`
 --
 ALTER TABLE `avatar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT pour la table `black_listes`
 --
 ALTER TABLE `black_listes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `categorie`
 --
 ALTER TABLE `categorie`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=383;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=504;
 
 --
 -- AUTO_INCREMENT pour la table `condition_generale`
@@ -4137,7 +5046,7 @@ ALTER TABLE `condition_generale`
 -- AUTO_INCREMENT pour la table `contact_fournisseur`
 --
 ALTER TABLE `contact_fournisseur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `currency`
@@ -4155,13 +5064,13 @@ ALTER TABLE `demande_abonnement`
 -- AUTO_INCREMENT pour la table `demande_achat`
 --
 ALTER TABLE `demande_achat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=345;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=347;
 
 --
 -- AUTO_INCREMENT pour la table `demande_devis`
 --
 ALTER TABLE `demande_devis`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `demande_jeton`
@@ -4173,13 +5082,13 @@ ALTER TABLE `demande_jeton`
 -- AUTO_INCREMENT pour la table `detail_visite`
 --
 ALTER TABLE `detail_visite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `diffusion_demande`
 --
 ALTER TABLE `diffusion_demande`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT pour la table `duree`
@@ -4191,7 +5100,7 @@ ALTER TABLE `duree`
 -- AUTO_INCREMENT pour la table `ext_log_entries`
 --
 ALTER TABLE `ext_log_entries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
 
 --
 -- AUTO_INCREMENT pour la table `faq`
@@ -4209,31 +5118,37 @@ ALTER TABLE `faq_categorie`
 -- AUTO_INCREMENT pour la table `fiche`
 --
 ALTER TABLE `fiche`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT pour la table `fournisseur_provisoire`
+--
+ALTER TABLE `fournisseur_provisoire`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `historique_visite`
 --
 ALTER TABLE `historique_visite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT pour la table `image_produit`
 --
 ALTER TABLE `image_produit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
 
 --
 -- AUTO_INCREMENT pour la table `image_secteur`
 --
 ALTER TABLE `image_secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT pour la table `jeton`
 --
 ALTER TABLE `jeton`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `motif`
@@ -4269,13 +5184,13 @@ ALTER TABLE `personnel`
 -- AUTO_INCREMENT pour la table `produit`
 --
 ALTER TABLE `produit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT pour la table `secteur`
 --
 ALTER TABLE `secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT pour la table `select_produit`
@@ -4287,7 +5202,7 @@ ALTER TABLE `select_produit`
 -- AUTO_INCREMENT pour la table `sous_secteur`
 --
 ALTER TABLE `sous_secteur`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT pour la table `suggestion_secteur`
@@ -4299,13 +5214,13 @@ ALTER TABLE `suggestion_secteur`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=746;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=795;
 
 --
 -- AUTO_INCREMENT pour la table `ville`
 --
 ALTER TABLE `ville`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 
 --
 -- Contraintes pour les tables déchargées
@@ -4467,6 +5382,7 @@ ALTER TABLE `faq`
 --
 ALTER TABLE `fournisseur`
   ADD CONSTRAINT `FK_369ECA3238248176` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`),
+  ADD CONSTRAINT `FK_369ECA323D8E604F` FOREIGN KEY (`parent`) REFERENCES `fournisseur` (`id`),
   ADD CONSTRAINT `FK_369ECA32A6E44244` FOREIGN KEY (`pays_id`) REFERENCES `pays` (`id`),
   ADD CONSTRAINT `FK_369ECA32A73F0036` FOREIGN KEY (`ville_id`) REFERENCES `ville` (`id`),
   ADD CONSTRAINT `FK_369ECA32BF396750` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
@@ -4477,6 +5393,12 @@ ALTER TABLE `fournisseur`
 ALTER TABLE `fournisseur_categories`
   ADD CONSTRAINT `FK_7D619F3670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `FK_7D619F3BCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `categorie` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `fournisseur_provisoire`
+--
+ALTER TABLE `fournisseur_provisoire`
+  ADD CONSTRAINT `FK_E5DB53F48FB08615` FOREIGN KEY (`fournisseur_parent_id`) REFERENCES `fournisseur` (`id`);
 
 --
 -- Contraintes pour la table `historique_visite`
@@ -4497,7 +5419,8 @@ ALTER TABLE `jeton`
 -- Contraintes pour la table `personnel`
 --
 ALTER TABLE `personnel`
-  ADD CONSTRAINT `FK_A6BCF3DE670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`);
+  ADD CONSTRAINT `FK_A6BCF3DE670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
+  ADD CONSTRAINT `FK_A6BCF3DE86383B10` FOREIGN KEY (`avatar_id`) REFERENCES `avatar` (`id`);
 
 --
 -- Contraintes pour la table `produit`
@@ -4506,7 +5429,7 @@ ALTER TABLE `produit`
   ADD CONSTRAINT `FK_29A5EC2738248176` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`id`),
   ADD CONSTRAINT `FK_29A5EC27431AD613` FOREIGN KEY (`fiche_technique_id`) REFERENCES `fiche` (`id`),
   ADD CONSTRAINT `FK_29A5EC27670C757F` FOREIGN KEY (`fournisseur_id`) REFERENCES `fournisseur` (`id`),
-  ADD CONSTRAINT `FK_29A5EC276E694C1F` FOREIGN KEY (`featured_image_id_id`) REFERENCES `image_produit` (`id`),
+  ADD CONSTRAINT `FK_29A5EC276E694C1F` FOREIGN KEY (`featured_image_id_id`) REFERENCES `image_produit` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `FK_29A5EC279F7E4405` FOREIGN KEY (`secteur_id`) REFERENCES `secteur` (`id`),
   ADD CONSTRAINT `FK_29A5EC27A6E44244` FOREIGN KEY (`pays_id`) REFERENCES `pays` (`id`),
   ADD CONSTRAINT `FK_29A5EC27A73F0036` FOREIGN KEY (`ville_id`) REFERENCES `ville` (`id`),
