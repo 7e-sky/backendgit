@@ -71,12 +71,22 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
      */
     private $acheteur;
 
+    
+
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
      * @Groups({"blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
      * @Assert\NotBlank(groups={"blackList:postValidation","blackListe:putValidation"})
      */
     private $fournisseur;
+
+     /**
+     * @ORM\ManyToOne(targetEntity="Team")
+     * @Groups({"blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
+     * @Assert\NotBlank(groups={"blackList:postValidation","blackListe:putValidation"})
+     */
+   // private $team;
+
 
     /**
      * @ORM\Column(type="text")
@@ -97,6 +107,42 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
      * @Groups({"frs:get-all","get-from-acheteurs_blacklistes"})
      */
     private $deblacklister;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * * @Groups({"frs:get-all","blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
+     */
+    private $ice;
+
+      /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * * @Groups({"frs:get-all","blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
+     */
+    private $pays;
+
+      /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * * @Groups({"frs:get-all","blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
+     */
+    private $ville;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * * @Groups({"frs:get-all","blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
+     */
+    private $siret;
+
+    /**
+     * @ORM\Column(name="fournisseurEx",type="string", length=255, nullable=true)
+     * * @Groups({"frs:get-all","blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
+     */
+    private $fournisseurEx;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * * @Groups({"frs:get-all","blackListe:post","blackListe:put","get-from-acheteurs_blacklistes"})
+     */
+    private $email;
 
 
     /**
@@ -141,7 +187,16 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
         $this->fournisseur = $fournisseur;
     }
 
+   /*    public function getTeam()
+    {
+        return $this->team;
+    }
 
+    public function setTeam($team): self
+    {
+        $this->team = $team;
+        return $this;
+    } */
 
     public function getRaison(): ?string
     {
@@ -198,6 +253,80 @@ class BlackListes implements CreatedEntityInterface,SetAcheteurInterface
     {
         $this->etat = $etat;
     }
+    
 
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(?string $pays): self
+    {
+        $this->pays = $pays;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getIce(): ?string
+    {
+        return $this->ice;
+    }
+
+    public function setIce(?string $ice): self
+    {
+        $this->ice = $ice;
+
+        return $this;
+    }
+
+    public function getSiret(): ?string
+    {
+        return $this->siret;
+    }
+
+    public function setSiret(?string $siret): self
+    {
+        $this->siret = $siret;
+
+        return $this;
+    }
+
+    
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+    public function getFournisseurEx(): ?string
+    {
+        return $this->fournisseurEx;
+    }
+
+    public function setFournisseurEx(?string $fournisseurEx): self
+    {
+        $this->fournisseurEx = $fournisseurEx;
+
+        return $this;
+    }
 
 }

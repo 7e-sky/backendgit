@@ -2,6 +2,14 @@
 
 namespace App;
 
+/* use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Routing\RouteCollectionBuilder; */
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -9,13 +17,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
+
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
-    public function registerBundles(): iterable
+     public function registerBundles(): iterable
     {
         $contents = require $this->getProjectDir().'/config/bundles.php';
         foreach ($contents as $class => $envs) {
@@ -23,7 +32,21 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
-    }
+    } 
+
+   /*  public function registerBundles(): iterable
+    {
+        $bundles = [
+            new FrameworkBundle(),
+            // autres bundles...
+        ];
+
+        if ($this->getEnvironment() === 'dev' || $this->getEnvironment() === 'test') {
+            $bundles[] = new MakerBundle();
+        }
+
+        return $bundles;
+    } */
 
     public function getProjectDir(): string
     {

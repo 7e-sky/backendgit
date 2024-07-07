@@ -75,4 +75,9 @@ services:
             autoconfigure: false
             tags:  [ 'api_platform.filter' ]
             arguments: [ '@doctrine', ~, '@?logger' ]
+    
+     # Explicitly define the logger service for the controller
+    App\Controller\AcheteurController:
+        arguments:
+            $logger: '@logger'
 

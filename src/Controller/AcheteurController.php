@@ -11,6 +11,9 @@ namespace App\Controller;
 
 use App\Entity\Acheteur;
 use App\Entity\DemandeAchat;
+use App\Entity\Team;
+use App\Entity\AcheteurProvisoire;  
+use App\Entity\BlackListes; 
 use App\Entity\Ville;
 use App\Repository\DetailVisiteRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,6 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 use App\Email\Mailer;
 
 /**
@@ -47,17 +51,23 @@ class AcheteurController extends AbstractController
      */
     private $mailer;
 
+     /**
+     * @var Logger
+     */
+    private $logger;
+
     public function __construct(
         TokenStorageInterface $tokenStorage,
         DetailVisiteRepository $visiteRepository,
         EntityManagerInterface $entityManager,
-        Mailer $mailer )
-    {
-
+        Mailer $mailer,
+        LoggerInterface $logger
+    ) {
         $this->tokenStorage = $tokenStorage;
         $this->visiteRepository = $visiteRepository;
         $this->entityManager = $entityManager;
         $this->mailer = $mailer;
+        $this->logger = $logger;
     }
 
     /**
@@ -109,6 +119,65 @@ class AcheteurController extends AbstractController
         $result = $this->getDoctrine()->getManager()->getRepository(Acheteur::class)->count(['del' => false, 'ville' => $ville]);
 
         return $this->json($result);
+
+
+    }
+
+     /**
+     * @Route("/acheteurs-tentatives")
+     */
+    public function getCountAcheteursProvisoire()
+    {
+
+        /**
+         * @var UserInterface $acheteur
+         */
+        $acheteur = $this->tokenStorage->getToken()->getUser();
+        if ($acheteur instanceof Acheteur) {
+
+            $result = $this->getDoctrine()->getManager()->getRepository(AcheteurProvisoire::class)->count(['type' => 0, 'acheteurParent' => $acheteur]);
+
+            return $this->json($result);
+        }
+
+        return null;
+
+    }
+
+     /**
+     * @Route("/check_activite_used")
+     */
+    public function checkIfActiviteIsUsedByCollegue(Request $request)
+    {
+
+        /**
+         * @var Acheteur $acheteur
+         */
+        $acheteur = $this->tokenStorage->getToken()->getUser();
+
+        $data = $request->query->all();
+        // Activite
+        $activite = $data['activite'];
+
+        $em = $this->getDoctrine()->getManager()->getRepository(Produit::class);
+        $qb = $em->createQueryBuilder('p')
+            ->innerJoin('p.acheteur', 'f')
+            ->where('f.id <> :current AND p.sousSecteurs = :activite and p.del = :false')
+            ->setParameter('current', $acheteur->getId())
+            ->setParameter('false', false)
+            ->setParameter('activite', $activite);
+
+        if (is_null($acheteur->getParent2()) ) {
+            $qb->andWhere('f.parent2 = :parent2')
+                ->setParameter('parent2', $acheteur->getId());
+        } else {
+            $qb->andWhere('f.id = :parent2 OR (f.parent2 = :parent2)')
+                ->setParameter('parent2', $acheteur->getParent2());
+        }
+
+        $qb->select('count(p.id)');
+        $query = $qb->getQuery()->getSingleScalarResult();
+        return $this->json(['exist'=>$query ? true : false]);
 
 
     }
@@ -297,6 +366,98 @@ class AcheteurController extends AbstractController
         return $this->json($data);
 
     }
+ /**
+ * @Route("/acheteur/teamsRank")
+ */
+public function getTeamPotentielsParAnnee(Request $request)
+{
+    $token = $this->tokenStorage->getToken();
+    if (!$token instanceof TokenInterface) {
+        return $this->json([], 403);
+    }
+
+    $data = $request->query->all();
+    $year = $data['year'] ?? date('Y');
+    $user = $token->getUser();
+
+    $entityManager = $this->getDoctrine()->getManager();
+    $teamRepository = $entityManager->getRepository(Team::class);
+    $demandeRepository = $entityManager->getRepository(DemandeAchat::class);
+
+    $teams = $teamRepository->findBy(['acheteur' => $user, 'del' => 0]);
+
+    $result = [];
+    foreach ($teams as $team) {
+        $result[] = [
+            'team' => $team,
+            'attentes' => $this->countDemands($demandeRepository, $user, $team, 0, $year),
+            'cours' => $this->countDemands($demandeRepository, $user, $team, 1, $year),
+            'rejetees' => $this->countDemands($demandeRepository, $user, $team, 2, $year),
+            'expirees' => $this->countExpiredDemands($demandeRepository, $user, $team),
+            'budgets' => $this->sumBudgets($demandeRepository, $user, $team, $year)
+        ];
+    }
+
+    return $this->json($result);
+}
+
+
+private function countDemands($repository, $user, $team, $status, $year)
+{
+    return $repository->createQueryBuilder('d')
+        ->select('COUNT(d.id)')
+        ->where('d.statut = :status')
+        ->andWhere('d.del = 0')
+        ->andWhere('d.acheteur = :acheteur')
+        ->andWhere('d.team = :team')
+        ->andWhere('YEAR(d.created) = :year')
+        ->setParameter('status', $status)
+        ->setParameter('acheteur', $user)
+        ->setParameter('team', $team)
+        ->setParameter('year', $year)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+
+
+private function countExpiredDemands($repository, $user, $team)
+{
+    return $repository->createQueryBuilder('d')
+        ->select('COUNT(d.id)')
+        ->where('d.acheteur = :acheteur')
+        ->andWhere('d.team = :team')
+        ->andWhere('d.dateExpiration < CURRENT_TIMESTAMP()')
+        ->andWhere('d.del = 0')
+        ->setParameter('acheteur', $user)
+        ->setParameter('team', $team)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+
+
+private function sumBudgets($repository, $user, $team, $year)
+{
+    return $repository->createQueryBuilder('d')
+        ->select('SUM(d.budget)')
+        ->where('d.statut <> :status')
+        ->andWhere('d.del = 0')
+        ->andWhere('d.acheteur = :acheteur')
+        ->andWhere('d.team = :team')
+        ->andWhere('YEAR(d.created) = :year')
+        ->setParameter('status', 2)
+        ->setParameter('acheteur', $user)
+        ->setParameter('team', $team)
+        ->setParameter('year', $year)
+        ->getQuery()
+        ->getSingleScalarResult() ?: 0; // Gérer le cas où la somme peut être NULL
+}
+
+
+
+
+
+
+
 
 
 }

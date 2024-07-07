@@ -3,7 +3,7 @@
 namespace App\EventListener;
 
 
-use App\Entity\Acheteur;
+//use App\Entity\Acheteur;
 use App\Entity\Fournisseur;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -25,7 +25,7 @@ class AuthenticationSuccessListener{
 
 
         $currency = '';
-        if($user instanceof Fournisseur || $user instanceof Acheteur){
+        if($user instanceof Fournisseur ){
             $currency = $user->getCurrency()?$user->getCurrency()->getName() : '';
         }
 

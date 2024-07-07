@@ -123,6 +123,12 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
      */
     private $acheteur;
 
+     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Team")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $team;
+
     /**
      * @ORM\ManyToOne(targetEntity="Fournisseur")
      * @Groups({"item:get-from-demande"})
@@ -369,6 +375,20 @@ class DemandeAchat implements CreatedEntityInterface, SetAcheteurInterface
         $this->acheteur = $acheteur;
         return $this;
     }
+
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): self
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
 
     /**
      * @return mixed

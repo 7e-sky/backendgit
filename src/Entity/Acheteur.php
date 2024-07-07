@@ -85,6 +85,13 @@ class Acheteur extends User
      */
     private $pays;
 
+
+    /**
+ * @ORM\Column(type="boolean")
+ * @Groups({"get", "put", "post"})
+ */
+protected $isactif;
+
     /**
      * @ORM\ManyToOne(targetEntity="Ville")
      * @Groups({"item:get-from-demande","visit:get-all","get","post","put"})
@@ -165,11 +172,36 @@ class Acheteur extends User
 
 
     /**
-     * @ORM\ManyToOne(targetEntity="Acheteur")
+     *  #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'enfants')]
      * @Groups({"get-admin"})
      * @ORM\JoinColumn(name="parent2", referencedColumnName="id" , nullable=true)
      */
     protected $parent2;
+
+
+     /**
+     * @ORM\OneToMany(targetEntity="Acheteur", mappedBy="parent")
+     */
+    private $enfants;
+
+        /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $role;
+
+ /*    public function __construct()
+    {
+        $this->enfants = new ArrayCollection();
+    } */
+
+
+     /*  /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\DirecteurAchat", inversedBy="acheteurs")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"acheteur:read", "acheteur:write"})
+     */
+    //private $directeurAchat; 
+    
 
     /**
      * @ORM\ManyToOne(targetEntity="Secteur")
@@ -210,15 +242,33 @@ class Acheteur extends User
     private $autreCurrency;
 
 
-    public function __construct()
+     /**
+     * @ORM\OneToMany(targetEntity="AcheteurProvisoire", mappedBy="acheteurParent")
+     * @ApiSubresource(maxDepth=1)
+     */
+    private $childs;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="acheteur")
+     * @ApiSubresource(maxDepth=1)
+     * 
+     * 
+     * 
+     */
+    private $teams;
+
+     public function __construct()
     {
         parent::__construct();
+        //$this->isactif = true; // ou false, selon votre logique
         $this->blacklistes = new ArrayCollection();
         $this->demandes = new ArrayCollection();
+        $this->childs = new ArrayCollection();
         $this->isComplet = false;
         $this->step = 1;
+        $this->teams = new ArrayCollection();
 
-    }
+    } 
 
     public function getPays()
     {
@@ -322,14 +372,77 @@ class Acheteur extends User
         $this->description = $description;
     }
 
-    public function getParent2()
+    public function getParent2(): ?self
     {
         return $this->parent2;
     }
 
-    public function setParent2($parent2): void
+    public function setParent2(?self $parent2): self
     {
         $this->parent2 = $parent2;
+
+        return $this;
+    }
+    
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getChilds()
+    {
+        return $this->childs;
+    }
+
+    /**
+     * @param mixed $childs
+     */
+    public function setChilds($childs): void
+    {
+        $this->childs = $childs;
+    }
+
+       /**
+     * @return Collection|self[]
+     */
+    public function getEnfants(): Collection
+    {
+        return $this->enfants;
+    }
+
+    public function addEnfant(self $enfant): self
+    {
+        if (!$this->enfants->contains($enfant)) {
+            $this->enfants[] = $enfant;
+            $enfant->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnfant(self $enfant): self
+    {
+        if ($this->enfants->removeElement($enfant)) {
+            // set the owning side to null (unless already changed)
+            if ($enfant->getParent() === $this) {
+                $enfant->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
+
+        return $this;
     }
 
     public function getSecteur()
@@ -402,6 +515,34 @@ class Acheteur extends User
     public function setAutreCurrency($autreCurrency): void
     {
         $this->autreCurrency = $autreCurrency;
+    }
+
+   
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setAcheteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getAcheteur() === $this) {
+                $team->setAcheteur(null);
+            }
+        }
+
+        return $this;
     }
 
 

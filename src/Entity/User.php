@@ -56,6 +56,7 @@ class User implements UserInterface,CreatedEntityInterface
 
     const ROLE_FOURNISSEUR_PRE = 'ROLE_FOURNISSEUR_PRE';
     const ROLE_FOURNISSEUR = 'ROLE_FOURNISSEUR';
+    const ROLE_Mediateur = 'ROLE_Mediateur';
 
     /**
      * @ORM\Id()

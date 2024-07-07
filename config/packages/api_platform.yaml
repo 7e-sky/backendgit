@@ -4,5 +4,5 @@ api_platform:
     exception_to_status:
         App\Exception\DisableToDelete: 404
         App\Exception\ErrorMessageException: 500
-    enable_docs: false
-    enable_entrypoint: false
+    # enable_docs: false
+    # enable_entrypoint: false
