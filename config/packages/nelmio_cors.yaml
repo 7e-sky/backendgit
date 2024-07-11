@@ -1,14 +1,14 @@
 nelmio_cors:
     defaults:
-        allow_origin: ['https://7e-sky.github.io']
-        allow_methods: ['GET', OPTIONS', 'POST', 'PUT', 'DELETE']
+        allow_origin: ['*'] # Vous pouvez laisser '*' pour tester, mais il est recommandé de spécifier l'URL exacte du frontend pour la production
+        allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE']
         allow_headers: ['content-type', 'authorization']
         expose_headers: ['Link']
         max_age: 3600
     paths:
-        '^/':
+        '^/': # Appliquez cette configuration à toutes les routes
             allow_origin: ['https://7e-sky.github.io']
-            allow_methods: ['GET', OPTIONS', 'POST', 'PUT', 'DELETE']
+            allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE']
             allow_headers: ['content-type', 'authorization']
             expose_headers: ['Link']
             max_age: 3600
